@@ -1,0 +1,5 @@
+.venv/
+.work/
+.yukon/
+__pycache__/
+knowledgebase/

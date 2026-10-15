@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 2,
+  "name": "dcp",
+  "tracks": [
+    {
+      "name": "main",
+      "description": "dcp",
+      "category": "math",
+      "mode": "pareto",
+      "promotionMode": "manual",
+      "direction": "-",
+      "objectives": [
+        {
+          "name": "time_growth",
+          "direction": "-"
+        },
+        {
+          "name": "classical_space_growth",
+          "direction": "-"
+        },
+        {
+          "name": "quantum_space_growth",
+          "direction": "-"
+        }
+      ],
+      "paretoPolicies": {
+        "scoring": {
+          "version": "dcp-growth-v1"
+        },
+        "validity": {
+          "version": "dcp-joint-bounds-v1"
+        }
+      },
+      "editablePaths": [
+        "submission"
+      ],
+      "setupCommand": [
+        "llm-verifier",
+        "intake",
+        "--root",
+        ".",
+        "--out",
+        ".yukon/work/intake.json"
+      ],
+      "benchmarkCommand": [
+        "llm-verifier",
+        "finalize",
+        "--intake",
+        ".yukon/work/intake.json",
+        "--initial",
+        ".yukon/work/initial.json",
+        "--initial-review",
+        ".yukon/work/review.json",
+        "--score",
+        ".yukon/score.json",
+        "--dossier",
+        ".yukon/dossier.json"
+      ],
+      "scorePath": ".yukon/score.json",
+      "maxSubmissionBytes": 262144,
+      "runner": {
+        "provider": "github-actions",
+        "workflow": "benchmark.yml",
+        "scoreArtifactName": "dcp-score",
+        "maxConcurrentWorkflows": 2
+      }
+    }
+  ]
+}
