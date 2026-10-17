@@ -9,7 +9,6 @@ from unittest.mock import patch
 
 from llm_verifier import pipeline
 from llm_verifier.artifacts import intake_snapshot, seal
-from llm_verifier.checks import score_gate
 from llm_verifier.config import load_config
 from llm_verifier.errors import VerifierError
 from llm_verifier.files import write_json
@@ -22,7 +21,7 @@ from export_metrics import export, projection
 ROOT = Path(__file__).resolve().parent
 
 
-def fixture(*, accepted=3, invalid=False, fields=None, simulation=False, negative=False):
+def fixture(*, unscored=False, invalid=False, fields=None, simulation=False):
     effective = load_config(ROOT, "verifier.json", "submission")
     if fields is not None:
         effective["evaluation"]["fields"] = fields
@@ -33,8 +32,8 @@ def fixture(*, accepted=3, invalid=False, fields=None, simulation=False, negativ
     values = (("1", "3"), ("0", "1"), ("1", "1"))
     claims = [{"statement": text, "score": {"numerator": n, "denominator": d},
                "evidence": ["proof.md"]} for text, (n, d) in zip(statements, values)]
-    if negative:
-        claims[0]["score"] = {"numerator": "-1", "denominator": "1"}
+    if unscored:
+        claims = ["Inert unscored lemma fixture."]
     with tempfile.TemporaryDirectory() as temporary:
         candidate = Path(temporary)
         (candidate / "proof.md").write_text("Inert fixture, not a mathematical proof.")
@@ -42,10 +41,7 @@ def fixture(*, accepted=3, invalid=False, fields=None, simulation=False, negativ
                    "claims": claims, "experiments": []})
         intake = intake_snapshot(effective, candidate)
     initial = pipeline.execute(intake)  # Empty execution plan: no Docker invocation.
-    ids = [b["claim_id"] for b in score_gate(intake["data"], initial)["bindings"]]
     judgment = {"valid": not invalid, "scores": None, "reason": "Scripted test only",
-                "accepted_claims": [] if invalid else ids[:accepted],
-                "assumptions": [], "unresolved_obligations": [],
                 "evidence_refs": ["source:proof.md"],
                 "review_standard": effective["config"]["review_standard"]}
     decision = {"kind": "judgment", "judgment": judgment, "requests": []}
@@ -53,9 +49,9 @@ def fixture(*, accepted=3, invalid=False, fields=None, simulation=False, negativ
         first = pipeline.review(intake, initial, provider=ScriptedProvider(effective["config"]["provider"], decision))
     else:
         # Mock the network boundary, never create a production bypass in the exporter.
-        body = {"id": "fixture", "model": "fixture/model", "choices": [{
+        body = {"id": "fixture", "object": "chat.completion", "model": "fixture-model", "choices": [{
             "finish_reason": "stop", "message": {"role": "assistant", "content": json.dumps(decision)}}]}
-        with patch.dict("os.environ", {"OPENROUTER_API_KEY": "fixture-not-a-key"}), patch.object(
+        with patch.dict("os.environ", {"OPENAI_API_KEY": "fixture-not-a-key"}), patch.object(
                 HttpTransport, "request", return_value=HttpResponse(200, canonical(body))):
             first = pipeline.review(intake, initial)
     return pipeline.dossier(intake, initial, first)
@@ -73,9 +69,10 @@ class MetricsTest(unittest.TestCase):
         self.assertEqual(resources["classical_space"]["growth_index"], {"numerator": "0", "denominator": "1"})
         self.assertIn("proof.md", resources["quantum_space"]["evidence"])
         self.assertEqual(resources["time"]["growth_index"], {"numerator": "1", "denominator": "3"})
+        self.assertEqual(resources["time"]["source_sha256"], record["data"]["score_records"][0]["source_sha256"])
 
-    def test_partial_or_invalid_result_cannot_export_accepted_bounds(self):
-        for record in (fixture(accepted=1), fixture(accepted=2), fixture(invalid=True)):
+    def test_unscored_or_invalid_result_cannot_export_accepted_bounds(self):
+        for record in (fixture(unscored=True), fixture(invalid=True)):
             with self.subTest(valid=record["data"]["judgment"]["valid"]):
                 result = projection(record)
                 self.assertIsNone(result["scores"])
@@ -86,10 +83,6 @@ class MetricsTest(unittest.TestCase):
         self.assertEqual(set(validity), {"valid", "reason"})
         scores = projection(fixture(fields={"scores": True, "validity": False}))
         self.assertEqual(set(scores), {"scores", "metrics"})
-
-    def test_negative_growth_is_rejected_even_if_model_accepts(self):
-        with self.assertRaisesRegex(VerifierError, "negative_growth_index"):
-            projection(fixture(negative=True))
 
     def test_simulation_cannot_publish(self):
         with self.assertRaisesRegex(VerifierError, "simulation_cannot_publish"):

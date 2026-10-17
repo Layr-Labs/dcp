@@ -33,23 +33,23 @@ def projection(record):
     if (config["id"] != "dcp" or config["review_standard"] != "dcp-joint-bounds-v1"
             or [o["name"] for o in config["objectives"]] != expected
             or [o.get("score_source") for o in config["objectives"]]
-            != [{"claim": i} for i in range(3)]):
+            != [{"claim": i} for i in range(3)]
+            or [o.get("score_minimum") for o in config["objectives"]]
+            != [{"numerator": "0", "denominator": "1"}] * 3):
         raise VerifierError("dcp_objective_contract")
     result = dict(data["yukon_projection"])
     if result.get("scores") is not None:
-        if any(score < 0 for score in result["scores"]):
-            raise VerifierError("dcp_negative_growth_index")
         claims = intake["data"]["manifest"]["claims"]
         files = intake["data"]["files"]
         result["metrics"] = {"dcp": {
-            "version": "dcp-bounds-v1",
+            "version": "dcp-bounds-v2",
             "format": "reviewed-mathematical-text",
             "intake_sha256": intake["sha256"],
             "dossier_sha256": record["sha256"],
             "resources": {resource: {
                 "statement": claims[i]["statement"],
                 "growth_index": claims[i]["score"],
-                "claim_id": data["score_records"][i]["claim_id"],
+                "source_sha256": data["score_records"][i]["source_sha256"],
                 "evidence": {p: files[p]["sha256"] for p in claims[i]["evidence"]},
             } for i, resource in enumerate(RESOURCES)},
         }}

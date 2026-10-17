@@ -96,12 +96,13 @@ not scores. Distinct bound expressions can share an index. Accepted statements
 and exact rational scores are exported together in `metrics.dcp`; these full
 statements are the record of what was proved.
 
-All three resource claims must be accepted before a numerical vector is
-published. The reviewer returns `scores: null` and accepts the framework's
-snapshot-bound claim IDs; the shared verifier derives the numbers. Accept an
-ID only after checking the entire statement, including its bound and index.
-One proof may establish all three IDs. Do not combine configurations or accept
-just the numeric part of a statement whose stronger expression is unsupported.
+Every declared claim must be established exactly as written before a numerical
+vector is published. The reviewer returns `scores: null`; the shared verifier
+derives the complete vector from the three resource claims only after atomic
+acceptance. One proof may establish all three statements. Do not combine
+configurations, accept a subset, or accept just the numeric part of a statement
+whose stronger expression is unsupported. Source hashes record provenance;
+they are not acceptance selectors.
 
 ## Validity and comparison
 
@@ -109,8 +110,10 @@ A scored submission needs a complete algorithm, proof of full-secret recovery,
 success bound, and joint resource analysis in this model. Heuristic distribution
 assumptions, unproved lemmas, numerical experiments, or a reduction with an
 unaccounted subroutine cannot establish a scored result. A relevant, correct,
-explicitly scoped partial theorem may be valid with null scores. State unresolved
-obligations; do not promote them into assumptions of a full DCP solution.
+explicitly scoped partial theorem may be valid with null scores in a separate
+submission whose claims state that limited scope. State unresolved obligations;
+do not promote them into assumptions of a full DCP solution or use review
+commentary to narrow an unsupported declared claim.
 Citations must identify exact theorems/versions and explain applicability.
 Provide the argument needed for review in the snapshot; the reviewer cannot
 fetch external material.

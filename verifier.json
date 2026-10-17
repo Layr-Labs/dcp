@@ -11,6 +11,10 @@
       "semantics": "The exact rational g(B_T) in rules.md for the full proved total-work upper envelope in claim 0. Review full-secret correctness and all three bounds jointly. This is a coarse UI index, not an optimal-time exponent or proof of the 1/3 target.",
       "score_source": {
         "claim": 0
+      },
+      "score_minimum": {
+        "numerator": "0",
+        "denominator": "1"
       }
     },
     {
@@ -20,6 +24,10 @@
       "semantics": "The exact rational g(B_C) in rules.md for the proved peak classical-bit upper envelope in claim 1, for the same algorithm/configuration. Zero does not by itself certify polynomial space.",
       "score_source": {
         "claim": 1
+      },
+      "score_minimum": {
+        "numerator": "0",
+        "denominator": "1"
       }
     },
     {
@@ -29,6 +37,10 @@
       "semantics": "The exact rational g(B_Q) in rules.md for the proved peak quantum-qubit upper envelope in claim 2, for the same algorithm/configuration. Zero does not by itself certify polynomial space.",
       "score_source": {
         "claim": 2
+      },
+      "score_minimum": {
+        "numerator": "0",
+        "denominator": "1"
       }
     }
   ],
@@ -47,7 +59,7 @@
         "selector": {
           "version": "dcp-growth-v1"
         },
-        "instructions": "Apply rules.md. Accept a score-source claim ID only after proving the whole bound statement and its nonnegative finite rational growth index. All three claims must refer to one algorithm/configuration with joint bounds. Return scores:null; the shared verifier derives the vector from accepted IDs."
+        "instructions": "Apply rules.md. Establish every original declared claim exactly as written, including its full bound statement and nonnegative finite rational growth index. All three resource claims must refer to one algorithm/configuration with joint bounds. Return scores:null; after atomic acceptance the shared verifier derives the complete vector from the current sources."
       }
     ],
     "validity": [
@@ -55,13 +67,14 @@
         "selector": {
           "version": "dcp-joint-bounds-v1"
         },
-        "instructions": "Apply rules.md to correctness, unconditional full-secret success and charged worst-case resources. Valid scoped partial theorems may remain unscored. An unsupported stronger expression is not accepted merely because a weaker expression would have the same index."
+        "instructions": "Apply rules.md to correctness, unconditional full-secret success and charged worst-case resources. Every declared claim must hold as written. A separately submitted, explicitly scoped partial theorem may remain unscored. An unsupported stronger expression is not accepted merely because a weaker expression would have the same index."
       }
     ]
   },
   "provider": {
-    "model": "anthropic/claude-opus-4.6",
-    "max_tokens": 16384,
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "max_completion_tokens": 16384,
     "timeout_seconds": 180,
     "max_attempts": 2
   },
