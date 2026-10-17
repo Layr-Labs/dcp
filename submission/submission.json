@@ -1,35 +1,38 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SEST-1: exhaustive shift testing with streamed linear workspace",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds below.",
+      "statement": "For every integer N >= 2 and every secret s in Z/NZ, algorithm SEST-1, fully specified in proof.md sections 2-5, uses n = ceil(log2 N), m = n+1, k = n+2 independent tests per candidate and L = ceil(log2(n+2)); all logarithms are base two. Its total sequential work in the challenge model is T(N,s) = O(N(n+2)(n+1)L^2), including all classical work, addressing, generation, gates, source copies and failures. The uniform bit-length envelope B_T(n) = 2^n(n+2)(n+1)L^2 has growth index exactly 1 as defined in rules.md. The same execution has S_C(N,s) = O(n+1) bits and S_Q(N,s) = O(n+1) qubits. These bounds hold jointly on every execution branch of this one algorithm and configuration, with unconditional full-secret recovery probability > 3/4. All big-O constants are absolute and independent of N, s and outcomes.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "arithmetic_check.py"
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and every secret s in Z/NZ, algorithm SEST-1, fully specified in proof.md sections 2-5, uses n = ceil(log2 N), m = n+1, k = n+2 independent tests per candidate and L = ceil(log2(n+2)); all logarithms are base two. Its peak allocated classical space is S_C(N,s) = O(n+1) bits, including inputs, output, addresses, controller and circuit-generation storage. The uniform envelope B_C(n) = n+1 has growth index exactly 0 as defined in rules.md. The same execution has T(N,s) = O(N(n+2)(n+1)L^2) and S_Q(N,s) = O(n+1) qubits. These bounds hold jointly on every execution branch of this one algorithm and configuration, with unconditional full-secret recovery probability > 3/4. All big-O constants are absolute and independent of N, s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "arithmetic_check.py"
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and every secret s in Z/NZ, algorithm SEST-1, fully specified in proof.md sections 2-5, uses n = ceil(log2 N), m = n+1, k = n+2 independent tests per candidate and L = ceil(log2(n+2)); all logarithms are base two. Its peak allocated accessible quantum space is S_Q(N,s) = O(n+1) qubits, including the source copy, constants, targets and all scratch ancillas. The uniform envelope B_Q(n) = n+1 has growth index exactly 0 as defined in rules.md. The same execution has T(N,s) = O(N(n+2)(n+1)L^2) and S_C(N,s) = O(n+1) bits. These bounds hold jointly on every execution branch of this one algorithm and configuration, with unconditional full-secret recovery probability > 3/4. All big-O constants are absolute and independent of N, s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "arithmetic_check.py"
       ]
     }
   ],
