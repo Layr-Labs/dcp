@@ -1,0 +1,142 @@
+{
+  "scope": "Finite research diagnostics only; no official review or asymptotic certification.",
+  "uniformizer_moduli": 11,
+  "bucket_checks": {
+    "buckets": 522,
+    "ordered_pairs": 20052
+  },
+  "schedules": 21981,
+  "phase_decode_and_candidate_cases": 33020,
+  "spectral_decomposition": {
+    "cases": 77,
+    "maximum_entry_error": 2.778547713092898e-16
+  },
+  "label_process_simulations": [
+    {
+      "width": 6,
+      "target_exponent": 0,
+      "stage_counts": [
+        8192,
+        951,
+        120
+      ],
+      "usable_final_states": 58
+    },
+    {
+      "width": 6,
+      "target_exponent": 1,
+      "stage_counts": [
+        8192,
+        986,
+        142
+      ],
+      "usable_final_states": 72
+    },
+    {
+      "width": 6,
+      "target_exponent": 3,
+      "stage_counts": [
+        8192,
+        1037,
+        116
+      ],
+      "usable_final_states": 56
+    },
+    {
+      "width": 8,
+      "target_exponent": 0,
+      "stage_counts": [
+        8192,
+        1015,
+        126
+      ],
+      "usable_final_states": 59
+    },
+    {
+      "width": 8,
+      "target_exponent": 2,
+      "stage_counts": [
+        8192,
+        1025,
+        132
+      ],
+      "usable_final_states": 69
+    },
+    {
+      "width": 8,
+      "target_exponent": 5,
+      "stage_counts": [
+        8192,
+        1035,
+        137
+      ],
+      "usable_final_states": 60
+    },
+    {
+      "width": 12,
+      "target_exponent": 0,
+      "stage_counts": [
+        262144,
+        32745,
+        4100,
+        523
+      ],
+      "usable_final_states": 233
+    },
+    {
+      "width": 12,
+      "target_exponent": 4,
+      "stage_counts": [
+        262144,
+        32487,
+        4084,
+        480
+      ],
+      "usable_final_states": 239
+    },
+    {
+      "width": 12,
+      "target_exponent": 8,
+      "stage_counts": [
+        262144,
+        32994,
+        4133,
+        523
+      ],
+      "usable_final_states": 259
+    },
+    {
+      "width": 16,
+      "target_exponent": 0,
+      "stage_counts": [
+        262144,
+        32716,
+        4091,
+        524
+      ],
+      "usable_final_states": 258
+    },
+    {
+      "width": 16,
+      "target_exponent": 6,
+      "stage_counts": [
+        262144,
+        32832,
+        4091,
+        520
+      ],
+      "usable_final_states": 264
+    },
+    {
+      "width": 16,
+      "target_exponent": 12,
+      "stage_counts": [
+        262144,
+        32685,
+        4027,
+        498
+      ],
+      "usable_final_states": 236
+    }
+  ]
+}

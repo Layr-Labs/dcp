@@ -1,0 +1,8 @@
+{
+  "scope": "Finite conditional output-state checks only; not an official or independent proof review.",
+  "conditional_history_cases": 282300,
+  "retained_record_groups": 8500,
+  "largest_number_of_old_histories_for_one_retained_record": 48,
+  "maximum_parity_probability_error": 3.3306690738754696e-15,
+  "maximum_output_density_matrix_error": 7.216449660063518e-16
+}

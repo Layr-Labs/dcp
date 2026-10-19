@@ -1,32 +1,32 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "FD2: bounded flat-difference sieving with full-secret recovery",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds below.",
+      "statement": "The single FD2 algorithm in proof.md Sections 1-10 has the following fixed configuration. For every integer N>=2 let n=ceil(log2 N), m=floor(log2 N), b=ceil(sqrt(n)), ell=ceil((m-1)/(b+1)) (ell=0 when m=1), J=m-1-ell, and clog(q)=ceil(log2 q), computed by the bit length of q-1. Set M=8192 clog(128(n+1)), F=2^(b+8)(n+1)^2+16M, L_i=32^(ell-i)F for 0<=i<=ell, R=8(n+1)L_0, A_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and k_verify=n+8. All logarithms are base two. For every fixed s in Z/NZ, using only fresh independent challenge source states, FD2 returns the entire s with unconditional probability at least 251/256>2/3. Its total sequential work, including classical computation, addressing, circuit generation, all source copies, gates, measurement, resets and all attempts, is T(N,s)=O(R(n+1)^5+L_0(n+1)^4+(2^ell+2)(n+1)^4+1). Consequently T(N,s)=O(B_T(n)) uniformly over instances of bit length n, where B_T(n)=(n+1)^8 * 2^(6 ceil(sqrt(n))). The exact growth index g(B_T) is 1/2. All constants are absolute, independent of N, s and outcomes. This is the same program and parameter choice for all three resource claims; the total work and both allocated-space bounds hold jointly on every execution branch, including failures and aborts, under the fully charged classical bit-operation/Clifford+T model in rules.md.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "The single FD2 algorithm in proof.md Sections 1-10 has the following fixed configuration. For every integer N>=2 let n=ceil(log2 N), m=floor(log2 N), b=ceil(sqrt(n)), ell=ceil((m-1)/(b+1)) (ell=0 when m=1), J=m-1-ell, and clog(q)=ceil(log2 q), computed by the bit length of q-1. Set M=8192 clog(128(n+1)), F=2^(b+8)(n+1)^2+16M, L_i=32^(ell-i)F for 0<=i<=ell, R=8(n+1)L_0, A_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and k_verify=n+8. All logarithms are base two. For every fixed s in Z/NZ, using only fresh independent challenge source states, FD2 returns the entire s with unconditional probability at least 251/256>2/3. Its peak allocated classical space is S_C(N,s)=O((n+1)L_0+(n+1)^2+1) bits, including inputs, labels, counters, all arrays, scratch, lookup constants and retained instruction descriptions. Consequently S_C(N,s)=O(B_C(n)) uniformly over instances of bit length n, where B_C(n)=(n+1)^3 * 2^(6 ceil(sqrt(n))). The exact growth index g(B_C) is 1/2. All constants are absolute, independent of N, s and outcomes. This is the same program and parameter choice for all three resource claims; the total work and both allocated-space bounds hold jointly on every execution branch, including failures and aborts, under the fully charged classical bit-operation/Clifford+T model in rules.md.",
       "score": {
-        "numerator": "0",
-        "denominator": "1"
+        "numerator": "1",
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "The single FD2 algorithm in proof.md Sections 1-10 has the following fixed configuration. For every integer N>=2 let n=ceil(log2 N), m=floor(log2 N), b=ceil(sqrt(n)), ell=ceil((m-1)/(b+1)) (ell=0 when m=1), J=m-1-ell, and clog(q)=ceil(log2 q), computed by the bit length of q-1. Set M=8192 clog(128(n+1)), F=2^(b+8)(n+1)^2+16M, L_i=32^(ell-i)F for 0<=i<=ell, R=8(n+1)L_0, A_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and k_verify=n+8. All logarithms are base two. For every fixed s in Z/NZ, using only fresh independent challenge source states, FD2 returns the entire s with unconditional probability at least 251/256>2/3. Its peak allocated accessible quantum space is S_Q(N,s)=O(L_0+n+1) qubits, including every saved phase qubit, the n+1-qubit source port, data/input registers, arithmetic ancillas and measurement/reset scratch. Consequently S_Q(N,s)=O(B_Q(n)) uniformly over instances of bit length n, where B_Q(n)=(n+1)^2 * 2^(6 ceil(sqrt(n))). The exact growth index g(B_Q) is 1/2. All constants are absolute, independent of N, s and outcomes. This is the same program and parameter choice for all three resource claims; the total work and both allocated-space bounds hold jointly on every execution branch, including failures and aborts, under the fully charged classical bit-operation/Clifford+T model in rules.md.",
       "score": {
-        "numerator": "0",
-        "denominator": "1"
+        "numerator": "1",
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"

@@ -1,0 +1,9 @@
+{
+  "scope": "Finite checks only; no official review or resource certification.",
+  "controlled_shift_XY_cases": 4332,
+  "maximum_probability_error": 1.3877787807814457e-14,
+  "adversarial_coordinate_noise_cases": 1348,
+  "maximum_phase_error": "45/3104",
+  "sampled_label_recoveries": 58,
+  "shots_per_X_or_Y_estimate": 4096
+}
