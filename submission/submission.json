@@ -1,19 +1,19 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PS1: bounded all-modulus DCP recovery with polynomial classical and quantum space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds below.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, let n=ceil(log2 N) be the ORIGINAL input bit length. PS1 is the single complete program of proof.md Sections 1-11 with clog(x)=ceil(log2 x) computed by the bit length of x-1 and all logarithms base two. Its fixed global configuration is h=clog(n+2), b=ceil(sqrt((n+1)h)), d=ceil(n/(b+1)), q=512(d+2)h, r_max=b+q, A_retry=2^40(n+2)^12, F_root=2^20(n+2)^8*2^(4(d+2)), R=16 F_root[A_retry(r_max+1)]^(d+2), C_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and M_phase=8192 clog(1024(n+2)). Local stage and modulus parameters are the fixed greedy schedules and exact case distinctions specified there. Using only fresh independent original coset states, PS1 recovers the entire s with unconditional probability at least 251/256>2/3. Total sequential work is T(N,s)=O(B_T(n)), where the full envelope is B_T(n)=(n+2)^12 R 2^r_max with R and r_max exactly as defined above. This includes classical integer/rational arithmetic, memory addressing, circuit generation, all original source copies, quantum gates, measurements, initialization/reset and every failed attempt. The exact growth index of this envelope is 1/2. All constants are absolute, independent of N, s and outcomes. These bounds hold jointly for this same algorithm and parameter choice on every execution branch, including aborts, failed attempts and original source input registers, under rules.md's fully charged classical bit-work and Clifford+T model.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, let n=ceil(log2 N) be the ORIGINAL input bit length. PS1 is the single complete program of proof.md Sections 1-11 with clog(x)=ceil(log2 x) computed by the bit length of x-1 and all logarithms base two. Its fixed global configuration is h=clog(n+2), b=ceil(sqrt((n+1)h)), d=ceil(n/(b+1)), q=512(d+2)h, r_max=b+q, A_retry=2^40(n+2)^12, F_root=2^20(n+2)^8*2^(4(d+2)), R=16 F_root[A_retry(r_max+1)]^(d+2), C_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and M_phase=8192 clog(1024(n+2)). Local stage and modulus parameters are the fixed greedy schedules and exact case distinctions specified there. Using only fresh independent original coset states, PS1 recovers the entire s with unconditional probability at least 251/256>2/3. Peak allocated classical space is S_C(N,s)=O((n+2)^2) bits, including inputs, all saved labels, recursive frames, counters, current gate descriptions, rational constants/coins and arithmetic scratch. Its full envelope B_C(n)=(n+2)^2 has exact growth index 0. All constants are absolute, independent of N, s and outcomes. These bounds hold jointly for this same algorithm and parameter choice on every execution branch, including aborts, failed attempts and original source input registers, under rules.md's fully charged classical bit-work and Clifford+T model.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, let n=ceil(log2 N) be the ORIGINAL input bit length. PS1 is the single complete program of proof.md Sections 1-11 with clog(x)=ceil(log2 x) computed by the bit length of x-1 and all logarithms base two. Its fixed global configuration is h=clog(n+2), b=ceil(sqrt((n+1)h)), d=ceil(n/(b+1)), q=512(d+2)h, r_max=b+q, A_retry=2^40(n+2)^12, F_root=2^20(n+2)^8*2^(4(d+2)), R=16 F_root[A_retry(r_max+1)]^(d+2), C_coin=clog(256R), M_src=8192 clog(1024R(n+3)), and M_phase=8192 clog(1024(n+2)). Local stage and modulus parameters are the fixed greedy schedules and exact case distinctions specified there. Using only fresh independent original coset states, PS1 recovers the entire s with unconditional probability at least 251/256>2/3. Peak allocated accessible quantum space is S_Q(N,s)=O((n+2)^2) qubits, including the original n+1-qubit source port, all pending phase qubits, quotient/remainder registers, Boolean arithmetic/hash/rank ancillas and measurement/reset scratch. Its full envelope B_Q(n)=(n+2)^2 has exact growth index 0. All constants are absolute, independent of N, s and outcomes. These bounds hold jointly for this same algorithm and parameter choice on every execution branch, including aborts, failed attempts and original source input registers, under rules.md's fully charged classical bit-work and Clifford+T model.",
       "score": {
         "numerator": "0",
         "denominator": "1"

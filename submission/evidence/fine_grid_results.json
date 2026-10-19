@@ -1,0 +1,8 @@
+{
+  "scope": "Finite exact constant-generator certificate; not an asymptotic or official review.",
+  "fine_decoder_moduli": 37,
+  "generated_coordinate_samples": 30,
+  "largest_tested_modulus": "2^128",
+  "coordinate_error_proof_bound": "2^-p",
+  "phase_error_proof_bound": "1/(16K)"
+}

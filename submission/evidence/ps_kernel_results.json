@@ -1,0 +1,22 @@
+{
+  "scope": "Finite exact diagnostics; no official review or asymptotic proof.",
+  "coefficient_and_flattening_cases": 180,
+  "minimum_density_to_lower_bound_ratio": "68",
+  "conditional_bucket_moment_cases": 710,
+  "maximum_variance_to_bound_ratio": "3/16",
+  "kernel": {
+    "ideal_uniform_mass_per_label": "9/16384",
+    "clipped_kernel_mass_per_label": [
+      "333/704512",
+      "61/129024"
+    ],
+    "clip_exercised_input_pair_cases": 4584,
+    "xor_matching_pairs": 5984,
+    "scope": "Small artificial cap tests kernel domination; production H=16*2^(r-l)."
+  },
+  "source_conversion_configurations": 24602,
+  "all_modulus_crt_frequency_cases": 88153,
+  "full_secret_reconstruction_cases": 12463,
+  "global_parameter_cap_cases": 260,
+  "exact_two_mask_compressions": 8533
+}
