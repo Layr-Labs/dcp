@@ -10,7 +10,26 @@
       },
       "evidence": [
         "proof.md"
-      ]
+      ],
+      "structured": {
+        "version": "dcp-bounds-v3",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "4",
+          "logPower": "0"
+        }
+      }
     },
     {
       "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
@@ -20,7 +39,20 @@
       },
       "evidence": [
         "proof.md"
-      ]
+      ],
+      "structured": {
+        "version": "dcp-bounds-v3",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
     },
     {
       "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
@@ -30,7 +62,20 @@
       },
       "evidence": [
         "proof.md"
-      ]
+      ],
+      "structured": {
+        "version": "dcp-bounds-v3",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
     }
   ],
   "experiments": []

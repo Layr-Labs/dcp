@@ -1,0 +1,52 @@
+{
+  "reason": "Scripted test only",
+  "scores": [
+    0.3333333333333333,
+    0.0,
+    1.0
+  ],
+  "valid": true,
+  "metrics": {
+    "dcp": {
+      "version": "dcp-bounds-v2",
+      "format": "reviewed-mathematical-text",
+      "intake_sha256": "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee",
+      "dossier_sha256": "fb591cdfdbce5ef655ecc7b5e6dd8daecdd91d6f049e1041ef3bf71ea33f14e1",
+      "resources": {
+        "time": {
+          "statement": "Fixture: T(n) = O(2^{n^(1/3) log2 n}); index 1/3.",
+          "growth_index": {
+            "denominator": "3",
+            "numerator": "1"
+          },
+          "source_sha256": "1418764aceefe73dfe7fc22a37818a364e75bbb7fc9bb2db12fba4b99408b397",
+          "evidence": {
+            "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+          }
+        },
+        "classical_space": {
+          "statement": "Fixture: S_C(n) = O(n^100); index 0.",
+          "growth_index": {
+            "denominator": "1",
+            "numerator": "0"
+          },
+          "source_sha256": "955e63d957a0099e8419de2b84536e202b4c4cca7811560f4de006c44cc59de0",
+          "evidence": {
+            "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+          }
+        },
+        "quantum_space": {
+          "statement": "Fixture: S_Q(n) = O(2^n); index 1.",
+          "growth_index": {
+            "denominator": "1",
+            "numerator": "1"
+          },
+          "source_sha256": "1f94dd66214ac755ffdcbe8958e14b0537db32bcbf9c0a1e74b772d35ffa1a48",
+          "evidence": {
+            "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+          }
+        }
+      }
+    }
+  }
+}

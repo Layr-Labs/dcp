@@ -1,0 +1,1188 @@
+{
+  "kind": "offline-producer-fixtures-not-mathematical-acceptance",
+  "contract": {
+    "version": "dcp-bounds-v3",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o"
+  },
+  "verifierImplementation": {
+    "package": "llm-verifier",
+    "version": "0.6.0",
+    "content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406",
+    "scope": "all installed llm_verifier/*.py source bytes",
+    "files": {
+      "__init__.py": "74fb0f3a1fde3bd4f0aeada1206a5136c49c237536b7cd2c4cea76916baf0509",
+      "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "accepted.py": "9cff6e2b9687e55d540d07f788300a7f0421a924c8fbfd37567901942015283b",
+      "artifacts.py": "d43875e15382e5d279a1b24329b86cc76778be79d3c28ce9f73204d5042b47e2",
+      "background.py": "51dc36ec4814eea8a8740cd56a2395b7719d373f859c2b6f11700191e0873b9a",
+      "checks.py": "31361ba9e805d0e0552fddca76453d897336c54da5f25b009439f7204eb9c8e6",
+      "cli.py": "de86fd95f5533d313aac937883c38a71c95ea2ed8a76634d9b90b2bcaf4eb70a",
+      "config.py": "205fef4a8d11c533c2459d737c8cb78f6a396700cee3e15a1f807278867c0691",
+      "dependency_evidence.py": "d0feaa96623198ef840cad29d0b2a06f6e4a367238d634c72887652fca8d3b8c",
+      "errors.py": "74da3f6901b571d0369ef41e921c646bcccd5a1ac5bc0b26fe5a15c6fbe46dd2",
+      "evidence.py": "edf06fc41503385aa537587c3b3fb053bab34b2b1c4fe09913e9e81d77f6458f",
+      "external_evidence.py": "cc3f4a5c9a19a27df95bc3b6f9dd1ce74bd1f6d21ad043e1055026f039dc8893",
+      "files.py": "0224e806de7442fc50febc75308a94bcada4837bb8dbd5285a098cfca6ad674e",
+      "identity.py": "7ae184e7e1824af1baa6768ba64f37fcbe620d04d237c81cfeefe9ef67279851",
+      "input_schema.py": "d95c7e65dcb4c5f11963664b0071d8695c596f2f5855f3d741e491b9d6a0a732",
+      "jsonutil.py": "009a8fba05aba00e6d3824d56f61461fb1b0f219cfd4d87963abf066af44cc1f",
+      "judgment.py": "eda68e5b5e8d71d3c25ba5e1e2819e04f692fc478c3939f084a67f649815092d",
+      "pipeline.py": "88b54d908fb23faac21fbdbfabaf5116efd0a9dce541d86bea79f04f56766c35",
+      "preprocessing.py": "24759ead0531830ccf437cb58381cdc359cddf1c3dc60849099c1bd9d5f8bea2",
+      "prior.py": "a697c78804d7cc064b91ac9af1a6e71babb76bc3ef5deb96079ea4500fad7f4e",
+      "provider.py": "69f6fe63bd99cf16c5593441eaee7b77132feaab59d3c1fa729be38cef0c7d8a",
+      "runner.py": "06cf206937d449fddc578c081b9a809855428dc516f8a6719b8d62f69f477f87",
+      "scaffold.py": "537f668ffedfcbe528c673bd884da60337c0ff3c2a1df279509bcc03bc8b23e5",
+      "scoring.py": "56fc288e730980e554ccfe4c98217b32f3c06dbc1f9a05816c5b57fc7f5eaf5a",
+      "simulation.py": "1780a586450d8cd0538abc187d0f923c4c8449b5485877f8728315ad608bf6d9",
+      "structured_claims.py": "6514589d9192e4d2a7800c00fe5b684189d452b9cfc1ad5463838962e1ada2b1",
+      "submission.py": "f6129f5d8ac3f19f7fbf36fdac1b1da7f6ef7f5760aa52a0b94308d3572ede67",
+      "workflow.py": "48a1ee46ec402271fa35b044d52a188a084dc1a60dfe446daafe0c248c4c7c1c"
+    }
+  },
+  "producerSources": {
+    "export_metrics.py": "0580b9ffd6668d5c425700b7b65f5b7db09ad81b9e7a039decd175b221e6636f",
+    "complexity_bounds.py": "78ed9a557ca543c264cb862fb4781e12f6a83522eb54b5618231c8165893a1d0",
+    "verifier.json": "3694a427e777f0cbbae1ce738bb8c83404dcef2f57c53dab47794f944f29a9f6",
+    "rules.md": "565f7eb0df90d949f309966d44369ad7ebb831f3f8402072b0eef97592880284"
+  },
+  "cases": [
+    {
+      "id": "fast",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.5
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "0091d77b316a316154ee7cc49057ead8888c40d6582d09728c4c527199e81819",
+            "dossier_sha256": "7226d43ff6a78a3bd18e40fc05952922bc90d7b91f280dfe03c4623384094f3f",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1/2))) time; all three bounds hold jointly. Index 1/2.",
+                "source_sha256": "8890d1acfb14d5f66e13644979bc1cc4560abeb17ee4444914e1459123a56359",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1/2",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "2cb902c966206c51e557c33af21a7c7c9a684a05ece469c50fce8b99a99c9242",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "4",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "551ae46e1826662a75814272f7c29ea89069ba901051702cdb2d0651b8a5f1fb",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "4",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "fast-dossier.json"
+    },
+    {
+      "id": "same-time-less-memory",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.5
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "59db41b4fa0e6ba30e360bac06acf771bbd5805f0867236857530c55876cec97",
+            "dossier_sha256": "1e69dc6d41c6459a876ba2d82b501ab9485e2542f5a63f98dd2978c9e521aa50",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1/2))) time; all three bounds hold jointly. Index 1/2.",
+                "source_sha256": "1ddf22bbe1a9060a72a1937de48e1885ec28cb49867bf30bfe6302396f9ff9ec",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1/2",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "d868c35a782cf029e9e9bc090e9e35ea70d3d1e17782ff8e469b459a29463406",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "3",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "e6996dde492c8dcd8370f395c5f1938a28071e7b242f3522593644ec42a50e5e",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "4",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "same-time-less-memory-dossier.json"
+    },
+    {
+      "id": "exact-tie",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.5
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "8d2724d6d093aca35cc9700d7f5d444b3e74d59b1335b618e697920fe4fc926a",
+            "dossier_sha256": "8cc1ba5640cc58052c6f66382f25598fbb5409cb02902f2015a41bc61664a2cb",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1/2))) time; all three bounds hold jointly. Index 1/2.",
+                "source_sha256": "1ddf22bbe1a9060a72a1937de48e1885ec28cb49867bf30bfe6302396f9ff9ec",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1/2",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "d868c35a782cf029e9e9bc090e9e35ea70d3d1e17782ff8e469b459a29463406",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "3",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "e6996dde492c8dcd8370f395c5f1938a28071e7b242f3522593644ec42a50e5e",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "4",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "exact-tie-dossier.json"
+    },
+    {
+      "id": "slower-less-memory",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.75
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "9bc57f5abe226ddca72a49612e30e0b78b81df814e0118b3a622463dab062981",
+            "dossier_sha256": "1285fd37d48a6293ee120d13e1bbc2b90c9190e8b8fea032813b306e1c7a4b32",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(3/4))) time; all three bounds hold jointly. Index 3/4.",
+                "source_sha256": "5962f3a73f5304351fa1c69a358b513975c03456edbbbaa686be8095019799fd",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "3/4",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^2) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "42ad84363c2ccb8b175a7839462c95c8a48cfdb928a7728bdde942076c047798",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "2",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "21aa63a98be62ba09db62daefa2f040a8496c674e5519b387ba0dce59e41a13f",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "4",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "slower-less-memory-dossier.json"
+    },
+    {
+      "id": "classical-best",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.75
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "f50bb2cc5ba8e6130cfb282e5b0b97802cbed173775806b8bc3f8285eaa889fd",
+            "dossier_sha256": "3c2eaee986bd6b2fece24ade4799a79cc981fd47db927de075c5dc3207062a91",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(3/4))) time; all three bounds hold jointly. Index 3/4.",
+                "source_sha256": "24e4528314ad7c49d295983831be048b5fa71e1db4125f9d53d3adf5a9f6fa16",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "3/4",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^1) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "c61880fd81ca8c13100f5a43ffc0ba9863a77b950f9fcb4090b9c35578d7f8e9",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "1",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^5) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "7945fcf1adf78026d7dc35ae57e66f5f35e870e8747bce06551e566fdd5c224e",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "5",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "classical-best-dossier.json"
+    },
+    {
+      "id": "quantum-best",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.75
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "e23f23097e8f8ec277d5d4c624113c558a4eaabb7240e8abfd0d75442015b71d",
+            "dossier_sha256": "ff7d3c48b76d6cb55bed37c33e04b1a88f0d64388c7774fd3a1e50414945345a",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(3/4))) time; all three bounds hold jointly. Index 3/4.",
+                "source_sha256": "bc225ca3ed83da391c865fdb0f6ec634c994978a048101d3388f47d79da02f33",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "3/4",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^5) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "758cd50d70ddb4d4fee41e0de8da4e3a48ab0f4fea9256c593ff8b55f215a31d",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "5",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^1) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "e91dc18e2765c427ca644e35397c7f1012a76e195bf6dd109df7321d257b2665",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "1",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "quantum-best-dossier.json"
+    },
+    {
+      "id": "balanced-no-column-win",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.6666666666666666
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "982ad1abe029bd5cbe415e06beb951a5f686a9482da7790f7a7a5b907d55eabc",
+            "dossier_sha256": "d56bc28e435b83a4278cf3d230ecda04007274e8e9acf6d59958ea44c7df80ed",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(2/3))) time; all three bounds hold jointly. Index 2/3.",
+                "source_sha256": "a96e0c799ab82e2dbd89fcfc729d7fadae612ed7ef59a948398f30ff349c8921",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "2/3",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "2fcc3f8208aa949e31808a85a7048a2f6e2b683bf231777055383659cb7794ae",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "3",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "262bd118e7ffb5cafebf9fbef4807fdfe40fb5f7ce85aa3cc7253a37f87e2f52",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "3",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "balanced-no-column-win-dossier.json"
+    },
+    {
+      "id": "dominated",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          1.0
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "2281690bf2e2a399fdf9b57747c1568f4969cd4f317ece6c8652014bc309adec",
+            "dossier_sha256": "ca8c602239e69a79a80fa25e7a974bce1ae059f23c87acf5eecedce440e9cbdd",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1))) time; all three bounds hold jointly. Index 1/1.",
+                "source_sha256": "565a05ac96a77b0c3db0cc796a8bc32b359a4d9ca55788d6b3009656ef77feec",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^100) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "8e3ba430bd4e6d18d13f850997bab54476e36ea9100654dad2a245f394480762",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "100",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^100) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "ff7dc9a1de49d7f33902ab506006eb32c1915b1b28485996d81878168ae81a2b",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "100",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "dominated-dossier.json"
+    },
+    {
+      "id": "unstructured",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.5
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp_omission": {
+            "version": "dcp-bounds-v3",
+            "reason": "unsupported_structured_bounds",
+            "details": [
+              {
+                "resource": "time",
+                "reason": "missing_structured_bound"
+              },
+              {
+                "resource": "classical_space",
+                "reason": "missing_structured_bound"
+              },
+              {
+                "resource": "quantum_space",
+                "reason": "missing_structured_bound"
+              }
+            ],
+            "intake_sha256": "ab55fff5d787b046693b211be4ae490f7ed4c02fd28083b0bca8c22668ec57c9",
+            "dossier_sha256": "10adcc2911ae0283e92da453c47829e96fab9af30b5172bb48c24f9d5056fd7c",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1/2))) time; all three bounds hold jointly. Index 1/2.",
+                "source_sha256": "874fa6c466e92be3030812d17de9c8d52e6fbe0aaf6723cff6bc22f5742b5754",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "2",
+                  "numerator": "1"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "4d59b8bb253ce41fd57433fdac0eb8c7fb6cd729bd73c3bd8604a34b9422f86f",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "3c5f449eefdea01ca7a94a2d23cabb05a4b2f5a233623fc8c40798c143c7640c",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "unstructured-dossier.json"
+    },
+    {
+      "id": "unknown-exponent-coefficient",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.5
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp_omission": {
+            "version": "dcp-bounds-v3",
+            "reason": "unsupported_structured_bounds",
+            "details": [
+              {
+                "resource": "time",
+                "reason": "dcp_bound_rational"
+              }
+            ],
+            "intake_sha256": "50b1bc8694e2e1ed39d0c3460a7fa6729df2b47843e8fcf3b18bf2bee96811d2",
+            "dossier_sha256": "dfa3474e8e079c81591564c575e9cdb8fdafd002d2216469f721b9cd60148858",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture only: algorithm A uses O(2^(n^(1/2))) time; all three bounds hold jointly. Index 1/2.",
+                "source_sha256": "48d5e6d09eb32b29325d02b705c1a931ff07bb824b1bbf6d4265a166a2be1509",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "2",
+                  "numerator": "1"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [
+                      {
+                        "coefficient": "unknown",
+                        "logPower": "0",
+                        "nPower": "1/2"
+                      }
+                    ],
+                    "logPower": "0",
+                    "nPower": "0"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "4521f0d8c58034e656703deabc133f39b25e8d2980be5b7bb0e1a90e179027c9",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [],
+                    "logPower": "0",
+                    "nPower": "3"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture only: algorithm A uses O(n^4) qubits; all three bounds hold jointly. Index 0/1.",
+                "source_sha256": "46b3eab7ba5dfbfa831ea65355086e92dec16a846fa04d9f1de5b509c6fe0ef7",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [],
+                    "logPower": "0",
+                    "nPower": "4"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "unknown-exponent-coefficient-dossier.json"
+    },
+    {
+      "id": "rejected",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": null,
+        "valid": false
+      },
+      "dossierPath": "rejected-dossier.json"
+    },
+    {
+      "id": "unscored",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": null,
+        "valid": true
+      },
+      "dossierPath": "unscored-dossier.json"
+    },
+    {
+      "id": "historical-v2",
+      "output": {
+        "reason": "Scripted test only",
+        "scores": [
+          0.3333333333333333,
+          0.0,
+          1.0
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v2",
+            "format": "reviewed-mathematical-text",
+            "intake_sha256": "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee",
+            "dossier_sha256": "fb591cdfdbce5ef655ecc7b5e6dd8daecdd91d6f049e1041ef3bf71ea33f14e1",
+            "resources": {
+              "time": {
+                "statement": "Fixture: T(n) = O(2^{n^(1/3) log2 n}); index 1/3.",
+                "growth_index": {
+                  "denominator": "3",
+                  "numerator": "1"
+                },
+                "source_sha256": "1418764aceefe73dfe7fc22a37818a364e75bbb7fc9bb2db12fba4b99408b397",
+                "evidence": {
+                  "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+                }
+              },
+              "classical_space": {
+                "statement": "Fixture: S_C(n) = O(n^100); index 0.",
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "source_sha256": "955e63d957a0099e8419de2b84536e202b4c4cca7811560f4de006c44cc59de0",
+                "evidence": {
+                  "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+                }
+              },
+              "quantum_space": {
+                "statement": "Fixture: S_Q(n) = O(2^n); index 1.",
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "1"
+                },
+                "source_sha256": "1f94dd66214ac755ffdcbe8958e14b0537db32bcbf9c0a1e74b772d35ffa1a48",
+                "evidence": {
+                  "proof.md": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f"
+                }
+              }
+            }
+          }
+        }
+      },
+      "dossierPath": "historical-v2-dossier.json"
+    }
+  ],
+  "normalizationProjection": {
+    "inputClaims": [
+      {
+        "statement": "Offline fixture only: algorithm A has joint total work O(2^((1/2)*sqrt(n)*log2(n) - (1/3)*sqrt(log2(n))) * n^3 * (log2(n))^(2/3)); index 1/2.",
+        "score": {
+          "numerator": "1",
+          "denominator": "2"
+        },
+        "evidence": [
+          "proof.md"
+        ],
+        "structured": {
+          "version": "dcp-bounds-v3",
+          "comparator": "asymptotic-v1",
+          "scope": "dcp-cyclic-group-order",
+          "model": "dcp-uniform-clifford-t-bit-operations-v1",
+          "notation": "big-o",
+          "bound": {
+            "coefficient": "1",
+            "exponent": [
+              {
+                "coefficient": "2/4",
+                "nPower": "1/2",
+                "logPower": "1"
+              },
+              {
+                "coefficient": "-1/3",
+                "nPower": "0",
+                "logPower": "1/2"
+              },
+              {
+                "coefficient": "2",
+                "nPower": "0",
+                "logPower": "1"
+              }
+            ],
+            "nPower": "1",
+            "logPower": "2/3"
+          }
+        }
+      },
+      {
+        "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+        "score": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "evidence": [
+          "proof.md"
+        ],
+        "structured": {
+          "version": "dcp-bounds-v3",
+          "comparator": "asymptotic-v1",
+          "scope": "dcp-cyclic-group-order",
+          "model": "dcp-uniform-clifford-t-bit-operations-v1",
+          "notation": "big-o",
+          "bound": {
+            "coefficient": "1",
+            "exponent": [],
+            "nPower": "3",
+            "logPower": "0"
+          }
+        }
+      },
+      {
+        "statement": "Offline fixture only: algorithm A uses O(n^2) qubits; all three bounds hold jointly. Index 0/1.",
+        "score": {
+          "numerator": "0",
+          "denominator": "1"
+        },
+        "evidence": [
+          "proof.md"
+        ],
+        "structured": {
+          "version": "dcp-bounds-v3",
+          "comparator": "asymptotic-v1",
+          "scope": "dcp-cyclic-group-order",
+          "model": "dcp-uniform-clifford-t-bit-operations-v1",
+          "notation": "big-o",
+          "bound": {
+            "coefficient": "1",
+            "exponent": [],
+            "nPower": "2",
+            "logPower": "0"
+          }
+        }
+      }
+    ],
+    "output": {
+      "reason": "Scripted offline test only",
+      "scores": [
+        0.5
+      ],
+      "valid": true,
+      "metrics": {
+        "dcp": {
+          "version": "dcp-bounds-v3",
+          "comparator": "asymptotic-v1",
+          "scope": "dcp-cyclic-group-order",
+          "model": "dcp-uniform-clifford-t-bit-operations-v1",
+          "notation": "big-o",
+          "intake_sha256": "2c1987e011d315cf3fe0df606b128ea879288323ad2f14635889185a13ed58cb",
+          "dossier_sha256": "9e0f57461b46358637cf69e4a99bce0dd4f61c729af57655787c9f7aeb3367ec",
+          "resources": {
+            "time": {
+              "statement": "Offline fixture only: algorithm A has joint total work O(2^((1/2)*sqrt(n)*log2(n) - (1/3)*sqrt(log2(n))) * n^3 * (log2(n))^(2/3)); index 1/2.",
+              "source_sha256": "b71892622ca6d5f9c69af3679a946571366677ebc2d7300b4ff178c5aaf07bd6",
+              "evidence": {
+                "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+              },
+              "bound": {
+                "coefficient": "1",
+                "exponent": [
+                  {
+                    "coefficient": "1/2",
+                    "nPower": "1/2",
+                    "logPower": "1"
+                  },
+                  {
+                    "coefficient": "-1/3",
+                    "nPower": "0",
+                    "logPower": "1/2"
+                  }
+                ],
+                "nPower": "3",
+                "logPower": "2/3"
+              }
+            },
+            "classical_space": {
+              "statement": "Offline fixture only: algorithm A uses O(n^3) classical bits; all three bounds hold jointly. Index 0/1.",
+              "source_sha256": "193219fdbcece67ebcd969e0542430b7aadba310fb400fe888c3162aae250091",
+              "evidence": {
+                "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+              },
+              "bound": {
+                "coefficient": "1",
+                "exponent": [],
+                "nPower": "3",
+                "logPower": "0"
+              }
+            },
+            "quantum_space": {
+              "statement": "Offline fixture only: algorithm A uses O(n^2) qubits; all three bounds hold jointly. Index 0/1.",
+              "source_sha256": "fef3cf878e94a989cb1446f78e4f545f923aa36220109ddf664ea6adcd873d6f",
+              "evidence": {
+                "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+              },
+              "bound": {
+                "coefficient": "1",
+                "exponent": [],
+                "nPower": "2",
+                "logPower": "0"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dossierPath": "normalization-dossier.json"
+  },
+  "expectedEligibleIds": [
+    "fast",
+    "same-time-less-memory",
+    "exact-tie",
+    "slower-less-memory",
+    "classical-best",
+    "quantum-best",
+    "balanced-no-column-win",
+    "dominated"
+  ],
+  "expectedFrontierIds": [
+    "same-time-less-memory",
+    "exact-tie",
+    "slower-less-memory",
+    "classical-best",
+    "quantum-best",
+    "balanced-no-column-win"
+  ],
+  "expectedBestKeys": {
+    "same-time-less-memory": [
+      "time"
+    ],
+    "exact-tie": [
+      "time"
+    ],
+    "slower-less-memory": [],
+    "classical-best": [
+      "classical_space"
+    ],
+    "quantum-best": [
+      "quantum_space"
+    ],
+    "balanced-no-column-win": []
+  },
+  "normalizationCases": [
+    {
+      "input": {
+        "coefficient": "99",
+        "exponent": [
+          {
+            "coefficient": "2/4",
+            "nPower": "1/2",
+            "logPower": "0"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      },
+      "expected": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "1/2",
+            "nPower": "1/2",
+            "logPower": "0"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      }
+    },
+    {
+      "input": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "3",
+            "nPower": "0",
+            "logPower": "1"
+          }
+        ],
+        "nPower": "-1",
+        "logPower": "0"
+      },
+      "expected": {
+        "coefficient": "1",
+        "exponent": [],
+        "nPower": "2",
+        "logPower": "0"
+      }
+    },
+    {
+      "input": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "1/2",
+            "nPower": "1/2",
+            "logPower": "-3/2"
+          },
+          {
+            "coefficient": "1/2",
+            "nPower": "1/2",
+            "logPower": "-3/2"
+          },
+          {
+            "coefficient": "2",
+            "nPower": "1",
+            "logPower": "0"
+          },
+          {
+            "coefficient": "-2",
+            "nPower": "1",
+            "logPower": "0"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      },
+      "expected": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "1",
+            "nPower": "1/2",
+            "logPower": "-3/2"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      }
+    },
+    {
+      "input": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "1",
+            "nPower": "0",
+            "logPower": "2"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      },
+      "expected": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "1",
+            "nPower": "0",
+            "logPower": "2"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "0"
+      }
+    },
+    {
+      "input": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "-1",
+            "nPower": "1",
+            "logPower": "0"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "2/3"
+      },
+      "expected": {
+        "coefficient": "1",
+        "exponent": [
+          {
+            "coefficient": "-1",
+            "nPower": "1",
+            "logPower": "0"
+          }
+        ],
+        "nPower": "0",
+        "logPower": "2/3"
+      }
+    }
+  ]
+}

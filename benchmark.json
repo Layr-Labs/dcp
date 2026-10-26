@@ -13,22 +13,14 @@
         {
           "name": "time_growth",
           "direction": "-"
-        },
-        {
-          "name": "classical_space_growth",
-          "direction": "-"
-        },
-        {
-          "name": "quantum_space_growth",
-          "direction": "-"
         }
       ],
       "paretoPolicies": {
         "scoring": {
-          "version": "dcp-growth-v1"
+          "version": "dcp-time-growth-v2"
         },
         "validity": {
-          "version": "dcp-joint-bounds-v1"
+          "version": "dcp-joint-bounds-v2"
         }
       },
       "editablePaths": [
