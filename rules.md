@@ -49,7 +49,10 @@ success ≥ 2/3. Constants are independent of N, s, and sampled outcomes.
 ## Claims, full expressions, and numerical scores
 
 Participants edit only `submission/`. In `submission.json`, the first three
-claims, when scored, are structured claims for T, S_C, S_Q in that order.
+claims are claims for T, S_C, S_Q in that order. Under the default required
+mode, every submission must supply all three supported structured bounds and
+exact nonnegative rational indices, including partial, unscored and validity-only
+submissions. The protected optional mode permits the limited exceptions below.
 Each `statement` must name the same algorithm/configuration, give the full
 proved upper-bound expression, define every parameter/quantifier, and state
 its exact numerical growth index. Reference the proof through `evidence`;
@@ -59,9 +62,10 @@ Preserve detail actually established: polynomial degrees, log factors,
 coefficients, leading constants and validity thresholds when known. Use big-O
 when that is all the proof gives; never manufacture finite-size constants.
 Non-power expressions and sums are allowed. Define their meaning in the proof;
-expressions are reviewed mathematical text, never executable code. Optional
-structured declarations below are a separately reviewed representation of the
-same guarantee, never an automatic interpretation of that text.
+expressions are reviewed mathematical text, never executable code. Structured
+declarations below are a separately reviewed representation of the same
+guarantee, never an automatic interpretation of that text. In required mode,
+the full guarantee must also have a supported structured representation.
 
 For an eventually positive representative envelope B(n), define the UI index
 
@@ -78,8 +82,9 @@ unspecified fixed constants, the index must have the same value for every
 admissible choice of those constants. For example 2^{O(sqrt(n))} gives index
 1/2 without choosing the hidden positive constant. Scores are nonnegative finite
 **rational** indices, encoded as the verifier's canonical numerator/denominator
-strings. If the index cannot be established as a finite rational, retain the
-work as an unscored claim.
+strings. In optional mode only, work whose index cannot be established as a
+finite rational may remain unscored. Required mode rejects incomplete declarations
+before review; setting allow_unscored or selecting validity-only does not waive it.
 
 Examples (all logarithms base two):
 
@@ -97,15 +102,17 @@ limits that discard troublesome subsequences, and guessed hidden constants are
 not scores. Distinct bound expressions can share an index. Accepted statements
 and structured guarantees are exported in `metrics.dcp`
 when supported; all original scores and declarations remain in the immutable
-dossier. Unsupported structured forms have an explicit omission record retaining
-the statements, scores and evidence. These full claims are the record of what
+dossier. In optional mode, unsupported structured forms have an explicit
+omission record retaining the statements, scores and evidence. In required
+mode, missing or unsupported declarations cause format rejection before review. These full claims are the record of what
 was proved.
 
 Every declared claim must be established exactly as written before a numerical
 vector is published. The reviewer returns `scores: null`; the shared verifier
 derives a one-element numeric vector from the time claim only after atomic
 acceptance. The three original resource claims and their indices remain mandatory
-for a scored result; neither memory claim is an independent numeric objective.
+for every required-mode submission and every optional-mode scored result;
+neither memory claim is an independent numeric objective.
 One proof may establish all three statements. Do not combine
 configurations, accept a subset, or accept just the numeric part of a statement
 whose stronger expression is unsupported. Source hashes record provenance;
@@ -113,9 +120,19 @@ they are not acceptance selectors.
 
 ## Structured reviewed envelopes (dcp-bounds-v3)
 
-The protected review standard is `dcp-joint-bounds-v2`; the scoring policy is
-`dcp-time-growth-v2`. The verifier opts into `structured_claims: "atomic-v1"`.
-Each of the first three claims may declare a `structured` object with exactly
+The protected review standard is `dcp-joint-bounds-v3`; the validity selector is
+`{"version":"dcp-joint-bounds-v3","structured_bounds":"required"}` at launch.
+The scoring policy stays `dcp-time-growth-v2`. The verifier opts into
+`structured_claims: "atomic-v1"`. The organizer may switch to optional mode using
+`python configure_bounds.py --mode optional`, which synchronizes the verifier's
+default and sole supported validity selector with the challenge manifest. Only
+one mode may be registered. Participants cannot override it in submission data
+or an evaluation selector. Returning to required uses the same command with
+`--mode required`; either semantic change needs its corresponding policy identity.
+Historical `dcp-joint-bounds-v2` intakes retain their original optional semantics.
+
+Each of the first three claims must declare a `structured` object in required
+mode, and may do so in optional mode, with exactly
 `version`, `comparator`, `scope`, `model`, `notation`, and `bound`:
 
 - `version`: `dcp-bounds-v3`; `comparator`: `asymptotic-v1`.
@@ -157,13 +174,28 @@ from prose, participant hints, or a numeric score. A hash provides provenance,
 not reviewer authentication; the trusted organizer artifact channel is required.
 
 An unknown inner coefficient, for example 2^{O(sqrt(n))}, is unsupported: do
-not replace O() by 1. Such a claim can still be reviewed as mathematical text
-with its exact index. Omit its structured declaration, or retain the unsupported
-form in reviewed data; the producer emits `metrics.dcp_omission` with an explicit
-reason and all three reviewed claims/evidence instead of a `metrics.dcp` v3 row.
+not replace O() by 1. Required mode format-rejects it before paid review. In
+optional mode only, such a claim can still be reviewed as mathematical text with
+its exact index: omit its structured declaration, or retain a generically valid
+unsupported object in reviewed data. The producer then emits
+`metrics.dcp_omission` with an explicit reason and all three reviewed claims/evidence
+instead of a `metrics.dcp` v3 row.
 Mismatched review evidence, scope/model/notation, or a conflicting exact growth
 index is rejected. A rejected, unscored, validity-only or simulated evaluation
 cannot supply a frontier entry.
+
+Official DCP admission checks only declared shape, supported domain and exact
+index consistency; it does not establish mathematical truth. Expected format
+errors produce a typed `DCP format rejection` with `valid:false`, `scores:null`
+and `metrics.dcp_admission`, plus a separate replayable admission receipt. They
+skip the verifier and do not create an LLM dossier. Validity-only requests omit
+scores; score-only invalid requests fail closed rather than silently nulling an
+old validity. Configuration, checkout, I/O or unexpected runtime faults remain
+failed evaluations without a rejection score. Supported declarations proceed to
+the actual joint mathematical review. Local preparation and finalization use
+`dcp_admission.py`; the generic verifier CLI alone does not enforce DCP admission.
+The exporter rechecks the exact retained intake under its original policy,
+including unscored or invalid dossiers, before publishing a score.
 
 Existing `dcp-bounds-v2` evidence and its three numeric objectives remain
 historical; they are not converted or re-reviewed by this change. Missing or
@@ -177,7 +209,9 @@ success bound, and joint resource analysis in this model. Heuristic distribution
 assumptions, unproved lemmas, numerical experiments, or a reduction with an
 unaccounted subroutine cannot establish a scored result. A relevant, correct,
 explicitly scoped partial theorem may be valid with null scores in a separate
-submission whose claims state that limited scope. State unresolved obligations;
+optional-mode submission whose claims state that limited scope. Required mode
+still demands all three supported resource claims on every submission; a partial
+theorem without them is format-rejected before review. State unresolved obligations;
 do not promote them into assumptions of a full DCP solution or use review
 commentary to narrow an unsupported declared claim.
 Citations must identify exact theorems/versions and explain applicability.

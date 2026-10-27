@@ -1,42 +1,14 @@
 {
-  "schemaVersion": 2,
   "name": "dcp",
+  "schemaVersion": 2,
   "tracks": [
     {
-      "name": "main",
-      "description": "dcp",
-      "category": "math",
-      "mode": "pareto",
-      "promotionMode": "manual",
-      "direction": "-",
-      "objectives": [
-        {
-          "name": "time_growth",
-          "direction": "-"
-        }
-      ],
-      "paretoPolicies": {
-        "scoring": {
-          "version": "dcp-time-growth-v2"
-        },
-        "validity": {
-          "version": "dcp-joint-bounds-v2"
-        }
-      },
-      "editablePaths": [
-        "submission"
-      ],
-      "setupCommand": [
-        "llm-verifier",
-        "intake",
-        "--root",
-        ".",
-        "--out",
-        ".yukon/work/intake.json"
-      ],
       "benchmarkCommand": [
-        "llm-verifier",
+        "python",
+        "dcp_admission.py",
         "finalize",
+        "--receipt",
+        ".yukon/work/admission.json",
         "--intake",
         ".yukon/work/intake.json",
         "--initial",
@@ -48,14 +20,51 @@
         "--dossier",
         ".yukon/dossier.json"
       ],
-      "scorePath": ".yukon/score.json",
+      "category": "math",
+      "description": "dcp",
+      "direction": "-",
+      "editablePaths": [
+        "submission"
+      ],
       "maxSubmissionBytes": 262144,
+      "mode": "pareto",
+      "name": "main",
+      "objectives": [
+        {
+          "direction": "-",
+          "name": "time_growth"
+        }
+      ],
+      "paretoPolicies": {
+        "scoring": {
+          "version": "dcp-time-growth-v2"
+        },
+        "validity": {
+          "structured_bounds": "required",
+          "version": "dcp-joint-bounds-v3"
+        }
+      },
+      "promotionMode": "manual",
       "runner": {
+        "maxConcurrentWorkflows": 2,
         "provider": "github-actions",
-        "workflow": "benchmark.yml",
         "scoreArtifactName": "dcp-score",
-        "maxConcurrentWorkflows": 2
-      }
+        "workflow": "benchmark.yml"
+      },
+      "scorePath": ".yukon/score.json",
+      "setupCommand": [
+        "python",
+        "dcp_admission.py",
+        "intake",
+        "--root",
+        ".",
+        "--out",
+        ".yukon/work/intake.json",
+        "--receipt",
+        ".yukon/work/admission.json",
+        "--score",
+        ".yukon/score.json"
+      ]
     }
   ]
 }

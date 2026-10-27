@@ -57,8 +57,8 @@ reduces rational strings and checks the exact growth index. Big-O ignores only
 the outer C; unknown coefficients inside an exponent are never guessed.
 No expression is extracted from prose, LaTeX, hints or scores.
 
-If a valid reviewed claim has no supported structured representation, the
-exporter emits **no `metrics.dcp`**. Instead `metrics.dcp_omission` contains the
+In protected optional mode, if a valid reviewed claim has no supported
+structured representation, the exporter emits **no `metrics.dcp`**. Instead `metrics.dcp_omission` contains the
 target version, explicit per-resource reasons, intake/dossier hashes and all
 three original statements, indices, evidence and any declared structured data.
 The entire joint row is omitted from the structured frontier. Rejected,
@@ -69,6 +69,43 @@ Hashes and digest acknowledgments establish integrity, not reviewer identity
 or mathematical truth. Accept dossiers only through the trusted organizer
 workflow/artifact channel. Offline fixture reviews are scripted tests, not
 proof certification.
+
+## Required admission and the optional switch
+
+Launch defaults to validity policy
+`{"version":"dcp-joint-bounds-v3","structured_bounds":"required"}` with unchanged
+`dcp-time-growth-v2` scoring. Every submission must declare supported time,
+classical-space and quantum-space bounds and matching exact rational indices.
+This includes unscored, partial and validity-only submissions. The gate checks
+format and index consistency; only the judge establishes the exact statements,
+evidence and same-algorithm joint guarantees.
+
+The protected organizer command `python configure_bounds.py --mode optional`
+synchronizes `verifier.json` and `benchmark.json`; `--mode required` restores the
+launch setting. It registers only the selected mode. Changing candidate data or
+`YUKON_EVALUATION` cannot downgrade admission. Historical v2 review policies
+remain optional according to their retained configuration, not today's default.
+
+The Benchmark admission job checks the same immutable candidate SHA and verifier
+pin as review, without provider credentials or accepted-result resolution.
+Known missing/unsupported/malformed declarations succeed as a **format rejection**:
+`valid:false`, `scores:null`, a clear reason and `metrics.dcp_admission`. A separate
+`dcp-admission` artifact contains original bounded bytes, selected policy, exact
+validator source hashes, verifier identity and the replayable receipt. These
+hashes are provenance, not review authentication or mathematical acceptance.
+The rejection uploads the sole `dcp-score` artifact and skips review. Supported
+submissions proceed through the actual verifier and normal producer instead.
+Configuration, I/O, pin and unexpected runtime faults fail without a score.
+Validity-only requests omit scores; score-only invalid requests fail with
+`score_only_claim_not_established` and cannot replace an earlier validity.
+
+The official local manifest calls DCP preparation and finalization wrappers.
+Preparation freezes the bytes checked by admission before creating intake;
+review rechecks that exact intake before any provider. Finalization checks the
+receipt/intake match and computes the validated projection before writing a
+score. A format rejection produces no mathematical dossier. The exporter also
+checks required format on retained intakes, even if unscored or invalid. Calling
+the raw generic verifier CLI is not a DCP admission check.
 
 ## Pinned verifier and local validation
 
@@ -84,8 +121,10 @@ With access to the verifier repository and Python 3.11+:
 python3 -m venv .venv
 .venv/bin/pip install 'git+https://github.com/Layr-Labs/llm-verifier.git@204fdf8fb640704da0a3972d97831de09bfb1c7a'
 .venv/bin/llm-verifier check --root .
+.venv/bin/python dcp_admission.py preflight --root . --receipt .work/admission.json --score .work/admission-score.json
 .venv/bin/python -m unittest -v
 .venv/bin/python offline_fixtures.py --out .work/yukon-fixtures
+.venv/bin/python admission_fixtures.py --out .work/admission-fixtures
 .venv/bin/python check_legacy_runtime.py --legacy-src /absolute/path/to/verifier-6903229/src
 ```
 
@@ -99,11 +138,13 @@ producer outputs and their complete dossiers for cross-language Yukon tests,
 including equal-time and slower-time/lower-memory cases, ties, rejection and
 unsupported forms. These are explicitly **offline fixtures**, not live data.
 
-After local phase execution, run the actual producer with:
-
-```sh
-python export_metrics.py --dossier .yukon/dossier.json --out .yukon/score.json
-```
+The manifest's `setupCommand` creates `.yukon/work/admission.json` and, only for
+`outcome:review`, `.yukon/work/intake.json`. A local phase driver must inspect that
+outcome before executing/reviewing anything. Use `dcp_admission.py review-initial`
+in place of generic initial review; this command can call the paid provider. The manifest's `benchmarkCommand`
+uses `dcp_admission.py finalize` for either terminal branch. Direct trusted-dossier
+projection remains `python export_metrics.py --dossier .yukon/dossier.json --out
+.yukon/score.json`; it rechecks required admission and clears stale output on failure.
 
 The original verifier `69032292f5c8a788d7524a9339fe1c7b79bf3e44` cannot execute
 this opt-in contract. The exporter fails with `dcp_structured_verifier_required`
@@ -114,15 +155,19 @@ dossier and retains the `dcp-score` artifact selection.
 
 Push and PR checker CI does not run model review. The Benchmark workflow remains
 dispatch-only; local checks do not perform hosted judging, import or rebind.
-The existing three-objective track requires a separately authorized replacement;
-its mode/objective list cannot be changed by reorg. Fresh review of the new
-structured baseline is required before it can populate the v3 frontier.
+The new required-mode validity identity changes acceptance semantics. Publishing
+this source does not update an existing track or reclassify an accepted baseline.
+Adoption uses the new immutable source and validity policy and needs fresh
+baseline qualification; publishing source alone does not perform those steps.
+Preserve the existing historical track, accepted baseline and evidence.
 
 ## Historical v2 evidence
 
 Existing v2 records and their `[time, classical_space, quantum_space]` scores
 remain historical and unchanged. The exporter retains their original branch;
-it does not upgrade old prose into structured bounds. Old dossiers must be
+it does not upgrade old prose into structured bounds. The frozen `yukon-producer-fixtures.json` also retains the earlier optional
+producer snapshot. New required/optional admission fixtures are generated separately.
+Old dossiers must be
 replayed using their exact original verifier implementation, whose identity is
 part of intake validation. The frozen historical test dossier and score under
 `tests/fixtures/` were produced by the original DCP producer with verifier

@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 from llm_verifier import pipeline, structured_claims
 from llm_verifier.artifacts import intake_snapshot, seal
-from llm_verifier.config import load_config
+from llm_verifier.config import load_config, select_evaluation
 from llm_verifier.errors import VerifierError
 from llm_verifier.files import write_json
 from llm_verifier.jsonutil import canonical, digest
@@ -45,8 +45,13 @@ def fixture_claims():
 
 
 def fixture(*, unscored=False, invalid=False, fields=None, simulation=False,
-            claims=None, ack="correct", configure=None):
+            claims=None, ack="correct", configure=None, mode="optional"):
     effective = load_config(ROOT, "verifier.json", "submission")
+    if mode == "optional":
+        from dcp_admission import configure_mode
+        effective["config"], _ = configure_mode(effective["config"],
+            json.loads((ROOT / "benchmark.json").read_text()), "optional")
+        effective["evaluation"], effective["policy_instructions"] = select_evaluation(effective["config"])
     if fields is not None:
         effective["evaluation"]["fields"] = fields
     if configure:

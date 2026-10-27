@@ -1,0 +1,679 @@
+{
+  "kind": "offline-admission-and-scripted-review-fixtures-not-mathematical-acceptance",
+  "verifierImplementation": {
+    "package": "llm-verifier",
+    "version": "0.6.0",
+    "content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406",
+    "scope": "all installed llm_verifier/*.py source bytes",
+    "files": {
+      "__init__.py": "74fb0f3a1fde3bd4f0aeada1206a5136c49c237536b7cd2c4cea76916baf0509",
+      "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "accepted.py": "9cff6e2b9687e55d540d07f788300a7f0421a924c8fbfd37567901942015283b",
+      "artifacts.py": "d43875e15382e5d279a1b24329b86cc76778be79d3c28ce9f73204d5042b47e2",
+      "background.py": "51dc36ec4814eea8a8740cd56a2395b7719d373f859c2b6f11700191e0873b9a",
+      "checks.py": "31361ba9e805d0e0552fddca76453d897336c54da5f25b009439f7204eb9c8e6",
+      "cli.py": "de86fd95f5533d313aac937883c38a71c95ea2ed8a76634d9b90b2bcaf4eb70a",
+      "config.py": "205fef4a8d11c533c2459d737c8cb78f6a396700cee3e15a1f807278867c0691",
+      "dependency_evidence.py": "d0feaa96623198ef840cad29d0b2a06f6e4a367238d634c72887652fca8d3b8c",
+      "errors.py": "74da3f6901b571d0369ef41e921c646bcccd5a1ac5bc0b26fe5a15c6fbe46dd2",
+      "evidence.py": "edf06fc41503385aa537587c3b3fb053bab34b2b1c4fe09913e9e81d77f6458f",
+      "external_evidence.py": "cc3f4a5c9a19a27df95bc3b6f9dd1ce74bd1f6d21ad043e1055026f039dc8893",
+      "files.py": "0224e806de7442fc50febc75308a94bcada4837bb8dbd5285a098cfca6ad674e",
+      "identity.py": "7ae184e7e1824af1baa6768ba64f37fcbe620d04d237c81cfeefe9ef67279851",
+      "input_schema.py": "d95c7e65dcb4c5f11963664b0071d8695c596f2f5855f3d741e491b9d6a0a732",
+      "jsonutil.py": "009a8fba05aba00e6d3824d56f61461fb1b0f219cfd4d87963abf066af44cc1f",
+      "judgment.py": "eda68e5b5e8d71d3c25ba5e1e2819e04f692fc478c3939f084a67f649815092d",
+      "pipeline.py": "88b54d908fb23faac21fbdbfabaf5116efd0a9dce541d86bea79f04f56766c35",
+      "preprocessing.py": "24759ead0531830ccf437cb58381cdc359cddf1c3dc60849099c1bd9d5f8bea2",
+      "prior.py": "a697c78804d7cc064b91ac9af1a6e71babb76bc3ef5deb96079ea4500fad7f4e",
+      "provider.py": "69f6fe63bd99cf16c5593441eaee7b77132feaab59d3c1fa729be38cef0c7d8a",
+      "runner.py": "06cf206937d449fddc578c081b9a809855428dc516f8a6719b8d62f69f477f87",
+      "scaffold.py": "537f668ffedfcbe528c673bd884da60337c0ff3c2a1df279509bcc03bc8b23e5",
+      "scoring.py": "56fc288e730980e554ccfe4c98217b32f3c06dbc1f9a05816c5b57fc7f5eaf5a",
+      "simulation.py": "1780a586450d8cd0538abc187d0f923c4c8449b5485877f8728315ad608bf6d9",
+      "structured_claims.py": "6514589d9192e4d2a7800c00fe5b684189d452b9cfc1ad5463838962e1ada2b1",
+      "submission.py": "f6129f5d8ac3f19f7fbf36fdac1b1da7f6ef7f5760aa52a0b94308d3572ede67",
+      "workflow.py": "48a1ee46ec402271fa35b044d52a188a084dc1a60dfe446daafe0c248c4c7c1c"
+    }
+  },
+  "producerSources": {
+    "dcp_admission.py": "e2789af2708ea01e542e9532bf70431826af58dba30ea130ac68dd73432f2996",
+    "configure_bounds.py": "46b9b775a8a1a745412db3891ed0b831e8e9ba3921720985b3056f96eb7619fc",
+    "export_metrics.py": "b2711acdcbb6bef59a86a433da1d4ee9d208ced9669692399b785fb7b1ca39f9",
+    "complexity_bounds.py": "78ed9a557ca543c264cb862fb4781e12f6a83522eb54b5618231c8165893a1d0",
+    "admission_fixtures.py": "f25c674161aedf82c69c1041006b49811ac5bfc93bf4581055d2e76b60b0ae81",
+    "test_dcp_admission.py": "b8ed955d5d5310df85d19b0c51b30d2a8200f2d5096e2c554dac51e0ddb9b7de",
+    "test_export_metrics.py": "b96cdc58fec2cb11aa44205bfbf8a58c1c99f68aa78fc5b75dab06a61433d6b9",
+    "verifier.json": "9c657e9cda6f9b15b9a649b3be9a60fb8286437f783c35ec3cca785dfb402415",
+    "benchmark.json": "c808a3fe719cf71e8b08f813143990dc2a4878b8f9009271a3cb16fc791eac4b",
+    "rules.md": "61fb43652c7c19e09bdd7e4225b407b57765210ac26789029c1eafbf3ab91cd4",
+    ".github/workflows/benchmark.yml": "3bdbb0121cc0674f46ef3b333be3301efcc239a0cad519ccf772fc0bf17e1333"
+  },
+  "cases": [
+    {
+      "id": "required-missing-time",
+      "outcome": "format_rejected",
+      "receiptPath": "required-missing-time-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_structured_bound_required] for time; complete supported time/classical_space/quantum_space bounds are required",
+        "scores": null,
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "5d5f425858af674dc606a6e18e1f121aed3269ed5e601492f5c788def8889c1f",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "f550325084b32e7af796395c5378fc8d14268ffb8aa68b4228039b6592e32eab",
+            "submission_sha256": "dd7644e89c2b47ceb9bb398d314decd93f046de633e4eb45c53fb78fffa9bece",
+            "diagnostic": {
+              "code": "dcp_structured_bound_required",
+              "path": [
+                "claims",
+                0,
+                "structured"
+              ],
+              "resource": "time"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-missing-classical_space",
+      "outcome": "format_rejected",
+      "receiptPath": "required-missing-classical_space-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_structured_bound_required] for classical_space; complete supported time/classical_space/quantum_space bounds are required",
+        "scores": null,
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "03977c0eb67aa16db5d9cfe387bc7e7204403d4531f1b9d8f29b6de88bb19fef",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "f550325084b32e7af796395c5378fc8d14268ffb8aa68b4228039b6592e32eab",
+            "submission_sha256": "43578f5ad2fd33d3dfc8ae33007ca280ab88b966544f407297bb0da5ccf88767",
+            "diagnostic": {
+              "code": "dcp_structured_bound_required",
+              "path": [
+                "claims",
+                1,
+                "structured"
+              ],
+              "resource": "classical_space"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-missing-quantum_space",
+      "outcome": "format_rejected",
+      "receiptPath": "required-missing-quantum_space-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_structured_bound_required] for quantum_space; complete supported time/classical_space/quantum_space bounds are required",
+        "scores": null,
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "f519e589830a5292b2d6d43523c1897c55602c66e2075abb1e14aad48fbe5063",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "f550325084b32e7af796395c5378fc8d14268ffb8aa68b4228039b6592e32eab",
+            "submission_sha256": "5625b3ba6a671fa5168d7b4619d9090ab57bc89982d03d6ecec7c887126b12b6",
+            "diagnostic": {
+              "code": "dcp_structured_bound_required",
+              "path": [
+                "claims",
+                2,
+                "structured"
+              ],
+              "resource": "quantum_space"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-unknown-coefficient",
+      "outcome": "format_rejected",
+      "receiptPath": "required-unknown-coefficient-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_bound_rational] for time; complete supported time/classical_space/quantum_space bounds are required",
+        "scores": null,
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "1690f553e0e40f1ddd29c4d46ea40e53e0079e1dd958284e6d3c5154cb0af782",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "f550325084b32e7af796395c5378fc8d14268ffb8aa68b4228039b6592e32eab",
+            "submission_sha256": "89752a3fdd90fe9c7dcf132fceecba029d34c5f307292d71e260204f332dfccb",
+            "diagnostic": {
+              "code": "dcp_bound_rational",
+              "path": [
+                "claims",
+                0,
+                "structured"
+              ],
+              "resource": "time"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-partial",
+      "outcome": "format_rejected",
+      "receiptPath": "required-partial-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_resource_claim_required] for time; complete supported time/classical_space/quantum_space bounds are required",
+        "scores": null,
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "2ea390087a814bf3f526f4671059b920e2a4a291f3f02fd3f90fd338b83a02ed",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "f550325084b32e7af796395c5378fc8d14268ffb8aa68b4228039b6592e32eab",
+            "submission_sha256": "a773901dc490dd8633fd77963a40e7dd5ad1ed4413a5b8027ce6ec41cc170458",
+            "diagnostic": {
+              "code": "dcp_resource_claim_required",
+              "path": [
+                "claims",
+                0
+              ],
+              "resource": "time"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-validity-only",
+      "outcome": "format_rejected",
+      "receiptPath": "required-validity-only-receipt.json",
+      "output": {
+        "valid": false,
+        "reason": "DCP format rejection [dcp_resource_claim_required] for time; complete supported time/classical_space/quantum_space bounds are required",
+        "metrics": {
+          "dcp_admission": {
+            "version": "dcp-structured-bounds-admission-v1",
+            "kind": "format-admission-not-mathematical-review",
+            "outcome": "format_rejected",
+            "receipt_sha256": "25d37cc8805b5ea3f0b593d7f0954d6dcece0f3bc23bb3efae2b157b1192b207",
+            "candidate_revision": "local-unasserted",
+            "validity_policy": {
+              "structured_bounds": "required",
+              "version": "dcp-joint-bounds-v3"
+            },
+            "config_sha256": "64a4680ac402714f53d72deb380898957085f2335dccad0912da5ff899e1cbb3",
+            "submission_sha256": "a773901dc490dd8633fd77963a40e7dd5ad1ed4413a5b8027ce6ec41cc170458",
+            "diagnostic": {
+              "code": "dcp_resource_claim_required",
+              "path": [
+                "claims",
+                0
+              ],
+              "resource": "time"
+            },
+            "validator_source_sha256": "49aefe313e7d901dab15c22b6d17985c13062d6b75106ad0cd682cfb8f9c2143",
+            "verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+            "verifier_content_sha256": "c0135e4480d7c6174734f6ca394c1a0a3b80bc523b3bce05e2c23b198c296406"
+          }
+        }
+      }
+    },
+    {
+      "id": "required-score-only",
+      "outcome": "format_rejected",
+      "receiptPath": "required-score-only-receipt.json",
+      "error": "score_only_claim_not_established"
+    },
+    {
+      "id": "required-supported",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.3333333333333333
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp": {
+            "version": "dcp-bounds-v3",
+            "comparator": "asymptotic-v1",
+            "scope": "dcp-cyclic-group-order",
+            "model": "dcp-uniform-clifford-t-bit-operations-v1",
+            "notation": "big-o",
+            "intake_sha256": "a71618060e4d3b086657edf33d5d2e0be8167abf60f393c7b64935f63c797e19",
+            "dossier_sha256": "eeb61df1ed46ae86e996c22d99ebf29392a1d34e82fbe7289704895c28bdd08a",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture algorithm A: T(n) = O(2^{n^(1/3) log2 n}); index 1/3; joint bounds.",
+                "source_sha256": "42cb727272aa7f98ee7104b04d9fe182453bcf832812649f2fca659d5b6b0467",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1/3",
+                      "logPower": "1"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture algorithm A: S_C(n) = O(n^100); index 0; joint bounds.",
+                "source_sha256": "ed3e96b6250b6025e1e84554496031e545fe5c9aaeb3f3f8a02f716c2b476feb",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [],
+                  "nPower": "100",
+                  "logPower": "0"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.",
+                "source_sha256": "cf1bc866be1c9662056fe0ea291faf0703f121ec17ce53b47d095a1229e19bfb",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "bound": {
+                  "coefficient": "1",
+                  "exponent": [
+                    {
+                      "coefficient": "1",
+                      "nPower": "1",
+                      "logPower": "0"
+                    }
+                  ],
+                  "nPower": "0",
+                  "logPower": "0"
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiptPath": "required-supported-receipt.json",
+      "dossierPath": "required-supported-dossier.json"
+    },
+    {
+      "id": "required-mathematical-rejection",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": null,
+        "valid": false
+      },
+      "receiptPath": "required-mathematical-rejection-receipt.json",
+      "dossierPath": "required-mathematical-rejection-dossier.json"
+    },
+    {
+      "id": "optional-unknown-coefficient",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.3333333333333333
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp_omission": {
+            "version": "dcp-bounds-v3",
+            "reason": "unsupported_structured_bounds",
+            "details": [
+              {
+                "resource": "time",
+                "reason": "dcp_bound_rational"
+              }
+            ],
+            "intake_sha256": "4d81d9bd4575863b9d6e75454dd0b4d3a44c5a9d02d057972b61c5456f9af77a",
+            "dossier_sha256": "9e04c208de474c2c4131ea3afd117969fc85f866ae945afabe9f5419934ef4ee",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture algorithm A: T(n) = O(2^{n^(1/3) log2 n}); index 1/3; joint bounds.",
+                "source_sha256": "a69e9f7a2a6157889d70d4e95e40af41bfef4fc6420175fe589e1a3aed2b6011",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "3",
+                  "numerator": "1"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [
+                      {
+                        "coefficient": "unknown",
+                        "logPower": "1",
+                        "nPower": "1/3"
+                      }
+                    ],
+                    "logPower": "0",
+                    "nPower": "0"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture algorithm A: S_C(n) = O(n^100); index 0; joint bounds.",
+                "source_sha256": "88f9e06f8cc047b014820a1597142b7a445cc5c75fb9a3f27f9e7f96b292190e",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [],
+                    "logPower": "0",
+                    "nPower": "100"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.",
+                "source_sha256": "83c4abcbfa52f57a60f8cfbc6462f757edd4d10068e8af86c8c612e44d253547",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "1"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [
+                      {
+                        "coefficient": "1",
+                        "logPower": "0",
+                        "nPower": "1"
+                      }
+                    ],
+                    "logPower": "0",
+                    "nPower": "0"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiptPath": "optional-unknown-coefficient-receipt.json",
+      "dossierPath": "optional-unknown-coefficient-dossier.json"
+    },
+    {
+      "id": "optional-missing-quantum",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.3333333333333333
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp_omission": {
+            "version": "dcp-bounds-v3",
+            "reason": "unsupported_structured_bounds",
+            "details": [
+              {
+                "resource": "quantum_space",
+                "reason": "missing_structured_bound"
+              }
+            ],
+            "intake_sha256": "aae362636efa3365e64c891cbb85ce45e2ea8dc7dd857bc094367689f7394691",
+            "dossier_sha256": "ab9827c63348940534422911ac2b51ee34e3ab598dc04bb3e7af4a6f3f01472a",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture algorithm A: T(n) = O(2^{n^(1/3) log2 n}); index 1/3; joint bounds.",
+                "source_sha256": "0581bfd4dd24e5648bc3b87f8adf2d7877cc620b6f4224f5ed7f5ab5f7704084",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "3",
+                  "numerator": "1"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [
+                      {
+                        "coefficient": "1",
+                        "logPower": "1",
+                        "nPower": "1/3"
+                      }
+                    ],
+                    "logPower": "0",
+                    "nPower": "0"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture algorithm A: S_C(n) = O(n^100); index 0; joint bounds.",
+                "source_sha256": "36a1378cde29f2ff54c45f1107693eb03fe5422c93fe3b9d7fe47c77b43b9001",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [],
+                    "logPower": "0",
+                    "nPower": "100"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.",
+                "source_sha256": "edf157768c7a89cbfdde7726aa5e25905a33daf65b68368144b440e3b1cbb90c",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiptPath": "optional-missing-quantum-receipt.json",
+      "dossierPath": "optional-missing-quantum-dossier.json"
+    },
+    {
+      "id": "optional-partial",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": null,
+        "valid": true
+      },
+      "receiptPath": "optional-partial-receipt.json",
+      "dossierPath": "optional-partial-dossier.json"
+    },
+    {
+      "id": "historical-v2-policy-optional",
+      "outcome": "review",
+      "output": {
+        "reason": "Scripted offline test only",
+        "scores": [
+          0.3333333333333333
+        ],
+        "valid": true,
+        "metrics": {
+          "dcp_omission": {
+            "version": "dcp-bounds-v3",
+            "reason": "unsupported_structured_bounds",
+            "details": [
+              {
+                "resource": "quantum_space",
+                "reason": "missing_structured_bound"
+              }
+            ],
+            "intake_sha256": "ae53aad24799c3e9b6531271824ef9109d446cc4c4c37a7f846417062c8b20db",
+            "dossier_sha256": "b57a90167d3780ae34d85c6dc8fcb54013c3218053c43074daa38cf445a4b3c0",
+            "resources": {
+              "time": {
+                "statement": "Offline fixture algorithm A: T(n) = O(2^{n^(1/3) log2 n}); index 1/3; joint bounds.",
+                "source_sha256": "0581bfd4dd24e5648bc3b87f8adf2d7877cc620b6f4224f5ed7f5ab5f7704084",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "3",
+                  "numerator": "1"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [
+                      {
+                        "coefficient": "1",
+                        "logPower": "1",
+                        "nPower": "1/3"
+                      }
+                    ],
+                    "logPower": "0",
+                    "nPower": "0"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "classical_space": {
+                "statement": "Offline fixture algorithm A: S_C(n) = O(n^100); index 0; joint bounds.",
+                "source_sha256": "36a1378cde29f2ff54c45f1107693eb03fe5422c93fe3b9d7fe47c77b43b9001",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "structured": {
+                  "bound": {
+                    "coefficient": "1",
+                    "exponent": [],
+                    "logPower": "0",
+                    "nPower": "100"
+                  },
+                  "comparator": "asymptotic-v1",
+                  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+                  "notation": "big-o",
+                  "scope": "dcp-cyclic-group-order",
+                  "version": "dcp-bounds-v3"
+                }
+              },
+              "quantum_space": {
+                "statement": "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.",
+                "source_sha256": "edf157768c7a89cbfdde7726aa5e25905a33daf65b68368144b440e3b1cbb90c",
+                "evidence": {
+                  "proof.md": "67e2b5afa3a0f617589f410a128ab497b2c812739caaf3d0181f805660298c9e"
+                },
+                "growth_index": {
+                  "denominator": "1",
+                  "numerator": "1"
+                }
+              }
+            }
+          }
+        }
+      },
+      "receiptPath": "historical-v2-policy-optional-receipt.json",
+      "dossierPath": "historical-v2-policy-optional-dossier.json"
+    }
+  ]
+}

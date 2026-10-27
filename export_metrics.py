@@ -50,7 +50,7 @@ def historical_projection(record, data, intake, config):
 
 
 def structured_projection(record, data, intake, config):
-    if (config["id"] != "dcp" or config["review_standard"] != "dcp-joint-bounds-v2"
+    if (config["id"] != "dcp" or config["review_standard"] not in {"dcp-joint-bounds-v2", "dcp-joint-bounds-v3"}
             or config.get("structured_claims") != "atomic-v1"
             or config.get("acceptance_policy", "atomic-claims-v1") != "atomic-claims-v1"
             or [o["name"] for o in config["objectives"]] != ["time_growth"]
@@ -59,6 +59,10 @@ def structured_projection(record, data, intake, config):
             or [o.get("score_minimum") for o in config["objectives"]]
             != [{"numerator": "0", "denominator": "1"}]):
         raise VerifierError("dcp_objective_contract")
+    # Lazy import preserves original-runtime historical replay. Required format
+    # applies even when review is invalid, unscored or validity-only.
+    from dcp_admission import validate_intake
+    validate_intake(intake)
     result = dict(data["yukon_projection"])
     if result.get("scores") is None:
         return result
