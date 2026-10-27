@@ -1,0 +1,420 @@
+{
+  "bindings": {
+    "config": "89ee7790386333c49d242425ad3095bc80a2cd91af96965736f5139a0e1b1198",
+    "context": "e677f2d8edbc344ec87c0bf9a52b9adb3772be008411f515d9eb7f206db15472",
+    "evaluation_id": "8dddabf64a974b5c94155b5dff1e3adb",
+    "submission": "8ff3205cc77cacd88e0681404df213fa0f4cae5300f912265c444e7a7515cb65",
+    "verifier": "af82dc22a208f8bd6e4b362c3d972728f465c30a2ac38b1f1b5aff20aecdd5b9"
+  },
+  "data": {
+    "judgment": {
+      "evidence_refs": [
+        "source:proof.md"
+      ],
+      "reason": "Scripted test only",
+      "review_standard": "dcp-joint-bounds-v1",
+      "scores": [
+        0.3333333333333333,
+        0.0,
+        1.0
+      ],
+      "valid": true
+    },
+    "phases": [
+      {
+        "bindings": {
+          "config": "89ee7790386333c49d242425ad3095bc80a2cd91af96965736f5139a0e1b1198",
+          "context": "e677f2d8edbc344ec87c0bf9a52b9adb3772be008411f515d9eb7f206db15472",
+          "evaluation_id": "8dddabf64a974b5c94155b5dff1e3adb",
+          "submission": "8ff3205cc77cacd88e0681404df213fa0f4cae5300f912265c444e7a7515cb65",
+          "verifier": "af82dc22a208f8bd6e4b362c3d972728f465c30a2ac38b1f1b5aff20aecdd5b9"
+        },
+        "data": {
+          "context": {
+            "kind": "local",
+            "revision": "unasserted; use content hash"
+          },
+          "effective": {
+            "checker_files": {},
+            "config": {
+              "allow_unscored": true,
+              "id": "dcp",
+              "limits": {
+                "cpus": 1,
+                "followup_seconds": 60,
+                "initial_seconds": 60,
+                "max_file_bytes": 65536,
+                "max_files": 32,
+                "max_followups": 0,
+                "max_initial_runs": 0,
+                "max_prompt_bytes": 2097152,
+                "max_submission_bytes": 262144,
+                "memory_mb": 256,
+                "pids": 32,
+                "run_seconds": 20,
+                "stderr_bytes": 65536,
+                "stdout_bytes": 65536,
+                "tmpfs_mb": 16,
+                "total_output_bytes": 393216,
+                "total_provider_requests": 2,
+                "total_review_seconds": 360,
+                "total_seconds": 60
+              },
+              "objectives": [
+                {
+                  "direction": "-",
+                  "name": "time_growth",
+                  "score_minimum": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  },
+                  "score_source": {
+                    "claim": 0
+                  },
+                  "semantics": "The exact rational g(B_T) in rules.md for the full proved total-work upper envelope in claim 0. Review full-secret correctness and all three bounds jointly. This is a coarse UI index, not an optimal-time exponent or proof of the 1/3 target.",
+                  "unit": "asymptotic growth index"
+                },
+                {
+                  "direction": "-",
+                  "name": "classical_space_growth",
+                  "score_minimum": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  },
+                  "score_source": {
+                    "claim": 1
+                  },
+                  "semantics": "The exact rational g(B_C) in rules.md for the proved peak classical-bit upper envelope in claim 1, for the same algorithm/configuration. Zero does not by itself certify polynomial space.",
+                  "unit": "asymptotic growth index"
+                },
+                {
+                  "direction": "-",
+                  "name": "quantum_space_growth",
+                  "score_minimum": {
+                    "denominator": "1",
+                    "numerator": "0"
+                  },
+                  "score_source": {
+                    "claim": 2
+                  },
+                  "semantics": "The exact rational g(B_Q) in rules.md for the proved peak quantum-qubit upper envelope in claim 2, for the same algorithm/configuration. Zero does not by itself certify polynomial space.",
+                  "unit": "asymptotic growth index"
+                }
+              ],
+              "policies": {
+                "scoring": {
+                  "version": "dcp-growth-v1"
+                },
+                "validity": {
+                  "version": "dcp-joint-bounds-v1"
+                }
+              },
+              "provider": {
+                "max_attempts": 2,
+                "max_completion_tokens": 16384,
+                "max_response_bytes": 262144,
+                "model": "gpt-6-astra",
+                "reasoning_effort": "high",
+                "response_format": "json_schema",
+                "timeout_seconds": 180
+              },
+              "review_standard": "dcp-joint-bounds-v1",
+              "rules_path": "rules.md",
+              "runtime": {
+                "image": "python:3.12.12-slim-bookworm@sha256:2986c55feb36e6cae00fa1fefb454283e4b33f35e75ff8bdd123b134130be301",
+                "platform": "linux/amd64"
+              },
+              "supported_policies": {
+                "scoring": [
+                  {
+                    "instructions": "Apply rules.md. Establish every original declared claim exactly as written, including its full bound statement and nonnegative finite rational growth index. All three resource claims must refer to one algorithm/configuration with joint bounds. Return scores:null; after atomic acceptance the shared verifier derives the complete vector from the current sources.",
+                    "selector": {
+                      "version": "dcp-growth-v1"
+                    }
+                  }
+                ],
+                "validity": [
+                  {
+                    "instructions": "Apply rules.md to correctness, unconditional full-secret success and charged worst-case resources. Every declared claim must hold as written. A separately submitted, explicitly scoped partial theorem may remain unscored. An unsupported stronger expression is not accepted merely because a weaker expression would have the same index.",
+                    "selector": {
+                      "version": "dcp-joint-bounds-v1"
+                    }
+                  }
+                ]
+              },
+              "version": 1
+            },
+            "evaluation": {
+              "fields": {
+                "scores": true,
+                "validity": true
+              },
+              "policies": {
+                "scoring": {
+                  "version": "dcp-growth-v1"
+                },
+                "validity": {
+                  "version": "dcp-joint-bounds-v1"
+                }
+              }
+            },
+            "policy_instructions": {
+              "scoring": "Apply rules.md. Establish every original declared claim exactly as written, including its full bound statement and nonnegative finite rational growth index. All three resource claims must refer to one algorithm/configuration with joint bounds. Return scores:null; after atomic acceptance the shared verifier derives the complete vector from the current sources.",
+              "validity": "Apply rules.md to correctness, unconditional full-secret success and charged worst-case resources. Every declared claim must hold as written. A separately submitted, explicitly scoped partial theorem may remain unscored. An unsupported stronger expression is not accepted merely because a weaker expression would have the same index."
+            },
+            "rules": "# DCP: proved time and memory bounds\n\n## Problem and goal\n\nFor every integer N \u2265 2, the algorithm receives N in binary and fresh independent\ncopies of the mixed state below, for one fixed unknown s in Z/NZ:\n\n$$\n\\rho_s=\\frac1N\\sum_{x=0}^{N-1}|\\psi_{x,s}\\rangle\\langle\\psi_{x,s}|,\\qquad\n|\\psi_{x,s}\\rangle=\\frac{|0,x\\rangle+|1,(x+s)\\bmod N\\rangle}{\\sqrt2}.\n$$\n\nSet n = ceil(log\u2082 N). The value x, a purification, an inverse preparation circuit,\nand coherent control of the source are unavailable. Output the entire s with\nunconditional probability at least 2/3, for every N and s.\n\nThe research goal is total work 2^{O(n^{1/3})}. Here n is the residue bit length, not the\nmodulus. A time growth index of 1/3 alone does not establish this goal: for\nexample, 2^{n^{1/3} log\u2082 n} has that index but does not meet the stated bound.\nThe included exhaustive-search submission is a correctness/format baseline, not\na claim of research progress or the best known algorithm.\n\n## Computation and resources\n\nUse a uniform classical controller and a quantum circuit over Clifford+T, with\ncomputational-basis measurement, fresh |0\u27e9 qubits, and the specified source.\nClassically chosen gates may act on arbitrary indexed wires; no geometric\nlocality cost is imposed. Quantum-addressed memory access must be implemented\nby counted gates. There is no additional QRAM, hidden-shift, or subset-sum oracle.\n\nT is total sequential work, not depth, quantum work alone, or query count.\nCount classical bit operations, circuit generation, gates, measurements,\ninitialization, preprocessing, memory access, precision/gate synthesis, and\nall attempts including failures. A source copy costs n+1 work units. A classical\nindexed access or classically addressed gate also pays for its address:\nceil(log\u2082(M+2)) bit operations, where M is the number of allocated bits and\nqubits. Fixed-size logic is unit cost; arbitrary integers/real arithmetic are not.\nAll parallel work is summed. No instance-dependent advice, preloaded tables,\nfree postselection, or uncharged preparation is allowed.\n\nS_C is peak allocated classical bits; S_Q is peak allocated qubits. Include\ninputs, intermediate data, saved samples, lookup tables, ancillas and stored\ncircuit descriptions. State held by the inaccessible source is excluded.\nAll three bounds must hold jointly for one fully specified algorithm and\nparameter choice, on every execution branch. An expected-time analysis needs\nan explicit cutoff/restart argument establishing these bounds while retaining\nsuccess \u2265 2/3. Constants are independent of N, s, and sampled outcomes.\n\n## Claims, full expressions, and numerical scores\n\nParticipants edit only `submission/`. In `submission.json`, the first three\nclaims, when scored, are structured claims for T, S_C, S_Q in that order.\nEach `statement` must name the same algorithm/configuration, give the full\nproved upper-bound expression, define every parameter/quantifier, and state\nits exact numerical growth index. Reference the proof through `evidence`;\nstore a proof once and share its path between claims.\n\nPreserve detail actually established: polynomial degrees, log factors,\ncoefficients, leading constants and validity thresholds when known. Use big-O\nwhen that is all the proof gives; never manufacture finite-size constants.\nNon-power expressions and sums are allowed. Define their meaning in the proof;\nexpressions are reviewed mathematical text, never executable code.\n\nFor an eventually positive representative envelope B(n), define the UI index\n\n$$\ng(B)=\\limsup_{n\\to\\infty}\n\\frac{\\log_2\\!\\left(\\log_2\\!\\left(\\max\\{4,B(n)\\}\\right)\\right)}\n{\\log_2 n}.\n$$\n\nFor each resource, the claim must prove R(n) = O(B(n)) uniformly over instances\nof bit length n, and prove the stated value of g(B). It need not prove a matching\nlower bound on the algorithm's actual resource usage. For a bound containing\nunspecified fixed constants, the index must have the same value for every\nadmissible choice of those constants. For example 2^{O(sqrt(n))} gives index\n1/2 without choosing the hidden positive constant. Scores are nonnegative finite\n**rational** indices, encoded as the verifier's canonical numerator/denominator\nstrings. If the index cannot be established as a finite rational, retain the\nwork as an unscored claim.\n\nExamples (all logarithms base two):\n\n| Proved envelope | UI index |\n| --- | ---: |\n| n\u00b2, n\u00b9\u2070\u2070, (log n)\u00b3 | 0 |\n| n^{log n} | 0 |\n| 2^{n^{1/3} log n} | 1/3 |\n| 2^{c sqrt(n)} n^k, fixed c > 0 and k | 1/2 |\n| 2^n | 1 |\n| 2^{n\u00b2} | 2 |\n\nZero does **not** certify polynomial resources. Finite-prefix fitted slopes,\nlimits that discard troublesome subsequences, and guessed hidden constants are\nnot scores. Distinct bound expressions can share an index. Accepted statements\nand exact rational scores are exported together in `metrics.dcp`; these full\nstatements are the record of what was proved.\n\nEvery declared claim must be established exactly as written before a numerical\nvector is published. The reviewer returns `scores: null`; the shared verifier\nderives the complete vector from the three resource claims only after atomic\nacceptance. One proof may establish all three statements. Do not combine\nconfigurations, accept a subset, or accept just the numeric part of a statement\nwhose stronger expression is unsupported. Source hashes record provenance;\nthey are not acceptance selectors.\n\n## Validity and comparison\n\nA scored submission needs a complete algorithm, proof of full-secret recovery,\nsuccess bound, and joint resource analysis in this model. Heuristic distribution\nassumptions, unproved lemmas, numerical experiments, or a reduction with an\nunaccounted subroutine cannot establish a scored result. A relevant, correct,\nexplicitly scoped partial theorem may be valid with null scores in a separate\nsubmission whose claims state that limited scope. State unresolved obligations;\ndo not promote them into assumptions of a full DCP solution or use review\ncommentary to narrow an unsupported declared claim.\nCitations must identify exact theorems/versions and explain applicability.\nProvide the argument needed for review in the snapshot; the reviewer cannot\nfetch external material.\n\nNumerical Pareto order is a coarse UI summary. Scientific comparison and manual\npromotion use the full proved bounds under this same scope and model. Establish\nan asymptotic no-worse relation for each resource and a strict improvement in at\nleast one before declaring dominance. Unknown constants or incomparable bounds\nmay prevent this conclusion; never infer equivalence from equal indices or\ninvent a total order. Compare guarantees, not unknown optimal running times.\nAn equivalent rewrite or deliberately loosened prior claim is not new research\nprogress. Verify novelty against established results separately from validity.\n\nThe original motivation is Dan Boneh's DCP problem in\n[the Yukon collection](https://app.notion.com/p/eigen-labs/Problem-statements-from-Cryptographers-for-Yukon-3f813c11c3e0800d9f2bf6c474d38a7e).\nThe scope and conventions above govern this challenge.\n"
+          },
+          "files": {
+            "proof.md": {
+              "sha256": "0756f15762f645e6971dab522e2354cfde4d4675776e380f473e44e91e7f632f",
+              "size": 40,
+              "text": "Inert fixture, not a mathematical proof."
+            },
+            "submission.json": {
+              "sha256": "85b11b6717b0c70ffa618899cba576bb7f9737a4aec5224d5c227663565eefe1",
+              "size": 434,
+              "text": "{\"claims\":[{\"evidence\":[\"proof.md\"],\"score\":{\"denominator\":\"3\",\"numerator\":\"1\"},\"statement\":\"Fixture: T(n) = O(2^{n^(1/3) log2 n}); index 1/3.\"},{\"evidence\":[\"proof.md\"],\"score\":{\"denominator\":\"1\",\"numerator\":\"0\"},\"statement\":\"Fixture: S_C(n) = O(n^100); index 0.\"},{\"evidence\":[\"proof.md\"],\"score\":{\"denominator\":\"1\",\"numerator\":\"1\"},\"statement\":\"Fixture: S_Q(n) = O(2^n); index 1.\"}],\"experiments\":[],\"title\":\"Fixture\",\"version\":1}\n"
+            }
+          },
+          "implementation": {
+            "content_sha256": "af82dc22a208f8bd6e4b362c3d972728f465c30a2ac38b1f1b5aff20aecdd5b9",
+            "files": {
+              "__init__.py": "afd87c155d1cc9149402b78252c0a6d57a6932a686ececaffd5b256f2c1c220f",
+              "__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+              "artifacts.py": "6525f2d34ccc50ed31f50179c2a099d92a15aa5971626c8a95eb7b01eb51b033",
+              "checks.py": "71821a515dfc1d0888c1f408139e520b3dcb025b6847e8d2ad682924deab93da",
+              "cli.py": "6df46e13997799949c190fcc4512eb12b8abfa27d5c6af5579ee90de39e3b2d5",
+              "config.py": "6d5974f40355722980846da1b72bbc5c5bbaff9d3e0fc3f50d793752598d710b",
+              "errors.py": "ed1132a24d47094a228658d6571619a65a472899abdfd0f6c01eaf17b05bbe62",
+              "evidence.py": "24cda71cdc95fba2d2e63ca278b2078ad3563ef76fc40e6fd6c992739714987a",
+              "external_evidence.py": "cc3f4a5c9a19a27df95bc3b6f9dd1ce74bd1f6d21ad043e1055026f039dc8893",
+              "files.py": "d7ed27ed3c2c7b4339c9cd0ac853750753bf577302db1c9a59ebb489e398a35d",
+              "input_schema.py": "9caf05d23293a4289e63d518b063b2c6bd941bac1e77291b59c910807335cd59",
+              "jsonutil.py": "efe2801a62dcd4a69d7625d9cafff4df0abe76123d624d11f20762ab0ed027c3",
+              "judgment.py": "34133ab4a4812ad9c949d4d1843c69aa13634deabbe001b78b2a82deeb2debeb",
+              "pipeline.py": "0235988040a21e2057ea3e360e6c4c6a278046eb9ad1962a83bce676f2282dda",
+              "provider.py": "140c77a8b5ba451d3377c434d3b3ad0701e38baf2104ab374e6a6bd72560dba4",
+              "runner.py": "06cf206937d449fddc578c081b9a809855428dc516f8a6719b8d62f69f477f87",
+              "scaffold.py": "03fc4f69356bd30042bb055e234f35a624871b60a21aea68562929f13ca80704",
+              "scoring.py": "df3a04107b9da81c2bf09663163ff2ccd9361ef62b937b9c771262a29016066b",
+              "simulation.py": "4f0bfd1ce0963ce02a95aed0ca78e004e048e64f8d0d15d534eea21de6a56bed",
+              "submission.py": "de9e68dbe7ac8f068309f4d6fcf8217369f13a0d17ec66ab7171834a6eb18013",
+              "workflow.py": "6ed3925673789aec5467eca9ede00c7ccba901bcec0451cda2b0ca2a83c86e99"
+            },
+            "package": "llm-verifier",
+            "scope": "all installed llm_verifier/*.py source bytes",
+            "version": "0.3.0a2"
+          },
+          "manifest": {
+            "claims": [
+              {
+                "evidence": [
+                  "proof.md"
+                ],
+                "score": {
+                  "denominator": "3",
+                  "numerator": "1"
+                },
+                "statement": "Fixture: T(n) = O(2^{n^(1/3) log2 n}); index 1/3."
+              },
+              {
+                "evidence": [
+                  "proof.md"
+                ],
+                "score": {
+                  "denominator": "1",
+                  "numerator": "0"
+                },
+                "statement": "Fixture: S_C(n) = O(n^100); index 0."
+              },
+              {
+                "evidence": [
+                  "proof.md"
+                ],
+                "score": {
+                  "denominator": "1",
+                  "numerator": "1"
+                },
+                "statement": "Fixture: S_Q(n) = O(2^n); index 1."
+              }
+            ],
+            "experiments": [],
+            "title": "Fixture",
+            "version": 1
+          }
+        },
+        "parents": [],
+        "sha256": "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee",
+        "simulation": false,
+        "stage": "intake",
+        "version": 1
+      },
+      {
+        "bindings": {
+          "config": "89ee7790386333c49d242425ad3095bc80a2cd91af96965736f5139a0e1b1198",
+          "context": "e677f2d8edbc344ec87c0bf9a52b9adb3772be008411f515d9eb7f206db15472",
+          "evaluation_id": "8dddabf64a974b5c94155b5dff1e3adb",
+          "submission": "8ff3205cc77cacd88e0681404df213fa0f4cae5300f912265c444e7a7515cb65",
+          "verifier": "af82dc22a208f8bd6e4b362c3d972728f465c30a2ac38b1f1b5aff20aecdd5b9"
+        },
+        "data": {
+          "allotted_output_bytes": 0,
+          "allotted_seconds": 0,
+          "elapsed_seconds": 3.8929283618927e-06,
+          "prior_runs": 0,
+          "runs": [],
+          "runtime": {
+            "image": "python:3.12.12-slim-bookworm@sha256:2986c55feb36e6cae00fa1fefb454283e4b33f35e75ff8bdd123b134130be301",
+            "platform": "linux/amd64"
+          }
+        },
+        "parents": [
+          "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee"
+        ],
+        "sha256": "1a2652521decccf409e652ffd12fd54c7b3564ec124cd1617dac2ddfb612adab",
+        "simulation": false,
+        "stage": "initial_experiments",
+        "version": 1
+      },
+      {
+        "bindings": {
+          "config": "89ee7790386333c49d242425ad3095bc80a2cd91af96965736f5139a0e1b1198",
+          "context": "e677f2d8edbc344ec87c0bf9a52b9adb3772be008411f515d9eb7f206db15472",
+          "evaluation_id": "8dddabf64a974b5c94155b5dff1e3adb",
+          "submission": "8ff3205cc77cacd88e0681404df213fa0f4cae5300f912265c444e7a7515cb65",
+          "verifier": "af82dc22a208f8bd6e4b362c3d972728f465c30a2ac38b1f1b5aff20aecdd5b9"
+        },
+        "data": {
+          "decision": {
+            "judgment": {
+              "evidence_refs": [
+                "source:proof.md"
+              ],
+              "reason": "Scripted test only",
+              "review_standard": "dcp-joint-bounds-v1",
+              "scores": null,
+              "valid": true
+            },
+            "kind": "judgment",
+            "requests": []
+          },
+          "provenance": {
+            "attempts": 1,
+            "configured_model": "gpt-6-astra",
+            "elapsed_seconds": 0.00016455724835395813,
+            "endpoint": "https://api.openai.com/v1/chat/completions",
+            "prompt_sha256": "cc8243f4e24cf15bc79c0ade611a79a052f119f52bdd4a98af560fb0e6f5a86c",
+            "provider": "openai",
+            "provider_config_sha256": "c48da614f46f81d4e2d85fc047417abc3dbd26ffb81a74265c0621f6219de3a5",
+            "request_id": "fixture",
+            "returned_model": "fixture-model",
+            "schema_sha256": "6e486d30c24fb75b3b2a04601f0a136ceab1ce40fa78d48daeca3267756b39fc",
+            "usage": {}
+          }
+        },
+        "parents": [
+          "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee",
+          "1a2652521decccf409e652ffd12fd54c7b3564ec124cd1617dac2ddfb612adab"
+        ],
+        "sha256": "85a57d444e73340c3415c98ea11ac6be18909151548af6b6aeb66c26c59609af",
+        "simulation": false,
+        "stage": "initial_review",
+        "version": 1
+      }
+    ],
+    "scope": "LLM assessment with scoped computational/checker evidence; not formal certification",
+    "score_gate": {
+      "bindings": [
+        {
+          "objective": "time_growth",
+          "record": {
+            "denominator": "3",
+            "numerator": "1"
+          },
+          "source": {
+            "claim": 0
+          },
+          "source_sha256": "1418764aceefe73dfe7fc22a37818a364e75bbb7fc9bb2db12fba4b99408b397",
+          "status": "ready",
+          "value": 0.3333333333333333
+        },
+        {
+          "objective": "classical_space_growth",
+          "record": {
+            "denominator": "1",
+            "numerator": "0"
+          },
+          "source": {
+            "claim": 1
+          },
+          "source_sha256": "955e63d957a0099e8419de2b84536e202b4c4cca7811560f4de006c44cc59de0",
+          "status": "ready",
+          "value": 0.0
+        },
+        {
+          "objective": "quantum_space_growth",
+          "record": {
+            "denominator": "1",
+            "numerator": "1"
+          },
+          "source": {
+            "claim": 2
+          },
+          "source_sha256": "1f94dd66214ac755ffdcbe8958e14b0537db32bcbf9c0a1e74b772d35ffa1a48",
+          "status": "ready",
+          "value": 1.0
+        }
+      ],
+      "required": [],
+      "satisfied": true
+    },
+    "score_records": [
+      {
+        "objective": "time_growth",
+        "projection": "finite",
+        "record": {
+          "denominator": "3",
+          "numerator": "1"
+        },
+        "source_sha256": "1418764aceefe73dfe7fc22a37818a364e75bbb7fc9bb2db12fba4b99408b397"
+      },
+      {
+        "objective": "classical_space_growth",
+        "projection": "finite",
+        "record": {
+          "denominator": "1",
+          "numerator": "0"
+        },
+        "source_sha256": "955e63d957a0099e8419de2b84536e202b4c4cca7811560f4de006c44cc59de0"
+      },
+      {
+        "objective": "quantum_space_growth",
+        "projection": "finite",
+        "record": {
+          "denominator": "1",
+          "numerator": "1"
+        },
+        "source_sha256": "1f94dd66214ac755ffdcbe8958e14b0537db32bcbf9c0a1e74b772d35ffa1a48"
+      }
+    ],
+    "selected_review_sha256": "85a57d444e73340c3415c98ea11ac6be18909151548af6b6aeb66c26c59609af",
+    "yukon_projection": {
+      "reason": "Scripted test only",
+      "scores": [
+        0.3333333333333333,
+        0.0,
+        1.0
+      ],
+      "valid": true
+    }
+  },
+  "parents": [
+    "debbf37f993be9a55e305a228ffa36994b0a7cd91344d4ac9804253ef518c6ee",
+    "1a2652521decccf409e652ffd12fd54c7b3564ec124cd1617dac2ddfb612adab",
+    "85a57d444e73340c3415c98ea11ac6be18909151548af6b6aeb66c26c59609af"
+  ],
+  "sha256": "fb591cdfdbce5ef655ecc7b5e6dd8daecdd91d6f049e1041ef3bf71ea33f14e1",
+  "simulation": false,
+  "stage": "dossier",
+  "version": 1
+}
