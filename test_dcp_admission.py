@@ -70,7 +70,7 @@ class AdmissionTest(unittest.TestCase):
         self.assertNotIn("stage", receipt)
         return receipt, score
 
-    def test_actual_baseline_passes_all_three_without_mutation(self):
+    def test_actual_baseline_passes_all_four_without_mutation(self):
         effective = effective_for()
         files = snapshot(ROOT / "submission", effective["config"]["limits"])
         original = copy.deepcopy(files)
@@ -83,7 +83,7 @@ class AdmissionTest(unittest.TestCase):
             admission.rejection_score(receipt)
 
     def test_missing_each_resource_structure_is_rejected_before_review(self):
-        for index in range(3):
+        for index in range(len(admission.RESOURCES)):
             claims = fixture_claims()
             claims[index].pop("structured")
             with self.subTest(index=index):
@@ -92,7 +92,7 @@ class AdmissionTest(unittest.TestCase):
                 self.assertIsNone(score["scores"])
 
     def test_missing_joint_claims_partial_and_unscored_cannot_bypass(self):
-        for claims in ([], fixture_claims()[:1], fixture_claims()[:2], ["A partial theorem."],
+        for claims in ([], fixture_claims()[:1], fixture_claims()[:2], fixture_claims()[:3], ["A partial theorem."],
                        fixture_claims()[:1] + ["Memory unproved.", "Memory unproved."]):
             with self.subTest(claims=str(claims)[:50]):
                 self.rejection(claims)
@@ -105,7 +105,7 @@ class AdmissionTest(unittest.TestCase):
                {**fixture_claims()[0]["structured"], "bound": bound(coefficient="0")},
                {**fixture_claims()[0]["structured"], "bound": bound(n_power="1/0")},
                {**fixture_claims()[0]["structured"], "bound": bound(exponent=[term(p="-1")])}]
-        for index in range(3):
+        for index in range(len(admission.RESOURCES)):
             for malformed in bad:
                 claims = fixture_claims()
                 claims[index]["structured"] = malformed
@@ -117,13 +117,13 @@ class AdmissionTest(unittest.TestCase):
             claims = fixture_claims()
             claims[1]["structured"][key] = "other"
             self.rejection(claims)
-        for index in range(3):
+        for index in range(len(admission.RESOURCES)):
             claims = fixture_claims()
             claims[index]["score"] = {"numerator": "3", "denominator": "2"}
             self.rejection(claims)
 
     def test_missing_malformed_or_negative_resource_indices_reject(self):
-        for index in range(3):
+        for index in range(len(admission.RESOURCES)):
             for score in (None, {}, {"numerator": "-1", "denominator": "1"},
                           {"numerator": "1", "denominator": "0"}, "positive_infinity"):
                 claims = fixture_claims()
@@ -302,7 +302,7 @@ class AdmissionTest(unittest.TestCase):
                 subprocess.run([sys.executable, str(ROOT / "configure_bounds.py"), "--root", str(root), "--mode", mode], check=True, capture_output=True)
                 config = json.loads((root / "verifier.json").read_text())
                 benchmark = json.loads((root / "benchmark.json").read_text())
-                policy = {"version": "dcp-joint-bounds-v3", "structured_bounds": mode}
+                policy = {"version": admission.REVIEW_STANDARD, "structured_bounds": mode}
                 self.assertEqual(config["policies"]["validity"], policy)
                 self.assertEqual(benchmark["tracks"][0]["paretoPolicies"]["validity"], policy)
                 self.assertEqual([p["selector"] for p in config["supported_policies"]["validity"]], [policy])

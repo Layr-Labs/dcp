@@ -25,13 +25,15 @@ from llm_verifier.judgment import yukon
 from llm_verifier.scoring import score_value
 from llm_verifier.workflow import checkout_revision
 
-from complexity_bounds import reviewed_bound
+from complexity_bounds import RESOURCES, resource_contract, reviewed_bound
 
-RESOURCES = ("time", "classical_space", "quantum_space")
-REVIEW_STANDARD = "dcp-joint-bounds-v3"
+from error_tolerance import CLAIM_INDEX, REVIEW_STANDARD, PREVIOUS_TOLERANCE_STANDARD, reviewed_tolerance, tolerance_required
+
+SAMPLE_STANDARD = "dcp-joint-bounds-v4"
+PREVIOUS_STANDARD = "dcp-joint-bounds-v3"
 LEGACY_STANDARD = "dcp-joint-bounds-v2"
 SCORING_POLICY = {"version": "dcp-time-growth-v2"}
-VALIDATOR = "dcp-structured-bounds-admission-v1"
+VALIDATOR = "dcp-structured-bounds-admission-v3"
 VERIFIER_REVISION = "204fdf8fb640704da0a3972d97831de09bfb1c7a"
 
 # Only errors reached while parsing inert submission declarations can be format
@@ -88,9 +90,9 @@ def admission_mode(effective):
         if default != {"version": LEGACY_STANDARD}:
             raise VerifierError("dcp_admission_policy")
         return "optional"
-    if (config["review_standard"] != REVIEW_STANDARD or type(default) is not dict
+    if (config["review_standard"] not in (REVIEW_STANDARD, PREVIOUS_TOLERANCE_STANDARD, SAMPLE_STANDARD, PREVIOUS_STANDARD) or type(default) is not dict
             or set(default) != {"version", "structured_bounds"}
-            or default["version"] != REVIEW_STANDARD
+            or default["version"] != config["review_standard"]
             or type(default["structured_bounds"]) is not str
             or default["structured_bounds"] not in ("required", "optional")
             or len(config["supported_policies"]["validity"]) != 1
@@ -99,13 +101,14 @@ def admission_mode(effective):
     return default["structured_bounds"]
 
 
-def validate_resource_claims(manifest):
+def validate_resource_claims(manifest, *, standard=REVIEW_STANDARD):
     """Check complete supported declarations without modifying or proving them."""
     claims = manifest.get("claims") if type(manifest) is dict else None
     if type(claims) is not list:
         raise FormatRejection("dcp_joint_resource_claims_required", path=("claims",))
     normalized = {}
-    for index, resource in enumerate(RESOURCES):
+    resource_names, contract = resource_contract(standard)
+    for index, resource in enumerate(resource_names):
         path = ("claims", index)
         if index >= len(claims) or type(claims[index]) is not dict:
             raise FormatRejection("dcp_resource_claim_required", resource=resource, path=path)
@@ -128,12 +131,17 @@ def validate_resource_claims(manifest):
             raise FormatRejection("dcp_resource_growth_required", resource=resource,
                                   path=(*path, "score"))
         try:
-            normalized[resource] = reviewed_bound(claim["structured"], score)
+            normalized[resource] = reviewed_bound(claim["structured"], score, contract=contract)
         except VerifierError as error:
             if error.args[0] not in BOUND_CODES:
                 raise
             raise FormatRejection(error.args[0], resource=resource,
                                   path=(*path, "structured")) from None
+    if tolerance_required(standard):
+        try:
+            reviewed_tolerance(manifest, standard=standard)
+        except VerifierError as error:
+            raise FormatRejection(error.args[0], resource="error_tolerance", path=("claims", 4)) from None
     return normalized
 
 
@@ -142,7 +150,7 @@ def validate_intake(intake):
     data = verify_intake(intake)
     mode = admission_mode(data["effective"])
     if mode == "required":
-        validate_resource_claims(data["manifest"])
+        validate_resource_claims(data["manifest"], standard=data["effective"]["config"]["review_standard"])
     return mode
 
 
@@ -159,7 +167,7 @@ def frozen_candidate(files):
         yield root
 
 
-def _candidate_failure(error):
+def _candidate_failure(error, *, standard=REVIEW_STANDARD):
     code = error.args[0]
     if code in GLOBAL_CANDIDATE_CODES or (
             code in CANDIDATE_CODES and error.path[:1] == ("submission.json",)):
@@ -169,6 +177,8 @@ def _candidate_failure(error):
             index = path[2]
             if type(index) is int and 0 <= index < len(RESOURCES):
                 resource = RESOURCES[index]
+            elif index == CLAIM_INDEX and tolerance_required(standard):
+                resource = "error_tolerance"
         return FormatRejection(code, resource=resource, path=path)
     return None
 
@@ -184,12 +194,12 @@ def preflight_files(effective, files):
         try:
             prepared = preflight_snapshot(effective, root)
         except VerifierError as error:
-            failure = _candidate_failure(error) if mode == "required" else None
+            failure = _candidate_failure(error, standard=effective["config"]["review_standard"]) if mode == "required" else None
             if failure is None:
                 raise
         if failure is None and mode == "required":
             try:
-                validate_resource_claims(prepared["manifest"])
+                validate_resource_claims(prepared["manifest"], standard=effective["config"]["review_standard"])
             except FormatRejection as error:
                 failure = error
     if prepared is not None and canonical(prepared["files"]) != canonical(files):
@@ -200,7 +210,7 @@ def preflight_files(effective, files):
 def validator_identity():
     root = Path(__file__).resolve().parent
     sources = {name: sha((root / name).read_bytes())
-               for name in ("dcp_admission.py", "complexity_bounds.py")}
+               for name in ("dcp_admission.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py")}
     return {"version": VALIDATOR, "sources": sources, "source_sha256": digest(sources),
             "verifier_revision": VERIFIER_REVISION, "verifier_implementation": implementation()}
 
@@ -230,7 +240,10 @@ def rejection_score(receipt):
     reason = "DCP format rejection [" + d["code"] + "]"
     if d.get("resource"):
         reason += " for " + d["resource"]
-    reason += "; complete supported time/classical_space/quantum_space bounds are required"
+    resource_names, _ = resource_contract(receipt["snapshot"]["effective"]["config"]["review_standard"])
+    reason += "; complete supported " + "/".join(resource_names) + " bounds are required"
+    if tolerance_required(receipt["snapshot"]["effective"]["config"]["review_standard"]):
+        reason += ", plus a reviewed error-tolerance expression and error model"
     # Preserve score-only fail-closed semantics from the generic verifier.
     result = yukon({"valid": False, "scores": None, "reason": reason},
                    receipt["snapshot"]["effective"]["evaluation"])
@@ -303,16 +316,21 @@ def configure_mode(config, benchmark, mode):
     config["review_standard"] = REVIEW_STANDARD
     config["policies"]["validity"] = policy
     requirement = ("Every submission, including partial/unscored or validity-only work, must contain "
-                   "all three supported structured resource bounds with exact nonnegative indices. "
+                   "all four supported structured resource bounds (time, classical space, quantum space, "
+                   "and samples) with exact nonnegative indices, plus a fifth reviewed error-tolerance "
+                   "expression and error model with no numeric score. "
                    "Missing, malformed or unsupported declarations are format rejection, not unscored acceptance. "
                    if mode == "required" else
-                   "Structured bounds are optional; unsupported or absent structured forms receive an "
+                   "The four resource structures are optional; scored results still require the fifth "
+                   "error-tolerance expression and model without a score. Unsupported or absent resource forms receive an "
                    "explicit omission record after review. Separately scoped partial theorems may remain unscored. ")
     config["supported_policies"]["validity"] = [{"selector": policy, "instructions":
         "Apply rules.md to unconditional full-secret correctness and jointly charged worst-case resources. "
         + requirement + "Format admission does not prove a claim: establish all exact statements and declared "
         "structured objects for the same algorithm/configuration, domain, model and evidence. Never infer "
-        "coefficients or normalization from prose or hints. Reject mathematical mismatches."}]
+        "coefficients or normalization from prose or hints. Reject mathematical mismatches. "
+        "The tolerance expression must use the sample-tolerance-v1 count family in rules.md; "
+        "establish its original rounded-count guarantee under the stated model, never a numeric tolerance score."}]
     if len(benchmark["tracks"]) != 1 or benchmark["tracks"][0]["name"] != "main":
         raise VerifierError("dcp_manifest_contract")
     benchmark["tracks"][0]["paretoPolicies"]["validity"] = policy
@@ -321,7 +339,7 @@ def configure_mode(config, benchmark, mode):
 
 def _protected_outputs(root, candidate, outputs):
     protected = [root / name for name in ("verifier.json", "benchmark.json", "rules.md",
-                 "dcp_admission.py", "configure_bounds.py", "complexity_bounds.py", "export_metrics.py")]
+                 "dcp_admission.py", "configure_bounds.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py", "export_metrics.py")]
     for output in outputs:
         outside(output, candidate)
     distinct_paths(protected, outputs)

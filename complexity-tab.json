@@ -1,0 +1,49 @@
+{
+  "id": "complexity",
+  "label": "Complexity",
+  "kind": "metrics-frontier",
+  "comparator": "asymptotic-v1",
+  "metricsPath": "dcp",
+  "metricsVersion": "dcp-bounds-v4",
+  "scope": "dcp-cyclic-group-order",
+  "model": "dcp-uniform-clifford-t-bit-operations-v1",
+  "notation": "big-o",
+  "description": "Jointly proved resource bounds for one algorithm and configuration, with n = ceil(log2 N). Samples counts all acquired DCP source copies. Error tolerance is the guaranteed malformed-sample count; larger is better under the same error model. The frontier compares all five guarantees.",
+  "defaultSort": {
+    "by": "metric",
+    "key": "time",
+    "direction": "asc"
+  },
+  "columns": [
+    {
+      "key": "time",
+      "label": "Time",
+      "direction": "-"
+    },
+    {
+      "key": "classical_space",
+      "label": "Classical memory",
+      "direction": "-"
+    },
+    {
+      "key": "quantum_space",
+      "label": "Quantum memory",
+      "direction": "-"
+    },
+    {
+      "key": "samples",
+      "label": "Samples",
+      "direction": "-"
+    }
+  ],
+  "expressionColumns": [
+    {
+      "key": "error_tolerance",
+      "label": "Error tolerance",
+      "metricsPath": "dcp_error_tolerance",
+      "metricsVersion": "reviewed-expression-v1",
+      "comparator": "sample-tolerance-v1"
+    }
+  ],
+  "useForFrontier": true
+}

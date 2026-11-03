@@ -1,4 +1,4 @@
-# DCP: proved time and memory bounds
+# DCP: proved time, memory, and sample bounds
 
 ## Problem and goal
 
@@ -41,16 +41,24 @@ free postselection, or uncharged preparation is allowed.
 S_C is peak allocated classical bits; S_Q is peak allocated qubits. Include
 inputs, intermediate data, saved samples, lookup tables, ancillas and stored
 circuit descriptions. State held by the inaccessible source is excluded.
-All three bounds must hold jointly for one fully specified algorithm and
+Q is the total number of fresh DCP source copies acquired, including discarded
+copies and every failed or restarted attempt. It is not peak stored samples,
+measurement outcomes, batches, or distinct Fourier labels. Each acquired copy
+still incurs the source cost above. Declare its full uniform bit-length bound
+and exact growth index, using the same n and success guarantee as the other
+resources. Q has no independent numeric objective.
+
+All four bounds must hold jointly for one fully specified algorithm and
 parameter choice, on every execution branch. An expected-time analysis needs
 an explicit cutoff/restart argument establishing these bounds while retaining
 success ≥ 2/3. Constants are independent of N, s, and sampled outcomes.
 
 ## Claims, full expressions, and numerical scores
 
-Participants edit only `submission/`. In `submission.json`, the first three
-claims are claims for T, S_C, S_Q in that order. Under the default required
-mode, every submission must supply all three supported structured bounds and
+Participants edit only `submission/`. In `submission.json`, the first four
+claims are claims for T, S_C, S_Q, Q in that order. The fifth claim is the
+error-tolerance expression and error model described below; it has no score. Under the default required
+mode, every submission must supply all four supported structured bounds and
 exact nonnegative rational indices, including partial, unscored and validity-only
 submissions. The protected optional mode permits the limited exceptions below.
 Each `statement` must name the same algorithm/configuration, give the full
@@ -110,18 +118,111 @@ was proved.
 Every declared claim must be established exactly as written before a numerical
 vector is published. The reviewer returns `scores: null`; the shared verifier
 derives a one-element numeric vector from the time claim only after atomic
-acceptance. The three original resource claims and their indices remain mandatory
+acceptance. The four original resource claims and their indices remain mandatory
 for every required-mode submission and every optional-mode scored result;
-neither memory claim is an independent numeric objective.
-One proof may establish all three statements. Do not combine
+neither memory claim nor the sample claim is an independent numeric objective.
+One proof may establish all four statements. Do not combine
 configurations, accept a subset, or accept just the numeric part of a statement
 whose stronger expression is unsupported. Source hashes record provenance;
 they are not acceptance selectors.
 
-## Structured reviewed envelopes (dcp-bounds-v3)
+## Error-tolerance expression
 
-The protected review standard is `dcp-joint-bounds-v3`; the validity selector is
-`{"version":"dcp-joint-bounds-v3","structured_bounds":"required"}` at launch.
+Use tau(n,Q) for the guaranteed number of malformed samples tolerated among
+Q acquired source copies; T continues to denote total work. The fifth claim
+must supply a full statement, evidence, and a structured object with exactly:
+
+```json
+{
+  "version": "dcp-error-tolerance-v1",
+  "expression": "0",
+  "error_model": "All acquired copies are independent ideal coset states."
+}
+```
+
+`expression` is the exact display expression for the malformed-sample count,
+for example `0` or `\lfloor Q/n^2\rfloor`. The statement must define every
+parameter, rounding convention, quantifier and validity threshold, and connect
+Q to the same algorithm's acquired samples. It must specify the admissible
+corruptions and independence/adversarial assumptions. A count guarantee is not
+a per-sample corruption probability; do not convert between them without a
+proved probability bound. The original expression is preserved as text and never converted into a numeric
+score or growth index. Policy v6 also validates the supported symbolic count
+family below for the full Pareto comparator. Omit `score`
+on this claim. Expression and error-model text are limited to 2,048 and 4,000
+UTF-16 code units respectively; the expression may use LaTeX math syntax.
+
+Establish success at least 2/3 and all four resource bounds jointly for the
+same algorithm/configuration under every input permitted by the stated error
+model and tolerance. The clean-input problem above remains required. A zero
+expression states a clean-input guarantee; it does not prove that positive
+tolerance is impossible. No general positive-corruption model is assumed by
+the challenge: the reviewed statement must make that additional promise precise.
+
+Required mode checks the fifth declaration before review, including on unscored
+and validity-only submissions. Optional-mode scored results still require the
+fifth expression/model and joint proof; separately scoped optional unscored
+work keeps its existing limited semantics. An unsupported tolerance claim
+invalidates the joint result. Every declared structured object participates in
+the shared verifier's atomic acknowledgment.
+
+The producer exports this claim in `metrics.dcp_error_tolerance` as a
+`reviewed-expression-v1` record: expression, context (the error-model text),
+original statement, source hash, evidence hashes, and the same intake/dossier
+hashes as the resource envelope. The Complexity tab displays it as an expression
+column, with floor brackets preserved. The registered `sample-tolerance-v1`
+comparator maximizes the count guarantee alongside the four minimized resource
+bounds. `useForFrontier: true` applies this same full vector to the table,
+Pareto membership, and frontier history. The default time chart and its sole
+numeric objective remain unchanged. Tolerance has no numeric score or sort key;
+its Best badge uses the standard table presentation.
+
+The supported count family is
+
+$$
+\min\!\left(Q,\left\lfloor c Q^q n^a(\log_2 n)^b\right\rfloor\right),
+\qquad c\ge0,\quad q\in\{0,1\},\quad a,b\in\mathbb Q.
+$$
+
+The cap is implicit: a malformed count cannot exceed Q. Bare expressions also
+mean an upper threshold on an integer count, so they have the same floor
+semantics. Supported syntax includes nonnegative integer/rational coefficients,
+`Q`, `n`, `L` (meaning log2 n), products, divisions, grouped rational powers,
+`\frac{...}{...}`, and optional outer `\lfloor ...\rfloor` (including
+`\left`/`\right`). Write log powers as `(\log_2 n)^b`; ambiguous `\log_2 n^b`,
+ungrouped negative or multi-digit exponents, sums, arbitrary functions/macros, decimals, and sample powers other than 0 or 1
+are unsupported. Numeric tokens have at most 64 digits; normalized rationals
+have at most 256 digits, expressions at most 128 tokens and groups 12 levels.
+Non-unit coefficient powers must be integers between -16 and 16. Admission
+checks this grammar before review; format validity is not mathematical proof.
+
+Comparison is eventual in n and uniform over integer Q >= 1: a law is at least
+as tolerant if its integer threshold is no smaller for every common Q once n
+is sufficiently large. This compares declared laws at common formal n,Q; it
+neither assumes an algorithm can choose every Q nor substitutes a sample upper
+bound for an algorithm's actual acquired-copy count. Such a substitution could
+change an absolute-count guarantee and is not justified by a big-O bound.
+
+Zero is the minimum and Q is the maximum. For the same sample power, compare
+n powers, then log powers, then exact coefficients; constant expressions are
+floored first. Decaying sample-independent expressions eventually equal zero,
+and sample-linear factors eventually >=1 saturate at Q. Other positive fixed
+or n-dependent counts and non-saturated sample-linear laws are incomparable:
+small Q favors the fixed count, while unbounded Q favors the sample-linear law.
+
+Comparisons require identical error-model text. This text must identify the
+same corruption assumptions and parameter meanings, separate from the count
+expression. Different models remain incomparable; no order on corruption
+models is inferred. Equivalent supported expressions group together after exact
+normalization. A submission dominates only if no resource or tolerance guarantee
+is worse and at least one is better. Unsupported comparison expressions are
+explicitly omitted by the consumer, never treated as zero. Historical display-only
+columns retain their exact expression/context grouping when no comparator is set.
+
+## Structured reviewed envelopes (dcp-bounds-v4)
+
+The protected review standard is `dcp-joint-bounds-v6`; the validity selector is
+`{"version":"dcp-joint-bounds-v6","structured_bounds":"required"}` at launch.
 The scoring policy stays `dcp-time-growth-v2`. The verifier opts into
 `structured_claims: "atomic-v1"`. The organizer may switch to optional mode using
 `python configure_bounds.py --mode optional`, which synchronizes the verifier's
@@ -130,12 +231,18 @@ one mode may be registered. Participants cannot override it in submission data
 or an evaluation selector. Returning to required uses the same command with
 `--mode required`; either semantic change needs its corresponding policy identity.
 Historical `dcp-joint-bounds-v2` intakes retain their original optional semantics.
+Historical `dcp-joint-bounds-v5` intakes retain the original bounded-text tolerance
+contract; no new comparison syntax is retroactively required for replay.
+Historical `dcp-joint-bounds-v4` intakes retain their four-resource admission
+policy without a tolerance claim. No tolerance is inferred for historical results.
+Historical `dcp-joint-bounds-v3` intakes retain their three-resource admission
+policy and `dcp-bounds-v3` output; no sample claim is inferred or backfilled.
 
-Each of the first three claims must declare a `structured` object in required
+Each of the first four claims must declare a `structured` object in required
 mode, and may do so in optional mode, with exactly
 `version`, `comparator`, `scope`, `model`, `notation`, and `bound`:
 
-- `version`: `dcp-bounds-v3`; `comparator`: `asymptotic-v1`.
+- `version`: `dcp-bounds-v4`; `comparator`: `asymptotic-v1`.
 - `scope`: `dcp-cyclic-group-order`, meaning every N and s under the problem
   above, with n = ceil(log₂ N), not N itself.
 - `model`: `dcp-uniform-clifford-t-bit-operations-v1`, meaning all the charged
@@ -166,7 +273,7 @@ For example O(2^{sqrt(n)} n²) is declared as:
 The reviewer must explicitly establish that each structured object describes
 its complete original statement and evidence for the same algorithm and joint
 configuration. The review acknowledges the digest of all structured claim
-records, including both memory claims. The producer verifies the dossier and
+records, including both memory claims and the sample claim. The producer verifies the dossier and
 that acknowledgment before projecting, checks the exact g(B) against each
 resource index, and performs only the declared rational normalization above.
 No coefficients, exponents, scope or cost model may be supplied by inference
@@ -178,8 +285,8 @@ not replace O() by 1. Required mode format-rejects it before paid review. In
 optional mode only, such a claim can still be reviewed as mathematical text with
 its exact index: omit its structured declaration, or retain a generically valid
 unsupported object in reviewed data. The producer then emits
-`metrics.dcp_omission` with an explicit reason and all three reviewed claims/evidence
-instead of a `metrics.dcp` v3 row.
+`metrics.dcp_omission` with an explicit reason and all four reviewed claims/evidence
+instead of a `metrics.dcp` v4 row.
 Mismatched review evidence, scope/model/notation, or a conflicting exact growth
 index is rejected. A rejected, unscored, validity-only or simulated evaluation
 cannot supply a frontier entry.
@@ -210,7 +317,7 @@ assumptions, unproved lemmas, numerical experiments, or a reduction with an
 unaccounted subroutine cannot establish a scored result. A relevant, correct,
 explicitly scoped partial theorem may be valid with null scores in a separate
 optional-mode submission whose claims state that limited scope. Required mode
-still demands all three supported resource claims on every submission; a partial
+still demands all four supported resource claims on every submission; a partial
 theorem without them is format-rejected before review. State unresolved obligations;
 do not promote them into assumptions of a full DCP solution or use review
 commentary to narrow an unsupported declared claim.
@@ -221,7 +328,7 @@ fetch external material.
 The Pareto backend uses one minimizing time-growth objective. Its numerical
 order is a coarse UI summary; equal-time and slower-time/lower-memory accepted
 submissions still carry their independent evidence. The configured Complexity
-frontier compares all three supported structured guarantees under exactly the
+frontier compares all four supported structured guarantees under exactly the
 same version, scope, model and notation. Scientific comparison and manual
 promotion use the full proved bounds. Establish
 an asymptotic no-worse relation for each resource and a strict improvement in at

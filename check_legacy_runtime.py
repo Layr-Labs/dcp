@@ -1,4 +1,4 @@
-"""Offline compatibility test: the original pinned verifier must fail closed for v3."""
+"""Offline compatibility test: the original pinned verifier must fail closed for structured bounds."""
 
 import argparse
 import json
@@ -28,13 +28,13 @@ def check(legacy_src):
         root = Path(directory)
         dossier, score = root / "dossier.json", root / "score.json"
         dossier.write_text(json.dumps(fixture()))
-        score.write_text('{"valid":true,"scores":[0],"metrics":{"dcp":{"version":"dcp-bounds-v3"}}}')
+        score.write_text('{"valid":true,"scores":[0],"metrics":{"dcp":{"version":"dcp-bounds-v4"}}}')
         result = subprocess.run([sys.executable, str(ROOT / "export_metrics.py"),
                                  "--dossier", str(dossier), "--out", str(score)],
                                 env=environment, capture_output=True, text=True)
         assert result.returncode != 0 and "dcp_structured_verifier_required" in result.stderr, result.stderr
         assert not score.exists(), "Unsupported runtime left a publishable stale score"
-    print("PASS: exact pinned verifier rejects v3 config and export; stale score removed")
+    print("PASS: exact pinned verifier rejects current config and export; stale score removed")
 
 
 if __name__ == "__main__":
