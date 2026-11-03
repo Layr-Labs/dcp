@@ -110,7 +110,12 @@ Known missing/unsupported/malformed declarations succeed as a **format rejection
 `dcp-admission` artifact contains original bounded bytes, selected policy, exact
 validator source hashes, verifier identity and the replayable receipt. These
 hashes are provenance, not review authentication or mathematical acceptance.
-The rejection uploads the sole `dcp-score` artifact and skips review. Supported
+The rejection uploads the sole `dcp-score` artifact and skips review. On Yukon,
+a separate receipt-only job uses GitHub workload identity to bind that rejection
+to the platform accepted-results protocol. It verifies the same admission
+snapshot and immutable candidate, calls no judge, executes no candidate code,
+and exports only the authenticated receipt, never an accepted-claims bundle or
+mathematical dossier. The admission job itself remains credential-free. Supported
 submissions proceed through the actual verifier and normal producer instead.
 Configuration, I/O, pin and unexpected runtime faults fail without a score.
 Validity-only requests omit scores; score-only invalid requests fail with
