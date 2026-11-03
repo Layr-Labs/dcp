@@ -1,0 +1,48 @@
+{
+  "scope": "Finite diagnostics only; not asymptotic proof or official evaluation.",
+  "parameter_cases": 8168,
+  "stage_inequalities": 300152,
+  "target_bit_allocations": 29356,
+  "phase_decoder_numeric_checks": 4096,
+  "maximum_observed_decoder_error_turns": 0.0146484375,
+  "exact_spectral_label_reconstructions": 14133,
+  "exact_true_secret_interval_checks": 36456,
+  "erroneous_estimate_interval_size_checks": 90,
+  "theoretical_quota_comparison": [
+    {
+      "n": 64,
+      "VFD3_depth": 8,
+      "VFD3_log2_initial_list": 49.084643,
+      "FD2_log2_initial_list": 63.054265,
+      "note": "Theoretical integer quotas, not measured execution times."
+    },
+    {
+      "n": 256,
+      "VFD3_depth": 15,
+      "VFD3_log2_initial_list": 70.247906,
+      "FD2_log2_initial_list": 115.011252,
+      "note": "Theoretical integer quotas, not measured execution times."
+    },
+    {
+      "n": 1024,
+      "VFD3_depth": 28,
+      "VFD3_log2_initial_list": 109.392318,
+      "FD2_log2_initial_list": 215.002816,
+      "note": "Theoretical integer quotas, not measured execution times."
+    },
+    {
+      "n": 4096,
+      "VFD3_depth": 54,
+      "VFD3_log2_initial_list": 187.523564,
+      "FD2_log2_initial_list": 411.000704,
+      "note": "Theoretical integer quotas, not measured execution times."
+    },
+    {
+      "n": 16384,
+      "VFD3_depth": 106,
+      "VFD3_log2_initial_list": 343.643859,
+      "FD2_log2_initial_list": 799.000176,
+      "note": "Theoretical integer quotas, not measured execution times."
+    }
+  ]
+}
