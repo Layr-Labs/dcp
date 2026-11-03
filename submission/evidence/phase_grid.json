@@ -1,0 +1,325 @@
+{
+  "denominator": 65536,
+  "points": [
+    {
+      "index": 0,
+      "cosine_numerator": 65536,
+      "sine_numerator": 0
+    },
+    {
+      "index": 1,
+      "cosine_numerator": 65220,
+      "sine_numerator": 6424
+    },
+    {
+      "index": 2,
+      "cosine_numerator": 64277,
+      "sine_numerator": 12785
+    },
+    {
+      "index": 3,
+      "cosine_numerator": 62714,
+      "sine_numerator": 19024
+    },
+    {
+      "index": 4,
+      "cosine_numerator": 60547,
+      "sine_numerator": 25080
+    },
+    {
+      "index": 5,
+      "cosine_numerator": 57798,
+      "sine_numerator": 30893
+    },
+    {
+      "index": 6,
+      "cosine_numerator": 54491,
+      "sine_numerator": 36410
+    },
+    {
+      "index": 7,
+      "cosine_numerator": 50660,
+      "sine_numerator": 41576
+    },
+    {
+      "index": 8,
+      "cosine_numerator": 46341,
+      "sine_numerator": 46341
+    },
+    {
+      "index": 9,
+      "cosine_numerator": 41576,
+      "sine_numerator": 50660
+    },
+    {
+      "index": 10,
+      "cosine_numerator": 36410,
+      "sine_numerator": 54491
+    },
+    {
+      "index": 11,
+      "cosine_numerator": 30893,
+      "sine_numerator": 57798
+    },
+    {
+      "index": 12,
+      "cosine_numerator": 25080,
+      "sine_numerator": 60547
+    },
+    {
+      "index": 13,
+      "cosine_numerator": 19024,
+      "sine_numerator": 62714
+    },
+    {
+      "index": 14,
+      "cosine_numerator": 12785,
+      "sine_numerator": 64277
+    },
+    {
+      "index": 15,
+      "cosine_numerator": 6424,
+      "sine_numerator": 65220
+    },
+    {
+      "index": 16,
+      "cosine_numerator": 0,
+      "sine_numerator": 65536
+    },
+    {
+      "index": 17,
+      "cosine_numerator": -6424,
+      "sine_numerator": 65220
+    },
+    {
+      "index": 18,
+      "cosine_numerator": -12785,
+      "sine_numerator": 64277
+    },
+    {
+      "index": 19,
+      "cosine_numerator": -19024,
+      "sine_numerator": 62714
+    },
+    {
+      "index": 20,
+      "cosine_numerator": -25080,
+      "sine_numerator": 60547
+    },
+    {
+      "index": 21,
+      "cosine_numerator": -30893,
+      "sine_numerator": 57798
+    },
+    {
+      "index": 22,
+      "cosine_numerator": -36410,
+      "sine_numerator": 54491
+    },
+    {
+      "index": 23,
+      "cosine_numerator": -41576,
+      "sine_numerator": 50660
+    },
+    {
+      "index": 24,
+      "cosine_numerator": -46341,
+      "sine_numerator": 46341
+    },
+    {
+      "index": 25,
+      "cosine_numerator": -50660,
+      "sine_numerator": 41576
+    },
+    {
+      "index": 26,
+      "cosine_numerator": -54491,
+      "sine_numerator": 36410
+    },
+    {
+      "index": 27,
+      "cosine_numerator": -57798,
+      "sine_numerator": 30893
+    },
+    {
+      "index": 28,
+      "cosine_numerator": -60547,
+      "sine_numerator": 25080
+    },
+    {
+      "index": 29,
+      "cosine_numerator": -62714,
+      "sine_numerator": 19024
+    },
+    {
+      "index": 30,
+      "cosine_numerator": -64277,
+      "sine_numerator": 12785
+    },
+    {
+      "index": 31,
+      "cosine_numerator": -65220,
+      "sine_numerator": 6424
+    },
+    {
+      "index": 32,
+      "cosine_numerator": -65536,
+      "sine_numerator": 0
+    },
+    {
+      "index": 33,
+      "cosine_numerator": -65220,
+      "sine_numerator": -6424
+    },
+    {
+      "index": 34,
+      "cosine_numerator": -64277,
+      "sine_numerator": -12785
+    },
+    {
+      "index": 35,
+      "cosine_numerator": -62714,
+      "sine_numerator": -19024
+    },
+    {
+      "index": 36,
+      "cosine_numerator": -60547,
+      "sine_numerator": -25080
+    },
+    {
+      "index": 37,
+      "cosine_numerator": -57798,
+      "sine_numerator": -30893
+    },
+    {
+      "index": 38,
+      "cosine_numerator": -54491,
+      "sine_numerator": -36410
+    },
+    {
+      "index": 39,
+      "cosine_numerator": -50660,
+      "sine_numerator": -41576
+    },
+    {
+      "index": 40,
+      "cosine_numerator": -46341,
+      "sine_numerator": -46341
+    },
+    {
+      "index": 41,
+      "cosine_numerator": -41576,
+      "sine_numerator": -50660
+    },
+    {
+      "index": 42,
+      "cosine_numerator": -36410,
+      "sine_numerator": -54491
+    },
+    {
+      "index": 43,
+      "cosine_numerator": -30893,
+      "sine_numerator": -57798
+    },
+    {
+      "index": 44,
+      "cosine_numerator": -25080,
+      "sine_numerator": -60547
+    },
+    {
+      "index": 45,
+      "cosine_numerator": -19024,
+      "sine_numerator": -62714
+    },
+    {
+      "index": 46,
+      "cosine_numerator": -12785,
+      "sine_numerator": -64277
+    },
+    {
+      "index": 47,
+      "cosine_numerator": -6424,
+      "sine_numerator": -65220
+    },
+    {
+      "index": 48,
+      "cosine_numerator": 0,
+      "sine_numerator": -65536
+    },
+    {
+      "index": 49,
+      "cosine_numerator": 6424,
+      "sine_numerator": -65220
+    },
+    {
+      "index": 50,
+      "cosine_numerator": 12785,
+      "sine_numerator": -64277
+    },
+    {
+      "index": 51,
+      "cosine_numerator": 19024,
+      "sine_numerator": -62714
+    },
+    {
+      "index": 52,
+      "cosine_numerator": 25080,
+      "sine_numerator": -60547
+    },
+    {
+      "index": 53,
+      "cosine_numerator": 30893,
+      "sine_numerator": -57798
+    },
+    {
+      "index": 54,
+      "cosine_numerator": 36410,
+      "sine_numerator": -54491
+    },
+    {
+      "index": 55,
+      "cosine_numerator": 41576,
+      "sine_numerator": -50660
+    },
+    {
+      "index": 56,
+      "cosine_numerator": 46341,
+      "sine_numerator": -46341
+    },
+    {
+      "index": 57,
+      "cosine_numerator": 50660,
+      "sine_numerator": -41576
+    },
+    {
+      "index": 58,
+      "cosine_numerator": 54491,
+      "sine_numerator": -36410
+    },
+    {
+      "index": 59,
+      "cosine_numerator": 57798,
+      "sine_numerator": -30893
+    },
+    {
+      "index": 60,
+      "cosine_numerator": 60547,
+      "sine_numerator": -25080
+    },
+    {
+      "index": 61,
+      "cosine_numerator": 62714,
+      "sine_numerator": -19024
+    },
+    {
+      "index": 62,
+      "cosine_numerator": 64277,
+      "sine_numerator": -12785
+    },
+    {
+      "index": 63,
+      "cosine_numerator": 65220,
+      "sine_numerator": -6424
+    }
+  ]
+}
