@@ -1,0 +1,13 @@
+{
+  "scope": "Finite exhaustive arithmetic evidence only; no official mathematical review.",
+  "comparator_cases": 87376,
+  "controlled_permutation_basis_cases": 32992,
+  "maximum_materialized_boolean_operations": 106,
+  "maximum_materialized_wires": 113,
+  "Toffoli_parity_phase_assignments": 8,
+  "zero_threshold_regression": {
+    "old_carry": 0,
+    "required": 1,
+    "repaired_carry": 1
+  }
+}
