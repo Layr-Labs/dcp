@@ -1,0 +1,11 @@
+{
+  "scope": "Inherited exact Fourier/reciprocal/cap framework diagnostics; fixed16 product checks historical. Not a PG5 performance or asymptotic proof.",
+  "lagrange_basis_evaluations": 961,
+  "signed_16way_products": 48,
+  "recursive_multiplication_calls": 31978,
+  "rectangular_products": 126,
+  "exact_reciprocal_reduction_cases": 20150,
+  "recursive_qft_columns": 126,
+  "maximum_numeric_qft_amplitude_error": 7.978328020265154e-15,
+  "binomial_cap_tail_checks": 32
+}
