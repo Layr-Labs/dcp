@@ -1,0 +1,12 @@
+{
+  "scope": "Exact rational finite certificate for fixed constants only.",
+  "arctangent_terms": 20,
+  "sine_and_cosine_terms": 60,
+  "pi_interval_width_less_than": "2^-90",
+  "Taylor_remainders_less_than": "2^-200",
+  "coordinate_error_less_than": "2^-16",
+  "decoder_chord_bound_less_than": "1/4",
+  "phase_error_less_than": "1/16",
+  "grid_sha256": "9ebb923efd6c3c2d17a29f6f2290e18564998ddf181e1ad5e1fcf84bb3d72f2a",
+  "points": 64
+}
