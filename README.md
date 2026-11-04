@@ -17,7 +17,7 @@ equal indices do not imply equivalent full bounds. Sample complexity counts ever
 and failed attempts; it is independent of peak quantum storage and is not a
 numeric objective. Promotion remains manual.
 
-The fifth claim is the guaranteed malformed-sample count expression and explicit
+The fifth claim is the guaranteed malformed-sample fraction expression and explicit
 error model, reviewed jointly with the four resource bounds. It has no `score`
 and adds no numeric objective. The baseline claims `0`, meaning that its proof
 requires clean samples; it does not prove a maximum tolerance of zero. The full
@@ -84,14 +84,15 @@ proof certification.
 ## Required admission and the optional switch
 
 Launch defaults to validity policy
-`{"version":"dcp-joint-bounds-v6","structured_bounds":"required"}` with unchanged
+`{"version":"dcp-joint-bounds-v7","structured_bounds":"required"}` with unchanged
 `dcp-time-growth-v2` scoring. Every submission must declare supported time,
 classical-space, quantum-space and sample bounds and matching exact rational indices,
 plus the fifth unscored tolerance expression and error model. Its supported
-`sample-tolerance-v1` count law participates in the full Pareto frontier, with
-floor notation preserved and no new numeric objective. See
+`fractional-tolerance-v1` fractional guarantee participates in the full Pareto frontier, with
+the original fractional expression preserved and no new numeric objective. See
 [rules.md](rules.md#error-tolerance-expression) for syntax, comparison semantics,
-and the requirement to match error models. Earlier v5 tolerance dossiers retain
+and the requirement to match error models. Earlier v6 count dossiers retain their count grammar and original `reviewed-expression-v1` exports;
+they are never reinterpreted as fractional guarantees. Earlier v5 tolerance dossiers retain
 their original bounded-text admission contract.
 This includes unscored, partial and validity-only submissions. The gate checks
 format and index consistency; only the judge establishes the exact statements,
@@ -185,13 +186,17 @@ Preserve the existing historical track, accepted baseline and evidence.
 
 ## Sample and error-tolerance columns
 
-[complexity-tab.json](complexity-tab.json) configures four resource columns plus
-a descriptive Error tolerance column, with Time ascending. Preserve the page's default
+[complexity-tab.json](complexity-tab.json) configures Time, Classical memory,
+Quantum memory, Number of Samples, and expression-only Fractional Error Tolerance,
+with Time ascending. Preserve the page's default
 chart `presentation.results.defaultView = {"mode":"record","objective":"time_growth"}`.
 The tab is configured for `dcp-bounds-v4`; it must be activated only with a
-source/policy and freshly reviewed results supplying that contract. The file is
+source/policy and freshly reviewed results supplying `dcp-bounds-v4` resources and
+a `reviewed-fraction-v1` tolerance sidecar. The fifth input claim uses
+`dcp-fractional-error-tolerance-v1`, with fractions such as `1/100` or `1/n^2`
+and no Q or floor brackets. The file is
 a tab configuration, not a full page replacement. It requires the Yukon reviewed-expression
-column support, in addition to the existing resource comparator.
+column support and `fractional-tolerance-v1`, in addition to the resource comparator.
 
 Historical v4 sample-only dossiers retain their four resources without inferred
 tolerance. Historical v3 dossiers continue to emit their original three-resource v3

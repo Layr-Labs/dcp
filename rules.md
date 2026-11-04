@@ -128,101 +128,92 @@ they are not acceptance selectors.
 
 ## Error-tolerance expression
 
-Use tau(n,Q) for the guaranteed number of malformed samples tolerated among
-Q acquired source copies; T continues to denote total work. The fifth claim
-must supply a full statement, evidence, and a structured object with exactly:
+Use epsilon(n) for the guaranteed fraction of malformed samples tolerated.
+The fifth claim must supply a full statement, evidence, and a structured object
+with exactly:
 
 ```json
 {
-  "version": "dcp-error-tolerance-v1",
+  "version": "dcp-fractional-error-tolerance-v1",
   "expression": "0",
   "error_model": "All acquired copies are independent ideal coset states."
 }
 ```
 
-`expression` is the exact display expression for the malformed-sample count,
-for example `0` or `\lfloor Q/n^2\rfloor`. The statement must define every
-parameter, rounding convention, quantifier and validity threshold, and connect
-Q to the same algorithm's acquired samples. It must specify the admissible
-corruptions and independence/adversarial assumptions. A count guarantee is not
-a per-sample corruption probability; do not convert between them without a
-proved probability bound. The original expression is preserved as text and never converted into a numeric
-score or growth index. Policy v6 also validates the supported symbolic count
-family below for the full Pareto comparator. Omit `score`
-on this claim. Expression and error-model text are limited to 2,048 and 4,000
-UTF-16 code units respectively; the expression may use LaTeX math syntax.
+`expression` is the exact display expression for the fraction, for example `0`,
+`1/100`, or `\frac{1}{n^2}`. It contains no Q or floor brackets. If the algorithm
+acquires Q samples, at most floor(epsilon(n) Q) may be malformed. Integer rounding
+applies to this implied count, never to the fraction itself. A bound on the
+malformed fraction is not a per-sample corruption probability; converting between
+these needs a proved probability bound.
 
-Establish success at least 2/3 and all four resource bounds jointly for the
-same algorithm/configuration under every input permitted by the stated error
-model and tolerance. The clean-input problem above remains required. A zero
-expression states a clean-input guarantee; it does not prove that positive
-tolerance is impossible. No general positive-corruption model is assumed by
-the challenge: the reviewed statement must make that additional promise precise.
+The statement must define its quantifiers, validity threshold, admissible
+corruptions and independence/adversarial assumptions. Establish success at least
+2/3 and all four resource bounds jointly for the same algorithm/configuration
+under every input permitted by this error model and fractional tolerance. The
+clean-input problem above remains required. Zero states a clean-input guarantee;
+it does not prove that positive tolerance is impossible. No general positive
+corruption model is assumed by the challenge: the reviewed statement must make
+that additional promise precise.
 
-Required mode checks the fifth declaration before review, including on unscored
-and validity-only submissions. Optional-mode scored results still require the
-fifth expression/model and joint proof; separately scoped optional unscored
-work keeps its existing limited semantics. An unsupported tolerance claim
-invalidates the joint result. Every declared structured object participates in
-the shared verifier's atomic acknowledgment.
+Omit `score` on this claim. The original expression is preserved as text and never
+converted into a numeric objective or growth index. Required mode checks the fifth
+declaration before review, including unscored and validity-only submissions.
+Optional-mode scored results still require the fifth expression/model and joint
+proof; separately scoped optional unscored work keeps its existing limited
+semantics. An unsupported tolerance claim invalidates the joint result. Every
+structured object participates in the shared verifier's atomic acknowledgment.
 
-The producer exports this claim in `metrics.dcp_error_tolerance` as a
-`reviewed-expression-v1` record: expression, context (the error-model text),
-original statement, source hash, evidence hashes, and the same intake/dossier
-hashes as the resource envelope. The Complexity tab displays it as an expression
-column, with floor brackets preserved. The registered `sample-tolerance-v1`
-comparator maximizes the count guarantee alongside the four minimized resource
-bounds. `useForFrontier: true` applies this same full vector to the table,
-Pareto membership, and frontier history. The default time chart and its sole
-numeric objective remain unchanged. Tolerance has no numeric score or sort key;
-its Best badge uses the standard table presentation.
+The producer exports `metrics.dcp_error_tolerance` with version
+`reviewed-fraction-v1`: expression, context (error-model text), original statement,
+source hash, evidence hashes, and the same intake/dossier hashes as the resource
+envelope. This version distinguishes fractions from historical count expressions.
+The Complexity tab labels the columns **Number of Samples** and **Fractional Error
+Tolerance**. The registered `fractional-tolerance-v1` comparator maximizes the
+fraction alongside the four minimized resource bounds. `useForFrontier: true`
+applies this full vector to the table, Pareto membership, and frontier history.
+The default time chart and its sole numeric objective remain unchanged. Tolerance
+has no numeric score or sort key; its Best badge uses the standard template.
 
-The supported count family is
+The supported fractional family is
 
 $$
-\min\!\left(Q,\left\lfloor c Q^q n^a(\log_2 n)^b\right\rfloor\right),
-\qquad c\ge0,\quad q\in\{0,1\},\quad a,b\in\mathbb Q.
+\epsilon(n)=\min\!\left(1,c n^a(\log_2 n)^b\right),
+\qquad c\ge0,\quad a,b\in\mathbb Q.
 $$
 
-The cap is implicit: a malformed count cannot exceed Q. Bare expressions also
-mean an upper threshold on an integer count, so they have the same floor
-semantics. Supported syntax includes nonnegative integer/rational coefficients,
-`Q`, `n`, `L` (meaning log2 n), products, divisions, grouped rational powers,
-`\frac{...}{...}`, and optional outer `\lfloor ...\rfloor` (including
-`\left`/`\right`). Write log powers as `(\log_2 n)^b`; ambiguous `\log_2 n^b`,
-ungrouped negative or multi-digit exponents, sums, arbitrary functions/macros, decimals, and sample powers other than 0 or 1
-are unsupported. Numeric tokens have at most 64 digits; normalized rationals
-have at most 256 digits, expressions at most 128 tokens and groups 12 levels.
-Non-unit coefficient powers must be integers between -16 and 16. Admission
-checks this grammar before review; format validity is not mathematical proof.
+The cap at 1 is implicit; submit just the monomial. Supported syntax includes
+nonnegative integer/rational coefficients, `n`, `L` (meaning log2 n), products,
+divisions, grouped rational powers, and `\frac{...}{...}`. Write log powers as
+`(\log_2 n)^b`. Juxtaposed products bind before explicit multiplication/division:
+`1/2n^2` means `1/(2n^2)`, whereas `1/2*n^2` means `(1/2)*n^2`.
+Ambiguous `\log_2 n^b`, ungrouped negative or multi-digit exponents, Q (even if
+cancelled), floor brackets, sums, arbitrary functions/macros and decimals are
+unsupported. Expression and model text are limited to 2,048 and 4,000 UTF-16
+code units. Numeric tokens have at most 64 digits, normalized rationals 256
+digits, expressions 128 tokens and groups 12 levels. Non-unit coefficient powers
+must be integers between -16 and 16. Grammar admission is not mathematical proof.
 
-Comparison is eventual in n and uniform over integer Q >= 1: a law is at least
-as tolerant if its integer threshold is no smaller for every common Q once n
-is sufficiently large. This compares declared laws at common formal n,Q; it
-neither assumes an algorithm can choose every Q nor substitutes a sample upper
-bound for an algorithm's actual acquired-copy count. Such a substitution could
-change an absolute-count guarantee and is not justified by a big-O bound.
+Comparison is eventual in n: larger fractions are preferred once n is sufficiently
+large. Zero is the minimum and 1 the maximum. A positive decaying fraction remains
+strictly better than zero; it is not rounded away. After applying the cap, compare
+n powers, then log powers, then exact rational coefficients. Constant factors in
+fractions matter. Sample acquisition is compared separately; no sample upper bound
+is substituted into a count expression to manufacture a fractional guarantee.
 
-Zero is the minimum and Q is the maximum. For the same sample power, compare
-n powers, then log powers, then exact coefficients; constant expressions are
-floored first. Decaying sample-independent expressions eventually equal zero,
-and sample-linear factors eventually >=1 saturate at Q. Other positive fixed
-or n-dependent counts and non-saturated sample-linear laws are incomparable:
-small Q favors the fixed count, while unbounded Q favors the sample-linear law.
-
-Comparisons require identical error-model text. This text must identify the
-same corruption assumptions and parameter meanings, separate from the count
-expression. Different models remain incomparable; no order on corruption
-models is inferred. Equivalent supported expressions group together after exact
-normalization. A submission dominates only if no resource or tolerance guarantee
-is worse and at least one is better. Unsupported comparison expressions are
-explicitly omitted by the consumer, never treated as zero. Historical display-only
-columns retain their exact expression/context grouping when no comparator is set.
+Comparisons require identical error-model text identifying the corruption
+assumptions and parameter meanings, separately from the tolerance expression.
+Different models remain incomparable; no implication between models is inferred.
+Equivalent supported fractions group after exact normalization. A submission
+dominates only if no resource or tolerance guarantee is worse and at least one is
+better. Unsupported or incompatible expressions are explicit consumer omissions,
+never zero. Historical display-only columns retain exact expression/context
+grouping when no comparator is set.
 
 ## Structured reviewed envelopes (dcp-bounds-v4)
 
-The protected review standard is `dcp-joint-bounds-v6`; the validity selector is
-`{"version":"dcp-joint-bounds-v6","structured_bounds":"required"}` at launch.
+The protected review standard is `dcp-joint-bounds-v7`; the validity selector is
+`{"version":"dcp-joint-bounds-v7","structured_bounds":"required"}` at launch.
 The scoring policy stays `dcp-time-growth-v2`. The verifier opts into
 `structured_claims: "atomic-v1"`. The organizer may switch to optional mode using
 `python configure_bounds.py --mode optional`, which synchronizes the verifier's
@@ -231,6 +222,10 @@ one mode may be registered. Participants cannot override it in submission data
 or an evaluation selector. Returning to required uses the same command with
 `--mode required`; either semantic change needs its corresponding policy identity.
 Historical `dcp-joint-bounds-v2` intakes retain their original optional semantics.
+Historical `dcp-joint-bounds-v6` intakes retain their `sample-tolerance-v1`
+count grammar, `dcp-error-tolerance-v1` input, and `reviewed-expression-v1` output.
+They are not reinterpreted as fractions; a fractional declaration requires its
+own joint review under v7.
 Historical `dcp-joint-bounds-v5` intakes retain the original bounded-text tolerance
 contract; no new comparison syntax is retroactively required for replay.
 Historical `dcp-joint-bounds-v4` intakes retain their four-resource admission

@@ -27,7 +27,7 @@ from llm_verifier.workflow import checkout_revision
 
 from complexity_bounds import RESOURCES, resource_contract, reviewed_bound
 
-from error_tolerance import CLAIM_INDEX, REVIEW_STANDARD, PREVIOUS_TOLERANCE_STANDARD, reviewed_tolerance, tolerance_required
+from error_tolerance import CLAIM_INDEX, REVIEW_STANDARD, COUNT_STANDARD, PREVIOUS_TOLERANCE_STANDARD, reviewed_tolerance, tolerance_required
 
 SAMPLE_STANDARD = "dcp-joint-bounds-v4"
 PREVIOUS_STANDARD = "dcp-joint-bounds-v3"
@@ -90,7 +90,7 @@ def admission_mode(effective):
         if default != {"version": LEGACY_STANDARD}:
             raise VerifierError("dcp_admission_policy")
         return "optional"
-    if (config["review_standard"] not in (REVIEW_STANDARD, PREVIOUS_TOLERANCE_STANDARD, SAMPLE_STANDARD, PREVIOUS_STANDARD) or type(default) is not dict
+    if (config["review_standard"] not in (REVIEW_STANDARD, COUNT_STANDARD, PREVIOUS_TOLERANCE_STANDARD, SAMPLE_STANDARD, PREVIOUS_STANDARD) or type(default) is not dict
             or set(default) != {"version", "structured_bounds"}
             or default["version"] != config["review_standard"]
             or type(default["structured_bounds"]) is not str
@@ -329,8 +329,8 @@ def configure_mode(config, benchmark, mode):
         + requirement + "Format admission does not prove a claim: establish all exact statements and declared "
         "structured objects for the same algorithm/configuration, domain, model and evidence. Never infer "
         "coefficients or normalization from prose or hints. Reject mathematical mismatches. "
-        "The tolerance expression must use the sample-tolerance-v1 count family in rules.md; "
-        "establish its original rounded-count guarantee under the stated model, never a numeric tolerance score."}]
+        "The tolerance expression must use the fractional-tolerance-v1 fraction family in rules.md, with no Q or floor brackets; "
+        "establish recovery with at most that fraction of malformed samples under the stated model, never a numeric tolerance score."}]
     if len(benchmark["tracks"]) != 1 or benchmark["tracks"][0]["name"] != "main":
         raise VerifierError("dcp_manifest_contract")
     benchmark["tracks"][0]["paretoPolicies"]["validity"] = policy

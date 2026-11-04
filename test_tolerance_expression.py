@@ -45,7 +45,15 @@ class ToleranceExpressionTest(unittest.TestCase):
                     parse(expression)
                 claims = fixture_claims()
                 claims[4]["structured"]["expression"] = expression
-                receipt = admission_receipt(effective_for(), files_for(claims))
+                claims[4]["structured"]["version"] = "dcp-error-tolerance-v1"
+                effective = effective_for()
+                config = effective["config"]
+                policy = {"version": "dcp-joint-bounds-v6", "structured_bounds": "required"}
+                config["review_standard"] = policy["version"]
+                config["policies"]["validity"] = policy
+                config["supported_policies"]["validity"] = [{"selector": policy, "instructions": "Historical count grammar."}]
+                effective["evaluation"], effective["policy_instructions"] = select_evaluation(config)
+                receipt = admission_receipt(effective, files_for(claims))
                 self.assertEqual(receipt["outcome"], "format_rejected")
                 self.assertEqual(receipt["diagnostic"]["code"], "dcp_tolerance_comparison_expression")
 
@@ -59,6 +67,7 @@ class ToleranceExpressionTest(unittest.TestCase):
             effective["evaluation"], effective["policy_instructions"] = select_evaluation(config)
         claims = fixture_claims()
         claims[4]["structured"]["expression"] = r"\sqrt{Q}"
+        claims[4]["structured"]["version"] = "dcp-error-tolerance-v1"
         output = projection(fixture(claims=claims, mode="required", configure=prior))
         self.assertEqual(output["metrics"]["dcp_error_tolerance"]["expression"], r"\sqrt{Q}")
         self.assertEqual(output["scores"], [1/3])

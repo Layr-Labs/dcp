@@ -11,12 +11,13 @@ from test_export_metrics import fixture, fixture_claims
 
 class ToleranceTest(unittest.TestCase):
     def test_exact_expression_context_and_provenance_without_scalar(self):
-        for expression in ("0", r"\lfloor Q/n^2\rfloor", r"\lfloor Q/100\rfloor"):
+        for expression in ("0", r"\frac{1}{n^2}", "1/100"):
             claims = fixture_claims()
             claims[4]["structured"].update(expression=expression, error_model="Explicit inert test error model.")
             record = fixture(claims=claims, mode="required")
             result = projection(record)
             tolerance = result["metrics"]["dcp_error_tolerance"]
+            self.assertEqual(tolerance["version"], "reviewed-fraction-v1")
             self.assertEqual(tolerance["expression"], expression)
             self.assertEqual(tolerance["context"], claims[4]["structured"]["error_model"])
             self.assertEqual(tolerance["statement"], claims[4]["statement"])

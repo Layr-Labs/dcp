@@ -95,10 +95,10 @@ N-dependent time and sample bounds and polynomial space expressions remain
 in the claim statements. Sample count includes all unsuccessful tests and
 discarded copies, independently of how little quantum workspace is retained.
 
-## Error tolerance
+## Fractional error tolerance
 
 The preceding correctness and resource proof assumes that all acquired copies
 are independent ideal coset states. It therefore establishes the malformed-sample
-count guarantee tau(n,Q)=0 jointly with all four bounds, for the same algorithm.
+fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
 No positive tolerance is claimed or scored. This describes the proved guarantee;
 it does not assert that the algorithm's maximum possible tolerance is zero.

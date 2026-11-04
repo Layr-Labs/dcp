@@ -41,7 +41,7 @@
         },
         "validity": {
           "structured_bounds": "required",
-          "version": "dcp-joint-bounds-v6"
+          "version": "dcp-joint-bounds-v7"
         }
       },
       "promotionMode": "manual",

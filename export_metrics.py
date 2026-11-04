@@ -49,7 +49,7 @@ def historical_projection(record, data, intake, config):
 
 def structured_projection(record, data, intake, config):
     if (config["id"] != "dcp" or config["review_standard"] not in {
-            "dcp-joint-bounds-v2", "dcp-joint-bounds-v3", "dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6"}
+            "dcp-joint-bounds-v2", "dcp-joint-bounds-v3", "dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6", "dcp-joint-bounds-v7"}
             or config.get("structured_claims") != "atomic-v1"
             or config.get("acceptance_policy", "atomic-claims-v1") != "atomic-claims-v1"
             or [o["name"] for o in config["objectives"]] != ["time_growth"]
@@ -113,7 +113,7 @@ def structured_projection(record, data, intake, config):
     else:
         result["metrics"] = {"dcp": {**contract, **provenance, "resources": resources}}
     # Tolerance is a separate reviewed expression, not an asymptotic upper bound.
-    from error_tolerance import CLAIM_INDEX, METRICS_VERSION, reviewed_tolerance, tolerance_required
+    from error_tolerance import CLAIM_INDEX, metrics_version, reviewed_tolerance, tolerance_required
     if tolerance_required(config["review_standard"]):
         expression = reviewed_tolerance(intake["data"]["manifest"], standard=config["review_standard"])
         claim = claims[CLAIM_INDEX]
@@ -126,7 +126,7 @@ def structured_projection(record, data, intake, config):
         if accepted.get(CLAIM_INDEX) != expected:
             raise VerifierError("dcp_tolerance_review_binding")
         result["metrics"]["dcp_error_tolerance"] = {
-            "version": METRICS_VERSION, **expression, **source, **provenance,
+            "version": metrics_version(config["review_standard"]), **expression, **source, **provenance,
         }
     return result
 

@@ -32,8 +32,8 @@ def term(a="1", p="1/3", q="1"):
 
 
 def tolerance_claim(expression="0", error_model="All acquired samples are independent ideal coset states."):
-    return {"statement": "Offline fixture only: the same algorithm has the stated malformed-sample count tolerance and joint resource bounds under the stated error model.",
-            "evidence": ["proof.md"], "structured": {"version": "dcp-error-tolerance-v1",
+    return {"statement": "Offline fixture only: the same algorithm has the stated malformed-sample fractional tolerance and joint resource bounds under the stated error model.",
+            "evidence": ["proof.md"], "structured": {"version": "dcp-fractional-error-tolerance-v1",
             "expression": expression, "error_model": error_model}}
 
 

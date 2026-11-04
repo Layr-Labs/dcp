@@ -8,7 +8,7 @@
   "scope": "dcp-cyclic-group-order",
   "model": "dcp-uniform-clifford-t-bit-operations-v1",
   "notation": "big-o",
-  "description": "Jointly proved resource bounds for one algorithm and configuration, with n = ceil(log2 N). Samples counts all acquired DCP source copies. Error tolerance is the guaranteed malformed-sample count; larger is better under the same error model. The frontier compares all five guarantees.",
+  "description": "Jointly proved resource bounds for one algorithm and configuration, with n = ceil(log2 N). Number of Samples counts all acquired DCP source copies. Fractional Error Tolerance is the guaranteed fraction of malformed samples tolerated; larger is better under the same error model. The frontier compares all five guarantees.",
   "defaultSort": {
     "by": "metric",
     "key": "time",
@@ -32,17 +32,17 @@
     },
     {
       "key": "samples",
-      "label": "Samples",
+      "label": "Number of Samples",
       "direction": "-"
     }
   ],
   "expressionColumns": [
     {
       "key": "error_tolerance",
-      "label": "Error tolerance",
+      "label": "Fractional Error Tolerance",
       "metricsPath": "dcp_error_tolerance",
-      "metricsVersion": "reviewed-expression-v1",
-      "comparator": "sample-tolerance-v1"
+      "metricsVersion": "reviewed-fraction-v1",
+      "comparator": "fractional-tolerance-v1"
     }
   ],
   "useForFrontier": true
