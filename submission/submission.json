@@ -1,14 +1,132 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "MDC1: minimum feasible sieve depth with a smaller joint exponential envelope",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and every fixed secret s in Z/NZ, let n=ceil(log2 N). The single MDC1 algorithm and exact parameter choice in proof.md Sections 1-10, with its specified n<=16 exhaustive branch, recover the entire secret with unconditional probability at least 1019/1024. All four resource bounds hold jointly on every execution branch, with absolute constants independent of N, s and outcomes. For n>=2, total charged sequential work T is O(n^5 2^((244949/100000) sqrt(n))); the explicitly bounded n=1 cases are handled separately. This full envelope includes all costs and storage assigned to that resource in rules.md. Its growth index is exactly 1/2. The structured bound is this same envelope, with the known coefficient 244949/100000 inside the exponent and an unspecified absolute outer big-O constant.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
+        "proof.md",
+        "evidence/schedule_audit.py",
+        "evidence/arithmetic_audit.py",
+        "evidence/batch_instrument_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/arithmetic_results.json",
+        "evidence/batch_results.json",
+        "evidence/schedule_results.json",
+        "metrics-addendum.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "244949/100000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "5",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and every fixed secret s in Z/NZ, let n=ceil(log2 N). The single MDC1 algorithm and exact parameter choice in proof.md Sections 1-10, with its specified n<=16 exhaustive branch, recover the entire secret with unconditional probability at least 1019/1024. All four resource bounds hold jointly on every execution branch, with absolute constants independent of N, s and outcomes. For n>=2, peak allocated classical space S_C in bits is O(n^(3/2) 2^((244949/100000) sqrt(n))); the explicitly bounded n=1 cases are handled separately. This full envelope includes all costs and storage assigned to that resource in rules.md. Its growth index is exactly 1/2. The structured bound is this same envelope, with the known coefficient 244949/100000 inside the exponent and an unspecified absolute outer big-O constant.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "evidence/schedule_audit.py",
+        "evidence/arithmetic_audit.py",
+        "evidence/batch_instrument_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/arithmetic_results.json",
+        "evidence/batch_results.json",
+        "evidence/schedule_results.json",
+        "metrics-addendum.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "244949/100000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and every fixed secret s in Z/NZ, let n=ceil(log2 N). The single MDC1 algorithm and exact parameter choice in proof.md Sections 1-10, with its specified n<=16 exhaustive branch, recover the entire secret with unconditional probability at least 1019/1024. All four resource bounds hold jointly on every execution branch, with absolute constants independent of N, s and outcomes. For n>=2, peak allocated accessible quantum space S_Q in qubits is O(n^(1/2) 2^((244949/100000) sqrt(n))); the explicitly bounded n=1 cases are handled separately. This full envelope includes all costs and storage assigned to that resource in rules.md. Its growth index is exactly 1/2. The structured bound is this same envelope, with the known coefficient 244949/100000 inside the exponent and an unspecified absolute outer big-O constant.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "evidence/schedule_audit.py",
+        "evidence/arithmetic_audit.py",
+        "evidence/batch_instrument_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/arithmetic_results.json",
+        "evidence/batch_results.json",
+        "evidence/schedule_results.json",
+        "metrics-addendum.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "244949/100000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "1/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and fixed secret s in Z/NZ, let n=ceil(log2 N). For the same MDC1 algorithm and exact configuration in proof.md, on every execution branch including aborts, the total number K of fresh DCP source copies acquired is at most N(n+10) for n<=16 and at most 4(J+1)L_0+(n+10)(2^ell+2) for n>=17, with J, L_0 and ell defined in proof.md Section 1. Consequently K=O(n^(3/2) 2^((244949/100000) sqrt(n))) uniformly over N, s and outcomes, with an absolute outer constant; the n=1 cases are explicitly covered by the finite branch. The envelope has exact growth index 1/2. The count includes all batch acquisitions and fresh verification copies, including rejected tests, failed attempts and discarded copies. This bound holds jointly with the original time and memory guarantees and unconditional success at least 1019/1024 under the specified ideal independent source. The structured object describes this same sample-count envelope.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "metrics-addendum.md",
         "proof.md"
       ],
       "structured": {
@@ -21,94 +139,20 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "244949/100000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "3/2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
+      "statement": "For the same MDC1 algorithm and configuration in proof.md and the explicitly defined source-copy replacement context in metrics-addendum.md Section 3, the guaranteed tolerated malformed-sample count is the exact expression tau(n,Q)=0 for every N>=2, fixed secret s, n=ceil(log2 N) and total acquired copy count Q. With at most zero malformed acquisitions the input law is the stipulated independent rho_s law, so unconditional full-secret success is at least 1019/1024, jointly with the declared time, classical-memory, quantum-memory and sample-count upper bounds. This is a guaranteed lower bound on tolerated count, not an optimality assertion, O(1), a positive constant, a fraction of Q, or the internal failure probability. No positive malformed-sample tolerance is claimed. This expression claim has no numeric score.",
       "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved malformed-sample tolerance is tau(n,Q)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
-      "evidence": [
+        "metrics-addendum.md",
         "proof.md"
       ],
       "structured": {
