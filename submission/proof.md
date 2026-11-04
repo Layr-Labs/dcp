@@ -1,104 +1,553 @@
-# Exhaustive shift testing
+# RR8: recycle rejected differences and a third sum population
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+RR8 directly reuses PS7 submissioncda83fcf-1faa-41d5-b858-d5ec44122fe6's
+same-bucket SUM pooling and the earlier exact adaptive source framework.
+It adds a third SUM pass and a separate GLOBAL pool of primary rejected
+DIFFERENCES, whose known nonuniform law and exact flattening are proved in
+recycle-sieve.md. All four resource envelopes improve jointly to coefficient
+2286279/1000000 with unchanged success and clean-input tolerance. No prior
+verdict is a premise.
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+The inherited VFD3-M4 foundation is submission
+6f4423a3-e180-476f-987a-b1c4cdaa898e, candidate
+c3719a087388963198f068135526bd69fe3ab877. Its spectral ensemble,
+exact arithmetic, outer decoder and primary flat-difference channel
+are reproduced below; RR8 replaces the quota/instrument proof explicitly. Earlier VFD3/FD2 ancestry remains acknowledged in
+Section 13. No prior mathematical verdict is a premise.
 
-## Correctness
+## 1. The theorem and the exact algorithm configuration
 
-On a component with offset x, controlled subtraction produces
+For every integer N >= 2 and fixed s in Z/NZ, let n=ceil(log2 N). RR8
+receives only fresh independent copies of the mixed state in rules.md. It
+outputs the entire s with unconditional probability at least 1019/1024.
+The same execution has, on every branch, including every abort,
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+    T(N,s)   = O(n^3 (log2 n) 2^((2286279/1000000) sqrt(n)+21 sqrt(log2 n))),
+    S_C(N,s) = O(n (log2 n) 2^((2286279/1000000) sqrt(n))),
+    S_Q(N,s) = O((log2 n) 2^((2286279/1000000) sqrt(n))).
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+These asymptotic envelopes apply for n>=2. The n=1 cases are explicitly
+handled below and have absolute finite costs. Each envelope has growth
+index exactly 1/2. Constants are absolute, independent of N, s, outcomes
+and memory contents. They include source calls, classical bit work,
+addressing, generated gates, measurements, initialization and all failures.
+The structured objects declare these exact envelopes. Both time exponent
+coefficients 2286279/1000000 and 21 are explicitly proved; no unspecified
+inside big-O coefficient is replaced by a number.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+For n<=16, RR8 exhaustively tests t=0,...,N-1 by Section 10 with k=n+10
+fresh tests per candidate. It returns the first candidate passing all tests,
+or zero if none passes. This is a fixed finite prefix of the single algorithm.
+It does not run the sieve or generate the phase table.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+For n>=17 put h=n+1, m=floor(log2 N), q=97/16, r=259/100.
+`clog(x)` is the bit length of x-1. Define the exact integers
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+    ell=min{v>=1 : v+sum_(j=0)^(v-1)floor(r*j)>=m-1},
+    J=m-1-ell, lambda=clog(1024*h),
+    M=8192*lambda, F=2^60*lambda,
+    L_i=ceil(F*q^(ell-i)), i=0,...,ell,
+    R=4*(J+1)*L_0, global_coin_trial_limit=4R,
+    a_phase=clog(2^20*R), t_phase=n+a_phase+4, k=n+10.
 
-## Implementing the controlled subtraction
+Compute ell by binary search on[1,m-1] and the displayed finite sum; its
+upper endpoint is feasible. All rational powers/ceilings are exact integer
+operations, L_i=ceil(F*97^t/16^t). For i=0,...,ell-1 greedily allocate
+b_i up to floor(r*(ell-i-1)) until their sum is exactly J. Capacity guarantees
+this. For each target j=0,...,J allocate a_i greedily from b_i until sum a_i=j,
+and let c_i=b_i-a_i. These widths are deterministic, independent of outcomes.
+The exact bounds 2^r<q<2^(2601/1000),
+ell<=(879/1000)sqrt(n)+2 and ell=Theta(sqrt n) are proved from small rational
+inequalities in recycle-sieve.md Section3. They imply
+L_0=O(log2(n)*2^((2286279/1000000)sqrt(n))). No guessed exponent constant is used.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Every abort outputs the n-bit encoding of zero and releases its workspace.
+All loops, allocations and return values are defined on every measurement
+string. No unbounded repetition, favorable-outcome conditioning, oracle,
+instance-dependent advice or uncharged preparation is part of RR8.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The source, arithmetic and outer decoder foundations are reproduced below.
+The original flat-difference foundation derives from FD2 submission
+286f74f7-dd46-4db7-9fe2-031755c76a04, candidate
+773a35a977a66bbe10fa6f8f6ea50c2021f0fba0 (outside this challenge scope),
+through the explicitly named VFD3/MDC1/PG sources. The new pooled-sum
+instrument, distribution proof and quotas are in recycle-sieve.md; no
+historical acceptance is a proof premise or a cube-root complexity claim.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+## 2. Exact reversible operations on the entire encoded domain
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Use temporary arithmetic width w=n+2. A Boolean ripple adder with initial carry
+c_0 in {0,1} is the following fixed loop for i=0,...,w-1:
 
-## Joint costs and indices
+    p_i = a_i XOR b_i
+    z_i = p_i XOR c_i
+    g_i = a_i AND b_i
+    h_i = p_i AND c_i
+    c_(i+1) = g_i XOR h_i.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+Here g_i and h_i are mutually exclusive. Truth tables prove the sum and carry
+identities, and induction proves the w-bit sum and final carry. Retain all
+intermediate Boolean wires until reversal. SUB(X,C) means this same ADD loop on
+X and the bitwise complement of the w-bit C, WITH INITIAL CARRY ONE. It returns
+(X-C) modulo 2^w and final carry [X>=C]. This also holds at C=0: the complemented
+zero plus carry-in represents 2^w. Replacing it with the wrapped constant
+(-C mod 2^w) and carry-in zero would give the wrong comparison when C=0 and is
+not the RR8 schedule. A Boolean MUX(control,x,y) is
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+    y XOR (control AND (x XOR y)).
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+To add a known c in [0,N) conditionally modulo N, let X be the n-bit input,
+zero padded to width w, and let B be the quantum control bit. Compute
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+    (_, geN) = SUB(X,N)
+    active = B AND NOT(geN)
+    (S,_) = ADD(X,c,0)
+    (D,ge) = SUB(S,N)
+    V = MUX(ge,D,S)
+    out = low_n_bits(MUX(active,V,X)).
 
-## Error tolerance
+On X<N and B=1 this is X+c mod N. On B=0 or X>=N it fixes X. The inverse uses
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-count guarantee tau(n,Q)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+    (_,geN) = SUB(Y,N)
+    active = B AND NOT(geN)
+    (D,gec) = SUB(Y,c)
+    (P,_) = ADD(Y,N-c,0)
+    V = MUX(gec,D,P)
+    out = low_n_bits(MUX(active,V,Y)).
+
+For Y<N this selects Y-c or Y+N-c and is the inverse; on invalid encodings it
+is identity. The formulas include c=0 and N=2^n. All sums used in comparisons
+are below 2^w. Wrapped subtraction outputs are used only under the appropriate
+comparison/MUX. Thus the maps are mutually inverse permutations on ALL n-bit
+encodings, not just on the valid residues.
+
+Each ADD/SUB has five Boolean gates per bit before constant simplification;
+three arithmetic loops and the MUXes use fewer than 100w Boolean gates per map.
+Compute each Boolean output into a fresh clean wire, XOR the final n output bits
+into a target, and reverse the Boolean schedule. This implements an XOR oracle
+with clean scratch. To implement the in-place permutation f, XOR-compute f(X)
+into clean Y, swap X,Y, and XOR-compute f^-1(X) into Y. The latter clears old X.
+This proves scratch cleanup on every basis state; linearity proves the unitary
+on superpositions. The control B is preserved.
+
+NOT, CNOT and Toffoli implement the Boolean computations exactly. Toffoli has an
+exact constant-size Clifford+T realization: for bits a,b,c,
+
+    4abc = a+b+c -(a XOR b)-(a XOR c)-(b XOR c)+(a XOR b XOR c).
+
+Applying T or T-dagger to these seven parities, computed/uncomputed by CNOT,
+implements CCZ exactly. Conjugating its target by H implements Toffoli. Eight
+bit assignments prove the identity exhaustively; there is no residual relative
+or global phase. One reused parity ancilla suffices. Generous bounds of 100000w
+elementary gates and 1000w scratch qubits cover a controlled permutation.
+
+The controller streams this finite pattern using bit position, Boolean-operation
+index and a constant number of block bases. It stores no circuit list. Classically
+known wire addresses are computed by ordinary binary arithmetic. Section 11
+charges their full bit cost. In particular, this construction supplies controlled
+cyclic shifts U^c on valid data, U|x>=|x+1 mod N>, and controlled subtraction for
+Section 10. It assumes no unit-cost quantum lookup or arithmetic oracle.
+
+## 3. A finite rational phase decoder
+
+Let dist be circular distance on R/Z. The fixed table `evidence/phase_grid.json`
+contains rational coordinates for the 64 points exp(2*pi*i*r/64), with denominator
+2^16. Each coordinate has absolute error <2^-16. The table is fixed independently
+of N and s. RR8 generates it once by the finite rational schedule in
+`evidence/rational_grid_certificate.py`, charging its entire finite generation
+work and allocated memory. The included JSON is reproducibility evidence, not
+an uncharged preloaded input. Here is a
+self-contained error justification for its specified generator.
+
+For q=5 and 239, sum the first 20 alternating terms of atan(1/q), obtaining a
+lower bound; adding the next term gives an upper bound. Machin's identity
+pi=16 atan(1/5)-4 atan(1/239) gives rational bounds p_lo,p_hi with width <2^-90
+and 3<p_lo<p_hi<22/7. To prove the identity, tan(2 atan(1/5))=5/12 and
+ tan(4 atan(1/5))=120/119. Subtracting atan(1/239) gives tangent one, and the
+angle lies in (0,pi/2), hence is pi/4. At each argument 2r(p_lo+p_hi)/(2*64),
+sum 60 sine or cosine Taylor terms. Its magnitude is below seven; remainder
+bounds are respectively 7^121/121! and 7^120/120!, both <2^-200. Replacing pi by
+the interval midpoint contributes <2*(p_hi-p_lo) per coordinate. Rounding to
+16 fractional bits contributes <=2^-17. Their sum is <2^-16. The certificate
+checks these strict inequalities using rational integers and fractions only.
+
+Given empirical means x,y in [-1,1], select the smallest grid index r minimizing
+squared Euclidean distance to the rational table point; return alpha=r/64. All
+comparisons are exact rational comparisons. If x,y approximate cos(2*pi*theta),
+sin(2*pi*theta) within 1/32 each, empirical-vector error is <=sqrt(2)/32. A true
+grid point is within chordal distance pi/64 of the true point. Triangle
+inequalities for nearest approximate-grid selection give chordal error at most
+
+    p_hi/64 + 3/32 + 3/65536 < 1/4,
+
+using sqrt(2)<3/2. A chord at circular distance d is 2 sin(pi*d)>=4d for
+0<=d<=1/2, so dist(alpha,theta)<1/16. This decoder has no real-arithmetic,
+angle-estimation, or synthesis oracle.
+
+The following exact rational unwrapping routine is used twice. Given
+alpha_0,...,alpha_H estimating 2^h theta modulo one, set z_H=alpha_H. For
+h=H-1,...,0 choose, modulo one, from
+
+    z_(h+1)/2, (z_(h+1)+1)/2
+
+the candidate circularly closer to alpha_h, taking the smaller rational on a tie.
+If every dist(alpha_h,2^h theta)<=eta=1/16, induction proves
+
+    dist(z_h,2^h theta) <= eta*2^(-(H-h)).
+
+The true nearby preimage has distance <=3eta/2 from alpha_h; the other has distance
+>=1/2-3eta/2. These are strictly separated. The nearby preimage halves the prior
+fine-scale error. This argument uses circular distance, so it includes wraparound
+at zero. All numerators and denominators have O(H+1) bits.
+
+For completeness, the concentration estimate used below is elementary. If
+X in {-1,1}, the second derivative of log E exp(t(X-E X)) is a tilted variance,
+which is <=1. Its value and first derivative vanish at zero, giving an upper
+bound t^2/2. Independence and Markov, optimized over t, then give
+
+    Pr(|sample_mean-E X|>epsilon) <= 2 exp(-M epsilon^2/2).
+
+At epsilon=1/32 the bound is 2 exp(-M/2048).
+
+## 4. Source-only phase labels through binary phase estimation
+
+For analysis define omega=exp(2*pi*i/N),
+
+    chi_y = (1/sqrt(N)) sum_x omega^(-yx)|x>,
+    q_y = (|0>+omega^(sy)|1>)/sqrt(2), Q_y=|q_y><q_y|.
+
+Direct expansion of matrix entries gives
+
+    rho_s = (1/N) sum_(y=0)^(N-1) Q_y tensor |chi_y><chi_y|.
+
+Indeed the cross entry indexed by x,z sums omega^(y(z-x-s)), which vanishes
+unless z=x+s mod N, and the diagonal blocks agree as well. Also U chi_y=omega^y
+chi_y. This is an ensemble identity for the given mixed state; it supplies no
+accessible hidden register or additional source operation to the algorithm.
+
+The actual RR8 extractor is specified in phase-labels.md and fast-labels.md.
+Its phase and shared gradient registers both have t_phase=n+clog(2^20 R)+4
+bits. A counted reciprocal is generated once, then exact coherent modular
+translation implements all powers together. The binary inverse Fourier
+transform is exact in the ideal-gradient analysis, using recursive product
+phases implemented with clean reversible adaptive multiplication and
+additions into the appropriate top bits of the shared gradient. No Fourier
+phase is truncated. Measured-residue rounding uses the same explicit fast
+integer product. All data permutations extend to invalid encodings, and no
+source inverse, QRAM or arithmetic/Fourier oracle is assumed.
+
+Exact ideal QPE has label-error probability less than 1/(2^23 R) per source.
+Its union across R acquisitions is less than 2^-23. Actual bounded gradient
+preparation contributes input trace distance less than 2^-36 and abort less
+than 2^-122. The global channel comparison costs less than 1/1024 in total.
+Only the ideal gradient is assumed unchanged; actual errors are not refreshed
+or declared independent. The first source phase qubit is retained. Every required circuit identity and charged bit algorithm is in
+phase-labels.md, fast-labels.md and adaptive-arithmetic.md.
+
+## 5. Exact populations, including nonuniform primary rejections
+
+At a stage decompose independent uniformu=r0+2^a(v+M0*h0), bucket by(r0,h0)
+and pair original positions. Middle valuesv are iid uniform in[0,M0), with
+M0 an even power of two>=4. LetH=M0/2,A'=A2^a and bucket offsetf0.
+Primary CNOT produces a difference or SUM. Exact primary flattening has
+categories keptD1(probability1/4, uniform[0,H)), SUMZ1(probability1/2,
+triangular labelT2 and offset2f0), and rejected differenceV(probability1/4).
+NOW retainV: its frequency isq_(A'd) with ZERO offset for every bucket.
+Its normalized labels have weightsW_H/H^2, withW(0)=0,
+W(d)=H-d for1<=d<H andW(d)=2H-d forH<=d<2H. This population is not
+asserted uniform.
+
+Pool first SUMs within each bucket by original primary-pair position. A second
+difference is flattened with the exact triangular correlationC_d. Keep the
+second-pass SUM states too: their common offset is4f0 and middle labels
+have convolutionT4=T2*T2. Pool those within bucket by generation position;
+a third difference is flattened by the exact order-eight kernelE_d. Discard
+third-pass SUMs and rejected SECOND/THIRD differences. Separately pool all
+PRIMARY V states globally by original position, since their offsets have
+already cancelled, and flatten their new difference by the cubic kernelJ_d.
+No pairing uses label values or mixes sum states from different bucket offsets.
+
+recycle-sieve.md Sections1-5 give every integer count, positive coin ratio,
+conditional qubit/density identity and the product law after any full set of
+category/keep flags. In particular first SUM rescue succeeds withp2>=1/6,
+third SUM rescue withp3>=151/1260, and globalV rescue with probabilityEXACTLY1/4;
+every retained state has the SAME uniform[0,H),q_(A'd) law. Availability and
+fixed-prefix retention preserve the next-stage product ensemble. Counts
+at different levels are correlated; no independence of those counts is assumed.
+
+## 6. Exact rational coins and one hard global trial counter
+
+Primary coins keep zero and for0<d<H useM0/[2(M0-d)]. Second-SUM coins keep
+zero and useC0/(2C_d); third-SUM coins keep zero and useE0/(2E_d).
+GlobalV rescue usesH^3/(2J0) at zero, andH^3/(4J_d) at positive d<H.
+ZERO IS NOT ALWAYS KEPT IN THAT LAST CHANNEL. All channels reject d>=H.
+The complete kernel formulas and valid denominators are in recycle-sieve.md.
+Their degree<=7 O(n)-bit arithmetic uses the counted adaptive product.
+Drawclog(D) fair bitsVdraw, retry whenVdraw>=D and otherwise accept when
+Vdraw<numerator. All fair bits, zero-label coins, rejected draws and resets
+are counted.
+
+One counter permits at most4R sampler trials in all passes/batches. Abort
+if another trial is needed after that cap. The new deterministic coin bound
+is3L_i/4 per stage, NOT the formerL_i/2: withP1,Z1,V primary counts,
+P2<=Z1/2,P3<=Z2/2,P_V<=V/2, calls are at most
+P1-Z1+P2-Z2+P3+P_V<=3P1/2<=3L_i/4.
+Since sum_i L_i<2L_0, all batches need fewer than(3/2)(J+1)L_0<R coins.
+The retained ideal-coin coupling/conditional Bernoulli bound gives
+cap-abort<=exp(-R/4)<1/1024. Every actual branch has the literal4R trial cap;
+no expected-only shortcut or conditioning on no cap establishes a state law.
+
+## 7. The complete variable-width batches
+
+Generate the outer rational table and one bounded approximate t_phase-bit
+gradient with all capped attempts charged; abort before source calls on
+preparation failure. Generate the reciprocal and all adaptive constants with
+full bit costs. Initialize the global coin counter. Forj=0,...,J sequentially:
+
+1. Acquire4L_0 copies, extract reported labels, retain the firstL_0 below2^m,
+   discard extras and abort on shortage. SetA=1,B=2^m.
+2. For eachi, bucket currentL_i records and make primary pairs by original
+   positions. Process them, saving kept differences, same-bucket SUM lists,
+   and global PRIMARY V records (including out-of-range or coin-rejected
+   differences). Pair/process first SUM lists, retaining second SUM lists;
+   pair/process those and discard their third SUM outcomes. Pair/process
+   the global primaryV list. Output kept primary, second-SUM, third-SUM,
+   thenV-rescue states in fixed original-generation order (bucket order for
+   SUM passes). Use the global cap throughout. Keep the firstL_(i+1),
+   discard extras and abort on shortage. UpdateA<-A2^a_i,B<-B/2^(b_i+1),
+   resetting/reusing all old, SUM andV buffers. Do not recurse any further.
+3. AtA=2^j,B=2,L_ell=F, keep2M label-one qubits or abort; measureM inX,
+   M inY and obtainalpha_j by Section3. Release the batch, saveonlyalpha_j.
+4. Reconstruct and verify by Sections9-10.
+
+The same width identityw_i-b_i=1+(ell-i)+sum_(t>i)b_t>=2 provesM0>=4 and
+final width1. OrdinaryA*B starts<=N and decreases. All CNOT frequency
+identities use actualN, including wrapped sums and arbitrary odd/compositeN.
+Bucket countK_i=2^b_i<=q^(ell-i-1) by2^(259/100)<q. Every record/array range
+and cap is defined on erroneous labels and arbitrary measurement strings.
+
+## 8. Seven conditional concentration events, no false count independence
+
+The elementary Bernoulli Chernoff inequality is
+Pr(X<=(1-delta)mu)<=exp(-mu delta^2/2), obtained by exponential moments,
+Markov, u=-ln(1-delta) and
+(1-delta)ln(1-delta)+delta>=delta^2/2, verified by differentiation.
+
+Fix a stage bucket vector, I=L_i,K=2^b_i. Primary pairsP1>=(I-K)/2 have
+multinomial marginalD1~Bin(P1,1/4),Z1~Bin(P1,1/2),V~Bin(P1,1/4).
+LetP2>=(Z1-K)/2,P3>=(Z2-K)/2,P_V=floor(V/2)>=(V-K)/2. Conditional on
+complete earlier categories, D2~Bin(P2,p2>=1/6), Z2~Bin(P2,1/2),
+D3~Bin(P3,p3>=151/1260), andD_V~Bin(P_V,1/4). These unconditional COUNTS
+are not asserted independent. Takeepsilon=2^-20 and the seven lower events
+for D1,Z1,V,D2,Z2,D3,D_V as specified in recycle-sieve.md Section7.
+They implyY>=(theta-epsilon)I-K/2 withtheta=6661/40320 and
+q(theta-epsilon)-1>1/1024, above the exact next quota including its ceiling.
+
+On the required earlier good-category vectors, primary/SUM/reject pair counts
+are at leastG,G/16,G/256,G/32, respectively, G=Fq^(ell-i-1). Separate primary
+and uniform conditional later Chernoff bounds make each bad-event probability
+<=exp(-G/2^56)<=exp(-16lambda). Thus stage shortage<=7exp(-16lambda),
+without assuming independent category counts or conditioning on middle values.
+The complete derivation, including all coefficients, is in recycle-sieve.md.
+Initial/final shortages are smaller;F/M=2^47>=8. Their total across all
+stages/batches is<=7h(h+2)exp(-16lambda)<1/1024. Exact conditional product
+laws preserve induction after availability/prefix retention. Outer phase
+error remains<1/1024 on available batches. Source/gradient and coin cutoff
+comparison each cost<1/1024 additively; fresh verification has its own1/1024.
+All caps/resources are fixed before that success analysis.
+
+## 9. Coarse phase reconstruction and a short exact candidate interval
+
+Apply Section 3's unwrapping routine to alpha_0,...,alpha_J with theta=s/N.
+When the outer estimates are good,
+
+    dist(z,s/N) <= 2^(-J)/16.
+
+Generate exactly the integers
+
+    C = { t in [0,N): dist(t/N,z) <= 2^(-J)/8 }.
+
+Use exact rational endpoints and ceil/floor, splitting a circle interval crossing
+zero into two ordinary intervals and excluding N. Enumerate only integers in
+these intervals, in increasing order. Never loop through all N integers. For
+any z, including erroneous estimates, its cardinality is at most
+
+    N/(4*2^J)+2 < 2^ell+2.
+
+This uses N<2^(m+1) and J=m-1-ell. The weak bound <=2^ell+2 is used for resources.
+The true s belongs to C on the good event. The all-outcome candidate bound is
+important: an erroneous phase estimate cannot produce an unbounded search.
+
+## 10. Full-secret verification and unconditional success
+
+For each candidate t in C, test at most n+10 independent fresh source copies.
+On one copy conditionally subtract t on its data register when the FIRST source
+qubit is one, using Section 2, then measure that qubit in X. Reject the candidate
+at its first minus; output the first candidate passing all n+10 tests. If none
+passes, output zero.
+
+For t=s every source component becomes |+> tensor |x>, so the true candidate
+always passes. For t!=s, its two data basis states are distinct for every x;
+the first qubit is I/2 and passes with probability 1/2. Fresh source copies
+make the all-pass probability 2^(-(n+10)), conditional on any past transcript
+that reaches that wrong candidate. Union over at most N candidates bounds any
+false early acceptance by N*2^(-(n+10))<=1/1024. This verifies the entire secret,
+not only parity, and counts failed attempts as well.
+
+In the ideal latent-label, uncapped-coin sieve, shortages, outer-phase
+error and false verification each have probability<=1/1024. Outside those
+three events the true candidate is generated and returned. Transfer to the
+hard global coin cap loses at most1/1024 by its additive coupling. Transfer
+exact source/gradient extraction to the actual prepared resource loses at
+most1/1024 by the whole-computation comparison. Therefore
+
+    Pr(output=s)>=1-5/1024=1019/1024>2/3.
+
+The trace-distance transfer is a probability comparison, not an observable
+good-gradient flag or conditioning/postselection. All stage, trial and
+source caps are fixed beforehand; no average-secret guarantee is substituted.
+
+For the n<=16 exhaustive branch the true candidate is in the enumerated
+set and the only possible failure is an earlier false acceptance. Its
+probability is <=1/1024 by the same argument. It therefore satisfies the
+stated uniform 1019/1024 guarantee as well.
+
+## 11. Joint worst-case resources in the charged model
+
+All estimates in this section apply to the concrete execution just specified,
+not merely to an average-success branch. Bit accesses as well as quantum gates
+pay their full address charge. Work is sequential; no concurrency is credited.
+Let L=L_0=ceil(F*q^ell), q=97/16,F=2^60lambda.
+recycle-sieve.md proves ell<=(879/1000)sqrt n+2, log2q<2601/1000,
+ell=Theta(sqrt n), and
+
+    L=O(log2(n)*2^((2286279/1000000)sqrt(n))), sum_(i<ell)L_i<2L.
+
+Consequently logL,logR=O(sqrt n), t_phase=O(n), M=O(log n), and R=O(nL).
+Every fixed/generated constant, current local program and input register is
+counted. The adaptive local descriptions have log sizeO(logn+sqrt(logn)),
+which is o(sqrt n), so their extra allocation fits the following bounds.
+
+Space and addressing. Store a label and classical wire index for each live
+qubit, in old/new arrays, together with bucket counts and stable prefix pointers.
+There are O(L) records and O(L) buckets. A label uses O(n) bits and each pointer
+uses O(log L)=O(sqrt(n)) bits. The quotas, schedule, phase estimates, controller,
+classical arithmetic and fixed rational table use O(n^2)+O(1) further bits.
+The quantum arrays hold at most a constant multiple of L single phase qubits.
+Only one source sample and O(n*2^(21sqrt(log2 n))) arithmetic/QPE scratch
+qubits are live at a time. Classical pointer/local-program records use
+O(n*2^(21sqrt(log2 n))*A_addr) further bits. Both fit the stated envelopes,
+as proved in adaptive-arithmetic.md; they are not assumed free.
+Batches are sequential. Classical scratch and quantum scratch are reused.
+Thus
+
+    S_C = O(nL),     S_Q=O(L),
+
+including the subpolynomial-times-linear local scratch and pointer records.
+
+This includes allocated spare output arrays, input/output buffers, counters,
+all table data and the generator's storage. Freed/reset registers are reused;
+only current local arithmetic/Fourier descriptions and Boolean-value
+history are retained, fully counted, then released/reused. No instruction
+log of the exponentially many whole-sieve operations is kept. The total allocated bit-plus-qubit
+count is O(nL); its address length is therefore
+
+    A_addr = ceil(log2(allocated bits and qubits + 2))=O(sqrt(n)).
+
+Address-generation work is charged explicitly, including the indexed bit
+accesses used while constructing an address. A constant number of address
+buffers, loop counters and block bases suffice. For each logical instruction,
+ordinary binary addition/subtraction/multiplication by a fixed small stride
+constructs its O(A_addr)-bit wire addresses using O(A_addr) elementary bit
+accesses. Charge O(A_addr) for each such access as well as the gate's own
+addressing cost. Copying or emitting a complete address buffer also costs
+O(A_addr^2) by this accounting. We use this straightforward worst-case
+O(A_addr^2) cost per instruction, not an unproved amortized O(A_addr) generator.
+The fixed modular Boolean template can be streamed. For the adaptive
+arithmetic, padded pointer records and current local gate lists, with all
+O(A_addr)-bit instruction copies charged, give the same O(A_addr^2) allowance.
+Their explicit layout, sizing and memory proof is in adaptive-arithmetic.md;
+no multiplication of two variable wire indices is assumed free.
+
+Thus an O(n)-gate modular permutation from Section 2 is generated and applied
+in O(n*A_addr^2)=O(n^2) charged work. The actual source extractor fuses controlled powers by the explicit counted
+reciprocal circuit in fast-labels.md; no exponentially repeated translation,
+arithmetic oracle or uncharged diagnostic builder is part of the program.
+
+Source labels. The exact reciprocal/Fourier framework in fast-labels.md uses
+adaptive-arithmetic.md's fully counted integer product. Including all generated
+matrices and uniform local circuit/pointer records, per-source logical work is
+O(n*2^(21sqrt(log2 n))). Every instruction pays the full O(A_addr^2)=O(n)
+bit/address-generation allowance, giving charged work
+O(n^2*2^(21sqrt(log2 n))) per source and
+O(n^3*L*2^(21sqrt(log2 n))) across R=O(nL) acquisitions. Exact rounding,
+preprocessing, source charge, resets, scratch and failures are included.
+All extra local records have log size O(log n+sqrt(log n))=o(sqrt n), so
+fit O(nL) classical/O(L) quantum before the address bound is used.
+
+Sieve work. All four output populations require only a constant number of
+passes overO(L_i) records. CubicC_d/J_d and degree-sevenE_d arithmetic
+usesO(n*2^(20sqrt(log2 n))) logical work per pair, with every binomial
+computed by explicit seven-factor products/fixed division. Full addresses,
+sum L_i<2L and O(n) targets giveO(n^3 L*2^(20sqrt(log2 n))) work. At most4R
+O(n)-bit trials costO(n^3 L), including zero-V coins, failed draws, measurements
+and resets. Both fit the source21 term. All extra buffers are counted.
+
+Final reconstruction and verification. The candidate interval always has at
+most 2^ell+2 integers. Its endpoints require O(n)-bit rational arithmetic;
+with the same conservative charging, O(n^3) work suffices. Each of at most
+(n+10)(2^ell+2) verification copies uses one O(n)-gate permutation, costing
+O(n^2) including generation, addressing and its n+1 source charge. Therefore
+O(n^3*(2^ell+2)) bounds final verification. Since L>=F*q^ell and q>2, this is
+O(n^3 L), also within source work. Saving phase estimates, generating the
+integer parameter schedule, initializing arrays and writing the final output
+fit O(n^3*L*2^(21sqrt(log2 n))). The rational table is a fixed finite computation with an
+absolute time/space constant charged to these bounds.
+
+Consequently the one program, before assuming successful measurements, obeys
+
+    T=O(n^3*L*2^(21sqrt(log2 n))),       S_C=O(nL),       S_Q=O(L).             (11.2)
+
+Substitution of the L bound above gives the envelopes in Section 1. The finitely many
+n<=16 cases have bounded input sets and at most 2^16*26 tests. Enlarging
+absolute outer constants covers those instances as well, including n=1.
+
+## 12. Exact indices and joint comparison
+
+Putc=2286279/1000000. Each envelope logarithm isc sqrt n+O(log n), so its
+iterated logarithm is(1/2)log2 n+log2 c+o(1), giving exact index1/2 for all
+four resources. The n=1 finite prefix and outer constants do not alter this.
+Relative to PS7 every resource ratio is
+2^(-(1180959/500000-2286279/1000000)sqrt n), tending to zero in the same
+error context. This is a strict full-guarantee improvement, not a new time
+index, small-n practical speedup, optimality, fastest-known or cube-root result.
+The very large finiteF is explicit and charged.
+
+## 13. Provenance and finite evidence
+
+Direct sources include PS7 cda83fcf-1faa-41d5-b858-d5ec44122fe6 and SG6 dc8d6d56-9618-46bc-97a3-e9b18ec65099 and PG5 7e1c8dba-adc8-46db-bf59-1f31688d41c2 and PG4 e40f2d5a-68c9-418b-b4e8-64a80305968e and PG3 5a99915d-bf94-4f6a-8969-5cc6e601a1a9,
+PG2 873cba1f-780f-4fad-bd5b-9cf12b8de874 (unpublished after failed review),
+MDC1 7c30b190-e90b-492c-b52c-29cf1a9da1a7 and the directly consulted
+VFD3-M4 6f4423a3-e180-476f-987a-b1c4cdaa898e. Their retained material and
+changes are identified at the beginning and in fast-labels.md. Earlier
+VFD3 c2e60e34-e31d-4a65-8f18-a420030cf3e4 and VFD3-M
+42e58ec0-80c2-4963-9539-c4fdb27e3ea5 remain acknowledged; the inherited
+FD2 source is 286f74f7-dd46-4db7-9fe2-031755c76a04, candidate
+773a35a977a66bbe10fa6f8f6ea50c2021f0fba0, outside this challenge scope.
+
+Known square-root-growth context includes Kuperberg,
+arXiv:quant-ph/0302112v2 Theorem I.1/Sections III,V and
+arXiv:1112.3333v1 Sections 4.3,4.6. Its Section 4.5 heuristic constant
+is not used. Nam/Su/Maslov arXiv:1803.04933v2 Section II motivates the
+reusable gradient idea; all actual needed circuit proofs are reproduced.
+No external retrieval or accepted verdict is a proof premise.
+
+The current archived diagnostic checks exact higher-order/rejected-state kernels,
+phase densities, all new branchwise coin/output caps and seven-event quotas, with the fixed outer-decoder
+constant generator/certificate also retained. Superseded arithmetic, QFT and
+preparation diagnostic programs were run from frozen predecessor trees and
+are historical checks; they were removed here to reduce duplicate input.
+Their complete analytic arguments remain in proof.md, phase-labels.md,
+fast-labels.md and adaptive-arithmetic.md. Every required proof premise is
+in this snapshot, not a claim that a past test or verdict establishes RR8.
+No hosted experiments are declared.
