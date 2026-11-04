@@ -1,0 +1,23 @@
+{
+  "scope": "Finite exact instrument/parameter and numerical density diagnostics; no asymptotic or device certification.",
+  "triangle_correlation_counts": 1088,
+  "conditional_group_laws": [
+    {
+      "middle_width": 4,
+      "conditional_output_records": 18,
+      "flag_patterns": 10,
+      "exact_mean_outputs": "139/256"
+    },
+    {
+      "middle_width": 8,
+      "conditional_output_records": 40,
+      "flag_patterns": 10,
+      "exact_mean_outputs": "555/1024"
+    }
+  ],
+  "sum_salvage_density_checks": 6656,
+  "maximum_numeric_density_error": 7.122158582569684e-15,
+  "parameter_cases": 4072,
+  "exact_stage_margin_checks": 108657,
+  "exact_exponential_coefficient": "481/200"
+}
