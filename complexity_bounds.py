@@ -10,13 +10,26 @@ import re
 
 from llm_verifier.errors import VerifierError
 
-CONTRACT = {
+LEGACY_CONTRACT = {
     "version": "dcp-bounds-v3",
     "comparator": "asymptotic-v1",
     "scope": "dcp-cyclic-group-order",
     "model": "dcp-uniform-clifford-t-bit-operations-v1",
     "notation": "big-o",
 }
+CONTRACT = {**LEGACY_CONTRACT, "version": "dcp-bounds-v4"}
+LEGACY_RESOURCES = ("time", "classical_space", "quantum_space")
+RESOURCES = (*LEGACY_RESOURCES, "samples")
+
+
+def resource_contract(review_standard):
+    if review_standard in ("dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6", "dcp-joint-bounds-v7"):
+        return RESOURCES, CONTRACT
+    if review_standard in ("dcp-joint-bounds-v2", "dcp-joint-bounds-v3"):
+        return LEGACY_RESOURCES, LEGACY_CONTRACT
+    raise VerifierError("dcp_bound_contract")
+
+
 MAX_DIGITS = 256
 MAX_TERMS = 64
 
@@ -91,9 +104,9 @@ def growth_index(bound):
     return Fraction(0)
 
 
-def reviewed_bound(structured, score):
-    exact_keys(structured, (*CONTRACT, "bound"))
-    if any(structured[key] != value for key, value in CONTRACT.items()):
+def reviewed_bound(structured, score, *, contract=CONTRACT):
+    exact_keys(structured, (*contract, "bound"))
+    if any(structured[key] != value for key, value in contract.items()):
         raise VerifierError("dcp_bound_contract")
     normalized = normalize_bound(structured["bound"])
     if (type(score) is not dict or set(score) != {"numerator", "denominator"}

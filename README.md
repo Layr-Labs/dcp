@@ -4,31 +4,41 @@ Find and prove better algorithms for the Dihedral Coset Problem, aiming at total
 work 2^{O(n^{1/3})}, where n = ceil(log₂ N). Read [rules.md](rules.md) for the
 input, charged cost model and joint proof obligations. Participants edit only
 `submission/`. The example retains its exhaustive-search proof and original
-statements: O(N n⁴) work, O(n²) classical bits and O(n²) qubits. Its new
+statements: O(N n⁴) work, O(n²) classical bits, O(n²) qubits, and at most N(n+2) samples
+(hence O(2ⁿn)). Its new
 structured declarations require a new review; historical acceptance is not
 acceptance of the added fields.
 
 The Pareto backend minimizes **one numeric time growth index**, sourced from
-claim 0. All three resource claims, indices and evidence remain mandatory and
+claim 0. All four resource claims, indices and evidence remain mandatory and
 are reviewed atomically for one algorithm/configuration. The baseline time
 score is `[1]`. Index zero includes polynomial and quasipolynomial guarantees;
-equal indices do not imply equivalent full bounds. Promotion remains manual.
+equal indices do not imply equivalent full bounds. Sample complexity counts every source copy acquired, including discarded copies
+and failed attempts; it is independent of peak quantum storage and is not a
+numeric objective. Promotion remains manual.
+
+The fifth claim is the guaranteed malformed-sample fraction expression and explicit
+error model, reviewed jointly with the four resource bounds. It has no `score`
+and adds no numeric objective. The baseline claims `0`, meaning that its proof
+requires clean samples; it does not prove a maximum tolerance of zero. The full
+expression/model and evidence are exported as `metrics.dcp_error_tolerance`,
+with matching intake/dossier hashes. See [the expression contract](rules.md#error-tolerance-expression).
 
 ## Reviewed structured metrics
 
 `export_metrics.py` reconstructs the shared-verifier dossier before producing
-`metrics.dcp` version `dcp-bounds-v3`. The protected verifier configuration opts
+`metrics.dcp` version `dcp-bounds-v4`. The protected verifier configuration opts
 into `structured_claims: "atomic-v1"`. Each resource claim declares a structured
 object containing the fixed comparison context and an exact rational bound.
 The reviewer must acknowledge the digest of **all** structured claim records,
-including both memory claims. The exporter requires atomic acceptance and
+including both memory claims, the sample claim and the tolerance claim. The exporter requires atomic acceptance and
 matches each accepted statement, structured object, source hash and evidence.
 
-The v3 envelope has exactly these fields:
+The v4 envelope has exactly these fields:
 
 ```json
 {
-  "version": "dcp-bounds-v3",
+  "version": "dcp-bounds-v4",
   "comparator": "asymptotic-v1",
   "scope": "dcp-cyclic-group-order",
   "model": "dcp-uniform-clifford-t-bit-operations-v1",
@@ -38,7 +48,8 @@ The v3 envelope has exactly these fields:
   "resources": {
     "time": "<resource>",
     "classical_space": "<resource>",
-    "quantum_space": "<resource>"
+    "quantum_space": "<resource>",
+    "samples": "<resource>"
   }
 }
 ```
@@ -47,11 +58,11 @@ Each resource has exactly `statement`, `bound`, `source_sha256`, and `evidence`.
 `statement` is verbatim; `evidence` maps paths relative to the submission root
 (such as `proof.md`) to snapshot SHA-256 hashes. The source digest covers the
 claim index and complete source snapshot using the shared verifier's binding.
-The dossier retains all three exact growth indices and original structured data.
+The dossier retains all four exact growth indices and original structured data.
 The table's version/comparator/scope/model/notation must match the envelope.
 
 The bound family is C·2^(Σ a·n^p·(log₂ n)^q)·n^r·(log₂ n)^s, with the exact keys,
-limits and examples in [rules.md](rules.md#structured-reviewed-envelopes-dcp-bounds-v3).
+limits and examples in [rules.md](rules.md#structured-reviewed-envelopes-dcp-bounds-v4).
 `complexity_bounds.py` combines equal terms, folds 2^(a log₂ n) into n^a,
 reduces rational strings and checks the exact growth index. Big-O ignores only
 the outer C; unknown coefficients inside an exponent are never guessed.
@@ -60,7 +71,7 @@ No expression is extracted from prose, LaTeX, hints or scores.
 In protected optional mode, if a valid reviewed claim has no supported
 structured representation, the exporter emits **no `metrics.dcp`**. Instead `metrics.dcp_omission` contains the
 target version, explicit per-resource reasons, intake/dossier hashes and all
-three original statements, indices, evidence and any declared structured data.
+four original statements, indices, evidence and any declared structured data.
 The entire joint row is omitted from the structured frontier. Rejected,
 unscored and validity-only results have no bound metrics. Simulations, stale or
 mismatched review bindings and contradictory context/index data cannot publish.
@@ -73,9 +84,16 @@ proof certification.
 ## Required admission and the optional switch
 
 Launch defaults to validity policy
-`{"version":"dcp-joint-bounds-v3","structured_bounds":"required"}` with unchanged
+`{"version":"dcp-joint-bounds-v7","structured_bounds":"required"}` with unchanged
 `dcp-time-growth-v2` scoring. Every submission must declare supported time,
-classical-space and quantum-space bounds and matching exact rational indices.
+classical-space, quantum-space and sample bounds and matching exact rational indices,
+plus the fifth unscored tolerance expression and error model. Its supported
+`fractional-tolerance-v1` fractional guarantee participates in the full Pareto frontier, with
+the original fractional expression preserved and no new numeric objective. See
+[rules.md](rules.md#error-tolerance-expression) for syntax, comparison semantics,
+and the requirement to match error models. Earlier v6 count dossiers retain their count grammar and original `reviewed-expression-v1` exports;
+they are never reinterpreted as fractional guarantees. Earlier v5 tolerance dossiers retain
+their original bounded-text admission contract.
 This includes unscored, partial and validity-only submissions. The gate checks
 format and index consistency; only the judge establishes the exact statements,
 evidence and same-algorithm joint guarantees.
@@ -93,7 +111,12 @@ Known missing/unsupported/malformed declarations succeed as a **format rejection
 `dcp-admission` artifact contains original bounded bytes, selected policy, exact
 validator source hashes, verifier identity and the replayable receipt. These
 hashes are provenance, not review authentication or mathematical acceptance.
-The rejection uploads the sole `dcp-score` artifact and skips review. Supported
+The rejection uploads the sole `dcp-score` artifact and skips review. On Yukon,
+a separate receipt-only job uses GitHub workload identity to bind that rejection
+to the platform accepted-results protocol. It verifies the same admission
+snapshot and immutable candidate, calls no judge, executes no candidate code,
+and exports only the authenticated receipt, never an accepted-claims bundle or
+mathematical dossier. The admission job itself remains credential-free. Supported
 submissions proceed through the actual verifier and normal producer instead.
 Configuration, I/O, pin and unexpected runtime faults fail without a score.
 Validity-only requests omit scores; score-only invalid requests fail with
@@ -160,6 +183,27 @@ this source does not update an existing track or reclassify an accepted baseline
 Adoption uses the new immutable source and validity policy and needs fresh
 baseline qualification; publishing source alone does not perform those steps.
 Preserve the existing historical track, accepted baseline and evidence.
+
+## Sample and error-tolerance columns
+
+[complexity-tab.json](complexity-tab.json) configures Time, Classical memory,
+Quantum memory, Number of Samples, and expression-only Fractional Error Tolerance,
+with Time ascending. Preserve the page's default
+chart `presentation.results.defaultView = {"mode":"record","objective":"time_growth"}`.
+The tab is configured for `dcp-bounds-v4`; it must be activated only with a
+source/policy and freshly reviewed results supplying `dcp-bounds-v4` resources and
+a `reviewed-fraction-v1` tolerance sidecar. The fifth input claim uses
+`dcp-fractional-error-tolerance-v1`, with fractions such as `1/100` or `1/n^2`
+and no Q or floor brackets. The file is
+a tab configuration, not a full page replacement. It requires the Yukon reviewed-expression
+column support and `fractional-tolerance-v1`, in addition to the resource comparator.
+
+Historical v4 sample-only dossiers retain their four resources without inferred
+tolerance. Historical v3 dossiers continue to emit their original three-resource v3
+metrics under their original required/optional policy. Missing sample claims
+are never synthesized from time, memory, or prose. Existing v3 results do not
+qualify for the four-column v4 table. No hosted policy, baseline, page or
+participant history changes merely by editing this repository.
 
 ## Historical v2 evidence
 

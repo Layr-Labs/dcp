@@ -15,14 +15,12 @@ from llm_verifier.errors import VerifierError
 from llm_verifier.files import clear_output, read_json, write_json
 from llm_verifier.jsonutil import canonical, digest
 
-from complexity_bounds import CONTRACT, reviewed_bound
-
-RESOURCES = ("time", "classical_space", "quantum_space")
+from complexity_bounds import LEGACY_RESOURCES, resource_contract, reviewed_bound
 
 
 def historical_projection(record, data, intake, config):
     """Unchanged v2 projection, replayed with its original verifier runtime."""
-    expected = [r + "_growth" for r in RESOURCES]
+    expected = [r + "_growth" for r in LEGACY_RESOURCES]
     if (config["id"] != "dcp" or config["review_standard"] != "dcp-joint-bounds-v1"
             or [o["name"] for o in config["objectives"]] != expected
             or [o.get("score_source") for o in config["objectives"]]
@@ -44,13 +42,14 @@ def historical_projection(record, data, intake, config):
                 "growth_index": claims[i]["score"],
                 "source_sha256": data["score_records"][i]["source_sha256"],
                 "evidence": {p: files[p]["sha256"] for p in claims[i]["evidence"]},
-            } for i, resource in enumerate(RESOURCES)},
+            } for i, resource in enumerate(LEGACY_RESOURCES)},
         }}
     return result
 
 
 def structured_projection(record, data, intake, config):
-    if (config["id"] != "dcp" or config["review_standard"] not in {"dcp-joint-bounds-v2", "dcp-joint-bounds-v3"}
+    if (config["id"] != "dcp" or config["review_standard"] not in {
+            "dcp-joint-bounds-v2", "dcp-joint-bounds-v3", "dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6", "dcp-joint-bounds-v7"}
             or config.get("structured_claims") != "atomic-v1"
             or config.get("acceptance_policy", "atomic-claims-v1") != "atomic-claims-v1"
             or [o["name"] for o in config["objectives"]] != ["time_growth"]
@@ -63,17 +62,19 @@ def structured_projection(record, data, intake, config):
     # applies even when review is invalid, unscored or validity-only.
     from dcp_admission import validate_intake
     validate_intake(intake)
+    resource_names, contract = resource_contract(config["review_standard"])
     result = dict(data["yukon_projection"])
     if result.get("scores") is None:
         return result
     if not data["judgment"]["valid"] or len(result["scores"]) != 1:
         raise VerifierError("dcp_atomic_acceptance_required")
     claims, files = intake["data"]["manifest"]["claims"], intake["data"]["files"]
-    if len(claims) < 3 or any(type(c) is not dict for c in claims[:3]):
+    if len(claims) < len(resource_names) or any(
+            type(c) is not dict for c in claims[:len(resource_names)]):
         raise VerifierError("dcp_joint_resource_claims_required")
     accepted = {r["claim"]: r for r in pipeline.accepted_structured_claims(record)}
     resources, retained, omitted = {}, {}, []
-    for i, resource in enumerate(RESOURCES):
+    for i, resource in enumerate(resource_names):
         claim = claims[i]
         score = claim.get("score")
         if (type(score) is not dict or set(score) != {"numerator", "denominator"}
@@ -93,7 +94,7 @@ def structured_projection(record, data, intake, config):
             raise VerifierError("dcp_structured_review_binding")
         retained[resource]["structured"] = claim["structured"]
         try:
-            bound = reviewed_bound(claim["structured"], score)
+            bound = reviewed_bound(claim["structured"], score, contract=contract)
         except VerifierError as error:
             # A disagreement in scope/model/notation or the exact index is not
             # an unsupported expression: it contradicts the accepted contract.
@@ -104,13 +105,29 @@ def structured_projection(record, data, intake, config):
         resources[resource] = {**provenance, "bound": bound}
     provenance = {"intake_sha256": intake["sha256"], "dossier_sha256": record["sha256"]}
     if omitted:
-        # Preserve the reviewed joint claims without a usable v3 envelope.
+        # Preserve the reviewed joint claims without a usable structured envelope.
         result["metrics"] = {"dcp_omission": {
-            "version": CONTRACT["version"], "reason": "unsupported_structured_bounds",
+            "version": contract["version"], "reason": "unsupported_structured_bounds",
             "details": omitted, **provenance, "resources": retained,
         }}
     else:
-        result["metrics"] = {"dcp": {**CONTRACT, **provenance, "resources": resources}}
+        result["metrics"] = {"dcp": {**contract, **provenance, "resources": resources}}
+    # Tolerance is a separate reviewed expression, not an asymptotic upper bound.
+    from error_tolerance import CLAIM_INDEX, metrics_version, reviewed_tolerance, tolerance_required
+    if tolerance_required(config["review_standard"]):
+        expression = reviewed_tolerance(intake["data"]["manifest"], standard=config["review_standard"])
+        claim = claims[CLAIM_INDEX]
+        source = {
+            "statement": claim["statement"],
+            "source_sha256": digest({"source": {"claim": CLAIM_INDEX}, "files": digest(files)}),
+            "evidence": {p: files[p]["sha256"] for p in claim["evidence"]},
+        }
+        expected = {"claim": CLAIM_INDEX, "structured": claim["structured"], **source}
+        if accepted.get(CLAIM_INDEX) != expected:
+            raise VerifierError("dcp_tolerance_review_binding")
+        result["metrics"]["dcp_error_tolerance"] = {
+            "version": metrics_version(config["review_standard"]), **expression, **source, **provenance,
+        }
     return result
 
 

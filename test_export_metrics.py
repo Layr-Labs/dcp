@@ -16,7 +16,7 @@ from llm_verifier.jsonutil import canonical, digest
 from llm_verifier.provider import HttpResponse, HttpTransport
 from llm_verifier.simulation import ScriptedProvider
 
-from complexity_bounds import CONTRACT, growth_index, normalize_bound, reviewed_bound
+from complexity_bounds import CONTRACT, LEGACY_CONTRACT, RESOURCES, growth_index, normalize_bound, reviewed_bound
 from export_metrics import export, projection
 
 ROOT = Path(__file__).resolve().parent
@@ -31,17 +31,24 @@ def term(a="1", p="1/3", q="1"):
     return {"coefficient": a, "nPower": p, "logPower": q}
 
 
+def tolerance_claim(expression="0", error_model="All acquired samples are independent ideal coset states."):
+    return {"statement": "Offline fixture only: the same algorithm has the stated malformed-sample fractional tolerance and joint resource bounds under the stated error model.",
+            "evidence": ["proof.md"], "structured": {"version": "dcp-fractional-error-tolerance-v1",
+            "expression": expression, "error_model": error_model}}
+
+
 def fixture_claims():
     # Deliberately independent of the participant-editable baseline.
     statements = ("Offline fixture algorithm A: T(n) = O(2^{n^(1/3) log2 n}); index 1/3; joint bounds.",
                   "Offline fixture algorithm A: S_C(n) = O(n^100); index 0; joint bounds.",
-                  "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.")
-    values = (("1", "3"), ("0", "1"), ("1", "1"))
+                  "Offline fixture algorithm A: S_Q(n) = O(2^n); index 1; joint bounds.",
+                  "Offline fixture algorithm A: Q(n) = O(n^3); index 0; joint bounds.")
+    values = (("1", "3"), ("0", "1"), ("1", "1"), ("0", "1"))
     bounds = (bound(exponent=[term()]), bound(n_power="100"),
-              bound(exponent=[term(p="1", q="0")]))
+              bound(exponent=[term(p="1", q="0")]), bound(n_power="3"))
     return [{"statement": text, "score": {"numerator": n, "denominator": d},
              "evidence": ["proof.md"], "structured": {**CONTRACT, "bound": b}}
-            for text, (n, d), b in zip(statements, values, bounds)]
+            for text, (n, d), b in zip(statements, values, bounds)] + [tolerance_claim()]
 
 
 def fixture(*, unscored=False, invalid=False, fields=None, simulation=False,
@@ -57,6 +64,13 @@ def fixture(*, unscored=False, invalid=False, fields=None, simulation=False,
     if configure:
         configure(effective)
     claims = fixture_claims() if claims is None else claims
+    if effective["config"]["review_standard"] in ("dcp-joint-bounds-v2", "dcp-joint-bounds-v3"):
+        claims = copy.deepcopy(claims[:3])
+        for claim in claims:
+            if type(claim) is dict and "structured" in claim:
+                claim["structured"]["version"] = LEGACY_CONTRACT["version"]
+    if effective["config"]["review_standard"] == "dcp-joint-bounds-v4":
+        claims = copy.deepcopy(claims[:4])
     if unscored:
         claims = ["Inert unscored lemma fixture."]
     with tempfile.TemporaryDirectory() as temporary:
@@ -94,8 +108,8 @@ class MetricsTest(unittest.TestCase):
         for k, v in CONTRACT.items():
             self.assertEqual(metrics[k], v)
         self.assertEqual(len(record["data"]["score_records"]), 1)
-        self.assertEqual(len(record["data"]["accepted_structured_claims"]), 3)
-        for i, resource in enumerate(("time", "classical_space", "quantum_space")):
+        self.assertEqual(len(record["data"]["accepted_structured_claims"]), 5)
+        for i, resource in enumerate(RESOURCES):
             r = metrics["resources"][resource]
             accepted = record["data"]["accepted_structured_claims"][i]
             self.assertEqual(r["statement"], accepted["statement"])
@@ -108,7 +122,7 @@ class MetricsTest(unittest.TestCase):
         record = fixture()
         messages, schema, _ = pipeline.review_material(*record["data"]["phases"][:2])
         evidence = json.loads(messages[1]["content"].split("\n", 1)[1])
-        self.assertEqual(len(evidence["structured_claims"]), 3)
+        self.assertEqual(len(evidence["structured_claims"]), 5)
         self.assertEqual(evidence["structured_claims"], record["data"]["accepted_structured_claims"])
         self.assertIn("structured_claims_sha256", canonical(schema).decode())
         self.assertIn("same algorithm", messages[0]["content"])
@@ -168,14 +182,14 @@ class MetricsTest(unittest.TestCase):
 
     def test_unstructured_claims_are_retained_but_explicitly_omitted(self):
         claims = fixture_claims()
-        for c in claims:
+        for c in claims[:4]:
             c.pop("structured")
         result = projection(fixture(claims=claims))
         self.assertEqual(result["scores"], [1/3])
         self.assertNotIn("dcp", result["metrics"])
         omitted = result["metrics"]["dcp_omission"]
-        self.assertEqual(len(omitted["details"]), 3)
-        for i, resource in enumerate(("time", "classical_space", "quantum_space")):
+        self.assertEqual(len(omitted["details"]), 4)
+        for i, resource in enumerate(RESOURCES):
             self.assertEqual(omitted["resources"][resource]["statement"], claims[i]["statement"])
             self.assertEqual(omitted["resources"][resource]["growth_index"], claims[i]["score"])
             self.assertIn("proof.md", omitted["resources"][resource]["evidence"])
@@ -187,7 +201,7 @@ class MetricsTest(unittest.TestCase):
             claims[0]["structured"]["bound"] = unsupported
             result = projection(fixture(claims=claims))
             self.assertNotIn("dcp", result["metrics"])
-            self.assertEqual(len(result["metrics"]["dcp_omission"]["resources"]), 3)
+            self.assertEqual(len(result["metrics"]["dcp_omission"]["resources"]), 4)
 
     def test_scope_model_notation_and_index_mismatch_are_rejected(self):
         for key in CONTRACT:

@@ -2,7 +2,7 @@
 
 This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
 It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all three resource claims.
+Use the single algorithm below for all four resource claims.
 
 For t = 0, …, N−1, perform k independent tests using fresh source copies.
 In a test, apply controlled subtraction of t modulo N to the second register,
@@ -78,7 +78,8 @@ same algorithm has uniform worst-case bounds
 
 $$
 T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2).
+S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
+Q(N,s)\le N(n+2)=O(2^n n).
 $$
 
 All hidden constants are absolute; enlarging them covers the finitely many
@@ -87,5 +88,17 @@ small bit lengths. These are upper bounds, not tight space estimates.
 For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
 gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
 g(B)=0. Fixed multiplicative constants do not change these limits.
-Therefore the numerical vector is [1, 0, 0]. The stronger N-dependent time
-bound and polynomial space expressions are retained in the claim statements.
+For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
+so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
+is a numeric objective, so the published score vector is [1]. The stronger
+N-dependent time and sample bounds and polynomial space expressions remain
+in the claim statements. Sample count includes all unsuccessful tests and
+discarded copies, independently of how little quantum workspace is retained.
+
+## Fractional error tolerance
+
+The preceding correctness and resource proof assumes that all acquired copies
+are independent ideal coset states. It therefore establishes the malformed-sample
+fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
+No positive tolerance is claimed or scored. This describes the proved guarantee;
+it does not assert that the algorithm's maximum possible tolerance is zero.

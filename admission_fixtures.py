@@ -14,7 +14,7 @@ from llm_verifier.artifacts import implementation
 from llm_verifier.errors import VerifierError
 from llm_verifier.jsonutil import sha
 
-from dcp_admission import admission_receipt, rejection_score
+from dcp_admission import RESOURCES, admission_receipt, rejection_score
 from export_metrics import projection
 from test_dcp_admission import effective_for, files_for, legacy_config
 from test_export_metrics import fixture, fixture_claims
@@ -38,7 +38,7 @@ def generate(out):
             assert error.args[0] == "score_only_claim_not_established"
             case["error"] = error.args[0]
         cases.append(case)
-    for i, resource in enumerate(("time", "classical_space", "quantum_space")):
+    for i, resource in enumerate(RESOURCES):
         claims = fixture_claims()
         claims[i].pop("structured")
         rejected("required-missing-" + resource, claims)

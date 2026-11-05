@@ -11,18 +11,19 @@ from llm_verifier.artifacts import implementation
 
 from complexity_bounds import CONTRACT, normalize_bound
 from export_metrics import projection
-from test_export_metrics import bound, fixture, term
+from test_export_metrics import bound, fixture, term, tolerance_claim
 
 
-def claims_for(p, classical, quantum):
+def claims_for(p, classical, quantum, samples="2"):
     n, d = p.split("/") if "/" in p else (p, "1")
     data = (("time", f"O(2^(n^({p})))", bound(exponent=[term(p=p, q="0")]), n, d),
             ("classical bits", f"O(n^{classical})", bound(n_power=classical), "0", "1"),
-            ("qubits", f"O(n^{quantum})", bound(n_power=quantum), "0", "1"))
-    return [{"statement": f"Offline fixture only: algorithm A uses {expr} {name}; all three bounds hold jointly. Index {numerator}/{denominator}.",
+            ("qubits", f"O(n^{quantum})", bound(n_power=quantum), "0", "1"),
+            ("samples", f"O(n^{samples})", bound(n_power=samples), "0", "1"))
+    return [{"statement": f"Offline fixture only: algorithm A uses {expr} {name}; all four bounds hold jointly. Index {numerator}/{denominator}.",
              "score": {"numerator": numerator, "denominator": denominator},
              "evidence": ["proof.md"], "structured": {**CONTRACT, "bound": raw}}
-            for name, expr, raw, numerator, denominator in data]
+            for name, expr, raw, numerator, denominator in data] + [tolerance_claim()]
 
 
 def normalization_claims():
@@ -57,9 +58,10 @@ def generate(out):
             cases.append({"id": name, "output": output, "dossierPath": path})
 
         for name, p, classical, quantum in specifications:
-            add(name, claims=claims_for(p, classical, quantum))
+            add(name, claims=claims_for(p, classical, quantum,
+                samples="3" if name == "balanced-no-column-win" else "2"))
         raw = claims_for("1/2", "3", "4")
-        for claim in raw:
+        for claim in raw[:4]:
             claim.pop("structured")
         add("unstructured", claims=raw)
         unknown = claims_for("1/2", "3", "4")
@@ -96,9 +98,9 @@ def generate(out):
         "expectedEligibleIds": [row[0] for row in specifications],
         "expectedFrontierIds": ["same-time-less-memory", "exact-tie", "slower-less-memory",
                                 "classical-best", "quantum-best", "balanced-no-column-win"],
-        "expectedBestKeys": {"same-time-less-memory": ["time"], "exact-tie": ["time"],
-                             "slower-less-memory": [], "classical-best": ["classical_space"],
-                             "quantum-best": ["quantum_space"], "balanced-no-column-win": []},
+        "expectedBestKeys": {"same-time-less-memory": ["time", "samples"], "exact-tie": ["time", "samples"],
+                             "slower-less-memory": ["samples"], "classical-best": ["classical_space", "samples"],
+                             "quantum-best": ["quantum_space", "samples"], "balanced-no-column-win": []},
         "normalizationCases": [{"input": b, "expected": normalize_bound(b)} for b in raw_bounds],
     }
     (out / "historical-v2-dossier.json").write_bytes((root / "tests/fixtures/historical-v2-dossier.json").read_bytes())
