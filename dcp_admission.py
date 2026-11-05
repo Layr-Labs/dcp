@@ -28,6 +28,7 @@ from llm_verifier.workflow import checkout_revision
 from complexity_bounds import RESOURCES, resource_contract, reviewed_bound
 
 from error_tolerance import CLAIM_INDEX, REVIEW_STANDARD, COUNT_STANDARD, PREVIOUS_TOLERANCE_STANDARD, reviewed_tolerance, tolerance_required
+from score_derivation import SCORING_POLICY as DERIVATION_SCORING_POLICY
 
 SAMPLE_STANDARD = "dcp-joint-bounds-v4"
 PREVIOUS_STANDARD = "dcp-joint-bounds-v3"
@@ -80,8 +81,8 @@ def admission_mode(effective):
     config, evaluation = effective["config"], effective["evaluation"]
     if (config["id"] != "dcp" or config.get("structured_claims") != "atomic-v1"
             or config.get("acceptance_policy", "atomic-claims-v1") != "atomic-claims-v1"
-            or config["policies"]["scoring"] != SCORING_POLICY
-            or evaluation["policies"]["scoring"] != SCORING_POLICY):
+            or config["policies"]["scoring"] not in (SCORING_POLICY, DERIVATION_SCORING_POLICY)
+            or evaluation["policies"]["scoring"] != config["policies"]["scoring"]):
         raise VerifierError("dcp_admission_policy")
     selected, default = evaluation["policies"]["validity"], config["policies"]["validity"]
     if selected != default:
@@ -210,7 +211,7 @@ def preflight_files(effective, files):
 def validator_identity():
     root = Path(__file__).resolve().parent
     sources = {name: sha((root / name).read_bytes())
-               for name in ("dcp_admission.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py")}
+               for name in ("dcp_admission.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py", "score_derivation.py")}
     return {"version": VALIDATOR, "sources": sources, "source_sha256": digest(sources),
             "verifier_revision": VERIFIER_REVISION, "verifier_implementation": implementation()}
 
@@ -312,8 +313,11 @@ def configure_mode(config, benchmark, mode):
     if mode not in ("required", "optional") or type(mode) is not str:
         raise VerifierError("dcp_admission_policy")
     config, benchmark = deepcopy(config), deepcopy(benchmark)
-    policy = {"version": REVIEW_STANDARD, "structured_bounds": mode}
-    config["review_standard"] = REVIEW_STANDARD
+    standard = config.get("review_standard", REVIEW_STANDARD)
+    if standard not in (COUNT_STANDARD, REVIEW_STANDARD):
+        standard = REVIEW_STANDARD
+    policy = {"version": standard, "structured_bounds": mode}
+    config["review_standard"] = standard
     config["policies"]["validity"] = policy
     requirement = ("Every submission, including partial/unscored or validity-only work, must contain "
                    "all four supported structured resource bounds (time, classical space, quantum space, "
@@ -329,8 +333,11 @@ def configure_mode(config, benchmark, mode):
         + requirement + "Format admission does not prove a claim: establish all exact statements and declared "
         "structured objects for the same algorithm/configuration, domain, model and evidence. Never infer "
         "coefficients or normalization from prose or hints. Reject mathematical mismatches. "
-        "The tolerance expression must use the fractional-tolerance-v1 fraction family in rules.md, with no Q or floor brackets; "
-        "establish recovery with at most that fraction of malformed samples under the stated model, never a numeric tolerance score."}]
+        + ("The tolerance expression must use the fractional-tolerance-v1 fraction family in rules.md, with no Q or floor brackets; "
+           "establish recovery with at most that fraction of malformed samples under the stated model, never a numeric tolerance score."
+           if standard == REVIEW_STANDARD else
+           "The tolerance expression must use the sample-tolerance-v1 count family in rules.md; retain floor brackets for rounded counts. "
+           "Establish the stated malformed-sample count under the explicit error model, with no tolerance score.")}]
     if len(benchmark["tracks"]) != 1 or benchmark["tracks"][0]["name"] != "main":
         raise VerifierError("dcp_manifest_contract")
     benchmark["tracks"][0]["paretoPolicies"]["validity"] = policy
@@ -339,7 +346,8 @@ def configure_mode(config, benchmark, mode):
 
 def _protected_outputs(root, candidate, outputs):
     protected = [root / name for name in ("verifier.json", "benchmark.json", "rules.md",
-                 "dcp_admission.py", "configure_bounds.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py", "export_metrics.py")]
+                 "dcp_admission.py", "configure_bounds.py", "complexity_bounds.py", "error_tolerance.py", "tolerance_expression.py", "export_metrics.py", "score_derivation.py", "derivation.json",
+                 "score-derivation-profile.json", "reorg/score-derivation-plan.json", "reorg/score-derivation-report.json")]
     for output in outputs:
         outside(output, candidate)
     distinct_paths(protected, outputs)

@@ -184,3 +184,20 @@ def parse_fractional_tolerance_expression(expression):
         return dict(kind=kind, coefficient=str(c), nPower=str(n), logPower=str(log))
     except (ValueError, ZeroDivisionError, OverflowError, RecursionError) as error:
         raise ValueError("fractional-tolerance-v1: unsupported fraction expression") from error
+
+
+def parse_exact_tolerance_monomial(expression, *, fractional=False):
+    """Parse the declared monomial without eventual-order simplifications.
+
+    Representation derivation needs its finite-parameter law, not only the
+    canonical value used for asymptotic comparison.
+    """
+    try:
+        if fractional and (type(expression) is not str or re.search(r"Q|\\[lr]floor", expression)):
+            raise ValueError("count syntax")
+        value = _Parser(expression).read()
+        if fractional and value[1] != 0:
+            raise ValueError("sample-dependent fraction")
+        return tuple(value)
+    except (ValueError, ZeroDivisionError, OverflowError, RecursionError) as error:
+        raise ValueError("unsupported exact tolerance monomial") from error

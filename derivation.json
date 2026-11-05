@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "mode": "score-derivation-v1",
+  "id": "dcp-fractional-tolerance",
+  "plan_path": "reorg/score-derivation-plan.json",
+  "instructions": "Extract only the fractional malformed-sample tolerance implied by the same accepted full DCP claim 4 and its original structured count expression. Preserve every quantifier, error-model assumption, success probability, algorithm configuration and the four resource bounds. The resource bounds and time score are copied deterministically, not inferred. For count min(Q,floor(c*Q*n^a*(log2 n)^b)), report fraction min(1,c*n^a*(log2 n)^b), with the cap implicit. Zero count becomes fraction 0. Counts independent of Q with positive magnitude are unsupported by this adapter: do not substitute a sample upper bound, infer actual Q, guess a rate, or convert a per-sample error probability. Fractions use the supported nonnegative rational monomial grammar in n and L=log2 n, with products, quotients and rational powers. No Q, floor brackets, sums or decimals. Cite the exact accepted claim:4 statement; source files may clarify it but cannot strengthen it. Return unsupported if this representation is not supported. Do not reassess proof correctness or human approval. The final adapter independently enforces exact equivalence and preserves the original statement and error-model text.",
+  "payload_schema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "fraction"
+    ],
+    "properties": {
+      "fraction": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 2048
+      }
+    }
+  },
+  "provider": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "low",
+    "max_completion_tokens": 4096,
+    "max_attempts": 1,
+    "timeout_seconds": 120
+  },
+  "limits": {
+    "max_files": 32,
+    "max_file_bytes": 262144,
+    "max_submission_bytes": 1048576,
+    "max_prompt_bytes": 2097152,
+    "total_review_tokens": 4096,
+    "total_provider_requests": 1,
+    "total_review_seconds": 150
+  }
+}

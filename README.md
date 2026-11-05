@@ -224,3 +224,11 @@ PYTHONPATH=/absolute/path/to/verifier-6903229/src python export_metrics.py \
   --out .work/historical-v2-replayed.json
 python -c 'import json; from pathlib import Path; assert json.loads(Path(".work/historical-v2-replayed.json").read_text()) == json.loads(Path("tests/fixtures/historical-v2-score.json").read_text())'
 ```
+
+## Score-only fractional metric migration
+
+The optional [retained-validity scoring profile](docs/score-derivation.md) derives
+fractional tolerance from authenticated original full claims while preserving
+resource bounds, time scores and validity reviews. It prepares a separate source
+with the active v6 input contract; this default source retains the v7 contract.
+Plan preparation and offline previews do not activate a reorg or publish scores.
