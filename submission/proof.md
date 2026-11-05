@@ -1,104 +1,175 @@
-# Exhaustive shift testing
+# COLR3: bounded collimation with a fixed-group corruption wrapper
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+For every N>=2 and s in Z/NZ let n=ceil(log2 N). The same COLR3 program
+has unconditional full-secret success>63/64 jointly with every-branch bounds
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+ T=O(n^(35/2) 2^((286/63)sqrt n)), S_C=O(n^2 2^(4sqrt n)),
+ S_Q=O(n), Q=O(n^4 2^((34/63)sqrt n)), tau(n,Q)=n.
 
-## Correctness
+Indices are1/2,1/2,0,1/2. Constants are absolute. This is a fixed COUNT
+of malformed copies, not a positive constant fraction or optimal tolerance.
+The supported count family implicitly caps n by Q; actual Q below exceeds n.
+This wrapper adds polynomial time/sample overhead to COL4's clean tradeoff.
+It does not improve the clean time envelope or claim the cube-root goal.
 
-On a component with offset x, controlled subtraction produces
+## Input model and the clean bounded subroutine
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Among the actual Q acquired copies, an adversary fixes at most n acquisition
+positions before private randomness and supplies an arbitrary joint state on
+their declared n+1-qubit source registers. Other copies are an independent
+ideal rho_s product for the same s, independent of the malformed subsystem.
+Malformed copies can be mutually entangled. The adversary may know N,s and
+the program, cannot change registers/controller after delivery, and is not
+told private outcomes in time to select positions. The algorithm does not
+know the malformed positions. This is the exact structured error_model.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+Algorithm A is the complete clean COL4 program reproduced in base-proof.md,
+label-tools.md and gradient-tools.md. Every symbol in those files, including
+Qcap, p, C and B, is LOCAL TO ONE INVOCATION of A. In particular its source
+precision is planned for its own Qcap, not COLR3's larger total count.
+On an independent ideal source A succeeds>3/4 for EVERY n: its n<4096
+branch has that bound and its large branch has success>=1-6/1024.
+We reproduce the construction and proof rather than assuming a prior verdict.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+Let the deterministic per-group cap Q0 be N(n+2) when n<4096, and the
+literal ceil(1024 Qstar) from base-proof.md when n>=4096. All parameters
+are computed from N before any source call. A makes at most Q0 acquisitions
+on every branch. Its basic-step clock stops before B is exceeded in the
+large branch, and all circuit/register sizes have the fixed bounds in the
+base proof. These are syntactic branch bounds, also on arbitrary malformed
+inputs: observed labels are returned modulo N; table dimensions, incidence
+lengths and depth are fixed; permutation lookups are injections on their
+initialized index image for any table; and each quantum measurement merely
+chooses a bounded branch. Source and work caps act before excess work.
+The correctness/expected-cost arguments requiring ideal inputs are used only
+for the honest-group success guarantee, never to bound a malformed group.
+The finite exhaustive branch likewise has fixed candidate/test loops and
+complete-domain arithmetic. Its finite prefix fits the same envelopes with
+absolute outside constants as explained in the base proof.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+## Fixed acquisition groups and the actual program
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Set K=32(n+1). Execute exactly K groups sequentially, each as follows.
 
-## Implementing the controlled subtraction
+1. Initialize a fresh A state and private measurement/randomness systems.
+   Execute A completely, obtaining its n-bit answer (map any invalid encoding
+   to zero). No earlier group's answer changes this invocation or its parameters.
+2. If A acquired c<=Q0 source copies, acquire Q0-c additional source copies
+   and discard/reset them without interacting with the answer or other data.
+   Padding counts as acquisition and all its registers, gates and addresses
+   are charged. After this step the group has acquired EXACTLY Q0 copies.
+3. Store that one classical answer; release/reset the group's quantum state,
+   work tables and temporary data before the next group. The fixed parameter
+   constants can be regenerated by the same counted program. No purification
+   or inverse source is used.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Return the answer occurring more than K/2 times, if it exists, else zero.
+Ordinary classical bubble sorting and integer frequency counting implement
+this majority rule with O(Kn) bits and polynomial fully charged work. A strict
+majority, if present, is unique. Group outputs are not postselected, verified,
+used to adapt later source access, or treated as a stopping condition.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The actual source count on EVERY branch, including all A aborts, is
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+ Q=K Q0.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+This is an exact deterministic count, not substitution of an asymptotic sample
+envelope into a tolerance law. The fixed group boundaries are acquisition
+positions (g-1)Q0+1,...,g Q0, independent of the secret, outcomes, A early
+termination and adversary. Therefore at most n groups contain any malformed
+copy. A malformed copy lying only in padding is harmless, but conservatively
+we still classify its entire group as potentially bad.
 
-## Joint costs and indices
+## Unconditional success under joint malformed states
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+Fix the adversary's positions and allowed joint state. Call a group honest
+if all its Q0 source positions are ideal. There are h>=K-n honest groups.
+These groups receive independent ideal products and fresh private randomness.
+No operation uses earlier group answers or quantum registers in later groups.
+Their correctness indicators X_i are therefore independent Bernoulli variables
+with Pr(X_i=1)>3/4 by the clean theorem for A. This remains true with arbitrary
+entanglement and measurement correlations among the bad groups: the honest
+source factors are independent of the entire malformed subsystem, and every
+honest group acts only on its own factors and new private registers.
+Group classification is fixed BEFORE execution, not conditioned on a favorable
+observed group size or on correct labels. Padding is what makes this valid.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Let Y=sum over honest X_i. Incorrect arbitrary bad answers cannot prevent a
+strict correct majority if Y>K/2. Its mean is at least3h/4, and
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+ E Y-K/2 >=3(K-n)/4-K/2 =29n/4+8 >=7(n+1).
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+For independent bounded variables in[0,1], the centered log MGF has tilted
+variance<=1/4, giving the lower-tail bound exp(-2d^2/h) by integration and
+exponential Markov optimization, exactly as in the base concentration proof.
+Since h<=K=32(n+1),
 
-## Error tolerance
+ Pr(Y<=K/2)<=exp(-2[7(n+1)]^2/[32(n+1)])
+             =exp(-49(n+1)/16)<=exp(-49/8)<1/64.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-count guarantee tau(n,Q)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+The last inequality uses e>2 and49/8>6. Thus full-secret success>63/64 for
+every N,s and every allowed joint malformed state. All clean-call errors,
+source/work aborts, extraction, phase rounding and gradient imperfections are
+already included in Pr(X_i=1)>3/4. No unproved clean event is conditioned on
+and no separate error budget is silently omitted. Bad groups need no accuracy
+or independence assumption. There is no majority vote over individual source
+controls or assumption that an individual malformed register has a bias bound.
+
+## Joint charged branch resources
+
+Only one A invocation is active. Its quantum peak O(n), classical peak
+O(n^2 2^(4sqrt n)) and charged runtime O(n^(33/2) 2^((286/63)sqrt n)) are
+established in the reproduced base proof. The K stored n-bit answers occupy
+O(n^2) additional bits; group/source/majority counters have O(n) bits or less.
+These do not change either peak bound. Padding acquires one n+1-qubit copy
+at a time after A's quantum state has been released or in reusable O(n)
+registers. Every reset and release is charged. Quantum space remains O(n).
+No group inputs or tables accumulate, and no exponentially wide gate stream
+is stored. Majorities use classical bit addressing, not QRAM.
+
+For large n, base-proof.md gives Q0<=2^52 n^3 2^((34/63)ceil(sqrt n)).
+Multiplying by K yields the stated O(n^4 2^((34/63)sqrt n)) sample envelope;
+the fixed finite prefix fits it by an absolute constant. K invocations cost
+O(n^(35/2) 2^((286/63)sqrt n)). After establishing the above full allocation, its
+maximum address length is O(sqrt n+log n). Allow O(n^4) fully charged work
+per padding copy, including acquisition charge n+1, discard/reset, indexed
+bit accesses and exact source/group counters. Total padding is at most
+O(n^8 2^((34/63)sqrt n)), asymptotically smaller than the time declaration.
+Constant generation per group, all parameter arithmetic, cleanup scans,
+majority sorting/counters and input/output are included; their polynomial or
+smaller-exponential work is absorbed by that same envelope. The finite prefix
+is bounded and all outside constants remain absolute. No reference expectation
+is used for a bad group's resources. All four bounds hold together on every
+branch, even when all potentially bad groups return incorrect answers.
+
+The logarithms of the three exponential envelopes have positive explicit
+coefficients times sqrt n plus O(log n), hence exact growth index1/2. Linear
+quantum space has index0. The fifth original count expression is n with the
+explicit fixed-position model above and actual deterministic Q=KQ0. It is
+not n malformed copies per GROUP, a corruption rate, a maximum-tolerance
+impossibility or a lower bound. The one budget n applies to the ENTIRE run.
+
+## Provenance
+
+COLR3 also carries the fixed-group implementation from COLR2 submission
+549ccad5-d527-4054-8ddb-f7ccda14435b, with its complete argument reproduced.
+It changes the clean subroutine to the measured-bucket prefix COL4 program.
+
+The fixed-group wrapper is carried from our COLR1 submission
+7a94f6f6-d7ac-41cb-9d9c-c8e4afdc5024, whose hosted review failed without
+a verdict/publication although genuine local review accepted it. Its argument
+is reproduced rather than using that verdict. The clean subroutine changes
+to COL4 aggregate metadata and stable merging, with the finer hard cutoff.
+
+COL4 submission a0d59808-df61-4241-88c2-19430194b090 supplies
+the complete bounded clean subroutine and its source/table/
+gradient implementation, reproduced in full. Its earlier COL1 and CGRST1
+provenance and the directly consulted RLQGR2 and PG4 references remain stated
+in base-proof.md and the helpers. PG4's Nam/Su/Maslov attribution is retained.
+Kuperberg arXiv:1112.3333v1 collimation and Kitaev quant-ph/9511026v1 context
+remain identified. The new construction here is the deterministic padding,
+fixed-group majority and its joint-state/count/resource proof. It is elementary
+repetition and concentration, not a claim to invent majority amplification.
+No prior acceptance or empirical audit is a proof premise. Candidate publication
+controls dependency eligibility; any unpublished predecessor is acknowledged
+and its edge can be proposed only once eligible. No promotion is assumed.
