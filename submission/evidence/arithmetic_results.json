@@ -1,0 +1,6 @@
+{
+  "scope": "Finite exact multiplication, inverse-permutation and grouped-phase properties; no asymptotic proof or device execution.",
+  "three_product_cases": 65936,
+  "source_basis_permutation_cases": 91280,
+  "grouped_phase_exponents": 67578
+}
