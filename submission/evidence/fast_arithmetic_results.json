@@ -1,0 +1,13 @@
+{
+  "scope": "Finite exact product and width diagnostics only; no performance, asymptotic or quantum execution claim.",
+  "lagrange_basis_evaluations": 21059,
+  "declared_width_signed_products": 29,
+  "recursive_calls": 66928,
+  "actual_recursion_radices": [
+    16,
+    32
+  ],
+  "universal_width_contraction_diagnostics": 858,
+  "largest_declared_product_width": 33554432,
+  "large_width_note": "The radix32 branch used a full-width sparse operand times3; no random dense 33-million-bit product was tested."
+}
