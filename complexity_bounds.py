@@ -23,7 +23,7 @@ RESOURCES = (*LEGACY_RESOURCES, "samples")
 
 
 def resource_contract(review_standard):
-    if review_standard in ("dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6"):
+    if review_standard in ("dcp-joint-bounds-v4", "dcp-joint-bounds-v5", "dcp-joint-bounds-v6", "dcp-joint-bounds-v7"):
         return RESOURCES, CONTRACT
     if review_standard in ("dcp-joint-bounds-v2", "dcp-joint-bounds-v3"):
         return LEGACY_RESOURCES, LEGACY_CONTRACT

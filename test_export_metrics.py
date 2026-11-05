@@ -32,8 +32,12 @@ def term(a="1", p="1/3", q="1"):
 
 
 def tolerance_claim(expression="0", error_model="All acquired samples are independent ideal coset states."):
-    return {"statement": "Offline fixture only: the same algorithm has the stated malformed-sample count tolerance and joint resource bounds under the stated error model.",
-            "evidence": ["proof.md"], "structured": {"version": "dcp-error-tolerance-v1",
+    # Fixtures retain the selected original input contract in a materialized v6
+    # profile as well as the default v7 source, independently of baseline files.
+    standard = json.loads((ROOT / "verifier.json").read_text())["review_standard"]
+    version = "dcp-error-tolerance-v1" if standard == "dcp-joint-bounds-v6" else "dcp-fractional-error-tolerance-v1"
+    return {"statement": "Offline fixture only: the same algorithm has the stated malformed-sample tolerance and joint resource bounds under the stated error model.",
+            "evidence": ["proof.md"], "structured": {"version": version,
             "expression": expression, "error_model": error_model}}
 
 
@@ -54,6 +58,10 @@ def fixture_claims():
 def fixture(*, unscored=False, invalid=False, fields=None, simulation=False,
             claims=None, ack="correct", configure=None, mode="optional"):
     effective = load_config(ROOT, "verifier.json", "submission")
+    # These are original-review regression fixtures, not the optional new
+    # representation policy. Dedicated derivation tests exercise that policy.
+    effective["config"]["policies"]["scoring"] = {"version": "dcp-time-growth-v2"}
+    effective["evaluation"], effective["policy_instructions"] = select_evaluation(effective["config"])
     if mode == "optional":
         from dcp_admission import configure_mode
         effective["config"], _ = configure_mode(effective["config"],

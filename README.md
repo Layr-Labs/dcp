@@ -219,3 +219,7 @@ PYTHONPATH=/absolute/path/to/verifier-6903229/src python export_metrics.py \
   --out .work/historical-v2-replayed.json
 python -c 'import json; from pathlib import Path; assert json.loads(Path(".work/historical-v2-replayed.json").read_text()) == json.loads(Path("tests/fixtures/historical-v2-score.json").read_text())'
 ```
+
+## Retained-validity fractional metrics
+
+This source keeps the v6 count-based input and validity contract. Scoring exports equivalent fractions for the table. Historical jobs use authenticated score derivation; see [the profile guide](docs/score-derivation.md). No new v7 validity policy is activated.

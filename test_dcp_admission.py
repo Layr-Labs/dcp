@@ -302,7 +302,7 @@ class AdmissionTest(unittest.TestCase):
                 subprocess.run([sys.executable, str(ROOT / "configure_bounds.py"), "--root", str(root), "--mode", mode], check=True, capture_output=True)
                 config = json.loads((root / "verifier.json").read_text())
                 benchmark = json.loads((root / "benchmark.json").read_text())
-                policy = {"version": admission.REVIEW_STANDARD, "structured_bounds": mode}
+                policy = {"version": json.loads((ROOT / "verifier.json").read_text())["review_standard"], "structured_bounds": mode}
                 self.assertEqual(config["policies"]["validity"], policy)
                 self.assertEqual(benchmark["tracks"][0]["paretoPolicies"]["validity"], policy)
                 self.assertEqual([p["selector"] for p in config["supported_policies"]["validity"]], [policy])

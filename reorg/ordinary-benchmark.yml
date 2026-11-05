@@ -1,0 +1,180 @@
+name: Benchmark
+on:
+  workflow_dispatch:
+    inputs:
+      yukon_accepted_results:
+        description: Yukon automatic accepted-result context
+        required: false
+        type: string
+        default: ''
+      yukon_evaluation:
+        type: string
+        required: false
+        default: ''
+permissions:
+  contents: read
+jobs:
+  admission:
+    name: Check DCP bounds before paid review
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      outcome: ${{ steps.admission.outputs.outcome }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          path: challenge
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: Layr-Labs/llm-verifier
+          ref: 204fdf8fb640704da0a3972d97831de09bfb1c7a
+          token: ${{ secrets.VERIFIER_CHECKOUT_TOKEN || github.token }}
+          path: verifier
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - name: Install exact pinned verifier
+        shell: bash
+        run: |
+          python3 -m venv "$RUNNER_TEMP/admission-env"
+          "$RUNNER_TEMP/admission-env/bin/python" -m pip wheel --no-deps ./verifier --wheel-dir "$RUNNER_TEMP/admission-wheel"
+          "$RUNNER_TEMP/admission-env/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP"/admission-wheel/*.whl
+          "$RUNNER_TEMP/admission-env/bin/python" -c 'from llm_verifier.workflow import checkout_revision; checkout_revision("verifier", "204fdf8fb640704da0a3972d97831de09bfb1c7a")'
+      - name: Deterministic admission without provider or accepted-result credentials
+        id: admission
+        env:
+          EVALUATION: ${{ inputs.yukon_evaluation }}
+          CANDIDATE_REVISION: ${{ github.sha }}
+        shell: bash
+        run: |
+          env -i PATH="$PATH" "$RUNNER_TEMP/admission-env/bin/python" challenge/dcp_admission.py preflight \
+            --root challenge --candidate-revision "$CANDIDATE_REVISION" --evaluation "$EVALUATION" \
+            --receipt "$RUNNER_TEMP/dcp-admission/receipt.json" \
+            --score "$RUNNER_TEMP/admission-score/.yukon/score.json" --github-output "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: dcp-admission
+          path: ${{ runner.temp }}/dcp-admission/
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        if: steps.admission.outputs.outcome == 'format_rejected'
+        with:
+          name: dcp-score
+          path: ${{ runner.temp }}/admission-score/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+
+  rejection-receipt:
+    name: Bind format rejection to Yukon receipt (no judge)
+    needs: [admission]
+    if: needs.admission.outputs.outcome == 'format_rejected' && inputs.yukon_accepted_results != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          path: challenge
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          repository: Layr-Labs/llm-verifier
+          ref: 204fdf8fb640704da0a3972d97831de09bfb1c7a
+          token: ${{ secrets.VERIFIER_CHECKOUT_TOKEN || github.token }}
+          path: verifier
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
+        with:
+          name: dcp-admission
+          path: ${{ runner.temp }}/dcp-admission/
+      - name: Install and verify pinned receipt runtime
+        shell: bash
+        run: |
+          python3 -m venv "$RUNNER_TEMP/receipt-env"
+          "$RUNNER_TEMP/receipt-env/bin/python" -m pip wheel --no-deps ./verifier --wheel-dir "$RUNNER_TEMP/receipt-wheel"
+          "$RUNNER_TEMP/receipt-env/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP"/receipt-wheel/*.whl
+          "$RUNNER_TEMP/receipt-env/bin/python" -c 'from llm_verifier.workflow import checkout_revision; checkout_revision("verifier", "204fdf8fb640704da0a3972d97831de09bfb1c7a")'
+      - name: Resolve authenticated receipt for the rejected snapshot
+        env:
+          YUKON_ACCEPTED_RESULTS: ${{ inputs.yukon_accepted_results }}
+          CANDIDATE_REVISION: ${{ github.sha }}
+        shell: bash
+        run: |
+          "$RUNNER_TEMP/receipt-env/bin/python" challenge/rejection_receipt.py \
+            --admission "$RUNNER_TEMP/dcp-admission/receipt.json" \
+            --candidate-revision "$CANDIDATE_REVISION" \
+            --out "$RUNNER_TEMP/rejection-receipt/accepted-results-receipt.json"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: verifier-accepted-results
+          path: ${{ runner.temp }}/rejection-receipt/
+          if-no-files-found: error
+          retention-days: 30
+
+  verify:
+    needs: [admission]
+    if: needs.admission.outputs.outcome == 'review'
+    permissions:
+      contents: read
+      id-token: write
+    uses: Layr-Labs/llm-verifier/.github/workflows/verify.yml@204fdf8fb640704da0a3972d97831de09bfb1c7a
+    with:
+      verifier_repository: Layr-Labs/llm-verifier
+      verifier_revision: 204fdf8fb640704da0a3972d97831de09bfb1c7a
+      root_dir: '.'
+      config_path: verifier.json
+      submission_path: submission
+      score_path: .yukon/score.json
+      yukon_accepted_results: ${{ inputs.yukon_accepted_results }}
+      yukon_evaluation: ${{ inputs.yukon_evaluation }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      VERIFIER_CHECKOUT_TOKEN: ${{ secrets.VERIFIER_CHECKOUT_TOKEN }}
+
+  metrics:
+    name: Export accepted DCP bounds
+    needs: [verify]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          submodules: false
+          lfs: false
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
+        with:
+          name: llmv-package
+          path: ${{ runner.temp }}/wheel/
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
+        with:
+          name: verifier-dossier
+          path: ${{ runner.temp }}/dossier/
+      - name: Use the same verifier wheel and verified dossier
+        shell: bash
+        run: |
+          python3 -m venv "$RUNNER_TEMP/llmv-env"
+          "$RUNNER_TEMP/llmv-env/bin/python" -m pip install --no-index --no-deps "$RUNNER_TEMP"/wheel/*.whl
+          "$RUNNER_TEMP/llmv-env/bin/python" -m unittest -q
+          "$RUNNER_TEMP/llmv-env/bin/python" export_metrics.py --dossier "$RUNNER_TEMP/dossier/dossier.json" --out "$RUNNER_TEMP/dcp-score/.yukon/score.json"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        with:
+          name: dcp-score
+          path: ${{ runner.temp }}/dcp-score/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
