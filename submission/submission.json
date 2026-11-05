@@ -1,15 +1,52 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "MSR5: sharper streaming-sieve time and source coefficients",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For MSR5 in proof.md, label-tools.md and gradient-tools.md, for every N>=2 and fixed s modulo N let n=ceil(log2 N). Use its exact finite branch for n<1048576 and its specified large-branch integer/rational parameters, constant-weight leaves, multiway product rank/recompute instrument, extra known-frequency root and counted classical grid estimator and source-only all-moduli recovery. Unconditional entire-secret success exceeds 2/3. On EVERY branch the SAME program has total charged sequential work T=O(n^10*2^((161/128)sqrt(n)sqrt(log2 n))), jointly with all other resource guarantees and the clean count law. All constants are absolute with fixed n=1 time/sample bounds. Every initialization, preparation, controller/gate/address operation, failed filter/leaf/merge/root, reset and cleanup is charged. There is no2^t solution table, free QRAM, source inverse or uncounted original-incidence register. The exact growth index of this envelope is 1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "controller-tools.md",
+        "frequency-tools.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "161/128",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            }
+          ],
+          "nPower": "10",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For MSR5 in proof.md, label-tools.md and gradient-tools.md, for every N>=2 and fixed s modulo N let n=ceil(log2 N). Use its exact finite branch for n<1048576 and its specified large-branch integer/rational parameters, constant-weight leaves, multiway product rank/recompute instrument, extra known-frequency root and counted classical grid estimator and source-only all-moduli recovery. Unconditional entire-secret success exceeds 2/3. On EVERY branch the SAME program has peak allocated classical storage S_C=O(n^(7/4)2^(n^(1/4))) bits, jointly with all other resource guarantees and the clean count law. All constants are absolute with fixed n=1 time/sample bounds. Every initialization, preparation, controller/gate/address operation, failed filter/leaf/merge/root, reset and cleanup is charged. There is no2^t solution table, free QRAM, source inverse or uncounted original-incidence register. The exact growth index of this envelope is 1/4.",
+      "score": {
+        "numerator": "1",
+        "denominator": "4"
+      },
+      "evidence": [
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "controller-tools.md",
+        "frequency-tools.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -22,23 +59,27 @@
           "exponent": [
             {
               "coefficient": "1",
-              "nPower": "1",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "7/4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For MSR5 in proof.md, label-tools.md and gradient-tools.md, for every N>=2 and fixed s modulo N let n=ceil(log2 N). Use its exact finite branch for n<1048576 and its specified large-branch integer/rational parameters, constant-weight leaves, multiway product rank/recompute instrument, extra known-frequency root and counted classical grid estimator and source-only all-moduli recovery. Unconditional entire-secret success exceeds 2/3. On EVERY branch the SAME program has peak accessible quantum storage S_Q=O(n) qubits, jointly with all other resource guarantees and the clean count law. All constants are absolute with fixed n=1 time/sample bounds. Every initialization, preparation, controller/gate/address operation, failed filter/leaf/merge/root, reset and cleanup is charged. There is no2^t solution table, free QRAM, source inverse or uncounted original-incidence register. The exact growth index of this envelope is 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "controller-tools.md",
+        "frequency-tools.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +90,52 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved malformed-sample tolerance is tau(n,Q)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For MSR5 in proof.md, label-tools.md and gradient-tools.md, for every N>=2 and fixed s modulo N let n=ceil(log2 N). Use its exact finite branch for n<1048576 and its specified large-branch integer/rational parameters, constant-weight leaves, multiway product rank/recompute instrument, extra known-frequency root and counted classical grid estimator and source-only all-moduli recovery. Unconditional entire-secret success exceeds 2/3. On EVERY branch the SAME program has acquired source copies Q=O(n^3*2^((65/256)sqrt(n)sqrt(log2 n))), jointly with all other resource guarantees and the clean count law. All constants are absolute with fixed n=1 time/sample bounds. Every initialization, preparation, controller/gate/address operation, failed filter/leaf/merge/root, reset and cleanup is charged. There is no2^t solution table, free QRAM, source inverse or uncounted original-incidence register. The exact growth index of this envelope is 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "controller-tools.md",
+        "frequency-tools.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "65/256",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            }
+          ],
+          "nPower": "3",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same MSR5 configuration in proof.md, label-tools.md and gradient-tools.md, for every N>=2 and s, n=ceil(log2 N) and Q the ACTUAL number of source copies acquired (including filters and discarded trees), the guaranteed malformed-copy count is tau(n,Q)=0. Every acquired copy is an independent ideal coset state. Under this promise unconditional full-secret success is greater than 2/3 and all four resource bounds hold jointly on every branch, including source/work-clock aborts. No positive-corruption guarantee or maximum-tolerance impossibility is asserted.",
+      "evidence": [
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "controller-tools.md",
+        "frequency-tools.md"
       ],
       "structured": {
         "version": "dcp-error-tolerance-v1",
