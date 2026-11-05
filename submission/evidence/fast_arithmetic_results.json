@@ -1,0 +1,8 @@
+{
+  "scope": "Finite exact diagnostics, not a proof of asymptotics or quantum execution.",
+  "signed_toom3_product_cases": 960,
+  "recursive_calls": 345900,
+  "restoring_division_cases": 51210,
+  "variable_shift_inverse_cases": 15664,
+  "toom3_rational_exponent_comparison": true
+}
