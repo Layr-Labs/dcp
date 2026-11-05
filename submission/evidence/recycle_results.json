@@ -1,0 +1,22 @@
+{
+  "scope": "Finite exact kernel/coin/quota and numerical density diagnostics; no asymptotic or device certification.",
+  "order8_correlation_checks": 558,
+  "order16_correlation_checks": 150,
+  "global_vsum_kernel_checks": 1088,
+  "bernstein_identity_grid_points": 64,
+  "elementary_source_error_schedules": 4072,
+  "rejected_rescue_kernel_checks": 254,
+  "rejected_rescue_certificate_points": 256,
+  "rsum_actual_kernel_checks": 126,
+  "rsum_coefficient_identity_terms": 126,
+  "rsum_positive_identity_points": 256,
+  "rsum_central_identity_points": 16,
+  "polynomial_identity_points": 16,
+  "rejected_difference_kernel_checks": 527,
+  "global_rejected_phase_density_checks": 2592,
+  "maximum_numeric_density_error": 1.3264377680671069e-14,
+  "branchwise_coin_and_output_cases": 245345,
+  "parameter_cases": 4072,
+  "exact_fifteen_event_stage_checks": 115203,
+  "exact_exponential_coefficient": "564341027/250000000"
+}
