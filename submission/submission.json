@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(1) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = 1 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,7 +72,7 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
+          "nPower": "0",
           "logPower": "0"
         }
       }
