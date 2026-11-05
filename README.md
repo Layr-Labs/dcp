@@ -178,6 +178,11 @@ dossier and retains the `dcp-score` artifact selection.
 
 Push and PR checker CI does not run model review. The Benchmark workflow remains
 dispatch-only; local checks do not perform hosted judging, import or rebind.
+Hosted review uses one background request at high reasoning effort, with at most
+16,384 output tokens and 1,200 seconds for the review. It does not automatically
+start another attempt after a timeout. A timeout is an execution failure, not a
+mathematical rejection; inspect the original run before authorizing another
+review. These execution settings require fresh hosted qualification before launch.
 The new required-mode validity identity changes acceptance semantics. Publishing
 this source does not update an existing track or reclassify an accepted baseline.
 Adoption uses the new immutable source and validity policy and needs fresh

@@ -4,8 +4,8 @@
   "limits": {
     "max_followups": 0,
     "max_initial_runs": 0,
-    "total_provider_requests": 2,
-    "total_review_seconds": 360
+    "total_provider_requests": 1,
+    "total_review_seconds": 1200
   },
   "objectives": [
     {
@@ -32,11 +32,12 @@
     }
   },
   "provider": {
-    "max_attempts": 2,
+    "background": true,
+    "max_attempts": 1,
     "max_completion_tokens": 16384,
     "model": "gpt-6-astra",
     "reasoning_effort": "high",
-    "timeout_seconds": 180
+    "timeout_seconds": 1200
   },
   "review_standard": "dcp-joint-bounds-v7",
   "rules_path": "rules.md",
