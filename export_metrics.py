@@ -150,7 +150,8 @@ def projection(record):
         raise VerifierError("simulation_cannot_publish_score")
     if config["review_standard"] == "dcp-joint-bounds-v1":
         return historical_projection(record, data, intake, config)
-    return structured_projection(record, data, intake, config)
+    from score_derivation import ordinary_projection
+    return ordinary_projection(structured_projection(record, data, intake, config), config=config)
 
 
 def export(dossier_path, output):
