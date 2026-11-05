@@ -1,0 +1,12 @@
+{
+  "scope": "Finite diagnostics only; no asymptotic proof, device execution or official judgment.",
+  "binary_qft_columns": 126,
+  "gradient_translation_cases": 126,
+  "truncated_fourier_column_checks": 642,
+  "maximum_truncated_column_error": 1.632280159148332,
+  "maximum_numeric_qft_amplitude_error": 7.988062377414197e-15,
+  "maximum_numeric_gradient_amplitude_error": 2.9504581591051765e-16,
+  "exact_postselected_amplitude_cases": 221,
+  "numerical_qpe_tail_cases": 779,
+  "exact_preparation_cap_and_norm_budget_checks": true
+}
