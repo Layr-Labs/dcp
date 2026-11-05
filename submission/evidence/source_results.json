@@ -1,0 +1,7 @@
+{
+  "scope": "Exact finite circuit and parameter diagnostics; no device run or asymptotic certification.",
+  "cyclotomic_transform_amplitudes": 10920,
+  "gradient_translation_exponent_checks": 14344,
+  "source_schedule_checks": 4072,
+  "source_budget": "2^-23+2^-27+2^-36+2^-122<1/1024"
+}
