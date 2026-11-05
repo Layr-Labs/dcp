@@ -1,15 +1,25 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "RR8: recycle primary rejected differences and a third sum population",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and fixed secret s in Z/NZ, let n=ceil(log2 N). The single RR8 algorithm and exact configuration in proof.md and recycle-sieve.md recover the entire s with unconditional probability at least1019/1024. All four resource bounds and the exact-zero clean-input tolerance hold jointly on every execution branch, including all failed attempts, discarded copies and aborts, with absolute constants independent of N,s and outcomes. For n>=2, total charged sequential work T is O(n^3 (log2 n) 2^((2286279/1000000) sqrt(n)+21 sqrt(log2 n))); the explicitly bounded n=1 cases use the finite exhaustive branch. This envelope includes every cost/allocation assigned to that resource by rules.md, with exact known exponential coefficient2286279/1000000 and, for time only, the additionally proved coefficient21 on sqrt(log2 n). Its exact growth index is1/2. The structured object is this complete same envelope with unspecified absolute outer big-O constant.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "evidence/recycle_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/recycle_results.json",
+        "metrics-addendum.md",
+        "phase-labels.md",
+        "fast-labels.md",
+        "adaptive-arithmetic.md",
+        "recycle-sieve.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +31,39 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "2286279/1000000",
+              "nPower": "1/2",
               "logPower": "0"
+            },
+            {
+              "coefficient": "21",
+              "nPower": "0",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "3",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and fixed secret s in Z/NZ, let n=ceil(log2 N). The single RR8 algorithm and exact configuration in proof.md and recycle-sieve.md recover the entire s with unconditional probability at least1019/1024. All four resource bounds and the exact-zero clean-input tolerance hold jointly on every execution branch, including all failed attempts, discarded copies and aborts, with absolute constants independent of N,s and outcomes. For n>=2, peak allocated classical workspace S_C in bits is O(n (log2 n) 2^((2286279/1000000) sqrt(n))); the explicitly bounded n=1 cases use the finite exhaustive branch. This envelope includes every cost/allocation assigned to that resource by rules.md, with exact known exponential coefficient2286279/1000000 and, for time only, the additionally proved coefficient21 on sqrt(log2 n). Its exact growth index is1/2. The structured object is this complete same envelope with unspecified absolute outer big-O constant.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "evidence/recycle_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/recycle_results.json",
+        "metrics-addendum.md",
+        "phase-labels.md",
+        "fast-labels.md",
+        "adaptive-arithmetic.md",
+        "recycle-sieve.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,20 +75,102 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "2286279/1000000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
           "nPower": "1",
-          "logPower": "0"
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved malformed-sample tolerance is tau(n,Q)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and fixed secret s in Z/NZ, let n=ceil(log2 N). The single RR8 algorithm and exact configuration in proof.md and recycle-sieve.md recover the entire s with unconditional probability at least1019/1024. All four resource bounds and the exact-zero clean-input tolerance hold jointly on every execution branch, including all failed attempts, discarded copies and aborts, with absolute constants independent of N,s and outcomes. For n>=2, peak allocated accessible quantum workspace S_Q in qubits is O((log2 n) 2^((2286279/1000000) sqrt(n))); the explicitly bounded n=1 cases use the finite exhaustive branch. This envelope includes every cost/allocation assigned to that resource by rules.md, with exact known exponential coefficient2286279/1000000 and, for time only, the additionally proved coefficient21 on sqrt(log2 n). Its exact growth index is1/2. The structured object is this complete same envelope with unspecified absolute outer big-O constant.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "evidence/recycle_audit.py",
+        "evidence/rational_grid_certificate.py",
+        "evidence/phase_grid.json",
+        "evidence/grid_certificate.json",
+        "evidence/recycle_results.json",
+        "metrics-addendum.md",
+        "phase-labels.md",
+        "fast-labels.md",
+        "adaptive-arithmetic.md",
+        "recycle-sieve.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "2286279/1000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and fixed secret s in Z/NZ, let n=ceil(log2 N). The single RR8 algorithm and exact configuration in proof.md and recycle-sieve.md recover the entire s with unconditional probability at least1019/1024. All four resource bounds and the exact-zero clean-input tolerance hold jointly on every execution branch, including all failed attempts, discarded copies and aborts, with absolute constants independent of N,s and outcomes. For n>=2, total acquired source copies Q is O(n (log2 n) 2^((2286279/1000000) sqrt(n))); the explicitly bounded n=1 cases use the finite exhaustive branch. This envelope includes every cost/allocation assigned to that resource by rules.md, with exact known exponential coefficient2286279/1000000 and, for time only, the additionally proved coefficient21 on sqrt(log2 n). Its exact growth index is1/2. The structured object is this complete same envelope with unspecified absolute outer big-O constant. More precisely Q<=N(n+10) for n<=16 and Q<=4(J+1)L_0+(n+10)(2^ell+2) for n>=17, with the exact common parameters defined in proof.md; every fresh acquisition is counted.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "metrics-addendum.md",
+        "proof.md",
+        "phase-labels.md",
+        "fast-labels.md",
+        "adaptive-arithmetic.md",
+        "recycle-sieve.md",
+        "evidence/recycle_audit.py",
+        "evidence/recycle_results.json"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "2286279/1000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "1",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For the same RR8 algorithm and configuration in proof.md and the explicitly defined source-copy replacement context in metrics-addendum.md Section 3, the guaranteed tolerated malformed-sample count is the exact expression tau(n,Q)=0 for every N>=2, fixed secret s, n=ceil(log2 N) and total acquired copy count Q. With at most zero malformed acquisitions the input law is the stipulated independent rho_s law, so unconditional full-secret success is at least 1019/1024, jointly with the declared time, classical-memory, quantum-memory and sample-count upper bounds. This is a guaranteed lower bound on tolerated count, not an optimality assertion, O(1), a positive constant, a fraction of Q, or the internal failure probability. No positive malformed-sample tolerance is claimed. This expression claim has no numeric score.",
+      "evidence": [
+        "metrics-addendum.md",
+        "proof.md",
+        "phase-labels.md",
+        "fast-labels.md",
+        "adaptive-arithmetic.md",
+        "recycle-sieve.md",
+        "evidence/recycle_audit.py",
+        "evidence/recycle_results.json"
       ],
       "structured": {
         "version": "dcp-error-tolerance-v1",

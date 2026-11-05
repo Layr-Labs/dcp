@@ -1,0 +1,11 @@
+{
+  "scope": "Finite exact kernel/coin/quota and numerical density diagnostics; no asymptotic or device certification.",
+  "order8_correlation_checks": 558,
+  "rejected_difference_kernel_checks": 527,
+  "global_rejected_phase_density_checks": 2592,
+  "maximum_numeric_density_error": 1.3264377680671069e-14,
+  "branchwise_coin_and_output_cases": 31160,
+  "parameter_cases": 4072,
+  "exact_seven_event_stage_checks": 114317,
+  "exact_exponential_coefficient": "2286279/1000000"
+}
