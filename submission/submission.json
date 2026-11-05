@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "CGRST1: compressed threshold search with linear qubits and five-sixteenths tolerance",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For CGRST1 in proof.md, label-tools.md and fast-arithmetic.md, for every integer N>=2 and every s in Z/NZ let n=ceil(log2 N), m=1024(n+20), r=floor(5m/16), A=n+20 and p=n+ceil(log2 m)+40. Use the specified compressed threshold-block algorithm, counted approximate-gradient preparation and exact integer Grover schedule, including its finite n=1 branch. Under every joint input allowed by the fixed-position corruption model and floor(5Q/16) tolerance below, unconditional entire-secret success is greater than 2/3, including clean ideal input. On every execution branch the same algorithm has total sequential work T=O(2^(n/2) n^(13/5) (log2 n)^2) for n>=2, with fixed absolute cost for n=1, jointly with all other resource bounds. All constants are absolute. The supported envelope B(n)=2^(n/2) n^(13/5) (log2 n)^2 for n>=2 has exact growth index 1. Complete preparation, precision, uniform circuits, addressing, inverse work and source counts are proved in the evidence.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "fast-arithmetic.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "13/5",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For CGRST1 in proof.md, label-tools.md and fast-arithmetic.md, for every integer N>=2 and every s in Z/NZ let n=ceil(log2 N), m=1024(n+20), r=floor(5m/16), A=n+20 and p=n+ceil(log2 m)+40. Use the specified compressed threshold-block algorithm, counted approximate-gradient preparation and exact integer Grover schedule, including its finite n=1 branch. Under every joint input allowed by the fixed-position corruption model and floor(5Q/16) tolerance below, unconditional entire-secret success is greater than 2/3, including clean ideal input. On every execution branch the same algorithm has peak classical storage S_C=O(n^2) bits, jointly with all other resource bounds. All constants are absolute. The supported envelope B(n)=n^2 has exact growth index 0. Complete preparation, precision, uniform circuits, addressing, inverse work and source counts are proved in the evidence.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "fast-arithmetic.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +59,15 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For CGRST1 in proof.md, label-tools.md and fast-arithmetic.md, for every integer N>=2 and every s in Z/NZ let n=ceil(log2 N), m=1024(n+20), r=floor(5m/16), A=n+20 and p=n+ceil(log2 m)+40. Use the specified compressed threshold-block algorithm, counted approximate-gradient preparation and exact integer Grover schedule, including its finite n=1 branch. Under every joint input allowed by the fixed-position corruption model and floor(5Q/16) tolerance below, unconditional entire-secret success is greater than 2/3, including clean ideal input. On every execution branch the same algorithm has peak accessible quantum storage S_Q=O(n) qubits, jointly with all other resource bounds. All constants are absolute. The supported envelope B(n)=n has exact growth index 0. Complete preparation, precision, uniform circuits, addressing, inverse work and source counts are proved in the evidence.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "fast-arithmetic.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +78,47 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved malformed-sample tolerance is tau(n,Q)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For CGRST1 in proof.md, label-tools.md and fast-arithmetic.md, for every integer N>=2 and every s in Z/NZ let n=ceil(log2 N), m=1024(n+20), r=floor(5m/16), A=n+20 and p=n+ceil(log2 m)+40. Use the specified compressed threshold-block algorithm, counted approximate-gradient preparation and exact integer Grover schedule, including its finite n=1 branch. Under every joint input allowed by the fixed-position corruption model and floor(5Q/16) tolerance below, unconditional entire-secret success is greater than 2/3, including clean ideal input. On every execution branch the same algorithm has total acquired source count Q=1024(n+20)=O(n), jointly with all other resource bounds. All constants are absolute. The supported envelope B(n)=n has exact growth index 0. Complete preparation, precision, uniform circuits, addressing, inverse work and source counts are proved in the evidence.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "fast-arithmetic.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same CGRST1 configuration in proof.md, label-tools.md and fast-arithmetic.md, for every N>=2 and s, n=ceil(log2 N) and actual acquired count Q=1024(n+20), the guaranteed malformed-copy threshold is tau(n,Q)=floor(5Q/16), with ordinary integer floor. Under the fixed-position corruption model in structured error_model, every allowed joint state at or below that count retains unconditional full-secret success greater than 2/3 and all four resource bounds jointly on every branch, including gradient aborts. Clean independent ideal input is included. No larger-tolerance impossibility or per-copy corruption probability is asserted.",
+      "evidence": [
+        "proof.md",
+        "label-tools.md",
+        "fast-arithmetic.md"
       ],
       "structured": {
         "version": "dcp-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed-sample count among Q acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\lfloor 5 Q/16\\rfloor",
+        "error_model": "Among Q acquired source copies, at most tau(n,Q) positions fixed before the algorithm private randomness may contain an arbitrary joint state on their declared source registers. Every other copy is an independent ideal coset state for the same fixed secret s; their product state is independent of the malformed subsystem. The adversary may know N,s and the algorithm but cannot alter the controller or registers after delivery. Malformed copies may be mutually entangled. The algorithm is not told the malformed positions."
       }
     }
   ],
