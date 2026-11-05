@@ -1,15 +1,21 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSR5: two-term polynomial-space pair envelopes",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For PSR5 in the evidence, for every N>=2 and s modulo N, n=ceil(log2 N), the SAME specified finite program (exhaustive n<2^20, signed-object quantum-counted/hash/window pair tree otherwise) has unconditional entire-secret success greater than 2/3 and, on EVERY branch, charged sequential work T=O(n^128 2^(sqrt(n)sqrt(log2 n)+2sqrt(n)(log2 n)^(-1/4))), jointly with all other bounds and clean law. All outside constants are absolute. All source filters, unsuccessful attempts, bounded private preparations, fully expanded predicate gates, addressing, generation and source/work guards are charged. Resource representatives apply for n>=2, with n=1 fixed absolute bounds. Huge disclosed analytic-prefix constants make no practical runtime claim. Its exact numerical growth index is 1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "frequency-tools.md",
+        "quantum-count-tools.md",
+        "hash-rank-tools.md",
+        "window-tools.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -22,23 +28,34 @@
           "exponent": [
             {
               "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "-1/4"
             }
           ],
-          "nPower": "4",
+          "nPower": "128",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For PSR5 in the evidence, for every N>=2 and s modulo N, n=ceil(log2 N), the SAME specified finite program (exhaustive n<2^20, signed-object quantum-counted/hash/window pair tree otherwise) has unconditional entire-secret success greater than 2/3 and, on EVERY branch, classical storage S_C=O(n^2) bits, jointly with all other bounds and clean law. All outside constants are absolute. All source filters, unsuccessful attempts, bounded private preparations, fully expanded predicate gates, addressing, generation and source/work guards are charged. Resource representatives apply for n>=2, with n=1 fixed absolute bounds. Huge disclosed analytic-prefix constants make no practical runtime claim. Its exact numerical growth index is 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "frequency-tools.md",
+        "quantum-count-tools.md",
+        "hash-rank-tools.md",
+        "window-tools.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +72,19 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For PSR5 in the evidence, for every N>=2 and s modulo N, n=ceil(log2 N), the SAME specified finite program (exhaustive n<2^20, signed-object quantum-counted/hash/window pair tree otherwise) has unconditional entire-secret success greater than 2/3 and, on EVERY branch, quantum storage S_Q=O(n) qubits, jointly with all other bounds and clean law. All outside constants are absolute. All source filters, unsuccessful attempts, bounded private preparations, fully expanded predicate gates, addressing, generation and source/work guards are charged. Resource representatives apply for n>=2, with n=1 fixed absolute bounds. Huge disclosed analytic-prefix constants make no practical runtime claim. Its exact numerical growth index is 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "frequency-tools.md",
+        "quantum-count-tools.md",
+        "hash-rank-tools.md",
+        "window-tools.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,44 +95,61 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved malformed-sample tolerance is tau(n,Q)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For PSR5 in the evidence, for every N>=2 and s modulo N, n=ceil(log2 N), the SAME specified finite program (exhaustive n<2^20, signed-object quantum-counted/hash/window pair tree otherwise) has unconditional entire-secret success greater than 2/3 and, on EVERY branch, acquired source copies Q=O(n^2 2^((1/2)sqrt(n)sqrt(log2 n)+sqrt(n)(log2 n)^(-1/4))), jointly with all other bounds and clean law. All outside constants are absolute. All source filters, unsuccessful attempts, bounded private preparations, fully expanded predicate gates, addressing, generation and source/work guards are charged. Resource representatives apply for n>=2, with n=1 fixed absolute bounds. Huge disclosed analytic-prefix constants make no practical runtime claim. Its exact numerical growth index is 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "frequency-tools.md",
+        "quantum-count-tools.md",
+        "hash-rank-tools.md",
+        "window-tools.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "1",
+              "nPower": "1/2",
+              "logPower": "-1/4"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME PSR5 finite program in the evidence, every N>=2 and s, n=ceil(log2 N), with Q the ACTUAL number of acquired source copies including filters and discarded trees, the guaranteed malformed-copy count is tau(n,Q)=0. Every copy must be an independent ideal coset state. Unconditional entire-secret success exceeds 2/3 and all four resource bounds hold jointly on every branch. No positive corruption or maximum-tolerance impossibility is asserted.",
+      "evidence": [
+        "proof.md",
+        "label-tools.md",
+        "gradient-tools.md",
+        "frequency-tools.md",
+        "quantum-count-tools.md",
+        "hash-rank-tools.md",
+        "window-tools.md"
       ],
       "structured": {
         "version": "dcp-error-tolerance-v1",
