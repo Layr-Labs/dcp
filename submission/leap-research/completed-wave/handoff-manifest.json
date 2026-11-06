@@ -1,0 +1,38 @@
+{
+  "status": "RESEARCH_ONLY_CENTRAL_SENDER_HANDOFF",
+  "publication_authority": "central sender only; local publication guard remains disabled",
+  "source_revision": "cdb1ebff130d861e2c61e9cf517ab66c0a56ca7a",
+  "created_utc": "2026-11-06T19:34:28.421141+00:00",
+  "candidate_source_commit": null,
+  "candidate_source_commit_reason": "Uncommitted research artifacts; no candidate SHA or READY reservation fabricated.",
+  "files_sha256": {
+    "leap-research/exact-all-n.md": "060bbda7c33c75625ab8905f2b71b3ae89823551d19b46284cc2ee611e681f5e",
+    "leap-research/quantum-fiber.md": "bbbd92ea58e4487586e438fab871dad773da4f525f5ac6dc28ffed3689b2b782",
+    "leap-research/collective-time.md": "88ab8afefb4487617a3ac3088cb2e2ff9fe931d36d98a51f94ca1593a1032f9b",
+    "leap-research/source-channels.md": "d70ca04cacaceaaf470ff44b1360f72281bd95944d7b5597c5f21cffee5a885f",
+    "label-extraction.md": "dcf1d5c07aa20e136e0ca852b249c6b9b20f9ef970776b162e22981860ee1222",
+    "astra-sieve.md": "fec805a997cddd476041b06fda0c9c51e7f5e7036aa6490ca3ef8dcec2907ad6",
+    "leap-research/completed-wave/EQNR-QF48-claims.json": "53c336180450fa2088bad1b3822097e7807618440d49a16510affe46a90653da",
+    "leap-research/completed-wave/HANDOFF.md": "7ebcf1f079d07ea5dc73c2450794738c41780c5de7caf35ec8275363ca677f64",
+    "leap-research/completed-wave/PGM-linear-claims.json": "f683a271297cb9c07de2768c519546b4ea07b25c79e1e54c9511e50df55be5c6",
+    "leap-research/completed-wave/composition-wolfram.json": "6b9f69ece7eead8485af1180883f05b4a5a381cd96917c545f849089ad398341",
+    "leap-research/completed-wave/declaration-checks.json": "4f09401273bd2b0ba82039fec5407f9d157dd3d1b96c75adc08922c4295220b5",
+    "leap-research/completed-wave/frontier-comparison.json": "006799e33d4e0054005dec77bb7c73c811f01e179d753aa7de12503d0647ebbb"
+  },
+  "material_prior_cs1": {
+    "submission_id": "f1481815-9577-4990-abe3-7b79fa5d9284",
+    "source_commit": "200ef0387acb280adcd272f4fbcdb805d1786bbe",
+    "proof_sha256": "e1b698d021f72cc5fd17f0132a2c30ba213dc2c424e613087d711804f074b528"
+  },
+  "models": {
+    "quantum_fiber": "GPT-6 Astra Max",
+    "exact_all_n": "GPT-6 Astra Max",
+    "collective_time": "GPT-6 Astra Max",
+    "source_channels": "GPT-6.1 Sol High",
+    "balanced_quantum": "GPT-6.1 Sol Extra High",
+    "full_time_envelopes": "GPT-6.1 Sol Max",
+    "coordinator": "gpt-6.1-sol ultra"
+  },
+  "harness": "T3 Code through Codex; T3 delegated research, local Python exact checks, remote Wolfram MCP",
+  "review_status": "Author self-check and coordinator composition check only; no new independent review or hosted verdict."
+}

@@ -1,0 +1,23 @@
+{
+  "status": "Direct pinned structured-declaration validation only; not full admission preflight or mathematical review.",
+  "checks": {
+    "EQNR-QF48": {
+      "structured_declarations": "pass",
+      "claims": 5,
+      "evidence_paths_present": [
+        "label-extraction.md",
+        "leap-research/exact-all-n.md",
+        "leap-research/quantum-fiber.md"
+      ],
+      "sha256": "53c336180450fa2088bad1b3822097e7807618440d49a16510affe46a90653da"
+    },
+    "PGM-linear": {
+      "structured_declarations": "pass",
+      "claims": 5,
+      "evidence_paths_present": [
+        "leap-research/collective-time.md"
+      ],
+      "sha256": "f683a271297cb9c07de2768c519546b4ea07b25c79e1e54c9511e50df55be5c6"
+    }
+  }
+}
