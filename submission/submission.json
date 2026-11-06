@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "HS2: doubled-cap minimum-distance stride decoding",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, with n=ceil(log2 N), the single HS2 configuration in proof.md (included doubled-cap CS1-C2 below n65536; otherwise its H=floor(sqrt(n)/16), Delta=floor(floor(log2 H)/2)-1 odd-stage stride, explicit revised source cap and fallback cap, unchanged 2-adic routine) recovers the entire secret with unconditional probability at least1-2^-8>2/3. On every branch, including failures, discarded copies, retries and aborts, total charged sequential work is O(n^4(log2 n)2^(sqrt(2n))), hence the uniform representative is n^4(log2 n)2^(a sqrt n), where a is the exact positive rational coefficient declared below and proved >sqrt2 by the recurrence in cs1-base-proof.md Section0. Its exact growth index is1/2. All constants are absolute and all four bounds hold jointly for this one configuration under the clean-input error model.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs1-base-proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
           "nPower": "4",
-          "logPower": "0"
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For the same all-N, all-s HS2 configuration in proof.md, with n=ceil(log2 N) and unconditional full-secret success at least1-2^-8, every-branch peak allocated classical bits are O(n^2 2^(sqrt(2n)-2(2n)^(1/4))), hence O(2^(a sqrt n-2 n^(1/4))) for the exact rational a in the declared structured bound. The latter representative has exact growth index1/2. No root incidence vectors or analytic pool are stored; all fixed tables, controller scratch and aborted attempts are accounted. This bound holds jointly with the other three resources and clean fractional guarantee.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs1-base-proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,20 +52,80 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-2",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same HS2 algorithm and parameter configuration in proof.md, every N>=2 and every s, n=ceil(log2 N), every-branch peak accessible qubits are O(n), with exact representative n and growth index0. It includes all simultaneous tree siblings, arithmetic targets, label-extraction registers and measurement ancillas. This holds jointly with the stated work, classical bits and total source copies and unconditional full-secret success at least1-2^-8 under the clean-input model.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "cs1-base-proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the same all-N, all-s HS2 configuration in proof.md, n=ceil(log2 N), every execution branch acquires at most the explicit Q_Hcap=1024[6*2^MU*(KAP+1)(R K+2a2)+2a2] source copies on its main branch, with parameters defined exactly in proof.md; its finite branch uses the exact doubled-cap parent cap. Therefore total acquired copies, including discarded/rejected copies and all failed/retried attempts, are O(n^(3/2)2^(sqrt(2n))), hence representative n^(3/2)2^(a sqrt n) with the exact rational a in the declared structured object and exact growth index1/2. This holds jointly with the other three resource bounds and unconditional full-secret success at least1-2^-8 under the clean-input model.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs1-base-proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same HS2 algorithm/configuration in proof.md, for every N>=2 and every secret s, the guaranteed malformed fraction is epsilon(n)=0. Every acquired copy must be an independent ideal coset state, so at most floor(epsilon(n)Q)=0 copies may be malformed. Under exactly this promise, unconditional full-secret success is at least1-2^-8>2/3 jointly with all four branchwise resource bounds. No positive robustness or maximal-tolerance claim is asserted.",
+      "evidence": [
+        "proof.md",
+        "cs1-base-proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
