@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LSIEVE: log-depth interval sieve, 2^(n/log n) time, tolerating 1/(65536 n^5) obliviously malformed copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the log-depth interval-sieve algorithm LSIEVE of proof.md (phase-estimation Fourier sampling with one reused phase-gradient register; integer-label interval sieve with at most K = ceil(log2 n) stages of at most ceil(n/K) bucket bits; every sieve run that does not abort outputs Lambda = 2^20 * 2^ceil(n/K) items, and the decision votes with all of those whose labels lie in a fixed dyadic band; fixed copy schedule of Q_fix = (2n+6) * 4 * 16^K * Lambda copies; exhaustive shift test for n < 32) has worst-case total work T(N,s) = O(2^(n/log2 n) n^8) in the challenge model, with an absolute constant (for n >= 2; for n < 32 all resources are absolute constants); the envelope B_T(n) = 2^(n/log2 n) n^8 has growth index exactly 1. This holds for one fixed configuration on every execution branch, for every adversary of the error model of claim 5 with epsilon(n) = 1/(65536 n^5) (including the clean problem), jointly with the other three resource bounds and with full-secret success probability greater than 2/3 (proof.md Theorem 1).",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -23,7 +23,65 @@
             {
               "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-1"
+            }
+          ],
+          "nPower": "8",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the same algorithm, the log-depth interval-sieve algorithm LSIEVE of proof.md (phase-estimation Fourier sampling with one reused phase-gradient register; integer-label interval sieve with at most K = ceil(log2 n) stages of at most ceil(n/K) bucket bits; every sieve run that does not abort outputs Lambda = 2^20 * 2^ceil(n/K) items, and the decision votes with all of those whose labels lie in a fixed dyadic band; fixed copy schedule of Q_fix = (2n+6) * 4 * 16^K * Lambda copies; exhaustive shift test for n < 32), has worst-case peak classical workspace S_C(N,s) = O(2^(n/log2 n) n^5) bits with an absolute constant; the envelope B_C(n) = 2^(n/log2 n) n^5 has growth index exactly 1. This holds for one fixed configuration on every execution branch, for every adversary of the error model of claim 5 with epsilon(n) = 1/(65536 n^5) (including the clean problem), jointly with the other three resource bounds and with full-secret success probability greater than 2/3 (proof.md Theorem 1).",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1",
+              "logPower": "-1"
+            }
+          ],
+          "nPower": "5",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the same algorithm, the log-depth interval-sieve algorithm LSIEVE of proof.md (phase-estimation Fourier sampling with one reused phase-gradient register; integer-label interval sieve with at most K = ceil(log2 n) stages of at most ceil(n/K) bucket bits; every sieve run that does not abort outputs Lambda = 2^20 * 2^ceil(n/K) items, and the decision votes with all of those whose labels lie in a fixed dyadic band; fixed copy schedule of Q_fix = (2n+6) * 4 * 16^K * Lambda copies; exhaustive shift test for n < 32), has worst-case peak quantum workspace S_Q(N,s) = O(2^(n/log2 n) n^4) qubits with an absolute constant; the envelope B_Q(n) = 2^(n/log2 n) n^4 has growth index exactly 1. This holds for one fixed configuration on every execution branch, for every adversary of the error model of claim 5 with epsilon(n) = 1/(65536 n^5) (including the clean problem), jointly with the other three resource bounds and with full-secret success probability greater than 2/3 (proof.md Theorem 1).",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1",
+              "logPower": "-1"
             }
           ],
           "nPower": "4",
@@ -32,53 +90,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the same algorithm, the log-depth interval-sieve algorithm LSIEVE of proof.md (phase-estimation Fourier sampling with one reused phase-gradient register; integer-label interval sieve with at most K = ceil(log2 n) stages of at most ceil(n/K) bucket bits; every sieve run that does not abort outputs Lambda = 2^20 * 2^ceil(n/K) items, and the decision votes with all of those whose labels lie in a fixed dyadic band; fixed copy schedule of Q_fix = (2n+6) * 4 * 16^K * Lambda copies; exhaustive shift test for n < 32), acquires on every execution branch, including discarded copies, unused slots, aborted runs and the final test, exactly Q = Q_fix = O(2^(n/log2 n) n^5) fresh DCP source copies for n >= 32 (Q = N(n+2) for n < 32), with an absolute constant; the envelope B_samples(n) = 2^(n/log2 n) n^5 has growth index exactly 1. This holds for one fixed configuration on every execution branch, for every adversary of the error model of claim 5 with epsilon(n) = 1/(65536 n^5) (including the clean problem), jointly with the other three resource bounds and with full-secret success probability greater than 2/3 (proof.md Theorem 1).",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -98,23 +110,23 @@
             {
               "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-1"
             }
           ],
-          "nPower": "1",
+          "nPower": "5",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the same algorithm LSIEVE of proof.md, the proved fractional error tolerance is epsilon(n) = 1/(65536 n^5), valid for every N >= 2 (no threshold), under the oblivious adversarial malformed-copy model stated in error_model: before the run an adversary knowing N, s and the algorithm (but no random bits or measurement outcomes of the run) fixes, possibly at random, the positions of at most floor(epsilon(n) Q) malformed copies among the Q acquired copies and their joint state, which is arbitrary (entangled among the malformed copies and with a private reference); every other copy is an ideal coset state rho_s, and, conditioned on the positions and on the adversary's random choices, clean copies, the malformed system and the algorithm's workspace are in tensor product; the adversary takes no further action. For n >= 32 LSIEVE acquires exactly Q_fix copies on every branch, so on every branch at most floor(Q_fix/(65536 n^5)) copies are malformed, and this number is less than Lambda/468; for n < 32 it acquires Q = N(n+2) < 65536 n^5 copies, so floor(epsilon(n) Q) = 0 and the clean baseline guarantee applies. For every N >= 2, every s in Z/NZ and every such adversary (including the clean problem), the output equals the entire s with probability greater than 0.77 > 2/3 for n >= 32 and greater than 3/4 for n < 32 (proof.md Theorem 1), jointly with the four resource bounds above, which hold on every execution branch for every adversary. Adaptive adversaries that observe the run are not covered; no maximal-tolerance claim is made.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{1}{65536 n^5}",
+        "error_model": "Oblivious adversarial malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction; copies are indexed 1, ..., Q in acquisition order. Before the algorithm starts, an adversary that knows N, s and the full description of the algorithm, but none of the algorithm's random bits or measurement outcomes, chooses (possibly at random) a set M of positions and a joint state of |M| systems of n+1 qubits each (the register shape of an ideal copy) together with a private reference system; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies have positions in M. The copy at a position in M is malformed: it is the corresponding system of that joint state, which is arbitrary (pure or mixed, entangled with the other malformed copies and with the reference system). Every other copy is clean: an ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}|. Conditioned on M and on the adversary's random choices, the clean copies, the joint system of all malformed copies and the reference, and the algorithm's initial workspace are in tensor product; in particular the clean copies are independent ideal coset states, uncorrelated with every malformed copy. After this choice the adversary takes no further action: it does not observe the run and acts on no system. The algorithm is not told which copies are malformed; the labels it reports and the outcomes of its measurements on malformed copies, and on anything combined with them, are determined by that fixed state and obey no promised law. Quantifiers: for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the one with M empty (the clean problem), the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
