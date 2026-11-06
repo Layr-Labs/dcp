@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "EP-A: exact 1/3 tolerance, cached phase comparisons, O(2^{n/2} n^2 log^2 n) work and quadratic workspace",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), Algorithm A with exactly the single parameter rule and complete schedule of proof.md Section 0, under every adversary of the error model in the fifth claim, including the clean problem, outputs the entire s with unconditional probability at least 11/16 > 2/3. The SAME algorithm/configuration has total sequential work T = O(2^{n/2} n^2 (log2 n)^2), with representative-envelope growth index exactly 1. All four resource bounds hold jointly on every execution branch, including all failure branches, with absolute constants independent of N, s, adversary and outcomes. Work includes source cost n+1 per copy, classical bit operations, all circuit generation, gates, precision/preparation, memory/address charges, measurements, resets, initialization and all capped attempts; peak memory includes all retained work. See proof.md Sections 1-9.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), Algorithm A with exactly the single parameter rule and complete schedule of proof.md Section 0, under every adversary of the error model in the fifth claim, including the clean problem, outputs the entire s with unconditional probability at least 11/16 > 2/3. The SAME algorithm/configuration has peak allocated classical space S_C = O(n^2) bits, with representative-envelope growth index exactly 0. All four resource bounds hold jointly on every execution branch, including all failure branches, with absolute constants independent of N, s, adversary and outcomes. Work includes source cost n+1 per copy, classical bit operations, all circuit generation, gates, precision/preparation, memory/address charges, measurements, resets, initialization and all capped attempts; peak memory includes all retained work. See proof.md Sections 1-9.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), Algorithm A with exactly the single parameter rule and complete schedule of proof.md Section 0, under every adversary of the error model in the fifth claim, including the clean problem, outputs the entire s with unconditional probability at least 11/16 > 2/3. The SAME algorithm/configuration has peak allocated quantum space S_Q = O(n^2) qubits, with representative-envelope growth index exactly 0. All four resource bounds hold jointly on every execution branch, including all failure branches, with absolute constants independent of N, s, adversary and outcomes. Work includes source cost n+1 per copy, classical bit operations, all circuit generation, gates, precision/preparation, memory/address charges, measurements, resets, initialization and all capped attempts; peak memory includes all retained work. See proof.md Sections 1-9.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -78,9 +78,9 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), Algorithm A with exactly the single parameter rule and complete schedule of proof.md Section 0, under every adversary of the error model in the fifth claim, including the clean problem, outputs the entire s with unconditional probability at least 11/16 > 2/3. Exactly Q=3*2^16*(n+32) copies are acquired on every branch, with no acquisition inside an inverted circuit and no restarted acquisition. The SAME algorithm/configuration has total acquired source count Q = O(n) source copies, with representative-envelope growth index exactly 0. All four resource bounds hold jointly on every execution branch, including all failure branches, with absolute constants independent of N, s, adversary and outcomes. Work includes source cost n+1 per copy, classical bit operations, all circuit generation, gates, precision/preparation, memory/address charges, measurements, resets, initialization and all capped attempts; peak memory includes all retained work. See proof.md Sections 1-9.",
       "score": {
-        "numerator": "1",
+        "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
@@ -94,27 +94,21 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), Algorithm A with exactly the single parameter rule and complete schedule of proof.md Section 0, under every adversary of the error model in the fifth claim, including the clean problem, outputs the entire s with unconditional probability at least 11/16 > 2/3. The proved fractional error tolerance is epsilon(n)=1/3, valid for every N >= 2 with no threshold. Among the exactly Q=3*2^16*(n+32) acquired copies, at most floor(Q/3)=Q/3 are malformed on every branch. Their positions and arbitrary states may be chosen adaptively with all earlier actual algorithm measurement outcomes and a private quantum system, and malformed copies may be mutually entangled. Clean deliveries are fresh independent ideal states in tensor product with everything else, and delivered algorithm systems are inaccessible to the adversary. The guarantee holds jointly with all four declared resource bounds for this same configuration. The complete error-model specification and full proof appear in proof.md Sections 0-9.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
