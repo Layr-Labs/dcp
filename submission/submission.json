@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "ROB+: shadow scoring with 33/100 adaptive malformed-copy tolerance (ceiling 1/3 for even N) and O(n) copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB+ robust shadow-scoring algorithm with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, cosine table of precision 2^-22) has worst-case total work T(N,s) = O(2^n n^2 log2 n) in the challenge cost model (all classical bit operations, circuit generation, gates, measurements, initialisation, table construction, address charge ceil(log2(M+2)) = O(log n) per indexed access, where M = O(n^2) is the number of allocated bits plus qubits, n+1 per source copy; proof.md Section 7: O(N Q n A) for scoring plus O(Q n^2 log^2 n) for label estimation), i.e. uniform envelope B_T(n) = 2^n n^2 log2 n, whose growth index is exactly 1. This holds on every execution branch, for the clean problem and for every adversary of the error model of the fifth claim, jointly with the other three resource bounds and full-secret success probability at least 7/8 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -26,13 +26,13 @@
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB+ robust shadow-scoring algorithm with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, cosine table of precision 2^-22) has worst-case peak classical space S_C(N,s) = O(n^2) bits (Q records of n+4 bits, Q running residues of n bits, the 2^16-entry cosine table and its constant-size construction workspace, O(log n)-bit exact fixed-point accumulators, an O(n log log n)-bit label-estimation workspace (8(J+1) counters of bitlength(r1) bits and one (J+3)-bit reconstruction value), one O(log n)-bit stored gate description, counters and O(n) scratch; explicitly S_C <= 2^19 (n+4)(2n+4) + 3 * 2^19 + O(n log log n + log n + 1)), i.e. envelope B_C(n) = n^2, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the error model of the fifth claim, jointly with the other three resource bounds and full-secret success probability at least 7/8 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB+ robust shadow-scoring algorithm with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, cosine table of precision 2^-22) has worst-case peak quantum space S_Q(N,s) = O(n) qubits (one held (n+1)-qubit source copy, one test control, O(n) adder ancillas and one fair-bit qubit, all released after each copy), i.e. envelope B_Q(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the error model of the fifth claim, jointly with the other three resource bounds and full-secret success probability at least 7/8 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,49 +72,43 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB+ robust shadow-scoring algorithm with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, cosine table of precision 2^-22) acquires exactly Q(N,s) = 2^19 (n+4) <= 5 * 2^19 n fresh source copies on every execution branch (a deterministic count; there are no discarded attempts, restarts or aborts), so Q(N,s) = O(n), envelope B_samples(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the error model of the fifth claim, jointly with the other three resource bounds and full-secret success probability at least 7/8 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same ROB+ algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 33/100, valid for every N >= 2 (no threshold), under the adaptive malformed-copy model stated in error_model: of the Q = 2^19 (n+4) acquired copies at most floor(33Q/100) are malformed, their positions and states chosen adaptively by an adversary who knows N, s, the algorithm and all previous measurement outcomes and may use a private quantum system; malformed copies are arbitrary (n+1)-qubit states, possibly entangled with one another and with the adversary but not with clean copies or the algorithm's workspace; every other copy is, at delivery, an independent ideal coset state in tensor product with everything else, and the adversary has no access to a copy or to the algorithm's systems after delivery. For every N >= 2, every s in Z/NZ and every such adversary (including the clean problem), the output equals the entire s with probability at least 7/8 > 2/3 (proof.md Theorem 1), jointly with the four resource bounds above, which hold on every execution branch for every adversary. proof.md Proposition U (a proved remark, not part of this claim) shows that for even N and every epsilon > 1/3, no algorithm acquiring a fixed number Q > ln 6/(2(epsilon - 1/3)^2) of copies achieves success probability at least 2/3 against every adversary of this model; 33/100 = (99/100)(1/3).",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "33/100",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
