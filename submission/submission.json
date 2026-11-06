@@ -1,12 +1,46 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "CS1-SBRS: plateau collimation with a strided seed and backward blocks",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The single CS1-SBRS algorithm in proof.md recovers the whole secret with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies. On EVERY branch, including failures, retries, discards and aborts, total charged sequential work is O(n^(13/4) 2^(2 sqrt n - n^(1/4))). All four resource bounds and source tolerance hold jointly for this one configuration, with absolute outside constants. The exact growth index of the declared envelope is 1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "13/4",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The single CS1-SBRS algorithm in proof.md recovers the whole secret with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies. On EVERY branch, including failures, retries, discards and aborts, peak classical workspace is O(n^2 2^(sqrt n)). All four resource bounds and source tolerance hold jointly for this one configuration, with absolute outside constants. The exact growth index of the declared envelope is 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -22,17 +56,17 @@
           "exponent": [
             {
               "coefficient": "1",
-              "nPower": "1",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The single CS1-SBRS algorithm in proof.md recovers the whole secret with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies. On EVERY branch, including failures, retries, discards and aborts, peak quantum workspace is O(n). All four resource bounds and source tolerance hold jointly for this one configuration, with absolute outside constants. The exact growth index of the declared envelope is 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,65 +83,42 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The single CS1-SBRS algorithm in proof.md recovers the whole secret with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies. On EVERY branch, including failures, retries, discards and aborts, the number Q of fresh source copies, including every discarded and rejected copy, is O(n^(3/2) 2^(sqrt n)). All four resource bounds and source tolerance hold jointly for this one configuration, with absolute outside constants. The exact growth index of the declared envelope is 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The same CS1-SBRS configuration in proof.md has fractional source tolerance epsilon(n) = 0. All acquired copies must be independent ideal coset states; the permitted malformed count is floor(0 Q) = 0. Under this promise it recovers the whole secret with unconditional probability at least 1 - 2^-8 > 2/3. All four resource bounds hold jointly for this configuration on every branch, including failures, retries, discards and aborts, with absolute outside constants. No positive malformed fraction is claimed.",
       "evidence": [
         "proof.md"
       ],
