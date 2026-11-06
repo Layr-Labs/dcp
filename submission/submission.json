@@ -1,122 +1,132 @@
 {
-  "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
-  "claims": [
-    {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
+ "version": 1,
+ "title": "SLS: spliced low-bit sieve with exact Clifford+T labels, O(n^2) bits, O(n) qubits, 2^{2 sqrt(n log n)+(9/4) sqrt n} poly(n) work for every N",
+ "claims": [
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and log2 the binary logarithm, the SLS spliced low-bit sieve with the single parameter rule of proof.md Section 4 (lambda = max(1, ceil(log2 n)), b = ceil(sqrt(n lambda)), D = ceil((n-1)/b) sieve stages, inner copy budget B = ceil(20 n (8(b+3)/7)^D), G = 40B grid guesses, G' = min(G, N) of them used, k_test = bitlength(G') + 4 test copies per candidate, r1 = 200 bitlength(1600(n+1)B) kickback tests per level and phase) has worst-case total work T(N,s) = O(2^{2 sqrt(n log2 n) + (9/4) sqrt(n)} n^{11/2} (log2 n)^{3/2}) in the challenge cost model (all classical bit operations, circuit generation, gates, measurements, initialisation and reset, fair bits, n+1 per source copy, and the address charge ceil(log2(A_M+2)) = O(log n) per indexed access or addressed gate, where A_M = O(n^2) is the number of allocated bits plus qubits). proof.md Section 7 derives this from at most 40B guesses, each with at most B leaves of poly(n) cost and at most DB COMBINE steps of O(2^b b^2 log n) cost, and log2 B < sqrt(n log2 n)/2 + sqrt(n) + 2 log2 n + 6 for n >= 16. The uniform envelope is B_T(n) = 2^{2 sqrt(n log2 n) + (9/4) sqrt(n)} n^{11/2} (log2 n)^{3/2}, whose growth index is exactly 1/2. This holds on every execution branch (every inner run is capped at B copies and every loop is bounded), jointly with the other three resource bounds and with full-secret success probability > 3/4 (>= 2/3) for the same algorithm and configuration (proof.md Theorem 1), under independent ideal coset copies. All constants are absolute (independent of N, s and all outcomes).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "1/2"
       },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
+      {
+       "coefficient": "9/4",
+       "nPower": "1/2",
+       "logPower": "0"
       }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
-      }
+     ],
+     "nPower": "11/2",
+     "logPower": "3/2"
     }
-  ],
-  "experiments": []
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and log2 the binary logarithm, the SLS spliced low-bit sieve with the single parameter rule of proof.md Section 4 (lambda = max(1, ceil(log2 n)), b = ceil(sqrt(n lambda)), D = ceil((n-1)/b) sieve stages, inner copy budget B = ceil(20 n (8(b+3)/7)^D), G = 40B grid guesses, G' = min(G, N) of them used, k_test = bitlength(G') + 4 test copies per candidate, r1 = 200 bitlength(1600(n+1)B) kickback tests per level and phase) has worst-case peak classical space S_C(N,s) = O(n^2) bits: the n-bit labels of at most n + 2D held qubits, O(n log n) bits of parameters, label-reading counters, recursion stack and COMBINE workspace, and one stored gate description (gate lists are emitted one gate at a time; proof.md Section 7). The envelope is B_C(n) = n^2, whose growth index is exactly 0. This holds on every execution branch (every inner run is capped at B copies and every loop is bounded), jointly with the other three resource bounds and with full-secret success probability > 3/4 (>= 2/3) for the same algorithm and configuration (proof.md Theorem 1), under independent ideal coset copies. All constants are absolute (independent of N, s and all outcomes).",
+   "score": {
+    "numerator": "0",
+    "denominator": "1"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [],
+     "nPower": "2",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and log2 the binary logarithm, the SLS spliced low-bit sieve with the single parameter rule of proof.md Section 4 (lambda = max(1, ceil(log2 n)), b = ceil(sqrt(n lambda)), D = ceil((n-1)/b) sieve stages, inner copy budget B = ceil(20 n (8(b+3)/7)^D), G = 40B grid guesses, G' = min(G, N) of them used, k_test = bitlength(G') + 4 test copies per candidate, r1 = 200 bitlength(1600(n+1)B) kickback tests per level and phase) has worst-case peak quantum space S_Q(N,s) = O(n) qubits: at most n + 2D held labelled qubits in the depth-first sieve, one (n+1)-qubit source copy being prepared or tested, O(n) adder and comparator ancillas, one kickback control, one fair-bit qubit and O(b) = O(sqrt(n log n)) COMBINE workspace qubits; every measured qubit is released (proof.md Section 7). The envelope is B_Q(n) = n, whose growth index is exactly 0. This holds on every execution branch (every inner run is capped at B copies and every loop is bounded), jointly with the other three resource bounds and with full-secret success probability > 3/4 (>= 2/3) for the same algorithm and configuration (proof.md Theorem 1), under independent ideal coset copies. All constants are absolute (independent of N, s and all outcomes).",
+   "score": {
+    "numerator": "0",
+    "denominator": "1"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [],
+     "nPower": "1",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and log2 the binary logarithm, the SLS spliced low-bit sieve with the single parameter rule of proof.md Section 4 (lambda = max(1, ceil(log2 n)), b = ceil(sqrt(n lambda)), D = ceil((n-1)/b) sieve stages, inner copy budget B = ceil(20 n (8(b+3)/7)^D), G = 40B grid guesses, G' = min(G, N) of them used, k_test = bitlength(G') + 4 test copies per candidate, r1 = 200 bitlength(1600(n+1)B) kickback tests per level and phase) acquires at most Q(N,s) <= G'(B + k_test) <= 80 B^2 fresh source copies on every execution branch, counting every copy used by inner runs for wrong guesses, aborted inner runs, discarded leaves and candidate tests. With log2 B < sqrt(n log2 n)/2 + sqrt(n) + 2 log2 n + 6 for n >= 16, this gives Q(N,s) = O(2^{sqrt(n log2 n) + 2 sqrt(n)} n^4) (proof.md Section 7). The envelope is B_samples(n) = 2^{sqrt(n log2 n) + 2 sqrt(n)} n^4, whose growth index is exactly 1/2. This holds on every execution branch (every inner run is capped at B copies and every loop is bounded), jointly with the other three resource bounds and with full-secret success probability > 3/4 (>= 2/3) for the same algorithm and configuration (proof.md Theorem 1), under independent ideal coset copies. All constants are absolute (independent of N, s and all outcomes).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "1",
+       "nPower": "1/2",
+       "logPower": "1/2"
+      },
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "4",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For the same SLS algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 0 for every N >= 2 (no validity threshold): at most floor(0*Q) = 0 of the Q acquired copies may be malformed, i.e. the guarantee assumes that all acquired source copies are independent ideal coset states, and no adversary or corruption model is assumed. Under this promise, for every N >= 2 and every s in Z/NZ, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds above. No behavior is promised for malformed copies and no positive tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-fractional-error-tolerance-v1",
+    "expression": "0",
+    "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+   }
+  }
+ ],
+ "experiments": []
 }
