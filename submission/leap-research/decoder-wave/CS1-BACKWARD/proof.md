@@ -1,0 +1,1042 @@
+# CS1-BACKWARD: precise terminal seed and backward phase lifts
+
+## 0. Theorem and notation
+
+For every N>=2 and fixed s in Z/NZ, put n=ceil(log2 N). The single algorithm
+CS1-BACKWARD defined below receives fresh independent mixed coset copies and
+recovers the whole secret with unconditional probability at least1-2^-8>2/3.
+On EVERY branch, including wrong labels, discards, retries and aborts, jointly
+
+    T   = O(n^(7/2)(log2 n)^2 2^(sqrt(2n))),
+    S_C = O(n^2 2^(sqrt(2n)-sqrt(3)*(2n)^(1/4))),
+    S_Q = O(n),
+    Q   = O(n(log2 n)^2 2^(sqrt(2n))).
+
+These are asymptotic envelopes for n>=2; Section11 specifies the finite n=1
+case as well. Equivalently all-n charging formulas can replace log2 n by
+max(1,log2 n). Let (u_0,v_0)=(10,7), and
+(u_(k+1),v_(k+1))=(3u_k+4v_k,2u_k+3v_k). Define a=u_333/v_333. The invariant
+u_k^2-2v_k^2=2 proves a>sqrt(2). The exact structured representatives are
+n^(7/2)(log2 n)^2 2^(a sqrt n), 2^(a sqrt n-2n^(1/4)), n, and
+n(log2 n)^2 2^(a sqrt n), with exact indices(1/2,1/2,0,1/2). This is the same
+exact rational a as the material predecessor. The raw bounds above already
+improve the polynomial prefactor at exponent sqrt(2n); no such factor is
+hidden in a-sqrt(2). The clean-input malformed fraction is exactly0.
+
+Notation: d=floor(log2 N), N=2^a2 M with M odd, s1=s mod M, and
+s=s1+M s2 modulo N with s2 in[0,2^a2). All logarithms are base two.
+omega=exp(2pi i/N). n qubits encode data residues. The odd-part tree uses
+D=d, B=d-1, and R=nq_d=2^m(kappa+1), as fixed in Section7.
+Section9 fixes its terminal scale, seed stages and backward measurements;
+Section11 fixes all source, fallback and per-bit attempt caps. These choices
+define one algorithm and one configuration. No stronger support theorem or
+collective-measurement algorithm is assumed.
+
+## 1. Provenance and exact hypotheses
+
+Direct published material source: CS1-C3Q, submission
+32076cd3-77d5-4058-813d-7e66be4714f8, evaluated commit
+c80fdd7c40bac9f0f594c66fa0781457ae673e5d, submission/proof.md SHA256
+0ee4d29d5edab7647f229993d16103a496c3b7296bf798b230f62ec935ea5733,
+and submission/submission.json. Sections2--8,10 and15 reproduce its component
+proofs, with the algorithm name changed. They are explicitly proved here,
+not assumed from a prior verdict. The only selected decoder is Section9's
+precise high-scale seed and backward two-candidate algorithm. In Section10
+the geometric odd-root loop is additionally subject to Section11's K2 cap.
+Sections11--14 give the new acquisition cap, success and charged resources.
+
+The new backward decoder is from the completed GPT-6 Astra Max research note
+joint-multiscale.md, SHA256
+3517bec1b2ffdc3ae734c90dc9b33fa1cddb40608cf617d854ba9beb91137b43.
+The coordinator gpt-6.1-sol ultra assembled this self-contained proof and five
+declarations from those precise component sources. The note is unpublished
+research, so it supplies authorship/provenance rather than a prior published
+submission edge. The needed arguments are fully reproduced in Section9.
+
+Historical material used through the published source is retained explicitly:
+Kuperberg, Another subexponential-time quantum algorithm for the dihedral
+hidden subgroup problem, arXiv:1112.3333v1, Algorithm4.1, Proposition4.2 and
+Section4.6, for collimation and uninspected top bits; Kitaev,
+quant-ph/9511026, for modular-translation phase tests; Dawson--Nielsen,
+quant-ph/0505030v2, Theorem1 and Sections3--4, for the uniformly charged compiler
+described in Section5. CS1 submission f1481815-9577-4990-abe3-7b79fa5d9284,
+archive200ef0387acb280adcd272f4fbcdb805d1786bbe, supplies the inherited CRT,
+held-out-bit, table and free-frequency localization ideas. CS1-C3 submission
+6e91de62-9a4f-4f08-bfa8-1beacca11e0f supplies the inherited length cap.
+CS1-C3Q supplies the inherited cheap verified QPE extraction. These prior
+submissions are declared material dependencies, not just named comparators.
+No acceptance verdict, heuristic subset-sum distribution, source inverse,
+coherent source control, or independent-uniform-table assumption is used.
+
+## 2. Model and counting conventions
+
+A CORE STEP is one of the following:
+- one NOT/CNOT/Toffoli/H/S/S^dagger/T/T^dagger gate;
+- one computational-basis single-qubit measurement or reset;
+- one Boolean operation on at most three classical bits;
+- one classical bit read or write.
+
+Toffoli has an exact constant-size Clifford+T decomposition. Integers are bit
+strings, and an L-bit addition, comparison or copy costs O(L) core steps.
+Generating a gate costs O(1) core steps. Each core step additionally pays its
+address, ceil(log2(Mem+2)) bit operations, where Mem <= S_C + S_Q is the
+number of allocated bits and qubits. A source acquisition costs n+1. Hence
+
+    T <= (number of core steps) * (1 + ceil(log2(S_C+S_Q+2))) + (n+1) Q.     (2.1)
+
+There is no QRAM: every lookup is the explicit circuit of Section 6.1.
+
+## 3. Source identities, the latent-label model and data transforms
+
+Let chi_k = N^(-1/2) sum_u omega^(k u)|u> and phi_k(s) = (|0> + omega^(-k s)|1>)/sqrt 2.
+Substituting |u> = N^(-1/2) sum_k omega^(-k u) chi_k into
+rho_s = (1/N) sum_x |psi_x><psi_x|, with psi_x = (|0,x> + |1,x+s>)/sqrt 2, gives
+
+    rho_s = (1/N) sum_(k=0)^(N-1) |phi_k(s)><phi_k(s)| (x) |chi_k><chi_k|,       (3.1)
+
+because the cross terms k != k' carry (1/N) sum_x omega^(-(k-k')x) = 0.
+
+Latent-label model. By (3.1) each copy is literally a convex mixture, with
+uniform weights, of the product states phi_k(s) (x) chi_k. The whole algorithm
+is a linear (adaptive) quantum instrument applied to independent copies. So
+the joint law of all its classical outcomes equals the law obtained by first
+drawing, for every copy, an independent uniform latent label k, and then
+running on the product state phi_k(s) (x) chi_k. All probabilities below use
+this model. Applying X to the control maps phi_k(s) to, up to a global phase,
+the POSITIVE qubit pq_k(s) = (|0> + omega^(k s)|1>)/sqrt 2.
+
+Two exact data transforms act on a fresh copy before label extraction. Each
+is a permutation of all 2^n data encodings, extended by the identity on
+encodings >= N. Each maps the copy exactly to rho_s' for a known transformed
+secret s'. The latent-label model is then applied to rho_s' via (3.1), so the
+latent label of a copy is the Fourier label of its TRANSFORMED data register,
+which LE recovers.
+
+(T1) Mult_alpha: u -> alpha u mod N, for a known alpha coprime to N. Since
+x -> alpha x is a bijection of Z/NZ, the copy becomes exactly rho_(alpha s).
+It is implemented with n controlled modular additions of the constants
+alpha 2^v mod N into a clean register, a swap, and the inverse computation with
+alpha^(-1): O(n^2) core steps and O(n) scratch.
+
+(T2) Shift_c: if the control is |1>, replace u by u - c mod N, for a known c.
+Since |1,x+s> becomes |1,x+(s-c)>, the copy becomes exactly rho_(s-c). This
+takes O(n) core steps.
+
+Modular addition of a known constant in [0,N) is a ripple comparison with N,
+an addition, a comparison and a selector. It is the identity on encodings
+>= N, uses O(n) Boolean gates, and is computed cleanly: compute, swap or XOR
+the result out, then uncompute.
+
+## 4. Rational trigonometric table
+
+For v in [0,4096) the controller computes rationals Cos[v], Sin[v] within 2^-20
+of cos(2 pi v/4096) and sin(2 pi v/4096).
+
+- Bound pi within 2^-90 using Machin's formula pi = 16 atan(1/5) - 4 atan(1/239),
+  summing the first 40 terms of each alternating arctangent series. This gives
+  two-sided bounds; the tails are below 16 (1/5)^81/81 + 4 (1/239)^81/81 < 2^-91.
+- The identity follows from tan(2 atan(1/5)) = 5/12, tan(4 atan(1/5)) = 120/119
+  and tangent subtraction.
+- At the angle 2 v p_mid/4096 < 7, where p_mid is the midpoint of the pi bounds,
+  sum 80 Taylor terms. The remainder is <= 7^81/81! < 2^-170. The angle error
+  is < 2^-89, and sin and cos are 1-Lipschitz.
+- Round each value to denominator 2^20.
+
+This is a fixed finite rational computation, charged once as an absolute
+constant (not advice).
+
+For x in [0,1) put tab_0(x) = Cos[floor(4096x)] and tab_1(x) = Sin[floor(4096x)],
+and let cs_0(x) = cos(2 pi x), cs_1(x) = sin(2 pi x). Since cs is 2pi-Lipschitz,
+
+    |tab_beta(x) - cs_beta(x)| <= 2 pi/4096 + 2^-20 < 1/625.                    (4.1)
+
+## 5. Label extraction LE
+
+Input: a data register holding chi_k for a latent k, beside arbitrary
+spectators. An upper bound Qcap on the number of LE calls is fixed in advance
+(Section 11). LE makes a cheap estimate (5.2), checks it with a randomized
+verification (5.3), and only if the check rejects runs the high-confidence
+extraction (5.4). A global counter caps the number of high-confidence runs (5.5).
+Parameters:
+
+    J_e = n + 4,   h_e = ceil(log2(Qcap (n+5))) + 14,   h_A = 2 ceil(log2(n+5)) + 14,
+    t_V = 64 h_e,  F(h) = 2^21 h,  T_V = ceil(log2(n+20)) + 14,  G = n + 40 + T_V.
+
+Translation Tr_c: u -> u + c mod N satisfies Tr_c chi_k = omega^(-k c) chi_k.
+A TEST WITH SHIFT c (0 <= c < N) works as follows. Prepare an ancilla in |+>.
+Apply Tr_((N - c) mod N) controlled by it, so the |1> branch gets eigenvalue
+omega^(k c). Measure the ancilla in X (H then Z) or in Y (S^dagger, H, then Z).
+The +-1 outcome has mean cos(2 pi c k/N) or sin(2 pi c k/N). Conditioned on
+k, chi_k and every spectator are unchanged and outcomes are independent. A test
+at LEVEL j is the test with shift 2^j mod N. Each test costs one controlled
+modular addition, O(n) core steps.
+
+### 5.1 RUN(F): level-wise extraction
+
+For each j = 0..J_e take F tests at level j per basis, giving empirical means
+x_j and y_j. Then decode as follows.
+
+Decoding each level. Pick the least dr in [0,64) maximizing
+x_j Cos[64 dr] + y_j Sin[64 dr].
+- If |x_j - cos| and |y_j - sin| are at most 1/1024, each computed dot product
+  differs from cos(2 pi (2^j k/N - dr/64)) by at most 2/1024 + 2^-19 < 1/256.
+- The nearest direction has true dot >= cos(pi/64) >= 511/512.
+- Any direction at circular distance >= 1/16 has dot <= cos(pi/8) <= 31/32.
+- The gap 15/512 exceeds 2/256. So alpha_j = dr/64 is within circular distance
+  1/16 of 2^j k/N.
+
+Unwrapping. Set g_(J_e) = alpha_(J_e). For j = J_e - 1 down to 0, let g_j be
+whichever of g_(j+1)/2 and (g_(j+1)+1)/2 (mod 1) is circularly closer to alpha_j
+(ties: the first).
+- Suppose g_(j+1) is within e < 1/16 of 2^(j+1) k/N. The correct preimage is
+  within e/2 of 2^j k/N, hence within 1/16 + e/2 < 3/32 of alpha_j.
+- The other preimage is at least 1/2 - e/2 from 2^j k/N, hence more than 13/32
+  from alpha_j.
+- So the choice is correct and the error halves. Finally g_0 is within
+  2^-(J_e)/16 = 2^-(n+8) < 1/(2N) of k/N.
+
+RUN(F) outputs floor(N g_0 + 1/2) mod N, which then equals k. On any input it
+returns a value in [0,N) after its fixed number of tests.
+
+Concentration. For F independent +-1 variables, the centered log-moment
+generating function has second derivative at most 1 (a tilted variance) and
+vanishes with its first derivative at 0. Hence
+Pr(|mean - E mean| > delta) <= 2 exp(-F delta^2/2). With delta = 1/1024 and
+F = F(h) this is 2 exp(-h). So RUN(F(h)) returns a value other than k with
+probability at most 4 (J_e + 1) e^(-h) = 4 (n+5) e^(-h), uniformly in k.
+RUN(F(h)) uses 2 (J_e + 1) F(h) tests, that is O(n^2 h) core steps.
+
+### 5.2 Estimate by oversampled phase estimation
+
+This replaces the inherited RUN(F(h_A)) cheap estimate. All following
+verification, high-confidence extraction and caps remain part of this
+single algorithm. Set k_A to the estimate defined here.
+
+Let q=ceil(log2(4096n)), m=n+q, L=2^m. On m zero ancillas prepare the standard
+phase-estimation state using H and controlled translations by -2^j mod N.
+For latent data eigenstate chi_k, the resulting ancilla state is
+L^(-1/2) sum_(x=0)^(L-1) exp(2pi i x k/N)|x>.
+The data and all source spectators remain exactly unchanged. Apply inverse
+QFT over Z/LZ, measure z, and return round(Nz/L) mod N.
+
+The exact-QFT measurement probability is
+ |L^(-1) sum_x exp(2pi i x(k/N-z/L))|^2.
+For circular distance delta=||k/N-z/L||<=1/2, sin(pi delta)>=2delta, so
+p(z)<=1/(4 L^2 delta^2). Sorting z by distance from Lk/N, at most two points
+have distance in [r,r+1). If a=L/(2N)>=2048n, the probability of distance >=a
+is bounded by (1/2) sum_(r>=floor(a)) r^-2 <= 1/(2(floor(a)-1)) < 1/(1024n).
+Thus rounding fails with probability <1/(1024n) for every k.
+
+Implement inverse QFT with its standard H, swaps and controlled phases
+CP(phi)=diag(1,1,1,exp(i phi)), phi=-2pi/2^r. Omit phases with r>b,
+where b=ceil(log2(2^20 n m)). Their summed operator-norm error is at most
+2pi m 2^-b <1/(2^16 n). There are at most mb retained phases.
+Implement each CP(phi) up to a global phase by
+Rz(phi/2) on both wires, CNOT, Rz(-phi/2) on target, CNOT.
+Direct evaluation gives relative phases (1,1,1,exp(i phi)).
+Compile each of the at most 3mb single-qubit rotations with norm error
+eta=1/(2^22 n m b). Total synthesis error is at most 3/(2^22 n).
+Total circuit error is <1/(2^15 n); total-variation error in measured z is
+at most twice this. Therefore total cheap-estimate error is <1/(512n),
+which is stronger than the inherited 1/(2n) requirement.
+
+
+The inverse QFT referred to above is an explicit circuit. With qubits
+numbered from zero (least significant), first reverse their order by swaps.
+For j=0,...,m-1 apply CP(-2pi/2^(j-k+1)) between j and each k=0,...,j-1,
+then H on j. Reversing this circuit, direct induction gives
+F_L|x>=L^(-1/2)sum_z exp(2pi i xz/L)|z>, proving the claimed inverse.
+Only the truncation and synthesized rotations specified above replace
+these ideal gates. The full-width QFT is a proof reference, not an
+unimplemented oracle.
+
+## Uniform rotation compilation used only on estimate ancillas
+
+Algorithmic source: Dawson and Nielsen, The Solovay-Kitaev algorithm,
+arXiv:quant-ph/0505030v2, Theorem 1 and Sections 3-4. For a fixed inverse-closed
+dense single-qubit gate set, their recursive compiler uses a constant net,
+commutator corrections and recursion depth O(log log(1/eta)). Its error
+contracts as epsilon -> C epsilon^(3/2); sequence length multiplies by five
+and recursive compilation calls by three. Thus length and computation are
+poly(log(1/eta)). We use this algorithm, not an oracle. Generate the fixed
+net by word enumeration and certified constant-radius covering once, charging
+its finite cost. Evaluate targets and intermediate matrices with guard precision
+O(log(1/eta)) bits, enlarged by a fixed constant factor to bound accumulated
+rounding error by eta/2. Matrix arithmetic then adds only polynomial bit
+factors. Working storage is poly(log(1/eta)). Inverse words use reversed
+sequences of inverse gates. The gate set is H,T,T^-1 up to scalar phases;
+only unconditionally applied single-qubit gates are compiled, so such phases
+are global. Controlled phases are first decomposed into CNOTs and unconditional
+rotations. This supplies the required uniform bit-cost guarantee.
+
+Applicability of density can be seen directly, rather than assuming an
+additional universality oracle. Put A=Rz(pi/4), B=Rx(pi/4)=H A H. Up to a
+scalar these are available T and H T H. For V=AB its half-angle theta has
+2cos(theta)=1+1/sqrt(2). This is not an algebraic integer: its irreducible
+primitive integer polynomial is 2X^2-4X+1. If theta/pi were rational, twice
+its cosine would be a sum of roots of unity and hence an algebraic integer.
+Thus powers of V densely cover rotations about its axis. That axis has
+nonzero x and z components. Conjugation by Z gives a nonparallel axis.
+The two corresponding one-parameter subgroups generate SU(2): their
+infinitesimal generators and their commutator span its three-dimensional
+Lie algebra, so their closed subgroup has full dimension and is SU(2).
+All inverse gates are available as fixed words (T^-1=T^7 and H^-1=H).
+
+For angles that are rational multiples of pi, target entries can be computed
+to p bits with poly(p) Boolean work using alternating arctangent series for
+pi, range reduction and Taylor evaluation for sine/cosine. With p=O(log n)
+this is poly(log n). The constant net is generated during the algorithm;
+it is not instance-dependent advice or a preloaded uncharged table.
+
+For this application b=O(log n), m=O(n), and log(1/eta)=O(log n).
+There are O(b) distinct angles; compile their templates once, with
+poly(log n) storage and initialization work. Each call uses O(n^2)
+core steps for controlled translations and their modular constants,
+and n poly(log n)=O(n^2) for all Fourier gates, template expansion,
+counters, and phase decoding. Here the polylog power is an absolute
+fixed constant: (log n)^d/n is bounded on integers n>=64 for every fixed d.
+The asymptotic outside constant need not be small at concrete sizes.
+The m estimate ancillas and reusable modular arithmetic use O(n) qubits.
+The data register is still exactly chi_k after the procedure because
+all data operations are controlled exact eigen-translations and every
+approximation acts only on estimate ancillas. Thus spectators remain
+unchanged, also after conditioning on measurement results.
+
+The proved failure bound <1/(512n) implies the inherited
+
+    Pr[k_A!=k] <= 1/(2n).                                                   (5.E)
+
+This is uniform in k and prior history. In particular the existing
+verification lemma and stochastic domination of fallback calls apply.
+
+### 5.3 Verification
+
+Precomputation. By long division compute rh = floor(k_A 2^G / N), O(n G) = O(n^2)
+bit operations, so rh 2^-G is within 2^-G of k_A/N. For i = 0..n+19 let f_i be
+the T_V bits of rh in positions G-i-1 down to G-i-T_V (all exist, since
+G-i-T_V >= 21). Then f_i 2^-(T_V) is within 2^-(T_V) + 2^(i-G) of frac(2^i k_A/N)
+in circular distance on R/Z.
+
+Round r = 1..t_V:
+- Draw c uniformly from [0, 2^(n+20)) using n+20 fresh fair bits, each obtained by
+  measuring H|0> (O(1) core steps, as in Section 9), and
+  compute cN = c mod N (at most 21 quotient bits: O(n) bit operations).
+- Run one X test and one Y test with shift cN, with outcomes zX, zY in {+1,-1}.
+  Their means are cos(2 pi c k/N) and sin(2 pi c k/N).
+- Predicted phase: xh = (sum over the 1-bits i of c of f_i) mod 2^(T_V), read as
+  the fraction xh 2^-(T_V) in [0,1). Since frac(c k_A/N) = sum_i c_i frac(2^i k_A/N)
+  mod 1, its circular distance to frac(c k_A/N) is at most
+  (n+20) 2^-(T_V) + sum_(i <= n+19) 2^(i-G) <= 2^-14 + 2^-20 < 2^-13. This costs
+  O(n T_V) = O(n log n) bit operations.
+- Score s_r = zX tab_0(xh 2^-(T_V)) + zY tab_1(xh 2^-(T_V)), with tab from Section 4.
+
+ACCEPT iff s_1 + ... + s_(t_V) >= t_V/2.
+
+Lemma 5.1. Conditioned on k and k_A: if k_A = k, verification rejects with
+probability at most e^(-h_e); if k_A != k, it accepts with probability at most
+e^(-h_e).
+
+Proof. Rounds are i.i.d. given (k, k_A): each uses fresh coins and fresh tests,
+and the data register is unchanged. By (4.1) and 2 pi 2^-13 < 1/1300, each table
+value is within 1/625 + 1/1300 < 1/400 of the cosine or sine of 2 pi c k_A/N.
+So, given c, E[s_r | c] = cos(2 pi c (k - k_A)/N) + err with |err| <= 2/400 = 1/200.
+- If k_A = k, E s_r >= 1 - 1/200.
+- If k_A != k, put dl = (k - k_A) mod N, which is nonzero. Write 2^(n+20) = qq N + rr
+  with 0 <= rr < N. Over each full period of N consecutive values of c the sum
+  of exp(2 pi i c dl/N) is 0, so |E_c exp(2 pi i c dl/N)| <= rr/2^(n+20) < 2^-20.
+  Hence E s_r <= 1/200 + 2^-20.
+Each |s_r| <= 2 (1 + 2^-20) < 2.01. By Hoeffding, a sum of t_V i.i.d. terms in
+an interval of length 4.02 deviates from its mean by at least
+Dev = (1/2 - 1/200 - 2^-20) t_V >= 0.494 t_V with probability at most
+exp(-2 Dev^2/(4.02^2 t_V)) <= exp(-0.03 t_V) = exp(-1.92 h_e) <= e^(-h_e). QED.
+
+Cost per call: O(n^2) precomputation plus t_V rounds of O(n log n), that is
+O(n^2 + n^(3/2) log n) = O(n^2) core steps. Classical scratch O(n log n) bits.
+
+### 5.4 High-confidence extraction and output
+
+If verification accepts, LE outputs k_A. Otherwise it runs k_H = RUN(F(h_e)),
+the high-confidence extraction, and outputs k_H, subject to the cap in 5.5.
+After the last test of the call, the data register is reset. LE uses an explicitly truncated and synthesized inverse QFT only in its
+cheap estimate, no QRAM, and O(n) quantum scratch. Its verification and
+high-confidence fallback use only exact translations, H and S.
+
+### 5.5 Cap on high-confidence runs
+
+Let sn be the least integer >= sqrt n (computed exactly by integer arithmetic) and Cf = ceil(Qcap/sn). A counter
+records the number of RUN(F(h_e)) executions. If a call would start the
+(Cf+1)-st one, CS1-BACKWARD stops, releases everything and outputs 0 (ABORT).
+
+Lemma 5.2. Pr[ABORT] <= 2^-20.
+
+Proof. A call reaches 5.4's high-confidence branch only if k_A != k, or k_A = k
+and verification rejects. Conditioned on the entire history before the call
+(including k), by (5.E) and Lemma 5.1 this has probability at most
+1/(2n) + e^(-h_e) <= 1/n, because the call's tests and coins are fresh. Hence
+the indicators of the at most Qcap calls can be coupled with i.i.d. Bernoulli(1/n)
+variables that dominate them (compare each indicator with an independent uniform
+threshold), and the number of high-confidence runs is stochastically dominated by
+X ~ Bin(Qcap, 1/n), with mean EX = Qcap/n. For x > EX the Chernoff bound gives
+Pr[X >= x] <= (exp(1) EX/x)^x. With x = Cf >= Qcap/sn >= Qcap/(sqrt n + 1),
+exp(1) EX/x <= exp(1) (sqrt n + 1)/n <= exp(1) * 9/64 < 1/2 for n >= 64, since
+(sqrt n + 1)/n decreases. Also Cf >= 20, because Qcap >= 6144 * 2^(sqrt(2n)) >= 20 (sqrt n + 1).
+So Pr[ABORT] <= 2^-20. QED.
+
+### 5.6 Correctness and cost of LE
+
+Per call, the output differs from k only if (k_A != k and verification accepts)
+or (a high-confidence run returns a value other than k). By Lemma 5.1 and the
+concentration bound of 5.1 this has probability at most e^(-h_e) + 4(n+5) e^(-h_e) = (4n+21) e^(-h_e),
+uniformly in k and in the adaptive schedule. Over at most Qcap calls the
+probability that ANY call returns a wrong label is at most
+(4n+21) Qcap e^(-h_e) <= 5 * 2^(h_e-14) e^(-h_e) < 2^-11.
+
+Cost. Without its high-confidence branch, a call costs O(n^2) core steps
+(Sections 5.2 and 5.3). Each high-confidence run costs O(n^2 h_e), and on EVERY branch
+there are at most Cf <= Qcap/sqrt(n) + 1 of them, for O(n^(3/2) h_e) Qcap + O(n^2 h_e)
+= O(n^2) Qcap + O(n^(5/2)) core steps in total. So on every branch, all LE calls
+together cost O(n^2) Qcap + O(n^(5/2)) core steps.
+
+IDEAL run. The ideal run is CS1-BACKWARD in the latent-label model with every LE output
+replaced by the latent k and without the cap of 5.5. The actual and ideal runs
+can be coupled to coincide unless some LE call returns a wrong label or ABORT
+occurs, so every event's probability differs between them by less than
+2^-11 + 2^-20. Resource bounds are proved for every ACTUAL branch directly,
+because they rest only on caps and fixed allocations.
+
+## 6. Phase vectors and the linear merge
+
+A PHASE VECTOR of length 2^lam is a lam-qubit index register with a classical
+label table lab[0..2^lam). In the ideal run its state is
+2^(-lam/2) sum_x exp(2 pi i lab[x] th) |x>, up to a global phase, for a fixed
+real th. Labels are nonnegative integers. The vector is COLLIMATED TO p if all
+lab[x] are congruent modulo 2^p.
+
+STORAGE. A table collimated to p is stored as its common residue
+c = lab[0] mod 2^p (one p-bit number) and the HIGH PARTS hi[x] = floor(lab[x]/2^p),
+so lab[x] = c + 2^p hi[x]. Each high part is stored in a fixed field of w bits,
+where w is any bound with lab[x] < 2^(p+w) for all x (Section 7 fixes w per
+level). Every quantity used below is computed from (c, hi) exactly; lab[x] is
+never written out in full except in LEAF, where p = 0 and hi = lab.
+
+### 6.1 Lookups
+
+LOOKUP(tab), for a classical table of E rows with w-bit entries, XORs tab[x]
+into a clean w-bit register, controlled by a lam-qubit index x. For each row
+x0 = 0..E-1 it computes the flag [x = x0] with a Toffoli chain on O(lam)
+scratch, applies CNOTs from the flag to the output bits where tab[x0] has a 1,
+and uncomputes the chain. Indices outside [0,E) give output 0. The circuit is
+its own inverse, has O(E (lam + w)) gates and O(lam + w) qubits, and is
+generated by reading each table bit once.
+
+### 6.2 MERGE(X1, X2; p, b, lam')
+
+Precondition: X1 and X2 are phase vectors from disjoint sets of copies, both of
+length 2^lam, collimated to p, with index registers x and y and tables al and be.
+Both are stored as in STORAGE: al[x] = cA + 2^p hA[x] and be[y] = cB + 2^p hB[y],
+with 0 <= cA, cB < 2^p. Let car = floor((cA + cB)/2^p) in {0,1}.
+Define residues aa[x] = hA[x] mod 2^b and bb[y] = hB[y] mod 2^b.
+Then bits p..p+b-1 of al[x] + be[y] equal (aa[x] + bb[y] + car) mod 2^b.
+
+1. LOOKUP aa into a fresh b-bit register Ru and bb into Rv. Add Ru + Rv + car
+   (mod 2^b) cleanly into a fresh register Rz, and clear Ru and Rv by repeating
+   both lookups. Measure Rz, obtaining e, and reset Rz from that known value.
+2. Classical. Let S_e = {(x,y) : aa[x] + bb[y] + car = e mod 2^b} and sz = |S_e|.
+   - Merge-sort the indices y by the key (bb[y], y) into order[]; pos[y] is the
+     position of y.
+   - For each x the partners y form one contiguous run of order[], namely the
+     residue class cls[x] = (e - car - aa[x]) mod 2^b. Find its start lo[x] and
+     length cnt[x] by binary search.
+   - Put off[x] = sum_(x' < x) cnt[x'] and rank(x,y) = off[x] + pos[y] - lo[x].
+     The rank is a bijection from S_e onto [0, sz).
+   - If sz < 2^lam', declare FAIL.
+3. Let R have 2 lam + 1 bits. LOOKUP pos into Rp and Dx[x] = (off[x] - lo[x]) mod 2^(2lam+1)
+   into Rd. Add Rp + Rd (mod 2^(2lam+1)) cleanly into a fresh R, and clear Rp
+   and Rd by repeating the lookups. On S_e, R = rank(x,y).
+4. Measure bl = floor(R / 2^lam'), the bits of R above the low lam'. If
+   (bl+1) 2^lam' > sz, declare FAIL.
+5. Classical. For v in [0, 2^lam'), find the unique (x_v, y_v) with rank
+   bl 2^lam' + v, in one scan over x with running offsets. Apply LOOKUP
+   v -> (x_v, y_v) on the low lam' bits of R, XORing into the registers x and y,
+   which become |0>. Reset the high bits of R from their known value bl.
+6. Output the low lam' bits of R as the index register, with table
+   lab[v] = al[x_v] + be[y_v], stored as in STORAGE with p+b in place of p:
+   put sv = hA[x_v] + hB[y_v] + car, which is congruent to e modulo 2^b. Then
+   lab[v] = (cA + cB - car 2^p + 2^p e) + 2^(p+b) floor(sv/2^b). The first term
+   c' = cA + cB - car 2^p + 2^p e lies in [0, 2^(p+b)) and does not depend on v.
+   So the stored output is the common residue c' and the high parts
+   hi'[v] = floor(sv/2^b).
+
+On FAIL, both inputs are reset and released and never reused. All registers
+have fixed widths, so memory is allocated deterministically.
+
+Correctness (ideal run). Before step 1 the state is X1 (x) X2: equal
+magnitudes over all pairs (x,y), with phases 2 pi (al[x] + be[y]) th. Steps 1
+and 3 compute functions of (x,y) into clean registers and measure them. So
+after step 4 the state is the equal-magnitude superposition over the 2^lam'
+pairs of block bl, with their original phases. Step 5 maps (x_v, y_v) to v
+bijectively. The output is therefore a phase vector with table lab. Every
+label is congruent to cA + cB + 2^p ((e - car) mod 2^b) modulo 2^(p+b), so the
+output is collimated to p+b.
+
+Lemma 6.1 (distribution-free failure). For ANY input tables collimated to p,
+the measurement law in steps 1 and 4 depends only on aa, bb and car (that is,
+on label bits below p+b), and Pr[FAIL] <= 2^(b + lam' - 2 lam).
+
+Proof. Each measurement is a computational-basis measurement of a function of
+(x,y) on an equal-magnitude superposition. Its outcome probabilities are
+therefore ratios of counts, independent of the phases. The outcome e has
+probability sz_e / 2^(2lam). Given e, the measured rank is uniform on [0, sz_e).
+So FAIL has conditional probability rem_e / sz_e, where rem_e = sz_e mod 2^lam'
+(this also covers sz_e < 2^lam'). Hence
+Pr[FAIL] = sum_e rem_e / 2^(2lam) <= 2^b (2^lam' - 1) / 2^(2lam). QED.
+
+Cost. Write L = 2^lam and L' = 2^lam'. A merge makes eight lookup passes of L
+rows and one of L' rows, each with O(lam + b) bit fields. Classically it
+performs O(L lam) comparisons of (b + lam)-bit keys, O(L) binary searches of
+O(lam) steps on b-bit keys, and O(L') additions of high parts of at most
+O(n) bits. With lam, b = O(sqrt n) (Section 7), this is O(n (L + L')) core steps.
+The quantum scratch is O(sqrt n) beyond the two index registers. The classical
+scratch (order, pos, lo, cnt, off, Dx, aa, bb and the inverse block table) is
+O((L + L') sqrt n) bits, and the output table is L' fields of w' bits plus
+p + b bits for c'.
+
+## 7. The tree TREE_D
+
+Input: a supplier of LEAF QUBITS. Each is a positive qubit with a known label
+uniform on [0, 2^D), D >= 2, independently. Put B = D - 1, the number of bits to
+collimate. The parameters are computed by exact integer arithmetic:
+
+    mu = ceil(sqrt(2B)) + 1,  kappa = ceil(log2 mu) + 1,  s = min(mu-1, floor(sqrt(3mu))),
+    m = min{ m >= s+1 : m(m+1)/2 - s(s-1)/2 + kappa >= B },
+    lam_i = kappa + 1 + min(i, m-s) (0 <= i <= m-1),  lam_m = 1,
+    bmax_i = i (0 <= i <= m-s-1),  bmax_i = m-s+1 (m-s <= i <= m-2),
+    bmax_(m-1) = kappa + 2(m-s) + 1.
+
+So lengths grow by one bit per level up to level m-s and then stay at
+2^(kappa+1+m-s) for the last s-1 levels below the root (LENGTH CAP). For s = 1
+this is the plain growing schedule.
+
+Basic facts:
+- mu >= 3 and 1 <= s <= mu-1, so s+1 <= mu.
+- For mu >= 4, floor(sqrt(3mu)) <= mu-1, since 3mu < mu^2;
+  at mu=3 the chosen s is 2. In all cases s(s-1) <= 3mu-1:
+  s^2 <= 3mu and s >= 1 suffice.
+- Since mu-1 = ceil(sqrt(2B)), 2B <= (mu-1)^2. Therefore
+  mu(mu+1)-s(s-1) >= mu(mu+1)-(3mu-1) = (mu-1)^2 >= 2B.
+  Thus mu(mu+1)/2 - s(s-1)/2 + kappa >= B. Together with
+  s+1 <= mu this proves that the set defining m is nonempty and m <= mu.
+- 2^kappa >= 2 mu >= 2m and 2^kappa <= 4 mu.
+- With t = m - s >= 1, sum_i bmax_i = t(t-1)/2 + (s-1)(t+1) + kappa + 2t + 1
+  = m(m+1)/2 - s(s-1)/2 + kappa >= B (expand with t = m - s).
+
+Allocate b_(m-1), b_(m-2), ..., b_0 in that order greedily, b_i = min(bmax_i,
+B - (already allocated)). Then sum_i b_i = B. Put p_0 = 0 and p_(i+1) = p_i + b_i,
+so p_m = B, and let nq_D = 2^m (kappa+1) be the number of leaf qubits per tree.
+Substituting directly in all three cases (growing levels: lam_(i+1) = lam_i + 1 and
+bmax_i = lam_i - kappa - 1; capped levels: lam_(i+1) = lam_i and bmax_i = lam_i - kappa;
+root: lam_m = 1 and bmax_(m-1) = 2 lam_(m-1) - kappa - 1) gives
+
+    b_i + lam_(i+1) - 2 lam_i <= bmax_i + lam_(i+1) - 2 lam_i = -kappa,        (7.1)
+
+so by Lemma 6.1 every merge fails with probability at most 2^-kappa <= 1/(2m).
+
+LEAF: take kappa+1 leaf qubits as the index register (bit j = qubit j). Build
+the table incrementally, lab[0] = 0 and lab[x + 2^j] = lab[x] + k_j for x < 2^j:
+one addition per entry. The table has length 2^(lam_0), is collimated to p_0 = 0,
+and in the ideal run is exactly the tensor product state.
+
+Field widths. A level-i label (output of VEC(i)) is a sum of at most
+2^i (kappa+1) leaf labels below 2^(B+1), so it is below 2^(B+1+i+gw) with
+gw = ceil(log2(kappa+1)). Level-i tables are collimated to p_i and stored with
+w_i = B + 1 + i + gw - p_i bits per high part.
+
+VEC(i): if i = 0 return LEAF. Otherwise repeat:
+- X1 = VEC(i-1);
+- X2 = VEC(i-1);
+- out = MERGE(X1, X2; p_(i-1), b_(i-1), lam_i);
+- if out != FAIL, return out.
+
+TREE_D returns VEC(m), a one-qubit phase vector with labels lab[0] and lab[1],
+congruent modulo 2^B. Its ideal state is, up to global phase,
+(|0> + exp(2 pi i 2^B W th)|1>)/sqrt 2 with the known integer
+
+    W = (lab[1] - lab[0]) / 2^B = hi[1] - hi[0],                              (7.2)
+
+because the root table is collimated to p_m = B.
+
+Each label is a sum of at most nq_D leaf labels below 2^(B+1), so |W| < 2 nq_D.
+Depth-first evaluation holds at most one finished sibling per level.
+
+Size bounds for B <= n and n >= 64:
+- mu <= sqrt(2n) + 2, kappa <= log2(mu) + 2 and m <= mu, so
+  kappa + m + 1 <= sqrt(2n) + 5 + log2(sqrt(2n) + 2).
+- The function x - log2(x + 2) is increasing for x >= 1, and at x = sqrt(128)
+  it exceeds 11.3 - 3.8 > 5. Hence kappa + m + 1 <= 2 sqrt(2n).
+- Every lam_i and b_i is at most 2(kappa + m) <= 4 sqrt(2n) = O(sqrt n).
+- The stacked index registers total sum_i lam_i <= (m+1)(kappa+m+1) <= 8n.
+- 2^m <= 2^mu <= 4 * 2^(sqrt(2n)).
+
+## 8. Top-bit independence
+
+Write each leaf label as k_j = low_j + 2^B tau_j, with 0 <= low_j < 2^B and
+tau_j in {0,1}. Since k_j is uniform on [0, 2^(B+1)), low_j and tau_j are
+independent and tau_j is a fair bit. Let Gt be the sigma-field generated by:
+- all low_j of the tree's leaves, including those of discarded attempts;
+- all measurement outcomes (e, bl) of its merges;
+- all tree-construction decisions of the controller (merge parameters, FAIL
+  and retry decisions, leaf acceptance tests and which copies are used).
+Gt does NOT include LE's internal coins, test outcomes, accept/reject verdicts or
+fallback decisions (Section 5). In the ideal run these feed no decision: every LE
+output is replaced by the latent k and there is no fallback cap. Given k, they are
+independent of everything else, so they are averaged out and never conditioned on.
+
+Lemma 8.1. In the ideal run, conditional on Gt and on all other independent
+randomness (other copies, controller coins, earlier root outcomes), the top
+bits tau_j of the leaves of the returned root are i.i.d. fair.
+
+Proof, by induction over the controller's steps. Every tree-construction decision, residue,
+sort key, rank and block partition uses only label bits below position B,
+since Section 6.2 reads bits p..p+b-1 with p + b <= B, together with index
+order. Bits below B of a sum of leaf labels depend only on the low_j: adding
+multiples of 2^B does not change them. By Lemma 6.1, each measurement's
+conditional law, given the labels and the earlier outcomes, is a function of
+the low_j and the earlier outcomes only. Inductively, the joint law of
+(all tau, all low, all outcomes and decisions) factorizes as
+law(tau) x law(low) x law(outcomes and decisions | low). Retries use fresh
+copies, whose labels enter the same factorization. QED.
+
+Let x0 and x1 be the leaf-incidence vectors of the two root entries. Distinct
+indices at a node correspond to distinct incidence vectors: this holds at
+leaves, is preserved by concatenating disjoint coordinate sets, and
+re-indexing is a bijection. So hd = |x0 xor x1| >= 1. From (7.2),
+
+    W = cst + sum_(j in Sp) tau_j - sum_(j in Sm) tau_j,                        (8.1)
+
+where cst = (sum_j low_j (x1_j - x0_j)) / 2^B is a Gt-measurable integer, and Sp and
+Sm are disjoint Gt-measurable sets with |Sp| + |Sm| = hd. A fair bit tau has
+E exp(2 pi i phi tau) = e^(i pi phi) cos(pi phi). Hence, for every real phi,
+
+    | E[ exp(2 pi i phi W) | Gt ] | = |cos(pi phi)|^hd <= |cos(pi phi)|,       (8.2)
+
+and, with phi = 1/2, Pr[W odd | Gt] = 1/2.                                     (8.3)
+
+## 9. High-scale seed and exact backward two-candidate decoder
+
+If M=1 set s1=0 and skip this section. Otherwise M>=3, D=d, B=d-1>=a2,
+R=nq_d and ell=ceil(log2 R). Write theta=s1/M. For ANY nonnegative physical
+scale j, compute the CRT unit alpha_j by
+
+    alpha_j=1 mod2^a2,
+    alpha_j=2^j*(2^(d-1-a2))^-1 mod M.
+
+Acquire a fresh original copy, apply Mult_alpha_j, extract k with LE, reject
+k>=2^d, and on acceptance apply X to the first qubit. In the ideal reference,
+accepted labels are iid uniform in[0,2^d), with original acquisition acceptance
+2^d/N>1/2. The retained phase is k*alpha_j*s/N. A TREE_d root is consequently
+(|0>+exp(2pi i W 2^j theta)|1>)/sqrt2, because
+2^(d-1-a2)*alpha_j=2^j modulo M and s=s1 modulo M. This identity uses the
+original modulus, not a fictitious dyadic coset-state source. CRT units exist
+also at all terminal seed scales beyond the old stopping exponent.
+
+The ONLY distributional root hypothesis used is exactly proved in Section8:
+conditional on fresh-root low-only history G and independent past,
+W=c_G+sum epsilon_l*tau_l with iid fair top bits, nonzero signed coefficients,
+and |W|<2R. Thus |E exp(2pi i zW)|<=|cos(pi z)| and
+Pr(W odd|G,past)=1/2. No stronger support lower bound, uniform W law, or
+independent-subset-sum premise is assumed. Private extractor transcripts are
+averaged out in the ideal run. Section12 couples the actual implementation.
+
+### 9.1 Exact two-candidate backward lemma
+
+Write ||x|| for circular distance to 0. Suppose a known dyadic center
+z in [0,1) satisfies
+
+    ||2x - z|| <= e,             e <= 1/(64R).
+
+The inverse images of z under doubling are
+
+    u_0 = z/2,                  u_1 = (z+1)/2.
+
+Exactly one of them, denoted u_*, lies within e/2 of x; the other is 1/2
+away from u_*. This is a statement on the circle, so it includes z=0,
+wraparound, and x arbitrarily close to any binary boundary.
+
+Produce k fresh roots with phase W_i x. For each independently choose
+beta_i uniformly from {0,1}, measure X or Y respectively, and record
+Z_i in {+1,-1}. Use the source's constant-size trigonometric table:
+
+    score(b) = sum_i Z_i tab_beta_i(W_i u_b mod 1).
+
+The table error is uniformly less than 1/625. Output the smaller index
+maximizing score, making the algorithm total even on failure branches.
+
+**Lemma.** Conditional on the incoming center satisfying the displayed
+accuracy hypothesis, the wrong candidate is chosen with probability at
+most exp(-k/512). No stronger root law is needed.
+
+Proof. Let delta = x-u_* be the circular representative with
+|delta| <= e/2. Define the exact score difference for one root by
+
+    X_i = Z_i [cs_beta_i(W_i u_*) - cs_beta_i(W_i u_other)],
+    cs_0(t)=cos(2 pi t),          cs_1(t)=sin(2 pi t).
+
+Averaging over the fresh basis coin and root outcome, conditional on W_i,
+gives
+
+    E[X_i | W_i,past]
+      = (cos(2 pi W_i delta)
+         - cos(2 pi W_i(delta +/- 1/2)))/2
+      = 1_{W_i odd} cos(2 pi W_i delta).
+
+The sign in +/- 1/2 does not matter for integer W_i. Pointwise,
+
+    |2 pi W_i delta| < pi/32.
+
+By the conditional parity law, E[X_i | past] >= mu = cos(pi/32)/2.
+In particular, the useful cosine need not be independent of parity.
+It is bounded below for EVERY W in the prescribed support.
+
+Each |X_i| <= 2, so the martingale increments
+X_i-E[X_i|past] have absolute value at most 4. The computed score difference
+differs from sum_i X_i by at most 2k/625. Since
+
+    mu - 2/625 > 1/4,
+
+Azuma gives
+
+    Pr[computed true-minus-false score <= 0]
+       <= exp(-(k/4)^2/(2*16*k)) = exp(-k/512).
+
+For an entirely rational numerical margin, pi < 22/7 and
+cos(v) >= 1-v^2/2 imply
+
+    (1-(22/7)^2/(2*32^2))/2 - 2/625 - 1/4
+       = 7664023/31360000 > 0.
+
+All conditioning is before the new root or on the allowed lower-bit
+transcript. This is not a favorable-label or successful-extraction
+conditioning argument. QED.
+
+If the correct lift is selected, its error is e/2. Thus accuracy improves
+as decoding proceeds backward. It does not degrade by R per step.
+
+### 9.2 One terminal seed, followed by the backward decoder
+
+Assume n >= 64 and M >= 3. Set exactly
+
+    H = ceil(log2 M),
+    L = ell+3,
+    nu = ceil(log2 n),
+    K_seed = 8192(ell+nu+30),
+    K_back = 512(nu+30).
+
+#### 9.2.1 Seed at scale H
+
+Apply the explicit localization algorithm below to the phase
+
+    phi = 2^H theta mod 1
+
+for local stages u = 0,1,...,L. Local stage u obtains roots at physical
+scale H+u, using the same TREE_d and K_seed roots. At every local stage, measure its K_seed roots in independent fair X/Y
+bases and record (W_i,beta_i,Z_i). On its dyadic candidate grid compute
+score(c)=sum_i Z_i tab_beta_i(((2^u W_i c) mod2^P_u)/2^P_u), with the
+Section4 table. Stream candidates and return the least maximizing one.
+At stage u, the
+dyadic denominator is 2^(P_u), where P_u = u+ell+8.
+Stage 0 enumerates the whole grid. Each later stage enumerates the grid
+points in the closed circular arc of radius 2^-(u+2) around the previous
+center. The arc endpoints are grid points, so nearest-point guarantees
+hold even at boundaries.
+
+For completeness, the source proof of this localization uses only the
+contract above. A nearest candidate zeta_0 obeys
+
+    |2^u W (phi-zeta_0)| <= 2^-8.
+
+A far candidate, at distance at least 2^-(u+3), has
+2^u ||phi-zeta|| in [1/8,1/2] inside the incoming arc. Thus its expected
+per-root score is at most cos(pi/8)/2, while the near candidate has score
+at least cos(pi/128)/2. Martingale concentration at deviation K_seed/64,
+table error K_seed/625, and the at most 2^(ell+9) near/far events imply
+failure at most 2^-20/n per stage. The strict score margin can be checked
+without floating point using pi > 3, pi < 22/7, and the alternating
+cosine bounds:
+
+    [9/128 - (22/7)^2/(2*128^2)
+       - (22/7)^4/(24*8^4)]/2 - 2/64 - 2/625
+      = 4372721/73758720000 > 0.
+
+At the last seed stage, obtain z_H satisfying, except on seed failure,
+
+    ||phi-z_H|| <= e_H = 2^-(ell+6) <= 1/(64R).
+
+There are ell+4 seed stages. From the actual source schedule,
+ell = m+ceil(log2(kappa+1)) <= m+kappa <= 2sqrt(2n).
+For n >= 64, ell+4 <= n. Consequently total seed failure is <= 2^-20.
+
+The seed's exact denominator is 2^(2ell+11). The seed is an ordinary
+localization of a real phase on the circle. It does NOT presume phi is a
+dyadic rational or try to round phi to a secretly known rational grid.
+
+#### 9.2.2 Backward steps
+
+For j = H-1,H-2,...,0:
+
+1. Form the exact dyadic candidates z_(j+1)/2 and (z_(j+1)+1)/2.
+2. Acquire K_back fresh TREE_d roots at physical scale j.
+3. Apply the two-candidate scoring rule of Section 9.1 and set z_j to its
+   deterministic maximizer.
+
+If all preceding choices were correct, the true phase x_j = 2^j theta
+has distance at most e_H/2^(H-j) from z_j. Every such incoming radius is
+small enough for the lemma. Since exp(-K_back/512) <= 2^-30/n and H <= n,
+the conditional error union bound is at most 2^-30.
+
+This union bound is over first-error events, not conditioning the complete
+run on success. Previous branch decisions can be adaptive; every newly
+called source uses fresh independent mixed copies.
+
+#### 9.2.3 Exact rounding and boundary digits
+
+The output center z_0 has denominator 2^(H+2ell+11), and
+
+    ||theta-z_0|| <= 2^-(H+ell+6) <= 1/(64 R M) < 1/(2M).
+
+Return
+
+    s1 = floor(M z_0 + 1/2) mod M.
+
+It equals s mod M on the stated good event. The strict distance rules out
+a rounding tie. If z_0 lies near 1 and theta=0, reduction modulo M gives
+0 correctly. The same circular argument handles every binary boundary;
+we never identify the chosen lift with a fragile convention about a
+terminating expansion of theta.
+
+No repeated numerical phase truncation is used. Each lift is an exact
+integer numerator over a power-of-two denominator. Each backwards step
+adds one denominator bit. The only approximation in the scores is the
+source's fixed trigonometric table, already budgeted in both lemmas.
+
+#### 9.2.4 The actual root budget
+
+The odd-part root count is the deterministic integer
+
+    F = (ell+4) K_seed + H K_back.
+
+Hence F = O(ell^2 + ell log n + n log n) = O(n log n).
+After the seed, there are two candidates at each step, not O(R) candidate
+suffixes. Initialization enumerates at most 2^(ell+8) <= 512R candidates
+per stage, keeping only a running maximum and the measured root records.
+
+For general independent parameters, this proof gives the quadratic-in-ell
+initialization bound stated in Section 1. The step making it meet the
+requested target is the PROVED CS1 bound ell^2=O(n); it is not an assumed
+support-concentration property.
+
+## 10. 2-adic part: s2 bit by bit
+
+If a2 = 0, put s2 = 0 and skip this section. Otherwise s - s1 = M s2 (mod N) for
+a unique s2 in [0, 2^a2). The bits of s2 are found at levels g = 0..a2-1. Let
+s2low be the known low g bits. Put sh_g = s1 + M s2low (mod N), wd = a2 - g, and
+rem = (s2 - s2low)/2^g in Z/2^wd. Then s - sh_g = M 2^g rem (mod N).
+
+Leaf qubit for level g:
+- acquire a copy and apply Shift_(sh_g), which makes the secret s - sh_g;
+- run LE to obtain k, and apply X to the control.
+
+Ideally the phase is exp(2 pi i k M 2^g rem/N) = exp(2 pi i kk rem/2^wd), with
+kk = k mod 2^wd. Since 2^wd divides N and k is uniform on Z/NZ, kk is uniform on
+[0, 2^wd). Use kk as the label.
+
+- If wd = 1: if kk = 1, measure X; the outcome is + iff rem is even. If kk = 0,
+  discard and repeat.
+- If wd >= 2: run TREE_wd (D = wd). If W is even, discard and repeat. If W is
+  odd, the root is (|0> + exp(pi i W rem)|1>)/sqrt 2 = (|0> + (-1)^rem |1>)/sqrt 2,
+  and an X measurement gives rem mod 2 exactly.
+
+By (8.3), each attempt succeeds with probability exactly 1/2, even if s1 was
+wrong. Set bit g of s2. In the ideal run with s1 correct, every bit is correct.
+Output (s1 + M s2) mod N.
+
+## 11. Complete algorithm and literal branchwise cutoffs
+
+Finite branch n<64: for cand=0,...,N-1 in order, use up to n+10 fresh copies,
+apply Shift_cand and measure the control in X. Reject a candidate at its first
+minus and output the first never rejected, or0. The correct candidate always
+passes. For a wrong candidate the data branches are orthogonal, so all fresh
+tests are fair and it passes with probability2^(-(n+10)). A union bound gives
+failure<=2^-10. Q<=N(n+10), and all resources on this fixed finite range of n
+are bounded by absolute constants.
+
+For n>=64 use Section9 when M>1, and otherwise set s1=0 and its root count
+F=0. When M>1 let F=(ell+4)K_seed+H K_back, exactly as in9.2.4. Run the
+unchanged Section10 source-shift 2-adic recovery, with the following explicit
+additional cap: set nu=ceil(log2 n), K2=nu+30; each 2-adic bit gets at most K2
+attempts to obtain an odd root, or label one at width one. If all fail, abort
+and output0. In the ideal run each attempt succeeds with probability1/2,
+also on an earlier wrong-answer history, so the summed added abort loss is
+at most a2*2^-K2<=2^-30. This cap ensures at most a2*K2 returned 2-adic roots
+on every branch. Internal failed merges still consume original acquisitions.
+
+Let mu*,kappa* be the Section7 values at B=n, and compute
+
+    A*=2^mu* (kappa*+1),
+    Q*=6A*(F+2a2)+2a2,
+    Qcap=1024Q*.
+
+Stop before an original acquisition would exceed Qcap; all rejected Fourier
+labels, discarded merge inputs and root attempts count. Recompute every
+inherited Section5 precision/verifier/fallback parameter using this Qcap,
+in particular h_e=ceil(log2(Qcap(n+5)))+14 and
+Cf=ceil(Qcap/ceil(sqrt n)). Apply its fallback abort as well. Thus every
+actual branch terminates with the declared acquisition and fallback bounds,
+whether its labels or guesses were right or wrong.
+
+For one ideal uncapped tree, per-merge success is at least1-2^-kappa for
+every input. Renewal gives at most3*2^m(kappa+1) accepted leaves in expectation,
+including failures, without assuming attempt cost independent of its outcome.
+Each accepted odd-part leaf costs at most2 original acquisitions. Hence every
+tree here costs at most6A* expected originals. The odd part uses F fixed trees;
+the truncated geometric 2-adic loop needs at most2a2 trees in expectation,
+and width-one leaves need at most2a2 extra originals. The whole ideal uncapped
+source expectation is at most Q*. Markov bounds the source-cap loss by2^-10.
+The capped run is coupled to the uncapped run; no root law is conditioned on
+the event of a cheap tree or on avoiding the cap.
+
+As proved in Section5, LE's total work on every branch is O(n^2)Qcap plus a
+polynomial, since log Qcap=O(sqrt n), Cf<=Qcap/sqrt n+1, and Qcap is still
+above the lower threshold for its fallback concentration. Its wrong-label
+coupling loss is below2^-11 and its fallback-cap loss at most2^-20. All its
+rotations, gates, uniform synthesis/generation and scratch remain charged.
+Section13 separately charges seed scoring and every backward multiplication.
+
+## 12. Full-secret success without favorable conditioning
+
+For n>=64, the ideal seed has failure at most2^-20, and conditional first-error
+analysis of all backward choices adds at most2^-30. When the odd residue is
+correct, Section10's ideal odd-root X measurements recover the 2-adic bits
+exactly. Their K2 cap adds at most2^-30. The global original-source cap adds
+at most2^-10. Sequential coupling to the implemented label extractor and
+its fallback cap adds less than2^-11+2^-20. Therefore
+
+    failure <=2^-20+2^-30+2^-30+2^-10+2^-11+2^-20 <2^-8.
+
+All are failure-inclusive event or hybrid bounds. Conditioning on successful
+extraction, a favorable set of labels, or the absence of aborts is not used
+to establish uniformity or parity. Source copies and fair basis coins for
+each new tree are fresh, also after wrong prior estimates. The finite branch
+succeeds with probability at least1-2^-10. Thus the same one algorithm has
+the required unconditional full-secret success for every N and every s,
+jointly with all branchwise resource bounds.
+
+## 13. Fully charged resources for this one configuration
+
+For the actual Section7 schedule, A*=O(log n*2^(sqrt(2n))) and
+R=O(log n*2^(sqrt(2n))). Also ell=O(sqrt n), H<=n,
+K_seed=O(sqrt n), K_back,K2=O(log n). Consequently
+
+    F=O(n log n),
+    Q<=Qcap=O(n(log n)^2 2^(sqrt(2n))).
+
+The bound includes all originals, rejected labels, internal merge retries,
+discarded roots, bounded 2-adic searches and abort paths. For M=1, F=0 and
+the cheaper 2-adic-only path satisfies the same envelope.
+
+The unchanged source construction costs O(n^2)Qcap+poly(n) core operations
+on every actual branch. Leaf table construction and every explicit linear
+lookup/rank merge are charged to consumed leaves, at most one ancestor per
+level; failed inputs are discarded and never reused. The worst-case fallback
+count Cf gives the same per-acquisition LE accounting, not merely its mean.
+
+At a seed stage there are at most512R candidates and K_seed records. Each
+stored residue has O(n) bits. Schoolbook multiplication initializes at most
+two candidate intervals; thereafter one O(n)-bit addition per record/candidate
+updates residues. Thus seed core work is
+
+    O(n R(ell+4)K_seed)+poly(n)=O(n^2R)+poly(n).
+
+Only the current K_seed records and a running maximum are stored. There is
+no R-entry decoder table. A backward step has two candidates and K_back
+roots; signed O(n)-bit schoolbook products compute its exact modular
+arguments. All backward score work is O(n^3 log n), a polynomial. Exact
+ceilings, Euclid/CRT, modular scale constants, final rounding, source shifts,
+fixed trigonometric tables and counters are also polynomial. The largest
+dyadic-center denominator exponent is H+2ell+11=O(n); the largest physical
+root scale H+ell+3 is O(n). No arbitrary-precision unit-cost operation or
+unaccounted circuit synthesis is invoked.
+
+Seed work and polynomial work are smaller than O(n^2)Qcap. Total core work
+is therefore O(n^3(log n)^2 2^(sqrt(2n))). All quantum operations outside
+the already compiled source estimate remain the inherited exact arithmetic,
+H/S gates and measurements; the backward score is entirely classical.
+
+Quantum space remains O(n): the depth-first stack has at most8n index qubits,
+one active merge/extractor uses O(n) scratch, and roots are measured as made.
+The seed's K_seed triples/residues use O(n^(3/2)) classical bits, and the
+backward scores can be streamed using O(n) additional bits. The unchanged
+table stack obeys S_C=O(n^2 2^(m-s))+O(n^2). The nondecreasing quantity
+mu-s(mu), with s=min(mu-1,floor(sqrt(3mu))), gives
+
+    m-s<=sqrt(2n)+3-sqrt(3)*(2n)^(1/4),
+    S_C=O(n^2 2^(sqrt(2n)-sqrt(3)*(2n)^(1/4))).
+
+These are actual fixed allocations, also on failed or wrong-label branches.
+The total allocation logarithm is O(sqrt n). Applying the model's required
+address/gate-generation multiplier and adding (n+1)Q source charges yields
+
+    T=O(n^(7/2)(log n)^2 2^(sqrt(2n))).
+
+The finite branch has absolute bounded costs. All four bounds have absolute
+outside constants, hold together for the same run and include initialization,
+measurement, reset, generation and every discarded acquisition.
+
+## 14. Exact structured envelopes, indices and comparison scope
+
+Use exactly a=u_333/v_333>sqrt(2) from Section0. The four full structured
+representatives are
+
+    n^(7/2)(log2 n)^2 2^(a sqrt n),
+    2^(a sqrt n-2n^(1/4)),
+    n,
+    n(log2 n)^2 2^(a sqrt n).
+
+For classical space, c=sqrt(3)*2^(1/4)>2 because c^4=18>16. The ratio of
+the raw Section13 space bound to its structured representative is at most
+2^(2log2 n-(c-2)n^(1/4)), which is bounded. This is the same subleading
+margin and the same memory envelope as the predecessor. Time and samples
+already have the improved prefactors at the raw sqrt(2n) exponent; their
+conversion only uses sqrt(2)<a and preserves that exact coefficient.
+
+For each exponential envelope log2 B=a sqrt n+o(sqrt n), so
+log2(log2 B)/log2 n tends to1/2. For B=n it tends to0. Thus the exact
+nonnegative rational indices are(1/2,1/2,0/1,1/2). The fifth declaration is
+unscored fraction0 under the byte-identical independent-ideal-coset model.
+The index stays1/2 and does not establish the cube-root research target.
+
+At the same exact a, the time ratio against CS1-BACKWARD is(log2 n)/sqrt n,
+and against the separate CS1-JUMP draft it is(log2 n)^2/sqrt n; both tend
+to0. These are full-bound comparisons, not index comparisons. A different
+candidate can have a better sample envelope, so a faster time does not by
+itself dominate that entire vector. In particular the centrally reported
+WTS1 time n^(15/4)2^(a sqrt n) is slower than this time by a factor
+n^(1/4)/(log2 n)^2, while its negative-quartic sample saving can remain
+better. That comparison-only reading does not make WTS1 an algorithmic
+dependency. The exclusive central sender owns fresh full-vector ranking.
+## 15. Error tolerance
+
+The fifth claim is epsilon(n) = 0 under the model in which every acquired copy
+is an independent ideal coset state. Everything above is proved under this
+model. No positive tolerance for malformed copies is claimed, and zero does
+not assert that robustness is impossible.
+
+## 16. Computational evidence and status
+
+The new backward decoder is author-checked research and the integration has
+received a coordinator check, not a hosted verdict or formal proof certificate.
+The source note preserves bounded remote Wolfram scalar, parity, circular-lift
+and rounding checks with code, assumptions and raw outputs. These are evidence
+aids. The conditional root/parity arguments in Sections8--9 and the sequential
+cap/error coupling in Sections11--12 supply the mathematical reasoning. The
+only selected algorithm is the classical two-candidate construction here;
+no unfinished feedforward or collective improvement is part of any claim.

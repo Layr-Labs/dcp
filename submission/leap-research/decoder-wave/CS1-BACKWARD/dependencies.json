@@ -1,0 +1,17 @@
+[
+  {
+    "submissionId": "32076cd3-77d5-4058-813d-7e66be4714f8",
+    "rationale": "Materially adapts CS1-C3Q source construction, verified QPE label extractor, fixed trig table, exact linear merges, capped tree and memory schedule, held-out-bit law, CRT root source, and 2-adic/source cutoff accounting. Adds the terminal seed/backward decoder while reproducing the component proofs.",
+    "evidence": "Exact evaluated git source c80fdd7c40bac9f0f594c66fa0781457ae673e5d, member submission/proof.md SHA256 0ee4d29d5edab7647f229993d16103a496c3b7296bf798b230f62ec935ea5733, plus submission/submission.json. New archive member submission/leap-research/decoder-wave/CS1-BACKWARD/proof.md Sections1--15 explicitly identifies and uses these components. Git member paths are not an assertion of API archive-path normalization."
+  },
+  {
+    "submissionId": "f1481815-9577-4990-abe3-7b79fa5d9284",
+    "rationale": "Retains the CS1 held-out-top-bit, CRT unit, fixed-table and free-frequency localization methods as carried in the directly adapted CS1-C3Q proof. The terminal seed uses that localization method, and backward steps use its exact parity law.",
+    "evidence": "Historical CS1 evaluated source 200ef0387acb280adcd272f4fbcdb805d1786bbe, member submission/proof.md SHA256 e1b698d021f72cc5fd17f0132a2c30ba213dc2c424e613087d711804f074b528. Current material source c80fdd7c40bac9f0f594c66fa0781457ae673e5d credits these methods. New proof Sections1,3--4,8--10 reproduce and use them; dependency is declared without claiming separately originated components."
+  },
+  {
+    "submissionId": "6e91de62-9a4f-4f08-bfa8-1beacca11e0f",
+    "rationale": "Retains the CS1-C3 length-cap schedule and its capacity/memory argument as explicitly carried in the directly adapted CS1-C3Q source. No new cap optimization or invention of that schedule is claimed.",
+    "evidence": "Direct source c80fdd7c40bac9f0f594c66fa0781457ae673e5d, submission/proof.md Section1 expressly identifies CS1-C3 as cap predecessor; its Sections7 and13 supply the carried cap proof. New proof Sections1,7,13--14 retain the same schedule and space bound. This describes inherited material use, not an independently certified attribution graph."
+  }
+]

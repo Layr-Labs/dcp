@@ -1,0 +1,268 @@
+{
+  "checked_utc": "2026-11-06T20:22:14.802619+00:00",
+  "status": "Complete self-checked unreviewed candidate; exact comparisons assume the claimed theorem is valid. No official frontier membership asserted.",
+  "valid_published_rows": 34,
+  "live_response_sha256": "8f67364b65db6c8d4ca84d0c95996e9a405618b08e71a39784c986d5ce4a6a84",
+  "comparator_sha256": "87176b01412a0c1d00c98960e2043c5e22123f2423893d2da546a6aa997b036b",
+  "faster_full_time_than_every_matching_published": true,
+  "dominated_by": [],
+  "equal_to_earlier": [],
+  "would_dominate_if_valid": [
+    "f1481815-9577-4990-abe3-7b79fa5d9284",
+    "bb9fd8ac-073b-4224-87cb-773e841df5eb",
+    "31c2d043-6b37-4209-b8fd-4547ffdfa511",
+    "b56c7ceb-de59-42da-9e3b-6ee96e4e4145",
+    "b4b5456b-c805-41a9-b2d9-bf8818391a36",
+    "4256e671-97b0-4f84-82ce-12aeee17224e",
+    "bed15de7-e1c8-4fee-bc5e-3a9eac004a79",
+    "4db17801-215e-4bb1-8e67-f4135b1ecd8d",
+    "15f1d1c3-0ec1-45a3-92ea-f99fcefaef49",
+    "6e91de62-9a4f-4f08-bfa8-1beacca11e0f",
+    "32076cd3-77d5-4058-813d-7e66be4714f8",
+    "8b85be12-4b9c-40e6-a62f-d2d232d62402",
+    "0f6c8ead-58f6-4ff7-8bc3-21935c16e02e",
+    "67defa78-3e96-4a2d-b0e4-503e1625948a"
+  ],
+  "all_vector_comparisons": {
+    "f1481815-9577-4990-abe3-7b79fa5d9284": [
+      -1,
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "bb9fd8ac-073b-4224-87cb-773e841df5eb": [
+      -1,
+      -1,
+      -1,
+      -1,
+      0
+    ],
+    "31c2d043-6b37-4209-b8fd-4547ffdfa511": [
+      -1,
+      -1,
+      -1,
+      -1,
+      0
+    ],
+    "b56c7ceb-de59-42da-9e3b-6ee96e4e4145": [
+      -1,
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "04669374-610b-497e-ae9b-c856335731ce": [
+      -1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "b4b5456b-c805-41a9-b2d9-bf8818391a36": [
+      -1,
+      -1,
+      -1,
+      -1,
+      0
+    ],
+    "59facd77-4082-40d9-910e-9060c197e72a": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "4256e671-97b0-4f84-82ce-12aeee17224e": [
+      -1,
+      -1,
+      -1,
+      -1,
+      0
+    ],
+    "f95bb4e2-3d08-4ca0-a34f-99841dca855a": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "bed15de7-e1c8-4fee-bc5e-3a9eac004a79": [
+      -1,
+      -1,
+      -1,
+      -1,
+      0
+    ],
+    "613ca17b-835c-4180-98af-b08f0c06c5bc": [
+      -1,
+      1,
+      -1,
+      1,
+      0
+    ],
+    "d0c6b9b9-d80e-4bd7-95e1-e6267b61f2f0": null,
+    "3988996f-c9ac-41f2-8e30-1472a94502a4": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "4db17801-215e-4bb1-8e67-f4135b1ecd8d": [
+      -1,
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "15f1d1c3-0ec1-45a3-92ea-f99fcefaef49": [
+      -1,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "6e91de62-9a4f-4f08-bfa8-1beacca11e0f": [
+      -1,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "16bb6065-c3ca-45fb-b514-86106a310646": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "6c59d152-b326-4817-a244-31a15b3cd9d8": [
+      -1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "5d77f276-5c4e-4f89-adba-41dfc915fe51": null,
+    "cfe82a87-0d65-454e-b1df-4789dc95aab4": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "762b7494-0c77-4e4c-9187-88b7e012e40f": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "32076cd3-77d5-4058-813d-7e66be4714f8": [
+      -1,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "a5c17989-ca3a-49c1-8cea-49d37de89a27": null,
+    "13d9050e-950b-4eba-8097-d6c0b578536c": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "71e08ab4-dd8b-4343-a001-53c4d6d83c4a": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "8b85be12-4b9c-40e6-a62f-d2d232d62402": [
+      -1,
+      0,
+      0,
+      -1,
+      0
+    ],
+    "6288f7bc-3738-486f-bb6d-d8b90fdc00c8": null,
+    "0f6c8ead-58f6-4ff7-8bc3-21935c16e02e": [
+      -1,
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "25366aa8-2003-4f3b-b35e-a71b5765394e": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "67defa78-3e96-4a2d-b0e4-503e1625948a": [
+      -1,
+      -1,
+      0,
+      -1,
+      0
+    ],
+    "c15036ef-9164-4649-905b-8ac02884cb26": [
+      -1,
+      1,
+      0,
+      -1,
+      0
+    ],
+    "ebd44b10-9a5a-4e96-96de-8ce28d2b6e76": [
+      -1,
+      0,
+      0,
+      1,
+      0
+    ],
+    "82566cc9-b278-4303-99a3-b22aa3e09155": [
+      -1,
+      1,
+      0,
+      1,
+      0
+    ],
+    "55a6ce76-34af-468f-b735-a1197f3d3459": null
+  },
+  "time_comparisons": {
+    "f1481815-9577-4990-abe3-7b79fa5d9284": -1,
+    "bb9fd8ac-073b-4224-87cb-773e841df5eb": -1,
+    "31c2d043-6b37-4209-b8fd-4547ffdfa511": -1,
+    "b56c7ceb-de59-42da-9e3b-6ee96e4e4145": -1,
+    "04669374-610b-497e-ae9b-c856335731ce": -1,
+    "b4b5456b-c805-41a9-b2d9-bf8818391a36": -1,
+    "59facd77-4082-40d9-910e-9060c197e72a": -1,
+    "4256e671-97b0-4f84-82ce-12aeee17224e": -1,
+    "f95bb4e2-3d08-4ca0-a34f-99841dca855a": -1,
+    "bed15de7-e1c8-4fee-bc5e-3a9eac004a79": -1,
+    "613ca17b-835c-4180-98af-b08f0c06c5bc": -1,
+    "3988996f-c9ac-41f2-8e30-1472a94502a4": -1,
+    "4db17801-215e-4bb1-8e67-f4135b1ecd8d": -1,
+    "15f1d1c3-0ec1-45a3-92ea-f99fcefaef49": -1,
+    "6e91de62-9a4f-4f08-bfa8-1beacca11e0f": -1,
+    "16bb6065-c3ca-45fb-b514-86106a310646": -1,
+    "6c59d152-b326-4817-a244-31a15b3cd9d8": -1,
+    "cfe82a87-0d65-454e-b1df-4789dc95aab4": -1,
+    "762b7494-0c77-4e4c-9187-88b7e012e40f": -1,
+    "32076cd3-77d5-4058-813d-7e66be4714f8": -1,
+    "13d9050e-950b-4eba-8097-d6c0b578536c": -1,
+    "71e08ab4-dd8b-4343-a001-53c4d6d83c4a": -1,
+    "8b85be12-4b9c-40e6-a62f-d2d232d62402": -1,
+    "0f6c8ead-58f6-4ff7-8bc3-21935c16e02e": -1,
+    "25366aa8-2003-4f3b-b35e-a71b5765394e": -1,
+    "67defa78-3e96-4a2d-b0e4-503e1625948a": -1,
+    "c15036ef-9164-4649-905b-8ac02884cb26": -1,
+    "ebd44b10-9a5a-4e96-96de-8ce28d2b6e76": -1,
+    "82566cc9-b278-4303-99a3-b22aa3e09155": -1
+  },
+  "selected_WTS1": "Not counted as published while grading. User-reported time n^(15/4)E is slower asymptotically, but its negative-quartic sample envelope is better. This is a time/copy tradeoff, not vector dominance. WTS1actual50a9 remains protected."
+}

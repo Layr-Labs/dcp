@@ -1,0 +1,58 @@
+{
+  "direct_material_source": {
+    "submission_id": "32076cd3-77d5-4058-813d-7e66be4714f8",
+    "evaluated_commit": "c80fdd7c40bac9f0f594c66fa0781457ae673e5d",
+    "published_at": "2026-11-06T19:25:57.173+00:00",
+    "git_member_hashes": {
+      "submission/proof.md": {
+        "sha256": "0ee4d29d5edab7647f229993d16103a496c3b7296bf798b230f62ec935ea5733",
+        "bytes": 52462
+      },
+      "submission/submission.json": {
+        "sha256": "0c038001580f464674df7ba7b378543c380143a85ab05279ee2fea8cc20ef7f1",
+        "bytes": 10756
+      }
+    }
+  },
+  "inherited_material_sources": [
+    {
+      "submission_id": "f1481815-9577-4990-abe3-7b79fa5d9284",
+      "evaluated_commit": "200ef0387acb280adcd272f4fbcdb805d1786bbe",
+      "published_at": "2026-11-06T18:13:55.328+00:00",
+      "git_member_hashes": {
+        "submission/proof.md": {
+          "sha256": "e1b698d021f72cc5fd17f0132a2c30ba213dc2c424e613087d711804f074b528",
+          "bytes": 44815
+        },
+        "submission/submission.json": {
+          "sha256": "9aa5d60710853f6c194e61ecadeba31256e9bb91515836b7f446cc49f0961c39",
+          "bytes": 10731
+        }
+      }
+    },
+    {
+      "submission_id": "6e91de62-9a4f-4f08-bfa8-1beacca11e0f",
+      "evaluated_commit": "f248f9f242c21046223007c9462332b9d738e0bb",
+      "published_at": "2026-11-06T19:03:25.588+00:00",
+      "git_member_hashes": {
+        "submission/proof.md": {
+          "sha256": "c790bf765bcd1dd4cda653656ec9c79bc07520a051c29dcd7d2094fc57121a50",
+          "bytes": 46056
+        },
+        "submission/submission.json": {
+          "sha256": "d2043ba862008d1f7d32e2d16a5e8ce5ccb9bc225b4b2f66d542bd90049bb227",
+          "bytes": 10750
+        }
+      }
+    }
+  ],
+  "source_path_scope": "Git member paths of published evaluated commits; no API archive normalization asserted.",
+  "new_decoder_author": "GPT-6 Astra Max",
+  "integration_author": "gpt-6.1-sol ultra",
+  "harness": "T3 Code through Codex",
+  "research_source": {
+    "path": "leap-research/decoder-wave/joint-multiscale.md",
+    "sha256": "3517bec1b2ffdc3ae734c90dc9b33fa1cddb40608cf617d854ba9beb91137b43"
+  },
+  "attribution_declarations": "dependencies.json is the supported non-cited JSON array. Optional both-endpoint archive citations may be prepared by central from actual published archive paths; these are not fabricated here."
+}

@@ -1,0 +1,83 @@
+{
+  "candidate_id": "CS1-BACKWARD",
+  "status": "COMPLETE_SELF_CHECKED_CENTRAL_HANDOFF",
+  "publication_owner": "exclusive central sender; no researcher send/source lease/monitor",
+  "candidate_commit": null,
+  "commit_status": "No candidate SHA fabricated; exact private artifact bytes and deterministic archive provided.",
+  "theorem": "All N>=2, fixed s, unconditional full-secret success>=1-2^-8; same single algorithm/configuration and every-branch bounds.",
+  "vector": {
+    "time": {
+      "coefficient": "1",
+      "exponent": [
+        {
+          "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+          "nPower": "1/2",
+          "logPower": "0"
+        }
+      ],
+      "nPower": "7/2",
+      "logPower": "2"
+    },
+    "classical_space": {
+      "coefficient": "1",
+      "exponent": [
+        {
+          "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+          "nPower": "1/2",
+          "logPower": "0"
+        },
+        {
+          "coefficient": "-2",
+          "nPower": "1/4",
+          "logPower": "0"
+        }
+      ],
+      "nPower": "0",
+      "logPower": "0"
+    },
+    "quantum_space": {
+      "coefficient": "1",
+      "exponent": [],
+      "nPower": "1",
+      "logPower": "0"
+    },
+    "samples": {
+      "coefficient": "1",
+      "exponent": [
+        {
+          "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+          "nPower": "1/2",
+          "logPower": "0"
+        }
+      ],
+      "nPower": "1",
+      "logPower": "2"
+    }
+  },
+  "fraction": "0",
+  "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies.",
+  "indices": [
+    "1/2",
+    "1/2",
+    "0/1",
+    "1/2"
+  ],
+  "files_sha256": {
+    "proof.md": "40dcb36879994c071f43235c1f2ce28080020265c7c514c8e179ad1f51a73e3f",
+    "submission.json": "1e9708d218ffda7da4d940761cce6f4a01bf886869c494ad927e5e88d75103da",
+    "note.md": "e4297ed0ef9c29f86745381c56aec9c56684674680ac392fbbf73b9169673ec8",
+    "dependencies.json": "c3507755d98a92b04c683f4bc2278d921ad8342e434cdf231fe0ed2b2b1c3dc4",
+    "provenance.json": "5f4fbb83d66cfc67238cb47bb7c48d116bbb1f7d1a499a78f30a27f9824a8c52",
+    "checks.json": "ac6bf993682ba0026b8e8521c9e53ea61f7f7b4f21b5ffae0cdb3cdd5670e5ca",
+    "comparison.json": "0e03148ed136b70fb3f15673f59da1e266acef45d9b78310b845110b354dd002"
+  },
+  "models": [
+    "gpt-6-astra max (new backward decoder)",
+    "gpt-6.1-sol ultra (complete proof/declaration integration)"
+  ],
+  "harness": "T3 Code through Codex; local exact Python and pinned declaration validator; source-note bounded remote Wolfram aids.",
+  "required_declaration_file": "dependencies.json (3 verified published sources; not no-dependencies)",
+  "prior_candidates": "Preserved unchanged; no request to cancel WTS1actual50a9 or grading.",
+  "checks_scope": "Cheap direct structured checks, arithmetic/package consistency, pin/whitespace/note-size. Full actual-root preflight remains for central after immutable existing-lane import. No new review gate.",
+  "next_research_scope": "Latest root override: only index<1/2 substantive research after cheap packaging; no ongoing same-index child."
+}

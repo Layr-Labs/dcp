@@ -1,0 +1,19 @@
+{
+  "pinned_verifier_revision": "204fdf8fb640704da0a3972d97831de09bfb1c7a",
+  "structured_declarations": "pass",
+  "claims": 5,
+  "evidence_paths": "pass",
+  "exact_pell_coefficient": "pass",
+  "exact_error_model": "pass",
+  "backward_gap": "7664023/31360000",
+  "seed_gap": "4372721/73758720000",
+  "total_failure_bound": "787457/536870912",
+  "failure_below_1_over_256": true,
+  "proof_sections": "0 through16, each once",
+  "new_file_whitespace": "pass",
+  "public_note_bytes": 11339,
+  "published_dependencies_verified": 3,
+  "status": "Cheap declaration/arithmetic/package checks only, not full preflight or hosted mathematical verdict.",
+  "pinned_HEAD_check": "pass: cdb1ebff130d861e2c61e9cf517ab66c0a56ca7a",
+  "git_diff_check_submission": "pass"
+}

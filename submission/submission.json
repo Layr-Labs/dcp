@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "CS1-BACKWARD: terminal seed and backward two-candidate phase decoder",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and fixed hidden shift s in Z/NZ, n=ceil(log2 N), use exactly the single CS1-BACKWARD configuration in the complete evidence proof. It receives only fresh independent ideal mixed coset copies and recovers the full s with unconditional success at least1-2^-8>2/3. For n>=64 and odd part M>1, use the unchanged TREE_d with R=nq_d, ell=ceil(log2 R), terminal H=ceil(log2 M), seed stages u=0,...,ell+3 at physical scales H+u, K_seed=8192(ell+ceil(log2 n)+30), followed by H backward two-candidate steps using K_back=512(ceil(log2 n)+30) roots each. The odd root count is F=(ell+4)K_seed+H K_back. For M=1 skip it and set F=0. Use K2=ceil(log2 n)+30 attempts per 2-adic bit; Qcap=1024[6*2^mu_star*(kappa_star+1)*(F+2a2)+2a2], and recompute the Section5 extractor/fallback parameters with that cap. The finite n<64 algorithm is explicitly specified. Every bound holds jointly on every branch, including all wrong labels, rejections, discarded trees, retries and aborts, with absolute constants independent of N,s and outcomes. Total charged work is O(n^(7/2)(log2 n)^2 2^(sqrt(2n))) and hence O(n^(7/2)(log2 n)^2 2^(a sqrt n)), with the exact rational a=u_333/v_333 defined by the proof recurrence and identical to the material predecessor. All uniform compilation, gate generation, address work, exact arithmetic, initialization, measurements and source costs are included. The full representative structured envelope has exact growth index1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "leap-research/decoder-wave/CS1-BACKWARD/proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +21,24 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "7/2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and fixed hidden shift s in Z/NZ, n=ceil(log2 N), use exactly the single CS1-BACKWARD configuration in the complete evidence proof. It receives only fresh independent ideal mixed coset copies and recovers the full s with unconditional success at least1-2^-8>2/3. For n>=64 and odd part M>1, use the unchanged TREE_d with R=nq_d, ell=ceil(log2 R), terminal H=ceil(log2 M), seed stages u=0,...,ell+3 at physical scales H+u, K_seed=8192(ell+ceil(log2 n)+30), followed by H backward two-candidate steps using K_back=512(ceil(log2 n)+30) roots each. The odd root count is F=(ell+4)K_seed+H K_back. For M=1 skip it and set F=0. Use K2=ceil(log2 n)+30 attempts per 2-adic bit; Qcap=1024[6*2^mu_star*(kappa_star+1)*(F+2a2)+2a2], and recompute the Section5 extractor/fallback parameters with that cap. The finite n<64 algorithm is explicitly specified. Every bound holds jointly on every branch, including all wrong labels, rejections, discarded trees, retries and aborts, with absolute constants independent of N,s and outcomes. Peak classical allocation is O(n^2 2^(sqrt(2n)-sqrt(3)*(2n)^(1/4))) bits and hence O(2^(a sqrt n-2n^(1/4))) bits with exactly the same rational a. This includes every table stack, seed record, streamed backward score, compiler scratch, parameter and counter. The full representative structured envelope has exact growth index1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "leap-research/decoder-wave/CS1-BACKWARD/proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,20 +50,77 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-2",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and fixed hidden shift s in Z/NZ, n=ceil(log2 N), use exactly the single CS1-BACKWARD configuration in the complete evidence proof. It receives only fresh independent ideal mixed coset copies and recovers the full s with unconditional success at least1-2^-8>2/3. For n>=64 and odd part M>1, use the unchanged TREE_d with R=nq_d, ell=ceil(log2 R), terminal H=ceil(log2 M), seed stages u=0,...,ell+3 at physical scales H+u, K_seed=8192(ell+ceil(log2 n)+30), followed by H backward two-candidate steps using K_back=512(ceil(log2 n)+30) roots each. The odd root count is F=(ell+4)K_seed+H K_back. For M=1 skip it and set F=0. Use K2=ceil(log2 n)+30 attempts per 2-adic bit; Qcap=1024[6*2^mu_star*(kappa_star+1)*(F+2a2)+2a2], and recompute the Section5 extractor/fallback parameters with that cap. The finite n<64 algorithm is explicitly specified. Every bound holds jointly on every branch, including all wrong labels, rejections, discarded trees, retries and aborts, with absolute constants independent of N,s and outcomes. Peak quantum allocation is O(n) qubits, including every tree index stack, source/address and estimate register, merge and arithmetic ancilla. Each root is measured immediately and scratch reused. The full representative envelope n has exact growth index0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "leap-research/decoder-wave/CS1-BACKWARD/proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and fixed hidden shift s in Z/NZ, n=ceil(log2 N), use exactly the single CS1-BACKWARD configuration in the complete evidence proof. It receives only fresh independent ideal mixed coset copies and recovers the full s with unconditional success at least1-2^-8>2/3. For n>=64 and odd part M>1, use the unchanged TREE_d with R=nq_d, ell=ceil(log2 R), terminal H=ceil(log2 M), seed stages u=0,...,ell+3 at physical scales H+u, K_seed=8192(ell+ceil(log2 n)+30), followed by H backward two-candidate steps using K_back=512(ceil(log2 n)+30) roots each. The odd root count is F=(ell+4)K_seed+H K_back. For M=1 skip it and set F=0. Use K2=ceil(log2 n)+30 attempts per 2-adic bit; Qcap=1024[6*2^mu_star*(kappa_star+1)*(F+2a2)+2a2], and recompute the Section5 extractor/fallback parameters with that cap. The finite n<64 algorithm is explicitly specified. Every bound holds jointly on every branch, including all wrong labels, rejections, discarded trees, retries and aborts, with absolute constants independent of N,s and outcomes. All original acquisitions satisfy Q<=Qcap on every main-branch execution and include rejected Fourier labels, failed/abandoned tree attempts, all 2-adic trials and cutoff branches. Jointly Q=O(n(log2 n)^2 2^(sqrt(2n))) and hence O(n(log2 n)^2 2^(a sqrt n)) with the same exact rational a. The finite branch has absolute bounded work and samples. The full representative structured envelope has exact growth index1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "leap-research/decoder-wave/CS1-BACKWARD/proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "1",
+          "logPower": "2"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and fixed hidden shift s in Z/NZ, n=ceil(log2 N), use exactly the single CS1-BACKWARD configuration in the complete evidence proof. It receives only fresh independent ideal mixed coset copies and recovers the full s with unconditional success at least1-2^-8>2/3. For n>=64 and odd part M>1, use the unchanged TREE_d with R=nq_d, ell=ceil(log2 R), terminal H=ceil(log2 M), seed stages u=0,...,ell+3 at physical scales H+u, K_seed=8192(ell+ceil(log2 n)+30), followed by H backward two-candidate steps using K_back=512(ceil(log2 n)+30) roots each. The odd root count is F=(ell+4)K_seed+H K_back. For M=1 skip it and set F=0. Use K2=ceil(log2 n)+30 attempts per 2-adic bit; Qcap=1024[6*2^mu_star*(kappa_star+1)*(F+2a2)+2a2], and recompute the Section5 extractor/fallback parameters with that cap. The finite n<64 algorithm is explicitly specified. Every bound holds jointly on every branch, including all wrong labels, rejections, discarded trees, retries and aborts, with absolute constants independent of N,s and outcomes. The guaranteed malformed fraction is epsilon(n)=0 under the exactly declared clean-input model. All acquired states are independent ideal rho_s copies; then the same full-secret success and all four bounds hold jointly. No positive malformed fraction or maximality of zero is claimed.",
+      "evidence": [
+        "leap-research/decoder-wave/CS1-BACKWARD/proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
