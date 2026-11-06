@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "ROB-G clean statement: O(2^{n/2} n^2 log^2 n) work with O(n) copies, O(n) qubits and O(n^2) bits",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-G algorithm (robust shadow scores plus Grover search) with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-22, threshold 67/400, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case total work T(N,s) = O(2^{n/2} n^2 log2^2 n) in the challenge cost model (all classical bit operations, circuit generation, gates, measurements, initialisation, table construction, address charge ceil(log2(M+2)) = O(log n) per counted operation, where M = O(n^2) is the number of allocated bits plus qubits; each source copy costs n+1; proof.md Section 7: at most 3 repetitions of at most 0.785 * 2^{n/2} Grover iterations, each with an oracle of O(Q n log n) gates, plus O(n^3 log^2 n) for acquisition and label estimation), i.e. uniform envelope B_T(n) = 2^{n/2} n^2 (log2 n)^2, whose growth index is exactly 1. This holds on every execution branch, for the clean problem of the fifth claim (all acquired copies independent ideal coset states), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s and all outcomes).",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-G algorithm (robust shadow scores plus Grover search) with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-22, threshold 67/400, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case peak classical space S_C(N,s) = O(n^2) bits (Q records of n+p+4 bits, the 2^16-entry cosine table and its constant-size construction workspace, an O(n log log n + n)-bit label-estimation and long-division workspace, the O(n)-bit search controller (K, k_G, counters, current constants, threshold, one stored gate description); explicitly S_C <= 2^19 (n+4)(n+p+4) + 3 * 2^19 + O(n log log n + n)), i.e. envelope B_C(n) = n^2, whose growth index is exactly 0. This holds on every execution branch, for the clean problem of the fifth claim (all acquired copies independent ideal coset states), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-G algorithm (robust shadow scores plus Grover search) with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-22, threshold 67/400, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case peak quantum space S_Q(N,s) = O(n) qubits (acquisition: one held (n+1)-qubit source copy, one test control, O(n) adder ancillas and one fair-bit qubit, released after each copy; search: n candidate qubits, O(log n) qubits for the phase accumulator, table index, table word and score accumulator, O(n) comparator and diffusion ancillas), i.e. envelope B_Q(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem of the fifth claim (all acquired copies independent ideal coset states), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,42 +72,36 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-G algorithm (robust shadow scores plus Grover search) with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^6), Q = 2^19 (n+4) copies, q = 16 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-22, threshold 67/400, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) acquires exactly Q(N,s) = 2^19 (n+4) <= 5 * 2^19 n fresh source copies on every execution branch (a deterministic count; the acquisition phase is never restarted, and the search circuit is repeated at most three times on the same records, acquiring no copies; there are no aborts), so Q(N,s) = O(n), envelope B_samples(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem of the fifth claim (all acquired copies independent ideal coset states), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s and all outcomes).",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same ROB-G algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 0 for every N >= 2 (no validity threshold): at most floor(0*Q) = 0 of the Q = 2^19 (n+4) acquired copies may be malformed, i.e. the guarantee assumes that all acquired source copies are independent ideal coset states, and no adversary or corruption model is assumed for this claim. Under this promise, for every N >= 2 and every s in Z/NZ, full-secret recovery succeeds with probability at least 49/64 > 2/3 (proof.md Theorems 1 and 2 with no malformed copy) jointly with all four resource bounds above. No behavior is promised for malformed copies and no positive tolerance is asserted in this submission; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
