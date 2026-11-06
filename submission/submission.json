@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "CS1: linear-merge collimation with a free-frequency phase decoder",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single CS1 algorithm and configuration of proof.md (linear-merge collimation tree, free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its total charged sequential work is T(N,s) = O(n^4 (log2 n)^2 2^(sqrt(2n))), hence T(N,s) = O(n^4 (log2 n)^2 2^(a sqrt(n))) with the uniform bit-length envelope B_T(n) = n^4 (log2 n)^2 2^(a sqrt n), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. Here a = 8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393 = u_333/v_333 of proof.md Section 0, where (u_0,v_0) = (10,7) and (u,v) -> (3u+4v, 2u+3v) preserves u^2 - 2v^2 = 2 > 0, so a > sqrt(2) and the proved bound with 2^(sqrt(2n)) implies the declared envelope. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,67 +21,21 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
           "nPower": "4",
-          "logPower": "0"
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single CS1 algorithm and configuration of proof.md (linear-merge collimation tree, free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its peak classical workspace is S_C(N,s) = O(n^2 2^(sqrt(2n) - 2 (2n)^(1/4))), hence O(2^(a sqrt(n) - 2 n^(1/4))) bits with envelope B_C(n) = 2^(a sqrt n - 2 n^(1/4)), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. Here a = 8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393 = u_333/v_333 of proof.md Section 0, where (u_0,v_0) = (10,7) and (u,v) -> (3u+4v, 2u+3v) preserves u^2 - 2v^2 = 2 > 0, so a > sqrt(2) and the proved bound with 2^(sqrt(2n)) implies the declared envelope. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,18 +50,75 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-2",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single CS1 algorithm and configuration of proof.md (linear-merge collimation tree, free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its peak quantum workspace is S_Q(N,s) = O(n) qubits with envelope B_Q(n) = n, whose exact growth index is 0. All outside constants are absolute and independent of N, s and outcomes. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single CS1 algorithm and configuration of proof.md (linear-merge collimation tree, free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, the total number Q(N,s) of fresh source copies acquired, counting every discarded, rejected and failed-attempt copy, is at most N(n+10) on the finite branch n < 64 and at most the precomputed cap Qcap = O(n^(3/2) (log2 n) 2^(sqrt(2n))) on the main branch n >= 64. Hence Q(N,s) = O(n^(3/2) (log2 n) 2^(a sqrt(n))) with envelope B_samples(n) = n^(3/2) (log2 n) 2^(a sqrt n), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. Here a = 8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393 = u_333/v_333 of proof.md Section 0, where (u_0,v_0) = (10,7) and (u,v) -> (3u+4v, 2u+3v) preserves u^2 - 2v^2 = 2 > 0, so a > sqrt(2) and the proved bound with 2^(sqrt(2n)) implies the declared envelope. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For the same CS1 algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-8 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
