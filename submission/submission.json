@@ -1,122 +1,134 @@
 {
-  "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
-  "claims": [
-    {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
+ "version": 1,
+ "title": "OMX-ML: exact offset-mixing sieve with multi-level readout, O(2^{2 sqrt n} n^{13/2}/log n) work for every N",
+ "claims": [
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the OMX-ML offset-mixing sieve with multi-level readout and the single parameter rule of proof.md (Section 5; exhaustive shift testing for n < 256) has worst-case total work T(N,s) = O(2^{2 sqrt(n)} n^{13/2} / log2 n) (asymptotically in n; for n < 256 all costs are absolute constants) in the challenge cost model (all classical bit operations, circuit generation, gates, measurements, initialisation, addressing, n+1 per source copy, and all failed or aborted attempts), with rho = ceil((n-1)/mu) <= (9/4) n/log2 n runs (mu = ceil(log2 g) >= (1/2) log2 n levels read per run, proof.md Sections 5.1, 5.5 and 6 (S5)), i.e. uniform envelope B_T(n) = 2^{2 n^{1/2}} n^{13/2} (log2 n)^{-1}, whose growth index is exactly 1/2. This holds on every execution branch, jointly with the other three resource bounds and the full-secret success probability > 3/4 of the same algorithm and configuration. All constants are absolute (independent of N, s and outcomes); the inner coefficient 2 of sqrt(n) is proved explicitly (proof.md Section 6, fact S5).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "0"
       }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
-      }
+     ],
+     "nPower": "13/2",
+     "logPower": "-1"
     }
-  ],
-  "experiments": []
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the OMX-ML offset-mixing sieve with multi-level readout and the single parameter rule of proof.md (Section 5; exhaustive shift testing for n < 256) has worst-case peak classical space S_C(N,s) = O(2^{2 sqrt(n)} n^{7/2}) bits (lists, buckets, counters, parameters and stored circuit descriptions), i.e. envelope B_C(n) = 2^{2 n^{1/2}} n^{7/2}, whose growth index is exactly 1/2. This holds on every execution branch, jointly with the other three resource bounds and the full-secret success probability > 3/4 of the same algorithm and configuration. All constants are absolute (independent of N, s and outcomes); the inner coefficient 2 of sqrt(n) is proved explicitly (proof.md Section 6, fact S5).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "7/2",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the OMX-ML offset-mixing sieve with multi-level readout and the single parameter rule of proof.md (Section 5; exhaustive shift testing for n < 256) has worst-case peak quantum space S_Q(N,s) = O(2^{2 sqrt(n)} n^{5/2}) qubits (all label qubits, the held (n+1)-qubit source copy, controls and ancillas), i.e. envelope B_Q(n) = 2^{2 n^{1/2}} n^{5/2}, whose growth index is exactly 1/2. This holds on every execution branch, jointly with the other three resource bounds and the full-secret success probability > 3/4 of the same algorithm and configuration. All constants are absolute (independent of N, s and outcomes); the inner coefficient 2 of sqrt(n) is proved explicitly (proof.md Section 6, fact S5).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "5/2",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the OMX-ML offset-mixing sieve with multi-level readout and the single parameter rule of proof.md (Section 5; exhaustive shift testing for n < 256) acquires on every execution branch at most Q* = 4 rho M_0 < 2^{35} 2^{2 sqrt(n)} n^{7/2} / log2 n fresh source copies when n >= 256, with rho = ceil((n-1)/mu) runs (M_0 as defined in proof.md Section 5.1), and at most N(n+2) < 2^{264} copies when n < 256, counting every discarded or filtered copy and every failed or aborted run. Hence Q(N,s) = O(2^{2 sqrt(n)} n^{7/2} / log2 n) (asymptotically in n; the n < 256 prefix is an absolute constant), with uniform envelope B_samples(n) = 2^{2 n^{1/2}} n^{7/2} (log2 n)^{-1}, whose growth index is exactly 1/2. This holds on every execution branch, jointly with the other three resource bounds and the full-secret success probability > 3/4 of the same algorithm and configuration. All constants are absolute (independent of N, s and outcomes); the inner coefficient 2 of sqrt(n) is proved explicitly (proof.md Section 6, fact S5).",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "2",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "7/2",
+     "logPower": "-1"
+    }
+   }
+  },
+  {
+   "statement": "For the same OMX-ML algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 0 for every N >= 2 (no validity threshold): at most floor(0*Q) = 0 of the Q acquired copies may be malformed, i.e. the guarantee assumes that all acquired source copies are independent ideal coset states, and no adversary or corruption model is assumed. Under this promise, for every N >= 2 and every s in Z/NZ, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds above. No behavior is promised for malformed copies and no positive tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-fractional-error-tolerance-v1",
+    "expression": "0",
+    "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+   }
+  }
+ ],
+ "experiments": []
 }
