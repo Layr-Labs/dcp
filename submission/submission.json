@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Polynomial classical space, linear quantum space: exact-gate arbitrary-modulus Regev pairing sieve",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, put n=ceil(log2 N). The single polynomial-space dyadic pairing algorithm with arbitrary-modulus projection reduction in proof.md recovers the entire s with unconditional success probability at least2/3 from independent ideal mixed coset copies. For n>=2 its fixed parameters are P=2^m with m=floor(log2 N), b=ceil(sqrt(n log2 n)), A=16(b+4)/15, D=ceil((m-1)/b), V=ceil(100 n^2 A^D), R=ceil(20000V), q=ceil(log2(100R)), decoder precision q_label=ceil(log2(100RV)), at mostV recursive node starts and at most200V original source acquisitions per trial, and at mostR trials. Each combination of width w uses w+4 inputs. For n=1 test each candidate in order with seven fresh copies per candidate as specified in proof.md. On every execution branch the total charged sequential work is T=O(n^10 2^(2 n^(1/2)(log2 n)^(1/2)+(5/2)n^(1/2))). This includes bit operations, circuit generation, addressing, exact Clifford+T gates, measurements, initialization, all projections and retries, source charges, and every failed trial. This is its complete representative bit-length envelope; its exact growth index is1/2. All constants are absolute and these four resource guarantees hold jointly for this same configuration and success guarantee.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-extraction.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "5/2",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "10",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, put n=ceil(log2 N). The single polynomial-space dyadic pairing algorithm with arbitrary-modulus projection reduction in proof.md recovers the entire s with unconditional success probability at least2/3 from independent ideal mixed coset copies. For n>=2 its fixed parameters are P=2^m with m=floor(log2 N), b=ceil(sqrt(n log2 n)), A=16(b+4)/15, D=ceil((m-1)/b), V=ceil(100 n^2 A^D), R=ceil(20000V), q=ceil(log2(100R)), decoder precision q_label=ceil(log2(100RV)), at mostV recursive node starts and at most200V original source acquisitions per trial, and at mostR trials. Each combination of width w uses w+4 inputs. For n=1 test each candidate in order with seven fresh copies per candidate as specified in proof.md. On every execution branch peak allocated classical memory is S_C=O(n^2) bits, including input, all pending labels, recursion frames, arithmetic, counters and streamed gate descriptors. Its complete representative envelope is n^2 and its exact growth index is0. All constants are absolute and these four resource guarantees hold jointly for this same configuration and success guarantee.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-extraction.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +62,14 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, put n=ceil(log2 N). The single polynomial-space dyadic pairing algorithm with arbitrary-modulus projection reduction in proof.md recovers the entire s with unconditional success probability at least2/3 from independent ideal mixed coset copies. For n>=2 its fixed parameters are P=2^m with m=floor(log2 N), b=ceil(sqrt(n log2 n)), A=16(b+4)/15, D=ceil((m-1)/b), V=ceil(100 n^2 A^D), R=ceil(20000V), q=ceil(log2(100R)), decoder precision q_label=ceil(log2(100RV)), at mostV recursive node starts and at most200V original source acquisitions per trial, and at mostR trials. Each combination of width w uses w+4 inputs. For n=1 test each candidate in order with seven fresh copies per candidate as specified in proof.md. On every execution branch peak allocated accessible quantum memory is S_Q=O(n) qubits, including all pending phase states, current input sample, rank and subset-sum registers and all temporary ancillas. Its complete representative envelope is n and its exact growth index is0. All constants are absolute and these four resource guarantees hold jointly for this same configuration and success guarantee.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-extraction.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,44 +80,51 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, put n=ceil(log2 N). The single polynomial-space dyadic pairing algorithm with arbitrary-modulus projection reduction in proof.md recovers the entire s with unconditional success probability at least2/3 from independent ideal mixed coset copies. For n>=2 its fixed parameters are P=2^m with m=floor(log2 N), b=ceil(sqrt(n log2 n)), A=16(b+4)/15, D=ceil((m-1)/b), V=ceil(100 n^2 A^D), R=ceil(20000V), q=ceil(log2(100R)), decoder precision q_label=ceil(log2(100RV)), at mostV recursive node starts and at most200V original source acquisitions per trial, and at mostR trials. Each combination of width w uses w+4 inputs. For n=1 test each candidate in order with seven fresh copies per candidate as specified in proof.md. On every execution branch all acquired original source copies total at most R(200V+q) for n>=2 and at most14 for n=1. In particular Q=O(n^6 2^(n^(1/2)(log2 n)^(1/2)+(5/2)n^(1/2))), including every rejected projection, discarded phase state, failed combination, cutoff and verification attempt. This is its complete representative bit-length envelope; its exact growth index is1/2. All constants are absolute and these four resource guarantees hold jointly for this same configuration and success guarantee.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "label-extraction.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "5/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "6",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, put n=ceil(log2 N). The single polynomial-space dyadic pairing algorithm with arbitrary-modulus projection reduction in proof.md recovers the entire s with unconditional success probability at least2/3 from independent ideal mixed coset copies. For n>=2 its fixed parameters are P=2^m with m=floor(log2 N), b=ceil(sqrt(n log2 n)), A=16(b+4)/15, D=ceil((m-1)/b), V=ceil(100 n^2 A^D), R=ceil(20000V), q=ceil(log2(100R)), decoder precision q_label=ceil(log2(100RV)), at mostV recursive node starts and at most200V original source acquisitions per trial, and at mostR trials. Each combination of width w uses w+4 inputs. For n=1 test each candidate in order with seven fresh copies per candidate as specified in proof.md. The guaranteed malformed-sample fraction is epsilon(n)=0: for every N and s all acquired source copies are independent ideal rho_s. Under this clean-input promise the same full-secret success probability and all four branchwise resource bounds hold jointly. No positive malformed fraction or maximality of zero is asserted.",
+      "evidence": [
+        "proof.md",
+        "label-extraction.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
