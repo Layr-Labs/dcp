@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Kuperberg-type qubit sieve for general N with proved 2^(4 sqrt n) poly(n) bounds",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, Algorithm DCP-SIEVE of proof.md (a Kuperberg-type qubit sieve with integer labels, a phase-estimation implementation of the Fourier-basis measurement, the parameter choice of proof.md Section 2 (explicit functions of N computed by the algorithm), and exhaustive shift testing for N <= 16) outputs the entire s with unconditional probability at least 19/20 >= 2/3. With n = ceil(log2 N), its worst-case total work in the challenge cost model, on every execution branch (all classical bit operations, circuit generation, gate synthesis, gates, measurements, source acquisitions at n+1 each, addressing and all failed attempts), satisfies T(N,s) <= C * 2^(4*sqrt(n)) * n^6 for an absolute constant C. Hence the uniform bit-length envelope is B_T(n) = 2^(4 n^(1/2)) n^6 and T = O(B_T); the growth index of this envelope is exactly 1/2 (log2 log2 B_T = (1/2) log2 n + O(log log n)). The constant 4 and the degree 6 are proved upper bounds, not tight. This holds jointly, for the same algorithm and parameter choice, with the classical-space, quantum-space and sample bounds below.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,67 +21,21 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "4",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "6",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For the same Algorithm DCP-SIEVE of proof.md (a Kuperberg-type qubit sieve with integer labels, a phase-estimation implementation of the Fourier-basis measurement, the parameter choice of proof.md Section 2 (explicit functions of N computed by the algorithm), and exhaustive shift testing for N <= 16) and the same parameter choice, for every N >= 2 and every s in Z/NZ, the worst-case peak number of allocated classical bits on every execution branch (stored labels, sorting workspace, counters, gate descriptions and all other classical data) satisfies S_C(N,s) <= C * 2^(4*sqrt(n)) * n^2 for an absolute constant C, with n = ceil(log2 N). Hence the envelope is B_C(n) = 2^(4 n^(1/2)) n^2 and S_C = O(B_C); its growth index is exactly 1/2. This holds jointly with the stated time, quantum-space and sample bounds and the full-secret success probability at least 19/20.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,18 +50,76 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "4",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "1",
+          "nPower": "2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the same Algorithm DCP-SIEVE of proof.md (a Kuperberg-type qubit sieve with integer labels, a phase-estimation implementation of the Fourier-basis measurement, the parameter choice of proof.md Section 2 (explicit functions of N computed by the algorithm), and exhaustive shift testing for N <= 16) and the same parameter choice, for every N >= 2 and every s in Z/NZ, the worst-case peak number of allocated qubits on every execution branch (the retained sieve qubits plus the phase-estimation workspace) satisfies S_Q(N,s) <= C * 2^(4*sqrt(n)) * n^2 for an absolute constant C, with n = ceil(log2 N). Hence the envelope is B_Q(n) = 2^(4 n^(1/2)) n^2 and S_Q = O(B_Q); its growth index is exactly 1/2. This holds jointly with the stated time, classical-space and sample bounds and the full-secret success probability at least 19/20.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "4",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same Algorithm DCP-SIEVE of proof.md (a Kuperberg-type qubit sieve with integer labels, a phase-estimation implementation of the Fourier-basis measurement, the parameter choice of proof.md Section 2 (explicit functions of N computed by the algorithm), and exhaustive shift testing for N <= 16) and the same parameter choice, for every N >= 2 and every s in Z/NZ, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch, including every discarded copy and every copy consumed by an aborted or failed attempt, satisfies Q(N,s) <= C * 2^(4*sqrt(n)) * n^2 for an absolute constant C, with n = ceil(log2 N) (each copy also pays n+1 work units inside the time bound). Hence the envelope is B_samples(n) = 2^(4 n^(1/2)) n^2 and Q = O(B_samples); its growth index is exactly 1/2. This holds jointly with the stated total-work and workspace bounds and the unconditional full-secret success probability at least 19/20.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "4",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same Algorithm DCP-SIEVE of proof.md (a Kuperberg-type qubit sieve with integer labels, a phase-estimation implementation of the Fourier-basis measurement, the parameter choice of proof.md Section 2 (explicit functions of N computed by the algorithm), and exhaustive shift testing for N <= 16) and the same parameter choice, the proved fractional error tolerance is epsilon(n)=0: every one of the Q acquired source copies is an independent ideal coset state rho_s for the same N and s. Under this promise, for every N >= 2 and every s, full-secret recovery succeeds with probability at least 19/20 jointly with all four resource bounds above. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
