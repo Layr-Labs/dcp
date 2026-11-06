@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "One-third malformed-copy tolerance under a clean-marginal bank promise",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, put n=ceil(log2 N) and use the final bank-first algorithm with Q=192 for N=2 and Q=27648(2n+20) for N>=3, r=Q/3, t=n+18, J=n+24, M=2^(ceil(n/2)+2), and the phase-precision and fixed-point rule in proof.md Sections 0-8. For n=1 (N=2), use the fixed-size exact finite branch. For n>=2, let L=log2 n. The uniform compiler uses log2(n+2)^4, which is O(L^4) for n>=2 and is covered at n=1 by the finite branch. This same final implementation meets each stated bound on every execution branch, for every bank input allowed by claim 5 with epsilon(n)=1/3, including the clean input; the claims hold jointly with unconditional full-secret success probability at least 11/16 and the other stated resource bounds. Hidden constants are absolute and independent of N, s, the input bank and outcomes. Worst-case total sequential work is T(N,s)=O(2^(n/2)n^5 L^4), including all classical bit operations, circuit generation and inversion, gates, measurements, initialization, source cost n+1 per copy, certified gate synthesis and every indexed address charge. For n>=2 the uniform envelope is B_T(n)=2^(n/2)n^5(log2 n)^4, with growth index exactly 1.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "5",
+          "logPower": "4"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, put n=ceil(log2 N) and use the final bank-first algorithm with Q=192 for N=2 and Q=27648(2n+20) for N>=3, r=Q/3, t=n+18, J=n+24, M=2^(ceil(n/2)+2), and the phase-precision and fixed-point rule in proof.md Sections 0-8. For n=1 (N=2), use the fixed-size exact finite branch. For n>=2, let L=log2 n. The uniform compiler uses log2(n+2)^4, which is O(L^4) for n>=2 and is covered at n=1 by the finite branch. This same final implementation meets each stated bound on every execution branch, for every bank input allowed by claim 5 with epsilon(n)=1/3, including the clean input; the claims hold jointly with unconditional full-secret success probability at least 11/16 and the other stated resource bounds. Hidden constants are absolute and independent of N, s, the input bank and outcomes. Worst-case peak allocated classical workspace is S_C(N,s)=O(n) bits, including inputs, private axes, public phase words, addresses, counters and controller state. Its uniform envelope B_C(n)=n has growth index exactly 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,72 +49,66 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, put n=ceil(log2 N) and use the final bank-first algorithm with Q=192 for N=2 and Q=27648(2n+20) for N>=3, r=Q/3, t=n+18, J=n+24, M=2^(ceil(n/2)+2), and the phase-precision and fixed-point rule in proof.md Sections 0-8. For n=1 (N=2), use the fixed-size exact finite branch. For n>=2, let L=log2 n. The uniform compiler uses log2(n+2)^4, which is O(L^4) for n>=2 and is covered at n=1 by the finite branch. This same final implementation meets each stated bound on every execution branch, for every bank input allowed by claim 5 with epsilon(n)=1/3, including the clean input; the claims hold jointly with unconditional full-secret success probability at least 11/16 and the other stated resource bounds. Hidden constants are absolute and independent of N, s, the input bank and outcomes. Worst-case peak allocated quantum workspace is S_Q(N,s)=O(n^2) qubits, including the full raw source bank, retained QND/sign records, all search-stage work, arithmetic scratch, approximate-phase targets and binary-decision helpers. Its uniform envelope B_Q(n)=n^2 has growth index exactly 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, put n=ceil(log2 N) and use the final bank-first algorithm with Q=192 for N=2 and Q=27648(2n+20) for N>=3, r=Q/3, t=n+18, J=n+24, M=2^(ceil(n/2)+2), and the phase-precision and fixed-point rule in proof.md Sections 0-8. For n=1 (N=2), use the fixed-size exact finite branch. For n>=2, let L=log2 n. The uniform compiler uses log2(n+2)^4, which is O(L^4) for n>=2 and is covered at n=1 by the finite branch. This same final implementation meets each stated bound on every execution branch, for every bank input allowed by claim 5 with epsilon(n)=1/3, including the clean input; the claims hold jointly with unconditional full-secret success probability at least 11/16 and the other stated resource bounds. Hidden constants are absolute and independent of N, s, the input bank and outcomes. The total number of fresh acquired source copies on every execution branch is exactly Q(N,s)=192 for N=2 and Q(N,s)=27648(2n+20) for N>=3, hence Q=O(n). There are no further source calls, failed source attempts or restarts. Its uniform sample envelope B_samples(n)=n has growth index exactly 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, put n=ceil(log2 N) and use the final bank-first algorithm with Q=192 for N=2 and Q=27648(2n+20) for N>=3, r=Q/3, t=n+18, J=n+24, M=2^(ceil(n/2)+2), and the phase-precision and fixed-point rule in proof.md Sections 0-8. All Q registers arrive before any algorithm measurement, private random draw, source transformation or abort. For n=1 (N=2), use the fixed-size exact finite branch. For n>=2, let L=log2 n. The uniform compiler uses log2(n+2)^4, which is O(L^4) for n>=2 and is covered at n=1 by the finite branch. For a fixed but unknown set B of at most r registers, let G be its complement and sigma be the bank state. The promise is Tr_B sigma=rho_s^(tensor G), where rho_s=(1/N) sum_x |psi_(x,s)><psi_(x,s)| and |psi_(x,s)>=(|0,x>+|1,(x+s) mod N>)/sqrt(2). The state on B is arbitrary and may be entangled with G; any purification reference is inaccessible. The guarantee also holds for convex mixtures of such fixed-B inputs. The algorithm does not know B, and the source cannot access the bank or workspace after acquisition. This is a batch clean-marginal promise, not an interactive replacement service. For every such input, including B empty, the algorithm outputs the entire s with unconditional probability at least 11/16. On every execution branch, the same algorithm jointly has T=O(2^(n/2)n^5 L^4), S_C=O(n), S_Q=O(n^2), and exactly Q acquired source copies, hence Q=O(n). All hidden constants are absolute and independent of N, s, the input bank and outcomes.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
