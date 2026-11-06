@@ -1,0 +1,347 @@
+{
+  "version": 1,
+  "scope": "Source binding and exact finite diagnostic evidence, not mathematical certification.",
+  "public_sources": [
+    {
+      "name": "PSW1",
+      "submission_id": "47eb8d87-5c1c-4841-a31f-24d0eb67902f",
+      "commit": "ed0818cb261383a619ca22b8c91f42b2ea267d0a",
+      "path": "submission/proof.md",
+      "sha256": "8fc092246c970b5f0cbbf5f8efb837ef50df2184cddc221a7db5b5e583f97d0d",
+      "consulted_lines": [
+        [
+          66,
+          198
+        ],
+        [
+          200,
+          288
+        ],
+        [
+          313,
+          525
+        ],
+        [
+          529,
+          637
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/ed0818cb261383a619ca22b8c91f42b2ea267d0a/submission/proof.md",
+      "use": "Immediate design and proof source: reuses its integer variable-width profile, source/decoder text, two separate deterministic caps, and profile estimate. Replaces disjoint pairing by cyclic extraction and computes all-D rational caps from the new survival law."
+    },
+    {
+      "name": "PSR2",
+      "submission_id": "16bb6065-c3ca-45fb-b514-86106a310646",
+      "commit": "7f835a08d1b109847a9b921c02b35361ed350bd0",
+      "path": "submission/proof.md",
+      "sha256": "dbd31df97524bec74a77bf7d212d5bf0f58b1157702ba178dbd40a1cee4b837d",
+      "consulted_lines": [
+        [
+          211,
+          309
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/7f835a08d1b109847a9b921c02b35361ed350bd0/submission/proof.md",
+      "use": "Directly inspected streaming disjoint-rank instrument and signed-label/held-out-bit argument. Supplies the actual old instrument compared with the new cyclic map, and the streamed rank/unrank implementation being changed. Broader source/decoder text is also inherited through PSW1."
+    },
+    {
+      "name": "SLS",
+      "submission_id": "59facd77-4082-40d9-910e-9060c197e72a",
+      "commit": "643c22bdf74a96b1e08a0eb56f562396c3084adc",
+      "path": "submission/proof.md",
+      "sha256": "18b38f3daa83028c4e3acd9ed58932706d127f6a77d957d99e9db2d49ee01aa7",
+      "consulted_lines": [
+        [
+          181,
+          201
+        ],
+        [
+          246,
+          278
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/643c22bdf74a96b1e08a0eb56f562396c3084adc/submission/proof.md",
+      "use": "Directly inspected comparator rank sweep, exact fiber outcome law and low-bit transcript proof. CYC1 adapts the same explicit streamed comparison primitive and signed-incidence argument. SLS splice reduction and label-reading algorithm are not imported."
+    },
+    {
+      "name": "CS1",
+      "submission_id": "f1481815-9577-4990-abe3-7b79fa5d9284",
+      "commit": "200ef0387acb280adcd272f4fbcdb805d1786bbe",
+      "path": "submission/proof.md",
+      "sha256": "e1b698d021f72cc5fd17f0132a2c30ba213dc2c424e613087d711804f074b528",
+      "consulted_lines": [
+        [
+          104,
+          167
+        ],
+        [
+          494,
+          675
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/200ef0387acb280adcd272f4fbcdb805d1786bbe/submission/proof.md",
+      "use": "Latent-label identity, exact data transforms, untouched fair top bits and free-frequency all-modulus decoder, principally reproduced through PSW1 and directly checked in CS1. CYC1 does not use the CS1 phase-vector tables or linear table merge."
+    },
+    {
+      "name": "PSW2",
+      "submission_id": "15dca70d-058e-4587-b122-1995be9911d0",
+      "commit": "d0ae70192b3165e6ea094b0ca87904ca961077df",
+      "path": "submission/proof.md",
+      "sha256": "73f33bab328038fb409f6bf15e8d5e05c60ef1a217cb207dd68dc77504f66a88",
+      "consulted_lines": [
+        [
+          1,
+          41
+        ],
+        [
+          538,
+          607
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/d0ae70192b3165e6ea094b0ca87904ca961077df/submission/proof.md",
+      "use": "Comparison source only: CYC1 explicitly compares its joint guarantees with the truncated-base PSW2 time/sample envelopes. No truncated-base algorithm, capacity estimate or source-saving theorem from PSW2 is used as a proof premise."
+    },
+    {
+      "name": "PSG1",
+      "submission_id": "c2debeff-5a63-4336-9902-6b84cb6e4289",
+      "commit": "13b1d5d96ffe70ee4caaac1f6da00bbcdb43f687",
+      "path": "submission/proof.md",
+      "sha256": "4cf69b21f0ecb1d6858ef57eeebe9db892e999d0a132a244efc68d901356907e",
+      "consulted_lines": [
+        [
+          1,
+          45
+        ]
+      ],
+      "origin": "https://github.com/Layr-Labs/dcp/blob/13b1d5d96ffe70ee4caaac1f6da00bbcdb43f687/submission/proof.md",
+      "use": "Comparison source only: CYC1 discloses that PSG1 already has better leading time and sample envelopes with the same space orders. No Grover search or discovery instrument from PSG1 is imported."
+    }
+  ],
+  "local_unpublished_sources": [
+    {
+      "path": "dcp-conditioning/REPORT.md",
+      "sha256": "e2be1d53a9d9d7447604c8e42be3ed2a7348672fbf7a806b07c2cf8cc2f19a78"
+    },
+    {
+      "path": "dcp-conditioning/check_fibers.py",
+      "sha256": "2ca85d89fef9f1b306fd3d87de9d46a7a6bcfc424b0239f6f79b11f3474898ac"
+    },
+    {
+      "path": "dcp-conditioning/check_lemmas.py",
+      "sha256": "00fbce67312499a4171667de86651316833140981ba600000b422073187c0e4e"
+    },
+    {
+      "path": "dcp-conditioning/sources/manifest.json",
+      "sha256": "2181d5943df029e02f09e2c6f11535b586006ff2fddfc4c18d55920b3c4153f3"
+    },
+    {
+      "path": "dcp-gpu/REPORT.md",
+      "sha256": "dbad2f32d5fbe29a08c7ed90b706fa4e62aa768bd291d2e5d71791fb1196d533"
+    },
+    {
+      "path": "dcp-gpu/run_census.py",
+      "sha256": "16abb08c0ec4605f38b9074b7a9c0573640dbe93cd2f7cf9c2dc87017db8aa89"
+    },
+    {
+      "path": "dcp-gpu/fibers.cl",
+      "sha256": "e991c492424b8b97ab25cc93a6d11b92448a913e36b0fe4f2659985aaebc35e6"
+    },
+    {
+      "path": "dcp-gpu/protocol.json",
+      "sha256": "6fbb0702c90048d511353467e87c575e341c0a60de0e245c3c2aab458f8c8ef0"
+    },
+    {
+      "path": "dcp-gpu/results.json",
+      "sha256": "b821fd0b3d077dd68d344fce60bbc6c98a3747fa9ab998d265146e9d5256aabf"
+    },
+    {
+      "path": "dcp-gpu/sources.json",
+      "sha256": "55dcd43c68c95af7bcf40a2c7b8ebfc8e8b7abb332c9056ff2e09baaa41c0379"
+    }
+  ],
+  "cross_challenge_methodology": [
+    {
+      "path": "dcp-conditioning/sources/hashsmash-tail-REPORT.md",
+      "sha256": "8facf0d834286037f3b24a4453896490d43e961e19faedd953fb788198d9c153",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-tail-METHODS.md",
+      "sha256": "a48869bb905e0c6c1c2dbc4d71e97687114298bd2dea7756036a58270aed5ea9",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-queue-PROOF.md",
+      "sha256": "cc8f30fc5265d2505d35ae2498cb9af47d304b6667cfce4b786e13f9f2e328d6",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-eight-bucket-REPORT.md",
+      "sha256": "3b5f6d0268e0d23283e0035f8857cbc1a35dc43d0767d5cd7ab9927f566563ff",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-2c5a749b-note.md",
+      "sha256": "0725331957b7823d67041336592c51eed42d581abe2d3d52ddd602b04a373b98",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-compression_scan.py",
+      "sha256": "4390c0ba4a7a918578466782e2d43353ad0db7cd973331d79f499195cbc3b622",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    },
+    {
+      "path": "dcp-conditioning/sources/hashsmash-compression-results.json",
+      "sha256": "a6d2fbf78613b567f0b0e3b95e1d2de5519ec6323004eb5d179b98588180e461",
+      "use": "Local HashSmash methodological input; no DCP asymptotic premise or published dependency ID."
+    }
+  ],
+  "dependency_eligibility": "All six declared UUIDs are public same-benchmark entries with retrievable immutable proofs and matching evidence hashes. Local unpublished research has no fabricated dependency UUID. No attribution graph correctness or ancestor-edge status is presumed.",
+  "diagnostics": {
+    "precision": {
+      "exact_rational_guards": 7,
+      "extraction_and_decoder_constants": true
+    },
+    "instrument": {
+      "fiber_sizes": 63,
+      "cyclic_edges": 2079,
+      "identity_extension": true,
+      "cleanup": true,
+      "kraus_completeness": true
+    },
+    "moments": {
+      "coefficients": [
+        {
+          "k": 1,
+          "full_and_reference": "3",
+          "deficient_including_reference": "0"
+        },
+        {
+          "k": 2,
+          "full_and_reference": "12",
+          "deficient_including_reference": "8"
+        },
+        {
+          "k": 3,
+          "full_and_reference": "110/3",
+          "deficient_including_reference": "176"
+        },
+        {
+          "k": 4,
+          "full_and_reference": "385/3",
+          "deficient_including_reference": "49672/3"
+        },
+        {
+          "k": 5,
+          "full_and_reference": "7532/15",
+          "deficient_including_reference": "33686192/5"
+        },
+        {
+          "k": 6,
+          "full_and_reference": "30296/15",
+          "deficient_including_reference": "516202958864/45"
+        },
+        {
+          "k": 7,
+          "full_and_reference": "512188/63",
+          "deficient_including_reference": "8449751158625632/105"
+        }
+      ],
+      "threshold_b": 8191,
+      "error_below": "2^-50",
+      "cycle_success_lower": "5/6",
+      "pair_success_upper": "149/180"
+    },
+    "modular_matrices": {
+      "matrices": 126,
+      "classes": {
+        "rankQ=1,rankF2=1": 14,
+        "rankQ=2,rankF2=2": 54,
+        "rankQ=3,rankF2=3": 56,
+        "rankQ=3,rankF2=2": 2
+      }
+    },
+    "finite_identities": {
+      "planted_label_assignments": 4164,
+      "mask_transitions": 4270,
+      "means": [
+        {
+          "b": 1,
+          "r": 2,
+          "pair_failure": "0",
+          "cycle_failure": "0"
+        },
+        {
+          "b": 2,
+          "r": 3,
+          "pair_failure": "1/16",
+          "cycle_failure": "1/32"
+        },
+        {
+          "b": 3,
+          "r": 4,
+          "pair_failure": "15/128",
+          "cycle_failure": "15/256"
+        }
+      ]
+    },
+    "suffix": {
+      "suffix_cases": 560,
+      "canonical_odd": "1/2",
+      "full_sorted_odd": "3/8"
+    },
+    "profiles": {
+      "minimal_profiles": 8192,
+      "all_D_allocations": 2090,
+      "scalar_partial_width_checks": 83618,
+      "exact_cap_sets": 4,
+      "rows": [
+        {
+          "n": 256,
+          "R": 55,
+          "depth": 10,
+          "Qcap_bits": 84,
+          "Wcap_bits": 95,
+          "Emax": "191066035925811200/6561",
+          "Wmax": "665526362699743625216/6561"
+        },
+        {
+          "n": 257,
+          "R": 55,
+          "depth": 10,
+          "Qcap_bits": 84,
+          "Wcap_bits": 95,
+          "Emax": "76426414370324480/2187",
+          "Wmax": "665526362699743625216/6561"
+        },
+        {
+          "n": 511,
+          "R": 83,
+          "depth": 13,
+          "Qcap_bits": 106,
+          "Wcap_bits": 124,
+          "Emax": "1433998940573950332108800/19683",
+          "Wmax": "444428273812306569384433811456/19683"
+        },
+        {
+          "n": 1024,
+          "R": 122,
+          "depth": 18,
+          "Qcap_bits": 140,
+          "Wcap_bits": 165,
+          "Emax": "25883117085459364266943447040000000/59049",
+          "Wmax": "1020985623582755127039397522059433418424320/59049"
+        }
+      ]
+    },
+    "diagnostic_sha256": "0785369e642b85c030488e7927cab2fe8593c2b31a321f9451f08d7618214710",
+    "scope": "Exact finite diagnostic evidence; analytic all-N proof is separate."
+  },
+  "analytic_audit": {
+    "instrument": "valid, including identity extension, m=2 wrap orientation and cleanup",
+    "suffix": "valid for canonical low-bit-only choices and additive ideal-run coupling",
+    "moment_repair": "Both actual and independent-reference contributions counted for rational-rank-deficient matrices; same conservative E_r suffices.",
+    "all_D_caps": "Exact rational recurrences include shortcuts, partial blocks, failed ancestors, all roots and direct calls.",
+    "limits": "Finite census, GPU time and three-mask compression do not establish all-n resources or replace coherent rank."
+  }
+}
