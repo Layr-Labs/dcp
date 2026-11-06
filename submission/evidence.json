@@ -1,0 +1,375 @@
+{
+  "version": 1,
+  "scope": "Exact source binding and finite diagnostics, not mathematical certification.",
+  "public_sources": [
+    {
+      "name": "PSG1",
+      "submission_id": "c2debeff-5a63-4336-9902-6b84cb6e4289",
+      "commit": "13b1d5d96ffe70ee4caaac1f6da00bbcdb43f687",
+      "path": "submission/proof.md",
+      "sha256": "4cf69b21f0ecb1d6858ef57eeebe9db892e999d0a132a244efc68d901356907e",
+      "consulted_lines": [
+        [
+          1,
+          45
+        ],
+        [
+          201,
+          395
+        ],
+        [
+          536,
+          721
+        ]
+      ],
+      "use": "Immediate material source: separate fresh-query bounded Grover discovery, verified-list projection framework, fixed 64-by-64 search parameters, explicit counted oracle, work-balanced full profile and joint unused-block/termination induction. CYG1 replaces pair projection by cyclic extraction and computes new rational all-D caps. Also an explicit joint-vector and actual-instrument comparator.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/13b1d5d96ffe70ee4caaac1f6da00bbcdb43f687/submission/proof.md"
+    },
+    {
+      "name": "PSW1",
+      "submission_id": "47eb8d87-5c1c-4841-a31f-24d0eb67902f",
+      "commit": "ed0818cb261383a619ca22b8c91f42b2ea267d0a",
+      "path": "submission/proof.md",
+      "sha256": "8fc092246c970b5f0cbbf5f8efb837ef50df2184cddc221a7db5b5e583f97d0d",
+      "consulted_lines": [
+        [
+          66,
+          198
+        ],
+        [
+          200,
+          238
+        ],
+        [
+          453,
+          637
+        ]
+      ],
+      "use": "Inherited material carried through CYC1 and PSG1: variable-width schedule design, independent source and weighted-attempt caps, latent-label/source implementation and every-branch accounting. CYG1 re-proves its changed parameters. This declaration does not claim a distinct newly consulted algorithm or certify provisional ancestry.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/ed0818cb261383a619ca22b8c91f42b2ea267d0a/submission/proof.md"
+    },
+    {
+      "name": "PSR2",
+      "submission_id": "16bb6065-c3ca-45fb-b514-86106a310646",
+      "commit": "7f835a08d1b109847a9b921c02b35361ed350bd0",
+      "path": "submission/proof.md",
+      "sha256": "dbd31df97524bec74a77bf7d212d5bf0f58b1157702ba178dbd40a1cee4b837d",
+      "consulted_lines": [
+        [
+          211,
+          309
+        ]
+      ],
+      "use": "Inherited signed-label streaming, phase-preserving two-string compression and low-bit-only selection/untouched-bit argument carried through CYC1 and PSG1. CYG1 uses verified-list cyclic compression instead of PSR2 exhaustive disjoint-rank scans; the exhaustive scan is not executed.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/7f835a08d1b109847a9b921c02b35361ed350bd0/submission/proof.md"
+    },
+    {
+      "name": "SLS",
+      "submission_id": "59facd77-4082-40d9-910e-9060c197e72a",
+      "commit": "643c22bdf74a96b1e08a0eb56f562396c3084adc",
+      "path": "submission/proof.md",
+      "sha256": "18b38f3daa83028c4e3acd9ed58932706d127f6a77d957d99e9db2d49ee01aa7",
+      "consulted_lines": [
+        [
+          181,
+          201
+        ],
+        [
+          246,
+          278
+        ]
+      ],
+      "use": "Inherited exact measured-fiber mass accounting, canonical subset-index rank and low-bit transcript reasoning, carried through CYC1 and PSG1. CYG1 applies equality-based rank to a constant-size verified list, not the original exhaustive comparator sweep. SLS splice reduction is not imported.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/643c22bdf74a96b1e08a0eb56f562396c3084adc/submission/proof.md"
+    },
+    {
+      "name": "CS1",
+      "submission_id": "f1481815-9577-4990-abe3-7b79fa5d9284",
+      "commit": "200ef0387acb280adcd272f4fbcdb805d1786bbe",
+      "path": "submission/proof.md",
+      "sha256": "e1b698d021f72cc5fd17f0132a2c30ba213dc2c424e613087d711804f074b528",
+      "consulted_lines": [
+        [
+          104,
+          167
+        ],
+        [
+          494,
+          675
+        ]
+      ],
+      "use": "Inherited latent exact-label decomposition, exact source transformations, untouched fair top bits and free-frequency all-modulus decoder, principally carried through CYC1/PSG1. CYG1 does not execute CS1 phase-vector tables or its linear table merge.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/200ef0387acb280adcd272f4fbcdb805d1786bbe/submission/proof.md"
+    },
+    {
+      "name": "PSG2",
+      "submission_id": "b267909b-a859-49d3-9c64-18eca846b18c",
+      "commit": "5292134d56d56a849d16d42063379905bfd297d6",
+      "path": "submission/proof.md",
+      "sha256": "6dab91a37961032b862229cb80850eadb54979541c7ef34c4141802f4ea69ee9",
+      "consulted_lines": [
+        [
+          1,
+          43
+        ],
+        [
+          743,
+          753
+        ]
+      ],
+      "use": "Comparison only: proof Section 11 compares all four public envelopes and the identical zero-fraction error model with CYG1. No PSG2 truncated-base algorithm, capacity proof or source-saving theorem is used as a mathematical premise.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/5292134d56d56a849d16d42063379905bfd297d6/submission/proof.md"
+    },
+    {
+      "name": "PSG9",
+      "submission_id": "e74645e4-aa15-4084-a89f-9f5b0a32993c",
+      "commit": "7eca8d7f224e23641d39b6be6b47131ec477611f",
+      "path": "submission/proof.md",
+      "sha256": "7d34ebe1a70a052250f02a153ea5d866a5ff9a069f062c000d0c6fa4e04b8c30",
+      "consulted_lines": [
+        [
+          1,
+          71
+        ],
+        [
+          947,
+          957
+        ]
+      ],
+      "use": "Comparison only: proof Section 11 discloses that PSG9 already dominates CYG1 in its published joint time/sample envelopes, at identical space orders and clean-copy model. Its compact/persistent generator, truncated base, collective extraction and stride decoder are not executed or used as premises.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/7eca8d7f224e23641d39b6be6b47131ec477611f/submission/proof.md"
+    },
+    {
+      "name": "CYC1",
+      "submission_id": "7a4cecdc-7941-4027-8c95-8520de9fbcf3",
+      "commit": "cd8f16692833b52dd0fd3a8dd335667eec5a6e61",
+      "path": "submission/proof.md",
+      "sha256": "e75607fc05101e99cac8480cfbffc23729c64f6f5a03643ee02de917274b4a17",
+      "consulted_lines": [
+        [
+          1,
+          66
+        ],
+        [
+          89,
+          218
+        ],
+        [
+          260,
+          316
+        ],
+        [
+          357,
+          491
+        ],
+        [
+          492,
+          635
+        ],
+        [
+          636,
+          883
+        ]
+      ],
+      "use": "Immediate material source: overlapping cyclic Kraus instrument and coherent cleanup, complete-fiber survival bounds, corrected seven-moment theorem with both exceptional/reference terms, actual-renewal comparison method and exact rational all-D cap framework. Source/decoder proof text and diagnostics are also adapted. CYG1 combines this material with PSG1 bounded discovery; the prior submission remains material irrespective of its review status.",
+      "dependency_eligible": true,
+      "origin": "https://github.com/Layr-Labs/dcp/blob/cd8f16692833b52dd0fd3a8dd335667eec5a6e61/submission/proof.md"
+    }
+  ],
+  "pending_source": null,
+  "local_unpublished_sources": [
+    {
+      "path": "dcp-conditioning/REPORT.md",
+      "sha256": "e2be1d53a9d9d7447604c8e42be3ed2a7348672fbf7a806b07c2cf8cc2f19a78"
+    },
+    {
+      "path": "dcp-conditioning/sources/manifest.json",
+      "sha256": "2181d5943df029e02f09e2c6f11535b586006ff2fddfc4c18d55920b3c4153f3"
+    },
+    {
+      "path": "dcp-gpu/REPORT.md",
+      "sha256": "dbad2f32d5fbe29a08c7ed90b706fa4e62aa768bd291d2e5d71791fb1196d533"
+    },
+    {
+      "path": "dcp-gpu/results.json",
+      "sha256": "b821fd0b3d077dd68d344fce60bbc6c98a3747fa9ab998d265146e9d5256aabf"
+    }
+  ],
+  "inherited_provenance": "CYC1 carries local conditioning/GPU/HashSmash evidence; no GPU computation or cross-challenge theorem is a free operation or all-n proof premise. Historical source relationships in the refreshed declarations are provisional, not verified ancestry.",
+  "dependency_eligibility": "Declared sources have retrievable immutable candidate proofs matching evidence. CYC1 is included only after byte-exact public candidate proof retrieval; otherwise its complete declaration remains in the pending file for postpublication addition.",
+  "diagnostics": {
+    "precision": {
+      "exact_rational_guards": 7,
+      "extraction_and_decoder_constants": true
+    },
+    "instrument": {
+      "fiber_sizes": 63,
+      "cyclic_edges": 2079,
+      "identity_extension": true,
+      "cleanup": true,
+      "kraus_completeness": true
+    },
+    "moments": {
+      "coefficients": [
+        {
+          "k": 1,
+          "full_and_reference": "3",
+          "deficient_including_reference": "0"
+        },
+        {
+          "k": 2,
+          "full_and_reference": "12",
+          "deficient_including_reference": "8"
+        },
+        {
+          "k": 3,
+          "full_and_reference": "110/3",
+          "deficient_including_reference": "176"
+        },
+        {
+          "k": 4,
+          "full_and_reference": "385/3",
+          "deficient_including_reference": "49672/3"
+        },
+        {
+          "k": 5,
+          "full_and_reference": "7532/15",
+          "deficient_including_reference": "33686192/5"
+        },
+        {
+          "k": 6,
+          "full_and_reference": "30296/15",
+          "deficient_including_reference": "516202958864/45"
+        },
+        {
+          "k": 7,
+          "full_and_reference": "512188/63",
+          "deficient_including_reference": "8449751158625632/105"
+        }
+      ],
+      "threshold_b": 8191,
+      "error_below": "2^-50",
+      "cycle_success_lower": "5/6",
+      "pair_success_upper": "149/180"
+    },
+    "modular_matrices": {
+      "matrices": 126,
+      "classes": {
+        "rankQ=1,rankF2=1": 14,
+        "rankQ=2,rankF2=2": 54,
+        "rankQ=3,rankF2=3": 56,
+        "rankQ=3,rankF2=2": 2
+      }
+    },
+    "finite_identities": {
+      "planted_label_assignments": 4164,
+      "mask_transitions": 4270,
+      "means": [
+        {
+          "b": 1,
+          "r": 2,
+          "pair_failure": "0",
+          "cycle_failure": "0"
+        },
+        {
+          "b": 2,
+          "r": 3,
+          "pair_failure": "1/16",
+          "cycle_failure": "1/32"
+        },
+        {
+          "b": 3,
+          "r": 4,
+          "pair_failure": "15/128",
+          "cycle_failure": "15/256"
+        }
+      ]
+    },
+    "suffix": {
+      "suffix_cases": 560,
+      "canonical_odd": "1/2",
+      "full_sorted_odd": "3/8"
+    },
+    "profiles": {
+      "minimal_profiles": 8192,
+      "all_D_allocations": 2090,
+      "scalar_partial_width_checks": 91810,
+      "exact_cap_sets": 4,
+      "rows": [
+        {
+          "n": 256,
+          "R": 41,
+          "depth": 6,
+          "Qcap_bits": 71,
+          "Wcap_bits": 80,
+          "Emax": "13028380312500000000/2565726409",
+          "Wmax": "12634139174751969203200/2565726409"
+        },
+        {
+          "n": 257,
+          "R": 41,
+          "depth": 6,
+          "Qcap_bits": 71,
+          "Wcap_bits": 80,
+          "Emax": "16285475390625000000/2565726409",
+          "Wmax": "12634139174751969203200/2565726409"
+        },
+        {
+          "n": 511,
+          "R": 62,
+          "depth": 8,
+          "Qcap_bits": 89,
+          "Wcap_bits": 102,
+          "Emax": "1239274535522460937500000000/3512479453921",
+          "Wmax": "31889132226152727657831959961600/3512479453921"
+        },
+        {
+          "n": 1024,
+          "R": 92,
+          "depth": 11,
+          "Qcap_bits": 111,
+          "Wcap_bits": 134,
+          "Emax": "2108726806098999023437500000000000/3512479453921",
+          "Wmax": "33174392461126402611066345255551264358400/3512479453921"
+        }
+      ]
+    },
+    "incomplete_lists": {
+      "all_H_cases": 1640,
+      "incomplete_lists": 1418,
+      "cyclic_edges": 2552,
+      "failed_h_below_two": 750,
+      "suffix_edges": 432,
+      "exact_symbolic_phase_preservation": true,
+      "all_old_index_registers_cleared": true
+    },
+    "discovery_tail": {
+      "determinant_minor_pairs": 10548,
+      "grover_exact_cases": 320,
+      "tail_bound": "1/1008",
+      "miss_bound": "1/1024",
+      "small_success": "48257/64512",
+      "large_success": "53633/64512",
+      "actual_renewal_ratio": "745/747",
+      "small_k_exact_enumeration": true
+    },
+    "diagnostic_sha256": "73acab60183e735a35d7e79b2a59497324aed01f7ca9f330ad15f52921e789ea",
+    "scope": "Exact finite diagnostic evidence; analytic all-N proof is separate."
+  },
+  "analytic_audit": {
+    "incomplete_lists": "All verified H subsets are valid; h<2 fails; success h/|F| otherwise. Original register cleared, no rank copy retained.",
+    "tail": "Exact size-biased second factorial moment; no higher independence or Poisson premise.",
+    "recursion": "Fresh-block uniformity and termination jointly induced, with additive EXTRACT error coupling.",
+    "resource_caps": "All-D rational maxima with partial-width sigma jump, zero shortcuts, direct calls and abort charging.",
+    "comparison": "Strict actual ideal renewal ratio <=745/747 per large level; weighted-depth improvement is shared with improved pair analysis. PSG9 dominates the displayed CYG1 vector.",
+    "paid_review": "not run",
+    "submitted": false
+  }
+}
