@@ -1,104 +1,187 @@
-# Exhaustive shift testing
+# Capped sequential shift testing (CST-128)
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+For every integer N >= 2 and every s in Z/NZ, put n=ceil(log2 N).
+CST-128 uses k=n+4 tests per candidate and a single global acquisition
+budget B=128N. This is one fixed configuration for all five claims.
+Its success probability is greater than 29/32, and its branchwise bounds are
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+    T=O(N n^2) <= O(2^n n^2), S_C=O(n), S_Q=O(n), Q<=128N<=128*2^n.
 
-## Correctness
+Constants are absolute. The first four declared representative envelopes are
+2^n n^2, n, n, and 2^n, with exact indices 1,0,0,1.
 
-On a component with offset x, controlled subtraction produces
+## 1. Complete algorithm and explicit cutoff
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Store N, candidate t, a test counter j, and a global acquisition counter q.
+Initialize t=q=0. For t=0,...,N-1, attempt k independent tests, stopping this
+candidate at its first minus result. Immediately before acquiring any copy,
+if q=B, output 0 and halt. Otherwise acquire one fresh source copy, increment
+q, perform the test below, and discard/reset its registers after the test.
+If k tests for t return plus, output t and halt. If every candidate is rejected,
+output 0. All loop and acquisition bounds apply even on unsuccessful branches.
+There are no restarts and no unbounded sampling or postselection loops.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+A test on (b,y) applies the permutation
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+    (b,y) -> (b,G_b(y)),
+    G_0(y)=y,
+    G_1(y)=(y-t) mod N for y<N, and G_1(y)=y for y>=N.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+Then apply H to b and measure b in the computational basis; outcome 0 means
+plus. This uses only the supplied mixed state, exact arithmetic, and Clifford+T.
+No Fourier transform, approximate rotation, source inverse, controlled source,
+purification, subset-sum routine, or quantum addressed memory is used.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+## 2. Exact test law and unconditional success
 
-## Implementing the controlled subtraction
+For a source component with offset x, the permutation produces
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+    (|0,x> + |1,(x+s-t) mod N>)/sqrt(2).
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+For t=s this is |+>|x>, so the result is always plus. For t!=s the two data
+basis states are different, and the reduced state of b is I/2. Thus each wrong
+candidate's test returns plus with probability exactly 1/2, for every x and
+hence for the mixture as well. Fresh independent copies give independent
+results conditional on reaching any test.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Analyze first the identical program with its budget check removed, calling
+its total acquisitions X. It always stops by t=s. Conditional on reaching a
+wrong t, the expected number of tests is
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+    sum_{j=0}^{k-1} 2^(-j) < 2.
 
-## Joint costs and indices
+The correct candidate requires at most k tests. Therefore, uniformly in N,s,
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+    E[X] <= 2(N-1)+k = 2N+n+2 <= 4N.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+The last inequality uses n<=N and 2<=N, valid for every integer N>=2.
+The probability that any wrong candidate is accepted is at most
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+    (N-1)*2^(-k) < 2^n*2^(-n-4) = 1/16.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Couple the capped and uncapped programs using identical source copies and
+measurement randomness up to the capped stopping time. They produce the same
+answer whenever X<=B. Markov's inequality gives
 
-## Fractional error tolerance
+    Pr[X>B] <= E[X]/B <= 1/32.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+Consequently the actual capped program outputs s with probability greater
+than 1-1/16-1/32=29/32>2/3. The union bound needs no independence between
+false acceptance and exceeding the budget. For s=0 the budget fallback can
+only improve this lower bound. This is a bound for every fixed secret,
+not an average-secret claim or a conditional-on-completion claim.
+
+## 3. Uniform exact arithmetic with linear peak workspace
+
+Here are sufficient gate and controller details, including invalid binary
+encodings for arbitrary N. Build a Boolean circuit for G_b using a fixed
+number of ripple carry/borrow additions, subtractions, comparisons and
+bitwise selections on n+2-bit strings. First test y<N. On valid y and b=1,
+select y-t if y>=t and y+N-t otherwise; on all other inputs select y.
+Each ripple circuit has O(n) Boolean gates with bounded fan-in, and the whole
+circuit has O(n) gates and intermediate bits. Constants N,t and n are supplied
+by the classical controller, never by advice. The inverse uses modular addition:
+on valid y choose y+t if y+t<N and y+t-N otherwise, and act identically on
+invalid encodings. It too has O(n) Boolean gates and intermediate bits.
+
+Reversibly compute each Boolean gate into a new zero scratch bit, XOR its
+output into a separate target register, and reverse the computation to clear
+all scratch. AND uses Toffoli; XOR and NOT use CNOT and X. Toffoli has an exact
+constant-size Clifford+T implementation with a constant number of clean
+ancillas, so no accuracy-dependent synthesis is required. This gives exact
+XOR evaluation of G_b and G_b^{-1}, each with O(n) gates and O(n) scratch.
+To implement the permutation in place, evaluate G_b from Y into zero Z,
+swap Y and Z, and XOR G_b^{-1}(Y) into Z. Since G_b is a permutation of all
+2^n encodings for each fixed b, the final Z is zero. Linearity makes this
+valid when b and Y are entangled with each other or with the environment.
+The control register is read but never erased during the arithmetic.
+
+The fixed finite collection of ripple circuits can be generated gate by gate.
+Assign each carry and intermediate result a wire number given by a constant
+base offset plus a fixed multiple of the ripple position. A gate descriptor
+then contains O(log(n+2)) bits. A forward or reverse pass needs only the ripple
+position, pass identifier and a constant number of such wire indices. Constant
+bits of N,t are accessed by that position. Retaining intermediate quantum
+values does not require retaining a classical circuit listing: regenerate the
+reverse pass from its pass identifier and descending position.
+
+The permanent classical data N,t,q,B,j,k, binary counters and current gate
+descriptor occupy O(n) bits. Here q and B have at most n+8 bits. Temporary
+classical arithmetic is ripple arithmetic in O(n) bits; the controller never
+allocates a table or stores previous samples or transcripts. Including the
+source's n+1 accessible qubits, permutation target, retained Boolean-gate
+values and constant-size decomposition ancillas, peak accessible qubits are
+O(n). After each test all accessible qubits are measured/reset or discarded
+and their allocation is reused. The inaccessible source is not charged as
+storage, but every acquired copy is charged as both acquisition work and Q.
+
+At most O(n) elementary arithmetic and decomposition gates occur per test.
+The total allocated memory M is O(n), so the stipulated address length is
+O(log(n+2)). Generating each descriptor, doing its small-index arithmetic,
+reading a constant bit and applying the addressed gate costs conservatively
+O((log(n+2))^2) classical bit operations including address charges on the
+controller's own accesses. Initialization, measurement, reset and source cost
+n+1 satisfy the same O(n (log(n+2))^2) work bound. Updating n-bit global or
+candidate counters costs at most O(n log(n+2)) per test or candidate. There
+are at most B tests and at most N candidate-loop iterations, even when a
+candidate is rejected after its first test. Thus the entire uniform program
+has
+
+    T=O(N n (log(n+2))^2)=O(N n^2),
+
+using (log(n+2))^2=O(n) for n>=1. All storage, addressing, circuit generation,
+source acquisition and unsuccessful work have been counted. No uncharged
+RAM access or real-number arithmetic is present. Small n, including N=2,
+are covered by an enlarged absolute outer constant; the success argument
+itself already holds at those inputs. The claimed n^2 time factor is a proved
+conservative upper bound, not an assertion that log^2 n equals n.
+
+## 4. Joint bounds, indices, and clean-input error model
+
+On every execution branch, Q<=B=128N, independent of how often tests fail.
+Combining this literal cap with the preceding implementation proves all four
+resource bounds simultaneously for the same program and success probability.
+For B_T=2^n n^2 and B_samples=2^n, the inner binary logarithms are respectively
+n+2 log2 n and n. The definition in rules.md therefore gives exact growth
+index 1 in each case. For B_C=B_Q=n, the double-logarithmic expression tends
+to zero. The n=1 value does not affect any asymptotic limit. Multiplicative
+outer constants do not affect these indices.
+
+The fifth claim is epsilon(n)=0. Its error-model text is exactly the seed's:
+"Malformed fraction among acquired copies. The proved guarantee requires every
+copy to be an independent ideal coset state; no behavior is promised for
+malformed copies."
+Thus floor(epsilon(n) Q)=0 malformed copies are permitted, for every N and s.
+Under this promise the same success and all resource guarantees hold. No
+positive robustness theorem or maximal-tolerance theorem is asserted.
+
+## 5. Provenance, comparison, and limits
+
+The exact shift test and its controlled-permutation construction come from the
+prepared repository seed, source cdb1ebff130d861e2c61e9cf517ab66c0a56ca7a.
+CST-128 changes the algorithm by imposing a global acquisition cutoff and
+increasing per-candidate tests from n+2 to n+4. The expectation/cutoff argument
+is why the worst-case sample envelope loses a factor n; this is not merely
+rewriting the old uncapped algorithm's existing guarantee. Streaming its
+linear arithmetic establishes linear peak spaces and the time bound above.
+Against the seed's declared envelopes 2^n n^4, n^2, n^2, 2^n n and the exact
+same zero-tolerance model, all four guarantees improve asymptotically.
+This is an incremental algorithm/accounting improvement, not a claim of a
+new literature-best DCP time exponent or a proof of the cube-root target.
+
+For research context, original primary references inspected are Greg Kuperberg,
+"A subexponential-time quantum algorithm for the dihedral hidden subgroup
+problem", arXiv:quant-ph/0302112, Theorem 1.1 and Section 5 Algorithm 2,
+https://arxiv.org/pdf/quant-ph/0302112 ; and Greg Kuperberg, "Another
+subexponential-time quantum algorithm for the dihedral hidden subgroup
+problem", arXiv:1112.3333v1, Corollary 4.3 and Proposition 4.5,
+https://arxiv.org/pdf/1112.3333 . The former addresses all moduli via a separate
+general-N construction. The latter distinguishes quantum-access memory from
+its counted classical-access simulation. Neither theorem is a premise of
+CST-128; its proof above is self-contained. In particular no cube-root bound,
+heuristic leading constant or free quantum-addressed lookup is inferred from
+these papers. Square-root-time sieves can have incomparable storage guarantees.
+
+Format validation is not mathematical certification. Hosted acceptance is
+fallible mathematical review, not a formal proof. There is no measured local
+score or quantum implementation asserted by this proof.
