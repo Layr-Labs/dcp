@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "WTS1: wide-top-block collimation with a charged stride decoder",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the SAME fixed WTS1 configuration of proof.md recovers all of s with unconditional probability at least1-2^-8>2/3 from independent ideal coset copies. It uses the square-root seed/double cap, high-confidence exact-translation extraction, literal linear merges, TREE(D,B) with several unused top bits for the odd part, the charged stride grid/CRT decoder, original two-adic parity recovery, explicit pre-block source/work caps and finite exhaustive branch n<65536. All bounds hold jointly on EVERY branch including rejected copies, failed attempts, extraction errors and cutoff aborts. Total charged sequential work, including classical bit work, every address tariff, gates and complete uniform gate generation, source acquisition, decoder enumeration, setup and cleanup, is O(n^(15/4)2^(sqrt(2n))), enclosed by B_T=n^(15/4)2^(a sqrt(n)). Exact growth index1/2. Here a is the exact same u_333/v_333 rational as CS1, generated from (10,7) by (u,v)->(3u+4v,2u+3v), with u^2-2v^2=2. The complete value is in this structured bound. The proof establishes actual sqrt(2n) bounds first; a-sqrt(2) never absorbs a polynomial time factor.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,52 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "15/4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the SAME fixed WTS1 configuration of proof.md recovers all of s with unconditional probability at least1-2^-8>2/3 from independent ideal coset copies. It uses the square-root seed/double cap, high-confidence exact-translation extraction, literal linear merges, TREE(D,B) with several unused top bits for the odd part, the charged stride grid/CRT decoder, original two-adic parity recovery, explicit pre-block source/work caps and finite exhaustive branch n<65536. All bounds hold jointly on EVERY branch including rejected copies, failed attempts, extraction errors and cutoff aborts. Peak allocated classical bits are O(n^2 2^(sqrt(2n)-2(2n)^(1/4))), enclosed by B_C=2^(a sqrt(n)-2n^(1/4)). Exact growth index1/2. Here a is the exact same u_333/v_333 rational as CS1, generated from (10,7) by (u,v)->(3u+4v,2u+3v), with u^2-2v^2=2. The complete value is in this structured bound. The proof establishes actual sqrt(2n) bounds first; a-sqrt(2) never absorbs a polynomial time factor.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-2",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the SAME fixed WTS1 configuration of proof.md recovers all of s with unconditional probability at least1-2^-8>2/3 from independent ideal coset copies. It uses the square-root seed/double cap, high-confidence exact-translation extraction, literal linear merges, TREE(D,B) with several unused top bits for the odd part, the charged stride grid/CRT decoder, original two-adic parity recovery, explicit pre-block source/work caps and finite exhaustive branch n<65536. All bounds hold jointly on EVERY branch including rejected copies, failed attempts, extraction errors and cutoff aborts. Peak allocated qubits, including live source/data registers, held sibling indices and all scratch, are O(n), with envelope B_Q=n and exact growth index0. ",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,65 +83,47 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the SAME fixed WTS1 configuration of proof.md recovers all of s with unconditional probability at least1-2^-8>2/3 from independent ideal coset copies. It uses the square-root seed/double cap, high-confidence exact-translation extraction, literal linear merges, TREE(D,B) with several unused top bits for the odd part, the charged stride grid/CRT decoder, original two-adic parity recovery, explicit pre-block source/work caps and finite exhaustive branch n<65536. All bounds hold jointly on EVERY branch including rejected copies, failed attempts, extraction errors and cutoff aborts. The number of ALL acquired source copies is O(n^(3/2)2^(sqrt(2n)-(2n)^(1/4))), enclosed by B_samples=n^(3/2)2^(a sqrt(n)-n^(1/4)). The deterministic cap is Qcap=1024(6q(Sodd K+2n)+2n), with the exact parameters of proof.md Sections7,9,11; the finite branch has at mostN(n+10) copies. Exact growth index1/2. Here a is the exact same u_333/v_333 rational as CS1, generated from (10,7) by (u,v)->(3u+4v,2u+3v), with u^2-2v^2=2. The complete value is in this structured bound. The proof establishes actual sqrt(2n) bounds first; a-sqrt(2) never absorbs a polynomial time factor.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME fixed WTS1 algorithm and configuration in proof.md, for every N>=2 and every s, the guaranteed malformed fraction is epsilon(n)=0. All acquired source copies must be independent ideal coset states. Under exactly this promise, unconditional full-secret recovery has probability at least 1-2^-8 > 2/3 jointly with the four all-branch resource bounds above. No positive corruption tolerance or impossibility of greater tolerance is asserted.",
       "evidence": [
         "proof.md"
       ],
