@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFCW710-IBANK: indexed basis bank and fresh-input-amortized clears with linear classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the ONE physical IFCW710-IBANK interpreter of proof.md executing COMPLETE selected IFCW710 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch fully charged work is O(2^((1001/1000)n^(7/10)+(8/7)n^(3/10))), with an absolute constant and exact growth index7/10. All original source/LE/fallback, integer constant-width profile, binary/four-input phase instruments and implicit-fiber streams, failure/retry/source guards, full-modulus decoders and finite tester are preserved. The counted BIG/SMALL fixed layout uses classically indexed basis-wire reads/writes; original coherent lookups remain serial circuits. BIG regions are FULLY cleared on allocation/free. Explicit same-height disjoint-fresh-input accounting bounds their total number by O(n*(Qcap+1)); all inner word/heap/row/gate helpers reuse SMALL scratch and existing BIG scopes. Thus every clear, address, source move, initialization, failed work and final cleanup is counted. The proof bounds total time by poly(n)*(T_P+B*(Qcap+1)+Ssmall+H+1) and absorbs EVERY polynomial into the exact positive (1/1000)n^(7/10) gap. All five claims concern this same physical implementation.",
       "score": {
-        "numerator": "1",
-        "denominator": "1"
+        "numerator": "7",
+        "denominator": "10"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,95 +22,110 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "1001/1000",
+              "nPower": "7/10",
               "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
+            },
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8/7",
+              "nPower": "3/10",
               "logPower": "0"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical IFCW710-IBANK interpreter, every N,s and EVERY branch, peak ordinary classical workspace is O(n) bits, with an absolute constant and exact growth index0. Input/output coexist with constant-many O(n)-bit staged logical operands, physical addresses/current-frame fields, finite control and reused bits/loop indices. Every original table/heap/list, numerical scratch, long counter, call/return frame, decoder, generator and allocator record lives in COUNTED basis qubits in BIG or the polynomial SMALL arena. The controller streams banked scratch instead of materializing polynomial arrays classically. No duplicate physical classical stack, large ordinary directory or growing measurement transcript is retained. The fixed complete spans give O(n)-bit addresses. Full region clears and source/abort cleanup use the same O(n) staging, jointly with success and all other resource bounds.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the SAME physical IFCW710-IBANK algorithm, every N,s and EVERY branch, peak allocated quantum workspace is O(n^(23/5)*2^((3/4)n^(7/10))), with an absolute constant and exact growth index7/10. The COMPLETE fixed paired prefix is counted, including all BIG values, SMALL scratch/frames/owner metadata, original coherent pools, free flags/bindings, unused owners/rows/fields/padding, fair-bit and temporary source wires, initialization and cleanup. Explicit A=2^16*n^2 owners,R=2^(Lam+kappa+16) rows per owner,Wrow=2^16*n^2 bits per row give BIG maximum span B=2^48*n^4*2^(Lam+kappa). Original bounds2^kappa<32n^(3/10),2^w_s<2*2^((3/4)n^(7/10)),Lam=kappa+1+w_s give B=O(n^(23/5)*2^((3/4)n^(7/10))). Polynomial SMALL/H terms are additive and smaller. This is a MAXIMUM address-span guarantee independent of retry lifetime or correct labels, not occupancy. Known classical wire indices implement every access; no coherent bank oracle or free QRAM is used. All guarantees hold jointly.",
+      "score": {
+        "numerator": "7",
+        "denominator": "10"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "3/4",
+              "nPower": "7/10",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "23/5",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical IFCW710-IBANK interpreter, every N,s and EVERY branch, all acquired DCP copies number O(n^2*2^((8/7)n^(3/10))), with an absolute constant and exact growth index3/10. Exactly one physical request executes each P request and no others, preserving every rejection, failed/discarded input, fallback/source abort and both full-secret recovery stages. The COMPLETE virtual proof supplies Qcap=1024Q*,Q*=6*nqmax*((J+1)K+2a2)+2a2,nqmax=16*4^mu*Lam and4^mu<4*2^((8/7)n^(3/10)), proving the exact coefficient8/7 and polynomial power2. Fresh zero arena/padding bits, BIG/SMALL clears and indexed control use charged gates/storage, NOT DCP queries. Source precision/guards are unchanged; the finite tester changes only outside constants. All other resource and success claims hold jointly.",
+      "score": {
+        "numerator": "3",
+        "denominator": "10"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8/7",
+              "nPower": "3/10",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical IFCW710-IBANK algorithm/configuration, the guaranteed malformed-source fraction is epsilon(n)=0 under the exact independent-ideal-copy model. For every N>=2,s, all acquired copies are independent ideal coset states and WHOLE-secret success is unconditional at least1-2^-8 jointly with all four counted physical envelopes. The correlated-CQ and irreversible-forgetting argument preserves the complete reduced logical state/output/source law even when stored measured records and live phases are correlated. Extra helper outcomes are marginalized, not conditioned on in the inherited held-out-bit analysis. No transfer to a different adaptive malformed supplier model, positive robustness or impossibility of greater robustness is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
