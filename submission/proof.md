@@ -1,104 +1,39 @@
-# Exhaustive shift testing
+# Arbitrary-order Kuperberg sieve for DCP
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## Claim
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For every cyclic order N >= 2 and secret s in Z/NZ, the independent DCP coset-state source can be decoded with success probability at least 2/3 using total work, classical space, quantum space, and source copies bounded by O(2^(7 sqrt(n)) n^10), where n=ceil(log2 N). The time growth index is 1/2. This is a translation of a known subexponential algorithm into the challenge's uniform cost model, not a claim of a new sieve.
 
-## Correctness
+## Exact input correspondence
 
-On a component with offset x, controlled subtraction produces
+Write D_N=<x,y | x^N=y^2=1, yxy=x^(-1)> and H_s=<yx^s>. The right coset x^u H_s contains x^u and x^(u+s)y. Encode these as |0,u> and |1,u+s>. Averaging the resulting coset states over uniform u gives exactly
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+  rho_s = (1/N) sum_u |(|0,u>+|1,u+s>)/sqrt(2)><...|.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+Thus every DCP input copy is one ordinary mixed coset-state sample. The algorithm does not need a purification, a label u, or coherent access to the source. Applying the QFT to the rotation register and measuring k produces a uniform known k in Z/NZ and the phase qubit
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+  |psi_k> = (|0> + exp(2 pi i k s/N)|1>)/sqrt(2).
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+This is the sample-only model used by Kuperberg's general-order algorithm.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+## Sieve and full-secret recovery
 
-## Implementing the controlled subtraction
+Use Kuperberg's Algorithm 5.1 for arbitrary N [1, Section 5]. Set m=floor(sqrt(log2 N)-2). First filter Fourier labels to the stated interval 0 <= k < 2^(m^2+1); the rejection overhead is N/2^(m^2+1)=2^(O(sqrt(n))). At level j, labels lie in the interval specified by Algorithm 5.1, and the list is paired so each pair differs by at most 2^(m^2-m(j+1)+1). A CNOT and one-qubit measurement combine the pair into a known-label phase state with label k-l or k+l. Retain the difference outcome. The label interval shrinks by the stated factor at each of m levels, leaving labels 0 and 1.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+The probability statement needed here is the arbitrary-order final-label balance stated directly after Algorithm 5.1: Kuperberg notes that labels 0 and 1 in the final list are almost equally likely. In the same paragraph he identifies the precise issue: the lowest bit is almost uncorrelated with the pairing choice. We use that published balance statement as the final-level lemma. Consequently, above a fixed finite threshold n0, a generated final state is label 1 with probability at least 1/3; the explicit list-size and Chernoff analysis in the proof of Theorem 3.2 supplies a sufficiently large final list. For n<n0, enumerate all N candidate secrets and verify them directly. Since n0 is a fixed constant, this is a fixed finite prefix and does not affect the asymptotic bounds.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+For arbitrary N, Kuperberg's Algorithm 5.1, steps 4 onward, handles all residues. Factor N=2^a M with M odd. For each j from 1 through ceil(log2 N), its divisibility sieve produces phase labels divisible by 2^min(a,j). The Chinese remainder decomposition Z/NZ ~= Z/2^aZ x Z/MZ separates the two components. On the odd component, multiplication by 2^(-j) modulo M is a group automorphism; applying the corresponding relabeling maps the divisible labels to labels whose odd component is 1, while the 2-primary component retains the required divisibility. The resulting observations are the cosine observations for 2^j(s-t) modulo N described in Algorithm 5.1. Taken over j, they determine s modulo each prime-power component and hence determine s modulo N by CRT. The factorization costs polynomial time using the uniform quantum factoring algorithm and is included in the total work.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+For each j=0,...,n, request seven copies of the phase state with known label 2^j mod N. Run a fixed number of sieve batches per requested state; since each batch yields the target label with probability at least 1/3 above n0, O(log n) batches make the probability of any missing label at most 1/12 by a union bound. For one set of labels, tensor the n+1 phase qubits and apply the inverse Fourier transform over K=2^(n+1). The amplitude at basis value z is proportional to the geometric sum with phase 2 pi s/N, so the standard phase-estimation guarantee gives the nearest integer to K s/N with probability at least 4/pi^2. Since K/N>=2, rounding N z/K recovers s whenever that nearest-integer event occurs. Seven independent decoder attempts fail all together with probability at most (1-4/pi^2)^7. Verify each of their seven outputs with eight fresh DCP states: controlled-subtract t in the second register and measure the first in the X basis. The true t always returns + on ideal states; a wrong t returns + with probability 1/2 per independent copy. The probability that any wrong proposal passes is at most 7/256. The union of target-label failure, decoder failure, verification false-acceptance, and compiled-circuit error at most 1/12 is below 1/3. All batches, list sizes, and verification counts are fixed by N and the published bounds; there is no unbounded repeat-until-success loop. Underfilled lists terminate with failure, and the fixed amplification accounts for this event.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+## Uniform cost accounting
 
-## Joint costs and indices
+The list-size bound in [1] is O(8^(sqrt(log2 N)))=O(2^(3 sqrt(n))) after the short labels have been obtained. For N=2^(r^2), the specified initial interval has width 2^(m^2+1), with m=floor(r-2), so a uniform Fourier label survives with probability 2^(-4r+5). Thus explicitly charging the rejection sampling multiplies the list bound by at most 2^(4 sqrt(n)+O(1)); the resulting source-copy and sieve work is O(2^(7 sqrt(n)) poly(n)). The algorithm makes O(n) target-state constructions and uses at most O(log n) bounded batches per construction. Factorization and CRT postprocessing are polynomial in n. Charging bit-level label arithmetic, comparisons, list indexing, and address generation adds polynomial factors in n and in the logarithm of the list size. Approximate QFTs and measurement circuits can be synthesized with aggregate variation error at most 1/12 using polynomial overhead. A uniform upper bound valid for all N is therefore O(2^(7 sqrt(n)) n^10) for total gates/controller work and source copies.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+The live list has no more entries than the total number of acquired samples. Storing its labels, pair indices, and level counters therefore takes O(Q n) classical bits. The direct implementation stores at most Q phase qubits and O(Q n^2) arithmetic/circuit workspace qubits. Both fit the same padded envelope O(2^(7 sqrt(n)) n^10). These are peak allocated spaces; all failed batches, discarded states, Fourier filtering, factorization, verification, measurements, and address computations are counted. The guarantee is for ideal independent input copies, so the claimed malformed-sample tolerance is zero.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+For B(n)=2^(7 sqrt(n)) n^10, log2(log2 B(n))=(1/2)log2(n)+O(1), so all four resource growth indices are 1/2. No finite-size leading constant or empirical runtime is claimed.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## Reference
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
-
-## Fractional error tolerance
-
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+[1] Greg Kuperberg, “A Subexponential-Time Quantum Algorithm for the Dihedral Hidden Subgroup Problem,” SIAM Journal on Computing 35(1), 170–188 (2005), DOI: 10.1137/S0097539703436345. In particular, Algorithm 5.1 and its arbitrary-order discussion give the sample-state sieve, final-label balance, and CRT/automorphism residue recovery; Theorem 1.1 gives the uniform time and query bound. https://www.math.ucdavis.edu/research/infovault/greg/SIAM_JC-35-05.pdf
