@@ -1,104 +1,74 @@
-# Exhaustive shift testing
+# Exhaustive DCP testing with randomized corruption tolerance
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## Algorithm and guarantee
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+Let N>=2 and n=ceil(log2 N). The algorithm tests every candidate shift using independent blocks of source copies, but randomizes which candidate receives each block in each round. It uses
 
-## Correctness
+  k=1024(n+1) copies per candidate per round,
+  R=10000(n+1) rounds,
+  Q=R N k copies in total.
 
-On a component with offset x, controlled subtraction produces
+The adversary chooses at most floor(Q/1024) corrupted copy positions and the corresponding single-copy states before seeing any of the algorithm's random permutations. All uncorrupted positions contain independent ideal DCP states rho_s. Corrupted positions may contain arbitrary fixed single-copy density operators; the joint input across positions is a product state. The adversary may know s. It may not adapt the corruption positions or states to the secret random permutations or measurement outcomes.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+For each round r, generate a permutation with Fisher-Yates. At step i, set h=ceil(log2 i), draw h fair bits, and accept the resulting integer if it is less than i. Make at most ell=16(n+1) draws at that step; if all are rejected, choose index 0 as a deterministic fallback and set a failure flag. Thus every permutation-generation step has a fixed worst-case cost. If no fallback is used, the selected index is exactly uniform in {0,...,i-1}; conditional on no fallback in any step, each permutation is exactly uniform. Across at most R(N-1) steps, the probability of any fallback is at most
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+  delta_perm <= R N 2^(-ell) <= 10000(n+1)2^n 2^(-16(n+1)) < 1/100.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+The rounds are independent conditional on no fallback. Visit blocks b=0,...,N-1 in order. Block b is assigned candidate t=pi_r(b) and consumes the next k source copies. For each copy, subtract t modulo N from the second register conditional on the first register being 1, then measure the first register in the X basis. Let Y_(r,t) be the number of + outcomes in the block. Mark the candidate positive in that round if
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+  Y_(r,t) >= 11k/16.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Keep one classical counter C_t for each candidate, initially zero, and increment it whenever t is positive. After all R rounds, output the unique t with C_t>R/2. If there is no unique such t, output a fixed default. Every execution uses exactly Q source copies and all loops have fixed bounds.
 
-## Implementing the controlled subtraction
+## Correctness under the corruption model
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+For an ideal source copy and candidate t=s, the controlled subtraction maps the state to |+> tensor |x>, so the X measurement is + with certainty. For t!=s, the first register is maximally mixed after tracing out the second register, so the X outcome is an unbiased bit. Outcomes from different uncorrupted source copies are independent.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+Condition on no permutation fallback. Fix any allowed corruption pattern, independently of the secret random permutations. In round r let D_r be its number of corrupted positions. Call the round good if D_r<=Nk/64. Since the total corruption count is at most RNk/1024, fewer than R/16 rounds can be bad. In a good round, at most N/16 blocks can contain more than k/4 corruptions: each such block accounts for more than k/4 distinct corruptions, while the round has at most Nk/64 total. Call these blocks heavy.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+For any fixed candidate t, its assigned block is uniform among the N blocks in each round, independently across rounds. In each good round its probability of landing in a heavy block is at most 1/16. Therefore the probability that any fixed candidate is assigned to more than R/8 heavy blocks across all good rounds is at most
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+  (e/4)^(R/16).
 
-## Joint costs and indices
+This is the multiplicative Chernoff bound for at most R independent indicators with mean at most R/16. A union bound over N candidates bounds the probability of any such event by N(e/4)^(R/16).
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+For the true candidate s, every non-heavy block contains at least 3k/4 clean copies, all of which return +. Thus it is positive in every such good round. Except on the event just bounded, it is positive in at least 15R/16-R/8=13R/16 rounds, which is greater than R/2.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Now fix a wrong candidate t. In a non-heavy block let c<=k/4 be the number of corrupted positions. The corrupted tests can contribute at most c plus outcomes. The other k-c tests are independent fair bits. If the block reaches the threshold 11k/16, the number of fair bits must exceed its mean by at least k/16. Hoeffding's inequality gives
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+  Pr[block is positive] <= exp(-k/128).
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+The probability that this wrong candidate is positive in at least R/4 non-heavy good rounds is at most
 
-## Fractional error tolerance
+  2^R exp(-kR/512).
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+If this event does not occur and the candidate is assigned to at most R/8 heavy good blocks, then its total positives are at most R/16 bad rounds + R/8 heavy good rounds + R/4 non-heavy good rounds = 7R/16, less than R/2. A union bound over all N wrong candidates gives total failure probability at most
+
+  N(e/4)^(R/16) + N 2^R exp(-kR/512).
+
+For R=10000(n+1), k=1024(n+1), and N<=2^n, this is less than 1/100 for every n>=1. Including the fallback probability delta_perm, total failure is less than 2/100. Hence the algorithm outputs the full secret with probability greater than 0.98 under the stated 1/1024 malformed-copy fraction. This exceeds the required 2/3.
+
+## Joint resource bounds
+
+The algorithm always acquires Q=R N k=O(N(n+1)^2) source copies. Since N<=2^n, this is O(2^n n^2). The controlled modular subtraction and X measurement for one copy require O(n^2) counted gates and controller operations using a straightforward reversible ripple implementation. The source acquisition itself costs n+1. Candidate ordering and counter updates cost O(N n) bit operations per round. The bounded Fisher-Yates sampler uses at most ell*h=O(n^2) random-bit and controller operations per permutation step, so permutation generation costs O(N n^2) per round. Across R=O(n) rounds, these additional operations total O(N n^3), below the per-copy arithmetic cost. Total sequential work is O(N n^4), hence O(2^n n^4).
+
+Store the current Fisher-Yates candidate array, which uses O(Nn) classical bits. The counters C_t use O(N log(R+1)) bits, also O(Nn). Reuse the permutation array for each round. Thus peak allocated classical space is O(Nn)=O(2^n n). The bounded sampler uses O(n) temporary bits in addition to this array. The algorithm processes source copies one at a time, reusing the same quantum wires, so peak quantum workspace is O(n^2) qubits including the state, arithmetic ancillas, and circuit workspace. No samples are retained across tests. These bounds count all permutations, sampler fallbacks, counters, measurements, gates, source copies, and candidate blocks on every execution branch.
+
+The representative envelopes and growth indices are:
+
+* T: B_T(n)=2^n n^4, index 1;
+* S_C: B_C(n)=2^n n, index 1;
+* S_Q: B_Q(n)=n^2, index 0;
+* Q: B_samples(n)=2^n n^2, index 1.
+
+For the first, second, and fourth envelopes, log2(log2 B(n))=log2(n)+O(1), giving index 1. For n^2 the index is 0. These are full uniform bit-length bounds for the same algorithm and success guarantee.
+
+## Pareto tradeoff and error model
+
+The included clean-input baseline has time index 1, polynomial classical and quantum space, O(2^n n) samples, and zero claimed fractional tolerance. This candidate keeps time index 1 and polynomial quantum space, while using exponential classical storage and O(2^n n^2) samples to obtain a positive constant malformed-copy tolerance. The tradeoff is intentional: the positive tolerance can add a nondominated point in the full resource/tolerance frontier, although it does not improve the numeric time objective.
+
+The tolerance claim is exactly epsilon(n)=1/1024. Among the Q acquired positions, at most floor(Q/1024) may be malformed. The corrupted locations and single-copy states must be fixed independently of the algorithm's secret random permutations and measurement outcomes. The uncorrupted positions are independent ideal coset states. Corrupted registers are arbitrary product-state replacements and are not entangled with other positions. This is a stated restricted error model; no guarantee is made for adaptive corruption after the random permutations are revealed.
+
+## Evidence and limits
+
+This is a proof-backed robustness extension of exhaustive candidate verification, not a new subexponential-time DCP algorithm. Its resource bounds deliberately make the classical storage cost explicit rather than treating the random candidate order as free. No empirical simulator results are claimed. The only randomness used for the guarantee is the algorithm's independent permutations and the ideal measurement outcomes from clean copies.
