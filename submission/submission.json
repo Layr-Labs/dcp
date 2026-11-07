@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LLV-GRF320: a centered fan-in ramp gives n^(16/5) classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the single LLV-GRF320 configuration in proof.md recovers the entire secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch charged work is O(2^((1/2)sqrt nlog2n)), with an absolute outside constant and exact growth index1/2. The main branch n>=2^4096 computes v=floor(sqrt n),r=ceil(sqrt n),ell=ceil(log2n),lambda=ceil(6ell/5),H_n=bit_length(n^1024-1),m=floor(25600*(v-256ell)/(25H_n-13312)),kappa=ceil(log2(m+2))+3,A_bar=ceil((n+m*kappa)/(m*lambda))+2. S(t)=sum_(0<=i<t)floor(5i/6),center=ceil(S(m)/m),fan_i=A_bar+floor(5i/6)-center,fan_max=fan_(m-1). Full widths are(fan_i-1)lambda-kappa; a single finishing call uses k=ceil((R+kappa+1)/lambda),widthR,output log length1. Exact prefix capacity and integer allocation are specified. Dbar=2K*lambda*fan_max*A_bar^m,Dcap=2^12nDbar,Ccap=2^13nDbar. All source/extraction, serial lookup/list exclusion, circuit/address generation, arithmetic, failed work, discarded copies, measurements, resets and cleanup are charged. Section14 uses deterministic per-level consumed-leaf counts and proves a negative487/51200sqrt n margin with a uniform o(sqrt n) remainder, yielding the exact pure time envelope jointly with all other claims.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "1"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For this same LLV-GRF320 configuration, every N,s and EVERY branch, peak classical workspace is O(n^(16/5)) bits with an absolute outside constant and exact growth index0. Since lambda=ceil(6ell/5),2^lambda=O(n^(6/5)); O(n) retained tables each take O(n^(11/5)) bits. Only the current merge keeps its tuple list, of O(n^(11/5)) bits. Current sort/residue arrays use O(n^(27/10)), and profile/prefix data, arithmetic, extraction and streamed decoder data O(n^3) or less. All components fit O(n^(16/5)) without a full stored recursion tree or exponential circuit, jointly with full-secret success and all other claims.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,13 +49,13 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
+          "nPower": "16/5",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For this same LLV-GRF320 configuration, every N,s and EVERY branch, peak quantum allocation is O(n) qubits, with an absolute constant and exact envelope growth index0. Pending siblings use O(lambda*sum_i fan_i)=O(n), and the single finish and each fresh search use O(fan_max*lambda)=O(sqrt(n)log n) additional reusable scratch. Rank/projection, source transforms, extraction, failed branches and cleanup are included. Section8 bounds the profile sum using m*A_bar*lambda<=n+m*kappa+3m*lambda, jointly with unconditional full-secret success and the other claims.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,42 +72,42 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For this same LLV-GRF320 configuration, every N,s and EVERY branch, all fresh acquired source copies number O(2^((1/2)sqrt n)), with an absolute constant and exact growth index1/2. Rejected, failed, discarded and aborted copies are included. With Dbar=2K*lambda*fan_max*A_bar^m,Dcap=2^12nDbar,Ccap=2^13nDbar, the literal main cap nCcap+K<=2^((1/2)sqrt n) follows from the exact depth rule and H_A=bit_length(A_bar^1024-1). The centered profile has sum fan_i<=m*A_bar, so AM-GM bounds its full product by A_bar^m; every prefix and final arity are covered by fan_max*A_bar^m. Section8 proves mH_A/1024<=(v-256ell)/2 and includes all polynomial cap factors. The finite branch changes only outside constants. This holds jointly with unconditional full-secret success and all other claims.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same LLV-GRF320 algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability at least 1 - 2^-8 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
