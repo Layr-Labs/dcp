@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LLV-GFL300C: compact classical full-log tables save logarithmic memory",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the one physical LLV-GFL300C compact-classical implementation of proof.md executing the complete virtual.md reference program recovers the entire secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch charged work is O(2^((1/2)sqrt(n)log2(n)+(1/4)sqrt(n)+2sqrt(n)(log2(n))^(-1/2))), with an absolute constant and exact growth index1/2. Original parameters, caps, partial finishing calls, failed work, all-modulus decoders and finite branch are preserved. The actual smaller classical pools, full field/address decoding, original coherent controls, source moves, initialization and cleanup are charged. The sharper internal time sqrt(n)log2(n)/2+sqrt(n)/4+O(sqrt(n)/logn)+O((logn)^2) has strict eventual slack absorbing all fixed polynomial compilation cost into the exact envelope. All five claims concern this same physical configuration.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,95 +22,109 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "1"
+            },
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "1/4",
+              "nPower": "1/2",
               "logPower": "0"
+            },
+            {
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "-1/2"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For this same physical LLV-GFL300C algorithm, every N,s and EVERY branch, peak allocated CLASSICAL workspace is O(n^3/log2n) bits with an absolute constant and exact growth index0. With ell=max(1,ceil log2n),E=2^ell,J=max(1,ceil(E/ell)), seven fixed classical regions of C*2^(2ceil(log2(n+2)))*J bits each, C=2^48, cover the complete maximum address span. Full vectors use2^20ceil(n/ell) slots of16nE bits; completed two-label roots have a separate2^17n-slot pool of16n bits without E padding. All tuples/input/source/decoder/arithmetic, free/qubit-ID metadata, frames/counters, controller/input/output and UNUSED classical padding count. Section3 proves all fixed capacities and slot reuse, not just live occupancy. These are ordinary classical bits, with no cost transferred to a qubit data bank. Since J=O(n/logn), the complete classical allocation is O(n^3/logn), jointly with full-secret success and all other claims.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "3",
+          "logPower": "-1"
+        }
+      }
+    },
+    {
+      "statement": "For this same physical LLV-GFL300C algorithm, every N,s and EVERY branch, peak quantum allocation is O(n) qubits with an absolute constant and exact growth index0. Original retained phase indices, current coherent search/rank/residue scratch, source/LE/transforms and all failure/cleanup registers fit the fixed O(n) logical pool. The WHOLE pool, unused quantum padding, fair-coin and temporary source wires and allocation overlap count. All large label/table/control records reside in the separately counted ordinary CLASSICAL reservation, not basis-qubit storage. Exact logical-state equivalence preserves the full source and output law, jointly with every other claim.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For this same physical LLV-GFL300C algorithm, every N,s and EVERY branch, all acquired copies number O(2^((1/2)sqrt n)), with an absolute constant and exact growth index1/2. The exact compact-classical compilation makes one physical acquisition per virtual acquisition and no others, preserving every failed, rejected, discarded and aborted request and the original caps. Full virtual8 proves main nCcap+K<=2^(sqrt(n)/2); finite lengths change outside constants. Classical/quantum zero initialization is charged time/storage, not DCP copies. Full-secret success at least1-2^-8 and every resource/error claim hold jointly.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same LLV-GFL300C algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability at least 1 - 2^-8 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
