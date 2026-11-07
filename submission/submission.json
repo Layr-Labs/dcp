@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "HPC127-TAGBANK: linear classical bits via counted tagged records and an indexed exponential quantum pool",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical HPC127-TAGBANK algorithm of proof.md executing COMPLETE reference HPC-127 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. The explicit source Section13 failure sum2*2^-10+2^-20+3*2^-40 is below2^-8, stronger than its headline1-2^-7. All guarantees hold jointly on EVERY branch, including wrong labels, failed/recycled pairing, failed merges, rejected/discarded sources, supplier/pool aborts, initialization and cleanup. Fully charged time is O(2^((127/100)*sqrt n)), exact growth index1/2. Source P has actual branchwise O(n^6*2^(b0*sqrt n)) work,b0=126947/100000<127/100. Known-index tag operations cost polynomial per old bit/gate/helper. The EXPONENTIAL original quantum pool is managed by a banked indexed free list and injective live-wire descriptors; it is never scanned per gate, allocation, root or source request. Actual wire lifecycle events are poly(n)*(C_P+Qcap+H+1). Every epoch has(n+2)^20 counted basis bits processed bit-serially. Exact renumbering repairs overflow with no new error/source event at all lengths and is eventually absent. Entire prefix preparation/output-first cleanup costs poly(n)*(D+H), where D,H have the same smaller internal exponent. Exact gap53/100000 absorbs all polynomial factors into the pure target. Finite earlier lengths change only an outside constant. No QRAM or assumed cheap full clear is used.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "127/100",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical HPC127-TAGBANK algorithm of proof.md executing COMPLETE reference HPC-127 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. The explicit source Section13 failure sum2*2^-10+2^-20+3*2^-40 is below2^-8, stronger than its headline1-2^-7. All guarantees hold jointly on EVERY branch, including wrong labels, failed/recycled pairing, failed merges, rejected/discarded sources, supplier/pool aborts, initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact growth index0. Count input/output, constant-many O(n)-bit staged operands/physical addresses/current-frame words, finite control, reusable bits/carry and loop indices. Every original label/pool/list/table/profile/decoder/return/generator record, quantum free-list head/next/virgin/ownership/descriptor array, and all large epoch values are COUNTED basis qubits. Public C_i parameters are streamed before initialization and banked afterward; no whole parameter array is staged classically. Quantum pointer lists and arithmetic are processed bit-serially. No ordinary huge free list, stack, circuit or growing measurement transcript is retained.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +51,76 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical HPC127-TAGBANK algorithm of proof.md executing COMPLETE reference HPC-127 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. The explicit source Section13 failure sum2*2^-10+2^-20+3*2^-40 is below2^-8, stronger than its headline1-2^-7. All guarantees hold jointly on EVERY branch, including wrong labels, failed/recycled pairing, failed merges, rejected/discarded sources, supplier/pool aborts, initialization and cleanup. Peak FULL allocated quantum workspace is O(2^((127/100)*sqrt n)), exact growth index1/2. Define U=C_0+2^(dl+m)+1,A=2^16*n^2,R=2^24*n^4*U,Wrow=2^16*n^2,H=2^20*n^2*U. The original coherent pool, pending indices and all scratch fit H; R/H=16n^2 makes every H-row quantum descriptor/free-list array fit counted BIG. Full basis span B=A*R*Wrow=2^56*n^8*U, complete e=(n+2)^20 tags and RAW headers/global generation/backup give D=B*(e+1)+(A+8)*e+A+2^20*n^4. The WHOLE rounded paired physical prefix, unused owners/rows/fields/pool/padding, source temporaries and all pointer records count. Full source proves U=O(n^2*2^(b0*sqrt n)),b0=126947/100000,so D=O(n^30*2^(b0*sqrt n)),H=O(n^4*2^(b0*sqrt n)). Exact gap127/100-b0=53/100000 absorbs all polynomial factors. This is a maximum span independent of lifetime and labels, not occupancy. Pool metadata are basis arrays, never free QRAM.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "127/100",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical HPC127-TAGBANK algorithm of proof.md executing COMPLETE reference HPC-127 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. The explicit source Section13 failure sum2*2^-10+2^-20+3*2^-40 is below2^-8, stronger than its headline1-2^-7. All guarantees hold jointly on EVERY branch, including wrong labels, failed/recycled pairing, failed merges, rejected/discarded sources, supplier/pool aborts, initialization and cleanup. All acquired DCP copies number O(2^((127/100)*sqrt n)), exact growth index1/2. Exactly one physical request executes each P request and no others. Literal Qcap=4*n*C_0+K preserves every supplier rejection, failed/recycled pairing, merge discard and batch/pool abort. Source Sections13-14 prove Qcap=O(n^3*2^(b0*sqrt n)),b0=126947/100000<127/100; its exact positive rational gap absorbs n^3 into the pure envelope. Fresh zero bank/pool wires, free-list operations, tag repair, initialization and SWAPs are charged gates/storage rather than extra DCP copies. The selected fixed schedule and LE precision remain unchanged.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "127/100",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical HPC127-TAGBANK algorithm of proof.md executing COMPLETE reference HPC-127 P in virtual.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. The explicit source Section13 failure sum2*2^-10+2^-20+3*2^-40 is below2^-8, stronger than its headline1-2^-7. All guarantees hold jointly on EVERY branch, including wrong labels, failed/recycled pairing, failed merges, rejected/discarded sources, supplier/pool aborts, initialization and cleanup. Guaranteed malformed fraction is epsilon(n)=0 under the exact independent-ideal-copy model. Decoding active tag epochs and the injective live-wire descriptor map yields the COMPLETE original logical P state/source/output law. READ/WRITE/forgetting, lazy allocation/free, exact renumbering, indexed quantum allocation/transfer/release and source SWAPs reproduce their logical channels even with arbitrary correlations/references. Extra helper outcomes are marginalized rather than added to original held-out-bit conditioning. No positive robustness, adaptive-supplier transfer or impossibility of greater robustness is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
