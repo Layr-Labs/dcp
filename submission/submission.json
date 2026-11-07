@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSG-35: input-balanced fifth-power bands attain a polynomial-space three-fifths tradeoff",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, with n=ceil(log2 N), the ONE PSG-35 algorithm and exact integer parameter rule of proof.md recover the entire s from independent ideal copies with unconditional probability at least1-2^-8>2/3. On EVERY branch including all failed attempts, rejected or discarded copies, incorrect numerical-label branches, retries and both cutoff aborts, its total charged sequential work T is O(2^((501/1000)*(n*(log2 n))^(3/5))). This full uniform bit-length envelope applies for n>=2; the explicit finite branch covers smaller n. Its exact envelope growth index is 3/5. All outer constants are absolute and independent of N,s and outcomes. This holds jointly with the other three resources and clean-only tolerance claim for the same algorithm/configuration.",
       "score": {
-        "numerator": "1",
-        "denominator": "1"
+        "numerator": "3",
+        "denominator": "5"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "501/1000",
+              "nPower": "3/5",
+              "logPower": "3/5"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, with n=ceil(log2 N), the ONE PSG-35 algorithm and exact integer parameter rule of proof.md recover the entire s from independent ideal copies with unconditional probability at least1-2^-8>2/3. On EVERY branch including all failed attempts, rejected or discarded copies, incorrect numerical-label branches, retries and both cutoff aborts, its peak classical bits S_C is O(n^2). This full uniform bit-length envelope applies for n>=2; the explicit finite branch covers smaller n. Its exact envelope growth index is 0/1. All outer constants are absolute and independent of N,s and outcomes. This holds jointly with the other three resources and clean-only tolerance claim for the same algorithm/configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, with n=ceil(log2 N), the ONE PSG-35 algorithm and exact integer parameter rule of proof.md recover the entire s from independent ideal copies with unconditional probability at least1-2^-8>2/3. On EVERY branch including all failed attempts, rejected or discarded copies, incorrect numerical-label branches, retries and both cutoff aborts, its peak quantum wires S_Q is O(n). This full uniform bit-length envelope applies for n>=2; the explicit finite branch covers smaller n. Its exact envelope growth index is 0/1. All outer constants are absolute and independent of N,s and outcomes. This holds jointly with the other three resources and clean-only tolerance claim for the same algorithm/configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,42 +72,42 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, with n=ceil(log2 N), the ONE PSG-35 algorithm and exact integer parameter rule of proof.md recover the entire s from independent ideal copies with unconditional probability at least1-2^-8>2/3. On EVERY branch including all failed attempts, rejected or discarded copies, incorrect numerical-label branches, retries and both cutoff aborts, its total acquired source copies Q including all rejected and discarded copies is O(2^((601/1000)*(n*(log2 n))^(2/5))). This full uniform bit-length envelope applies for n>=2; the explicit finite branch covers smaller n. Its exact envelope growth index is 2/5. All outer constants are absolute and independent of N,s and outcomes. This holds jointly with the other three resources and clean-only tolerance claim for the same algorithm/configuration.",
+      "score": {
+        "numerator": "2",
+        "denominator": "5"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "601/1000",
+              "nPower": "2/5",
+              "logPower": "2/5"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same PSG-35 algorithm and complete parameter rule in proof.md, the proved malformed-sample fractional guarantee is epsilon(n)=0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N>=2 and every s, unconditional full-secret recovery succeeds with probability at least 1-2^-8>2/3 jointly with all four every-branch resource bounds. No positive corruption tolerance is asserted, and this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
