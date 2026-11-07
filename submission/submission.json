@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC58: implicit-fiber four-input collimation with streamed, unstored pair fibers, T and Q = O(2^((3969/2500) sqrt n)), S_C = O(2^((5/8) sqrt n)) and O(n) qubits",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single IFC58 algorithm and configuration of proof.md (e-man07's CW1 algorithm, public submission cfe82a87, with its collimation tree replaced by the schedule of proof.md Section 7 in the configuration x0 = 6249/10000: binary linear merges up to tables of length 2^(kappa+1+w) with w = ceil(x0 sqrt n), and above them four-input merges MERGE4I whose pair fibers are streamed by Schroeppel-Shamir heaps, class-restricted where r > 0 and over all pairs where r = 0, rather than stored as tables; free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap, and exhaustive search for n < 4096; specified in full in proof.md) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its total charged sequential work is T(N,s) = O(n^4 (log2 n)^2 2^(tau0 sqrt n)) with tau0 = (5 x0^2 + 4)/(6 x0) = 119050001/74988000, hence T(N,s) = O(2^((3969/2500) sqrt n)), with the uniform bit-length envelope B_T(n) = 2^((3969/2500) sqrt n), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. The inner coefficient 3969/2500 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,47 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "3969/2500",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single IFC58 algorithm and configuration of proof.md (e-man07's CW1 algorithm, public submission cfe82a87, with its collimation tree replaced by the schedule of proof.md Section 7 in the configuration x0 = 6249/10000: binary linear merges up to tables of length 2^(kappa+1+w) with w = ceil(x0 sqrt n), and above them four-input merges MERGE4I whose pair fibers are streamed by Schroeppel-Shamir heaps, class-restricted where r > 0 and over all pairs where r = 0, rather than stored as tables; free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap, and exhaustive search for n < 4096; specified in full in proof.md) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its peak classical workspace is S_C(N,s) = O(n^2 2^(x0 sqrt n)) bits, hence S_C(N,s) = O(2^((5/8) sqrt n)), with envelope B_C(n) = 2^((5/8) sqrt n), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. The inner coefficient is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "5/8",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single IFC58 algorithm and configuration of proof.md (e-man07's CW1 algorithm, public submission cfe82a87, with its collimation tree replaced by the schedule of proof.md Section 7 in the configuration x0 = 6249/10000: binary linear merges up to tables of length 2^(kappa+1+w) with w = ceil(x0 sqrt n), and above them four-input merges MERGE4I whose pair fibers are streamed by Schroeppel-Shamir heaps, class-restricted where r > 0 and over all pairs where r = 0, rather than stored as tables; free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap, and exhaustive search for n < 4096; specified in full in proof.md) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, its peak quantum workspace is S_Q(N,s) = O(n) qubits, with envelope B_Q(n) = n, whose exact growth index is 0. All outside constants are absolute and independent of N, s and outcomes. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,65 +78,42 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single IFC58 algorithm and configuration of proof.md (e-man07's CW1 algorithm, public submission cfe82a87, with its collimation tree replaced by the schedule of proof.md Section 7 in the configuration x0 = 6249/10000: binary linear merges up to tables of length 2^(kappa+1+w) with w = ceil(x0 sqrt n), and above them four-input merges MERGE4I whose pair fibers are streamed by Schroeppel-Shamir heaps, class-restricted where r > 0 and over all pairs where r = 0, rather than stored as tables; free-frequency odd-part decoder, controlled-shift 2-adic part, explicit source cap, and exhaustive search for n < 4096; specified in full in proof.md) outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, retries, discards and aborts, the total number Q(N,s) of fresh source copies acquired, counting every discarded, rejected and failed-attempt copy, is at most N(n+10) on the finite branch n < 4096 and at most the precomputed cap Qcap = O(n^(3/2) (log2 n) 2^(tau0 sqrt n)) with tau0 = (5 x0^2 + 4)/(6 x0) = 119050001/74988000 on the main branch n >= 4096. Hence Q(N,s) = O(2^((3969/2500) sqrt n)), with envelope B_samples(n) = 2^((3969/2500) sqrt n), whose exact growth index is 1/2. All outside constants are absolute and independent of N, s and outcomes. The inner coefficient 3969/2500 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "3969/2500",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same IFC58 algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-8 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
