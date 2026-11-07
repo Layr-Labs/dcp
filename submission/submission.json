@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LL-050F: flat length profile trades time for classical-space coefficient2",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2 N), the single LL-050F algorithm and full configuration of proof.md (finite branch n<2^32; otherwise r=ceil(sqrt n), z=ceil(log2 r), m=floor(r/2)-10z, dl=2r+50z, hcap=0, flat nonroot table lengths, linear merges, explicit hard counters, free-frequency odd decoder and controlled-shift 2-adic recovery) recovers the full secret with unconditional probability at least1-2^-8>2/3 from independent ideal copies. On EVERY branch including retries, failures, discarded copies and aborts, total charged sequential work is T(N,s)=O(n^(49/2)2^((5/2)sqrt n)). The uniform envelope is B_T(n)=n^(49/2)2^((5/2)sqrt n), with exact growth index1/2 and an absolute outside constant. All counts include extraction, source acquisition, circuit generation, lookup, decoding, initialization, measurement, reset and addressing. This holds jointly with the other three resources and the zero-tolerance claim for the same algorithm/configuration.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,47 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "5/2",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "49/2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the same single LL-050F algorithm/configuration of proof.md, for every N>=2 and s, n=ceil(log2 N), peak classical allocation on EVERY branch is S_C(N,s)=O(n^(53/2)2^(2sqrt n)) bits, including all depth-first flat merge tables, scratch, extraction records and decoder memory. The exact uniform envelope B_C(n)=n^(53/2)2^(2sqrt n) has growth index1/2 and an absolute outside constant. This holds jointly with full-secret success at least1-2^-8 and the other resource and zero-tolerance claims.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "53/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same LL-050F algorithm and configuration of proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), peak quantum memory on every execution branch is S_Q(N,s) = O(n) qubits, with an absolute constant, including the depth-first index registers and all ancillas. The envelope B_Q(n) = n has growth index exactly 0. This holds jointly with the stated work, classical-memory and sample bounds and full-secret success probability at least 1 - 2^-8.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,65 +78,42 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the same LL-050F algorithm and configuration of proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the total number Q(N,s) of fresh DCP source copies acquired on every execution branch, including every discarded copy and every failed or aborted attempt, is O(2^((1/2) sqrt n)), with an absolute constant. The stronger main-branch bound is Q <= n Ccap + K = O(n^3 r^(-10) 2^(r/2)), with Ccap and K defined in proof.md. The uniform bit-length envelope B_samples(n) = 2^((1/2) sqrt n) has growth index exactly 1/2. This holds jointly with the stated work and memory bounds and unconditional full-secret success probability at least 1 - 2^-8.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same LL-050F algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability at least 1 - 2^-8 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
