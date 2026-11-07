@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "ERC-4096: exact-gate robust label sampling with classical correlation decoding",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), ERC-4096 in proof.md acquires exactly m=4096(n+4) copies and recovers the entire s with unconditional probability at least 2/3, both on clean inputs and under the fifth claim's fixed-position product-clean/arbitrary-joint-bad error model with at most floor(m/64) malformed systems. The same fixed algorithm/configuration has worst-case total sequential work bound T(N,s)=O(N n^12), hence the uniform envelope T=O(2^n n^12) on every execution branch, with absolute outer constants independent of N,s,malformed states and outcomes. The representative envelope has exactly growth index 1. All source acquisitions, failed estimates, exact gate generation, bit arithmetic, addressing, initialization, circuits, registers and retained storage are charged in proof.md. All four resource statements, the error-fraction guarantee and full-secret success hold jointly. No record, historical novelty, frontier dominance or attainment of the 2^{O(n^(1/3))} research goal is asserted.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -26,13 +26,36 @@
               "logPower": "0"
             }
           ],
+          "nPower": "12",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), ERC-4096 in proof.md acquires exactly m=4096(n+4) copies and recovers the entire s with unconditional probability at least 2/3, both on clean inputs and under the fifth claim's fixed-position product-clean/arbitrary-joint-bad error model with at most floor(m/64) malformed systems. The same fixed algorithm/configuration has worst-case peak allocated classical bits bound S_C=O(n^4) on every execution branch, with absolute outer constants independent of N,s,malformed states and outcomes. The representative envelope has exactly growth index 0. All source acquisitions, failed estimates, exact gate generation, bit arithmetic, addressing, initialization, circuits, registers and retained storage are charged in proof.md. All four resource statements, the error-fraction guarantee and full-secret success hold jointly. No record, historical novelty, frontier dominance or attainment of the 2^{O(n^(1/3))} research goal is asserted.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), ERC-4096 in proof.md acquires exactly m=4096(n+4) copies and recovers the entire s with unconditional probability at least 2/3, both on clean inputs and under the fifth claim's fixed-position product-clean/arbitrary-joint-bad error model with at most floor(m/64) malformed systems. The same fixed algorithm/configuration has worst-case peak allocated qubits bound S_Q=O(n^4) on every execution branch, with absolute outer constants independent of N,s,malformed states and outcomes. The representative envelope has exactly growth index 0. All source acquisitions, failed estimates, exact gate generation, bit arithmetic, addressing, initialization, circuits, registers and retained storage are charged in proof.md. All four resource statements, the error-fraction guarantee and full-secret success hold jointly. No record, historical novelty, frontier dominance or attainment of the 2^{O(n^(1/3))} research goal is asserted.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,13 +72,13 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
+          "nPower": "4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), ERC-4096 in proof.md acquires exactly m=4096(n+4) copies and recovers the entire s with unconditional probability at least 2/3, both on clean inputs and under the fifth claim's fixed-position product-clean/arbitrary-joint-bad error model with at most floor(m/64) malformed systems. The same fixed algorithm/configuration has worst-case total acquired source copies bound Q=m=4096(n+4)<=20480n, hence Q=O(n) on every execution branch, with absolute outer constants independent of N,s,malformed states and outcomes. The representative envelope has exactly growth index 0. All source acquisitions, failed estimates, exact gate generation, bit arithmetic, addressing, initialization, circuits, registers and retained storage are charged in proof.md. All four resource statements, the error-fraction guarantee and full-secret success hold jointly. No record, historical novelty, frontier dominance or attainment of the 2^{O(n^(1/3))} research goal is asserted.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,49 +95,20 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), ERC-4096 in proof.md acquires exactly m=4096(n+4) copies and recovers the entire s with unconditional probability at least 2/3, both on clean inputs and under the fifth claim's fixed-position product-clean/arbitrary-joint-bad error model with at most floor(m/64) malformed systems. The guaranteed malformed fraction is epsilon(n)=1/64: at most floor(Q/64) of the actual Q=m acquired systems may be malformed under the structured error model below, with arbitrary joint states on those fixed positions and independent ideal copies elsewhere. For every such allowed input the same ERC-4096 configuration has unconditional full-secret success at least 2/3 jointly with all four all-branch resource bounds. This is a fraction of all acquired copies, not a corruption probability, and asserts no guarantee for adaptive replacement or a larger fraction.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/64",
+        "error_model": "For m=4096(n+4) acquired n+1-qubit systems and n=ceil(log2 N), a set of malformed positions is fixed before private random choices. All remaining positions are independent ideal rho_s copies for the same s, tensor-product with an arbitrary joint state on the malformed positions. That state may depend on N,s and the fixed set, and may be entangled among malformed positions, but is independent of the clean copies and private random choices; there is no adaptive replacement based on private results. Malformed systems have the same register dimensions and may include unused residue labels. The fraction expression bounds the size of this fixed malformed set among all acquired copies."
       }
     }
   ],
