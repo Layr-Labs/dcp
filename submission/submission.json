@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "RQ-SPLIT: exact one-third adaptive tolerance with linear quantum storage",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2 N), the ONE RQ-SPLIT algorithm and exact parameter rule in proof.md recover the entire s with unconditional probability at least11/16>2/3 under ModelM, including clean input and every admissible adaptive supplier with at most floor(Q/3) malformed copies among ACTUAL Q acquired originals. On EVERY execution branch, including all discarded data, failed samplers, subset/gradient aborts and incorrect numerical labels, its total charged sequential work T is O(2^(n/2) n^2 (log2 n)^2). This is its complete uniform bit-length envelope for n>=2; the SAME finite n=1 protocol is bounded by absolute constants. Its exact envelope growth index is 1. All outside constants are absolute and independent of N,s,supplier and outcomes. This holds jointly with the other three resource guarantees and exact1/3 fractional tolerance for the same configuration.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2 N), the ONE RQ-SPLIT algorithm and exact parameter rule in proof.md recover the entire s with unconditional probability at least11/16>2/3 under ModelM, including clean input and every admissible adaptive supplier with at most floor(Q/3) malformed copies among ACTUAL Q acquired originals. On EVERY execution branch, including all discarded data, failed samplers, subset/gradient aborts and incorrect numerical labels, its peak classical bits S_C is O(n^2). This is its complete uniform bit-length envelope for n>=2; the SAME finite n=1 protocol is bounded by absolute constants. Its exact envelope growth index is 0. All outside constants are absolute and independent of N,s,supplier and outcomes. This holds jointly with the other three resource guarantees and exact1/3 fractional tolerance for the same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2 N), the ONE RQ-SPLIT algorithm and exact parameter rule in proof.md recover the entire s with unconditional probability at least11/16>2/3 under ModelM, including clean input and every admissible adaptive supplier with at most floor(Q/3) malformed copies among ACTUAL Q acquired originals. On EVERY execution branch, including all discarded data, failed samplers, subset/gradient aborts and incorrect numerical labels, its peak allocated qubits S_Q is O(n). This is its complete uniform bit-length envelope for n>=2; the SAME finite n=1 protocol is bounded by absolute constants. Its exact envelope growth index is 0. All outside constants are absolute and independent of N,s,supplier and outcomes. This holds jointly with the other three resource guarantees and exact1/3 fractional tolerance for the same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,49 +72,43 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2 N), the ONE RQ-SPLIT algorithm and exact parameter rule in proof.md recover the entire s with unconditional probability at least11/16>2/3 under ModelM, including clean input and every admissible adaptive supplier with at most floor(Q/3) malformed copies among ACTUAL Q acquired originals. On EVERY execution branch, including all discarded data, failed samplers, subset/gradient aborts and incorrect numerical labels, its total acquired ORIGINAL source copies Q is O(n). This is its complete uniform bit-length envelope for n>=2; the SAME finite n=1 protocol is bounded by absolute constants. Its exact envelope growth index is 0. All outside constants are absolute and independent of N,s,supplier and outcomes. This holds jointly with the other three resource guarantees and exact1/3 fractional tolerance for the same configuration.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME RQ-SPLIT algorithm/configuration as all four resource claims, the guaranteed malformed fraction is EXACTLY epsilon(n)=1/3 under ModelM and the identical model text below. For every N>=2,s and admissible adaptive supplier, with at most floor(Q/3) arbitrary malformed states among ACTUAL acquired originals on every branch, unconditional full-secret success is at least11/16>2/3 jointly with all four every-branch resource envelopes. Q=3*2^40*(n+32) is fixed on every branch, including late subset or work-gradient abort. No malformed positions or flags are supplied. Fresh clean copies are tensor-independent; malformed copies may be privately correlated as specified. The late uniform split and actual feedback are analyzed explicitly. The clean problem is included. No larger fraction or weaker supplier model is substituted.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
