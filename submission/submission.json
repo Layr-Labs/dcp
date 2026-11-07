@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LQ-MARGINAL: exact joint clean-marginal one-third tolerance and linear quantum space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, set n=ceil(log2 N). Use the single LQ-MARGINAL algorithm of linear_quantum_marginal.md Section 0: K=2^n, a_n=ceil(sqrt(n+1)), A_scale=2^64*a_n, L=max{j>=0:9^j<=K}, B_j the least power of two at least A_scale*3^j, b_j=log2(B_j), exactly two deterministic dyadic blocks per coarse level, R_v=4*n+128 single verifier blocks at B_L, 1024 retained attempts, exactly Q=3*2^16*(n+32) deliveries and r=Q/3. Use the complete actual controller of linear_quantum_marginal_controller.md Section 3 and the full selected filter proof of linear_quantum_marginal_filter.md Sections 2-10. All four current proof files, including linear_quantum_marginal_model.md Sections 1-9 for the complete joint-input/channel/good-first/undo/endpoint proof, are required evidence for every claim. Each attempt has one logical probe and the shared verifier has one logical probe; include them in R_zero, U, its complete literal inverse and all allocated storage. No selector seeds or random Grover times are used. The N=2 branch omits the selector and its probes and retains the same Q, gradient and endpoint. Under every fixed joint input and every convex mixture in the exact fifth-claim clean-marginal model, including arbitrary bad-good/reference entanglement and the clean case, full-secret success is unconditionally at least 11/16 > 2/3. All four bounds hold jointly on every branch, including malformed records, retained verifier leakage, failed preparation and incorrect answers, with absolute constants independent of N, s, input state and outcomes. Total charged sequential work is T=O(2^{n/2} n^{7/2} (log2 n)^2), with exact representative-envelope growth index 1. This counts source charges, all bit/head/address operations and known-bit reads, actual circuit generation, gates, all literal inverses, measurements, resets, initialization, code/bound construction, recursion and every capped attempt. The logarithmic display applies for n>=2, with finite absolute cost at N=2. The fixed joint input is released in acquisition order by a passive source. All acquired rows and current input/work are counted; unread inaccessible-source state is excluded under the rules. The clean promise is on the original good marginal and is not imposed after conditioning on earlier outcomes.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "linear_quantum_marginal.md",
+        "linear_quantum_marginal_controller.md",
+        "linear_quantum_marginal_filter.md",
+        "linear_quantum_marginal_model.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +24,27 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "7/2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, set n=ceil(log2 N). Use the single LQ-MARGINAL algorithm of linear_quantum_marginal.md Section 0: K=2^n, a_n=ceil(sqrt(n+1)), A_scale=2^64*a_n, L=max{j>=0:9^j<=K}, B_j the least power of two at least A_scale*3^j, b_j=log2(B_j), exactly two deterministic dyadic blocks per coarse level, R_v=4*n+128 single verifier blocks at B_L, 1024 retained attempts, exactly Q=3*2^16*(n+32) deliveries and r=Q/3. Use the complete actual controller of linear_quantum_marginal_controller.md Section 3 and the full selected filter proof of linear_quantum_marginal_filter.md Sections 2-10. All four current proof files, including linear_quantum_marginal_model.md Sections 1-9 for the complete joint-input/channel/good-first/undo/endpoint proof, are required evidence for every claim. Each attempt has one logical probe and the shared verifier has one logical probe; include them in R_zero, U, its complete literal inverse and all allocated storage. No selector seeds or random Grover times are used. The N=2 branch omits the selector and its probes and retains the same Q, gradient and endpoint. Under every fixed joint input and every convex mixture in the exact fifth-claim clean-marginal model, including arbitrary bad-good/reference entanglement and the clean case, full-secret success is unconditionally at least 11/16 > 2/3. All four bounds hold jointly on every branch, including malformed records, retained verifier leakage, failed preparation and incorrect answers, with absolute constants independent of N, s, input state and outcomes. Worst-case peak allocated classical storage is S_C=O(n^2) bits, with exact representative-envelope growth index 0. This includes labels, prefixes, public powers/bounds/codes, arithmetic and iteration buffers, recursion frames, loop strips, ready addresses, head locations, table, initialization/padding and controller state. No expanded circuit is stored. The fixed joint input is released in acquisition order by a passive source. All acquired rows and current input/work are counted; unread inaccessible-source state is excluded under the rules. The clean promise is on the original good marginal and is not imposed after conditioning on earlier outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "linear_quantum_marginal.md",
+        "linear_quantum_marginal_controller.md",
+        "linear_quantum_marginal_filter.md",
+        "linear_quantum_marginal_model.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +61,16 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, set n=ceil(log2 N). Use the single LQ-MARGINAL algorithm of linear_quantum_marginal.md Section 0: K=2^n, a_n=ceil(sqrt(n+1)), A_scale=2^64*a_n, L=max{j>=0:9^j<=K}, B_j the least power of two at least A_scale*3^j, b_j=log2(B_j), exactly two deterministic dyadic blocks per coarse level, R_v=4*n+128 single verifier blocks at B_L, 1024 retained attempts, exactly Q=3*2^16*(n+32) deliveries and r=Q/3. Use the complete actual controller of linear_quantum_marginal_controller.md Section 3 and the full selected filter proof of linear_quantum_marginal_filter.md Sections 2-10. All four current proof files, including linear_quantum_marginal_model.md Sections 1-9 for the complete joint-input/channel/good-first/undo/endpoint proof, are required evidence for every claim. Each attempt has one logical probe and the shared verifier has one logical probe; include them in R_zero, U, its complete literal inverse and all allocated storage. No selector seeds or random Grover times are used. The N=2 branch omits the selector and its probes and retains the same Q, gradient and endpoint. Under every fixed joint input and every convex mixture in the exact fifth-claim clean-marginal model, including arbitrary bad-good/reference entanglement and the clean case, full-secret success is unconditionally at least 11/16 > 2/3. All four bounds hold jointly on every branch, including malformed records, retained verifier leakage, failed preparation and incorrect answers, with absolute constants independent of N, s, input state and outcomes. Worst-case peak allocated quantum storage is S_Q=O(n) qubits, with exact representative-envelope growth index 0. This includes retained rows and axes, all 1024 retained candidate/opponent/code/probe/output banks, the shared verifier with its probe and actual leakage, arithmetic and reflection helpers, gradient, answer copy, residual old logical work and fresh endpoint helpers. There is no quantum recursion stack or per-level opponent. The fixed joint input is released in acquisition order by a passive source. All acquired rows and current input/work are counted; unread inaccessible-source state is excluded under the rules. The clean promise is on the original good marginal and is not imposed after conditioning on earlier outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "linear_quantum_marginal.md",
+        "linear_quantum_marginal_controller.md",
+        "linear_quantum_marginal_filter.md",
+        "linear_quantum_marginal_model.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +81,49 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, set n=ceil(log2 N). Use the single LQ-MARGINAL algorithm of linear_quantum_marginal.md Section 0: K=2^n, a_n=ceil(sqrt(n+1)), A_scale=2^64*a_n, L=max{j>=0:9^j<=K}, B_j the least power of two at least A_scale*3^j, b_j=log2(B_j), exactly two deterministic dyadic blocks per coarse level, R_v=4*n+128 single verifier blocks at B_L, 1024 retained attempts, exactly Q=3*2^16*(n+32) deliveries and r=Q/3. Use the complete actual controller of linear_quantum_marginal_controller.md Section 3 and the full selected filter proof of linear_quantum_marginal_filter.md Sections 2-10. All four current proof files, including linear_quantum_marginal_model.md Sections 1-9 for the complete joint-input/channel/good-first/undo/endpoint proof, are required evidence for every claim. Each attempt has one logical probe and the shared verifier has one logical probe; include them in R_zero, U, its complete literal inverse and all allocated storage. No selector seeds or random Grover times are used. The N=2 branch omits the selector and its probes and retains the same Q, gradient and endpoint. Under every fixed joint input and every convex mixture in the exact fifth-claim clean-marginal model, including arbitrary bad-good/reference entanglement and the clean case, full-secret success is unconditionally at least 11/16 > 2/3. All four bounds hold jointly on every branch, including malformed records, retained verifier leakage, failed preparation and incorrect answers, with absolute constants independent of N, s, input state and outcomes. The exact fresh source count on every branch is Q=3*2^16*(n+32)=O(n), with exact representative-envelope growth index 0. No source acquisition is repeated or placed in U, a module, verification or any inverse. All Q deliveries precede any preparation-failure return. The fixed joint input is released in acquisition order by a passive source. All acquired rows and current input/work are counted; unread inaccessible-source state is excluded under the rules. The clean promise is on the original good marginal and is not imposed after conditioning on earlier outcomes.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "linear_quantum_marginal.md",
+        "linear_quantum_marginal_controller.md",
+        "linear_quantum_marginal_filter.md",
+        "linear_quantum_marginal_model.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and every s in Z/NZ, set n=ceil(log2 N). Use the single LQ-MARGINAL algorithm of linear_quantum_marginal.md Section 0: K=2^n, a_n=ceil(sqrt(n+1)), A_scale=2^64*a_n, L=max{j>=0:9^j<=K}, B_j the least power of two at least A_scale*3^j, b_j=log2(B_j), exactly two deterministic dyadic blocks per coarse level, R_v=4*n+128 single verifier blocks at B_L, 1024 retained attempts, exactly Q=3*2^16*(n+32) deliveries and r=Q/3. Use the complete actual controller of linear_quantum_marginal_controller.md Section 3 and the full selected filter proof of linear_quantum_marginal_filter.md Sections 2-10. All four current proof files, including linear_quantum_marginal_model.md Sections 1-9 for the complete joint-input/channel/good-first/undo/endpoint proof, are required evidence for every claim. Each attempt has one logical probe and the shared verifier has one logical probe; include them in R_zero, U, its complete literal inverse and all allocated storage. No selector seeds or random Grover times are used. The N=2 branch omits the selector and its probes and retains the same Q, gradient and endpoint. Under every fixed joint input and every convex mixture in the exact fifth-claim clean-marginal model, including arbitrary bad-good/reference entanglement and the clean case, full-secret success is unconditionally at least 11/16 > 2/3. All four bounds hold jointly on every branch, including malformed records, retained verifier leakage, failed preparation and incorrect answers, with absolute constants independent of N, s, input state and outcomes. The tolerated fraction is exactly epsilon(n)=1/3 for every N>=2, with no validity threshold. The fixed hidden bad set has size at most floor(Q/3)=Q/3. The original joint good marginal is exactly rho_s to the tensor power of the good count, with arbitrary extension to malformed systems and an inaccessible reference. Convex mixtures with different fixed bad sets are allowed. The exact structured model below is reproduced in main Section 0 and model Section 1. The fixed joint source holds unread registers passively and delivers them in the fixed acquisition order without replacement, feedback, measurement or later transformation. All acquired input/work is counted; unread inaccessible-source state is excluded under the rules. No conditional clean-product promise after earlier outcomes is used. Full-secret success and all four resource bounds hold jointly for every allowed input.",
+      "evidence": [
+        "linear_quantum_marginal.md",
+        "linear_quantum_marginal_controller.md",
+        "linear_quantum_marginal_filter.md",
+        "linear_quantum_marginal_model.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
