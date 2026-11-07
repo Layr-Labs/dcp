@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Critically sampled exhaustive shift testing",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, the critically sampled exhaustive shift test in proof.md, with n = ceil(log2 N) and the single parameter k = n+3, recovers the entire s with unconditional probability > 7/8 and worst-case total work T(N,s) = O(N n^2 log2 n) bit operations (at most N candidate tests, O(n^2 log n) charged bit operations each, including source acquisition, circuit generation, addressing, synthesis and measurement). In the challenge model this is the uniform envelope B_T(n) = 2^n n^2 log2 n, whose exact growth index is 1. This holds jointly with the three other resource bounds and the tolerance claim below.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -26,13 +26,13 @@
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the same critically sampled exhaustive shift test and parameter k = n+3 in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits: the uniform classical generator holds the at-most-(n+1)-bit constants N and t, a binary counter of O(log n) bits, and an O(n)-gate description within an O(n^2) temporary-wire budget; no exponential table is stored. With n = ceil(log2 N) the envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the total-work, quantum-workspace and sample bounds and success probability > 7/8.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the same critically sampled exhaustive shift test and parameter k = n+3 in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, comprising the two n+1-bit registers per copy, their ancillas and the measurement workspace; the working register per copy is only O(n) qubits and O(n^2) is a conservative bound. With n = ceil(log2 N) the envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the total-work, classical-workspace and sample bounds and success probability > 7/8.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -78,7 +78,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For the same critically sampled exhaustive shift test and parameter k = n+3 in proof.md, for every N >= 2 and every s in Z/NZ, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+3), hence O(2^n n). With n = ceil(log2 N) the uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound counts every failed candidate test, every discarded copy and the fallback branch, and is independent of peak quantum storage. It holds jointly with the total-work and workspace bounds and success probability > 7/8.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -107,14 +107,14 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the same critically sampled exhaustive shift test and parameter k = n+3 in proof.md, the proved fractional error tolerance is epsilon(n) = 0: the proof admits only independent ideal coset states. Under that promise, for every N and s, full-secret recovery succeeds with probability > 7/8 jointly with all four resource bounds (T = O(N n^2 log2 n), S_C = O(n^2), S_Q = O(n^2), Q <= N(n+3)). Every non-ideal copy is treated as arbitrary; Q counts all acquired copies including discarded ones. No positive tolerance is claimed; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
         "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "error_model": "Malformed fraction among the Q acquired source copies. The compared quantity is the fraction of malformed copies among all Q copies acquired, including discarded and failed-attempt copies. The proved guarantee requires every acquired copy to be an independent ideal coset state of the source; any non-ideal copy is treated as arbitrary/adversarial, and malformed copies are not assumed independent. Zero states only this clean-input guarantee."
       }
     }
   ],
