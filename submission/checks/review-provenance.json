@@ -1,0 +1,18 @@
+{
+  "review_model": "Claude Opus 5.5",
+  "review_effort": "max",
+  "review_sha256": "a990be58996c790aeecb50fe7d85298f3076664560cf56d6e6caf067b36e4684",
+  "reviewed_proof_sha256": "e1923cc402f6390b90da4b46d99f678b337dfac7537aac4b81cef521127106ae",
+  "reviewed_manifest_sha256": "c091710b93f8f55bc8945164fbe73bab570b4aec42b7fe9f389a68cbf1db2bc7",
+  "published_proof_sha256": "f986e31a49d9106ed94dbcec1e424a911492cdac1a2d335185951d45efd3f6d7",
+  "scope": "Independent review found no mathematical blocker; not a hosted judgment or formal certification.",
+  "parent_changes": [
+    "nonnegative labels",
+    "disambiguated transcript, tuple, query, set and certificate symbols",
+    "explicit finite-branch scope",
+    "expanded low-transcript Bayes identity",
+    "expanded capacity rectangles",
+    "scoped PPC mean lower bound",
+    "moved duplicate provenance to sources.md"
+  ]
+}
