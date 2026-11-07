@@ -1,104 +1,904 @@
-# Exhaustive shift testing
+# BL1: boosted-leaf linear-merge collimation, T = O(n^5 2^((3/2) sqrt n)), S_C = O(n^3 2^((3/2) sqrt n)), Q = O(2^(sqrt n)), O(n) qubits
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 0. Theorem and notation
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For every integer N >= 2 and every s in Z/NZ put n = ceil(log2 N). The single
+algorithm BL1 below receives N in binary and fresh independent copies of rho_s,
+and outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3.
+On EVERY execution branch (including every failure, retry, discard and abort)
+it satisfies jointly
 
-## Correctness
+    T   = O(n^5 2^((3/2) sqrt n)),
+    S_C = O(n^3 2^((3/2) sqrt n)),
+    S_Q = O(n),
+    Q   = O(2^(sqrt n)).
 
-On a component with offset x, controlled subtraction produces
+All outside constants are absolute. The inner coefficients 3/2, 3/2 and 1 are
+exact, and these four expressions are themselves the structured envelopes of
+submission.json, with exact growth indices 1/2, 1/2, 0, 1/2 (Section 14). The
+fifth claim is the clean-input tolerance 0 (Section 15).
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Notation used throughout:
+- d = floor(log2 N); N = 2^a2 M with M odd; s1 = s mod M; s2 in [0, 2^a2) with s = s1 + M s2 (mod N).
+- omega = exp(2 pi i/N). Data basis states are |u>, u in [0,N), stored in n qubits.
+- A "label" is a known integer. A "multiplier" W is an integer frequency factor.
+- hd denotes a Hamming distance. T denotes total work only.
+- w = ceil(sqrt n), kappa = ceil(log2 w) + 1, v = ceil(w/2) + 6 kappa and mmax are the
+  global tree parameters of Section 7. The field width of a stored high part is written fw_i.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+## 1. Provenance and what is new
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+BL1 is a one-schedule modification of CW1 (public Yukon submission
+cfe82a87-0d65-454e-b1df-4789dc95aab4 by e-man07), which is itself a one-schedule
+modification of CS1 (public Yukon submission b56c7ceb-de59-42da-9e3b-6ee96e4e4145
+by AdamGagol, identical to f1481815-9577-4990-abe3-7b79fa5d9284). Sections 2,
+8-10, 12 and 15 of this file are CW1's text (which reproduces CS1's) unchanged; Sections 3-6 are CW1's text with
+local indices renamed (t, q, z), the field width written fw, fw' defined, the algorithm name changed, and the
+lower bound on Qcap in Lemma 5.2 restated for BL1's Q*; so the argument is self-contained.
+All of the following are CS1's or CW1's and are not new here: the linear merge
+with closed-form rank; the free-frequency decoder; Kitaev-test label extraction
+with randomized verification; the source-data shifts for the 2-adic part; the
+source cap and the per-acquisition charging of merge costs (both kept in the adapted Section 11).
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+The collimation step (measure a residue of summed phase labels, keep the
+collimated sub-vector, re-index) and the distribution-free bucket/remainder
+argument are from G. Kuperberg, "Another subexponential-time quantum algorithm
+for the dihedral hidden subgroup problem", arXiv:1112.3333v1, Algorithm 4.1,
+Proposition 4.2 and Section 4.6. Section 4.6 also notes that never-inspected
+top label bits stay uniform. CS1 credits the earlier COL3 submission on this
+challenge for Kitaev-test label extraction (Kitaev, quant-ph/9511026), the top-bit
+independence argument, the CRT unit multiplier and the exhaustive finite branch.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Leaf boosts. Leaf tables built as tensor products of several leaf qubits are used
+by CS1 and CW1 (Theta(log n) qubits). Extra leaf qubits that make the tree
+shallower, so that fewer source copies are needed, were introduced on this
+challenge by CS1-LB (25366aa8-2003-4f3b-b35e-a71b5765394e, AdamGagol;
+ceil(log2(kappa+1)) extra qubits, kept in CS1-LBQ 603d96b1-a332-49a9-90ca-ef5cb6b8a5f2)
+and by CS1-C3L (cafd8e10-c7b0-4b97-ac39-c4bd8e7315b0, mpjunior92; about (2n)^(1/4)
+extra qubits). CS1-C3L also gives the charging argument that cancels the boost
+factor in the merge work against the source cap: each merge is charged to the
+acquisitions below it. Lemma 11.2 uses the same argument. CS1-BLC16L
+(effe7602-1685-4fd7-b6a2-b2be4d191c4d, GordoAR) uses a boost of about 16 (2n)^(1/4).
+These boosts are o(sqrt n) and leave CS1's leading exponents unchanged. The
+constant-width trees of 82566cc9-b278-4303-99a3-b22aa3e09155 (zereraz) and
+1f043ca4-12d1-40bb-9d22-739f11ec8411 (GordoAR, CS1-SB) build leaf tables at full
+width, with time exponent 2 sqrt n.
 
-## Implementing the controlled subtraction
+The trade-off point. A boost of order sqrt n with no width cap changes the
+leading exponents. LL-150 (2db348f1-6660-48c8-8e10-b056131f6baa, qzv) published
+this point first: leaf tables from ceil(101r/200) qubits, r = ceil(sqrt n), lengths
+growing by one bit per level with no cap, depth floor(1999r/2000), and declared
+envelopes T = S_C = O(2^((301/200) sqrt n)), S_Q = O(n) and Q = O(2^(sqrt n)), whose
+gaps absorb all polynomial factors. LL-080 (118d1f70-2031-46e9-9f04-7924eaba3aa8,
+mpjunior92) moves LL-150 to Q = O(2^((4/5) sqrt n)) at T = O(2^((331/200) sqrt n)). The
+same growing tree shape is the second stage of HPC-127
+(2aad498c-d5e9-4f64-a222-3b2f7f961738, qzv), whose leaf tables of ceil(491r/1000) qubits are the first
+sqrt(n)-scale leaf boost on the board, after a qubit-pairing stage that holds
+2^(Theta(sqrt n)) qubits. BL1 has no pairing stage or qubit pool, so its
+depth-first evaluation needs only O(n) qubits. BL1 is built on CW1's text and
+uses no text of LL-150. No earlier verdict is a premise; every step is proved
+below.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Adapted from CW1 with the new schedule (Sections 0, 7, 11, 13 and 14, and the
+constant in Lemma 5.2):
+- The schedule. A leaf table is built from kappa+1+v leaf qubits,
+  v = ceil(w/2) + 6 kappa, so it already has length 2^(kappa+1+v). Table lengths
+  then grow by one bit on every level below the root, with no cap. The depth is
+  at most w, and at most w - 4 kappa for n >= 2^24: the 6 kappa extra leaf qubits
+  remove 4 kappa levels, and 2^(4 kappa) >= 16 n^2 cancels every polynomial factor
+  of the source count.
+- The joint bound has exact leading coefficients: the bounds on T and S_C are
+  2^((3/2) sqrt n) times polynomials, and Q = O(2^(sqrt n)). (Context; no proof step uses it.) Against LL-150's
+  declared envelopes, T and S_C are strictly smaller (n^5 2^((3/2) sqrt n) =
+  o(2^((301/200) sqrt n))), and S_Q and Q are equal, under the same error-model
+  text. So BL1 dominates LL-150 under the challenge's comparison rule. It
+  tightens LL-150's point; it is not a new trade-off direction.
+- Compared with CW1, classical space and sample count trade places: S_C grows
+  from 2^(sqrt n) to 2^((3/2) sqrt n), and Q shrinks from 2^((3/2) sqrt n) to 2^(sqrt n),
+  up to polynomial factors, with the same time exponent (3/2) sqrt n. Compared
+  with the constant-width trees (time exponent 2 sqrt n, classical-space and sample
+  exponents sqrt n), BL1 keeps the sample exponent and lowers the time exponent to
+  (3/2) sqrt n, at the price of classical space 2^((3/2) sqrt n).
+BL1 does not improve CS1's time, and it does not lower the time growth index
+below 1/2.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+## 2. Model and counting conventions
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+A CORE STEP is one of the following:
+- one NOT/CNOT/Toffoli/H/S/S^dagger gate;
+- one computational-basis single-qubit measurement or reset;
+- one Boolean operation on at most three classical bits;
+- one classical bit read or write.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Toffoli has an exact constant-size Clifford+T decomposition. Integers are bit
+strings, and an L-bit addition, comparison or copy costs O(L) core steps.
+Generating a gate costs O(1) core steps. Each core step additionally pays its
+address, ceil(log2(Mem+2)) bit operations, where Mem <= S_C + S_Q is the
+number of allocated bits and qubits. A source acquisition costs n+1. Hence
 
-## Joint costs and indices
+    T <= (number of core steps) * (1 + ceil(log2(S_C+S_Q+2))) + (n+1) Q.     (2.1)
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+There is no QRAM: every lookup is the explicit circuit of Section 6.1.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+## 3. Source identities, the latent-label model and data transforms
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+Let chi_k = N^(-1/2) sum_u omega^(k u)|u> and phi_k(s) = (|0> + omega^(-k s)|1>)/sqrt 2.
+Substituting |u> = N^(-1/2) sum_k omega^(-k u) chi_k into
+rho_s = (1/N) sum_x |psi_x><psi_x|, with psi_x = (|0,x> + |1,x+s>)/sqrt 2, gives
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+    rho_s = (1/N) sum_(k=0)^(N-1) |phi_k(s)><phi_k(s)| (x) |chi_k><chi_k|,       (3.1)
 
-## Fractional error tolerance
+because the cross terms k != k' carry (1/N) sum_x omega^(-(k-k')x) = 0.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+Latent-label model. By (3.1) each copy is literally a convex mixture, with
+uniform weights, of the product states phi_k(s) (x) chi_k. The whole algorithm
+is a linear (adaptive) quantum instrument applied to independent copies. So
+the joint law of all its classical outcomes equals the law obtained by first
+drawing, for every copy, an independent uniform latent label k, and then
+running on the product state phi_k(s) (x) chi_k. All probabilities below use
+this model. Applying X to the control maps phi_k(s) to, up to a global phase,
+the POSITIVE qubit pq_k(s) = (|0> + omega^(k s)|1>)/sqrt 2.
+
+Two exact data transforms act on a fresh copy before label extraction. Each
+is a permutation of all 2^n data encodings, extended by the identity on
+encodings >= N. Each maps the copy exactly to rho_s' for a known transformed
+secret s'. The latent-label model is then applied to rho_s' via (3.1), so the
+latent label of a copy is the Fourier label of its TRANSFORMED data register,
+which LE recovers.
+
+(T1) Mult_alpha: u -> alpha u mod N, for a known alpha coprime to N. Since
+x -> alpha x is a bijection of Z/NZ, the copy becomes exactly rho_(alpha s).
+It is implemented with n controlled modular additions of the constants
+alpha 2^t mod N (t = 0..n-1) into a clean register, a swap, and the inverse computation with
+alpha^(-1): O(n^2) core steps and O(n) scratch.
+
+(T2) Shift_c: if the control is |1>, replace u by u - c mod N, for a known c.
+Since |1,x+s> becomes |1,x+(s-c)>, the copy becomes exactly rho_(s-c). This
+takes O(n) core steps.
+
+Modular addition of a known constant in [0,N) is a ripple comparison with N,
+an addition, a comparison and a selector. It is the identity on encodings
+>= N, uses O(n) Boolean gates, and is computed cleanly: compute, swap or XOR
+the result out, then uncompute.
+
+## 4. Rational trigonometric table
+
+For q in [0,4096) the controller computes rationals Cos[q], Sin[q] within 2^-20
+of cos(2 pi q/4096) and sin(2 pi q/4096).
+
+- Bound pi within 2^-90 using Machin's formula pi = 16 atan(1/5) - 4 atan(1/239),
+  summing the first 40 terms of each alternating arctangent series. This gives
+  two-sided bounds; the tails are below 16 (1/5)^81/81 + 4 (1/239)^81/81 < 2^-91.
+- The identity follows from tan(2 atan(1/5)) = 5/12, tan(4 atan(1/5)) = 120/119
+  and tangent subtraction.
+- At the angle 2 q p_mid/4096 < 7, where p_mid is the midpoint of the pi bounds,
+  sum 80 Taylor terms. The remainder is <= 7^81/81! < 2^-170. The angle error
+  is < 2^-89, and sin and cos are 1-Lipschitz.
+- Round each value to denominator 2^20.
+
+This is a fixed finite rational computation, charged once as an absolute
+constant (not advice).
+
+For x in [0,1) put tab_0(x) = Cos[floor(4096x)] and tab_1(x) = Sin[floor(4096x)],
+and let cs_0(x) = cos(2 pi x), cs_1(x) = sin(2 pi x). Since cs is 2pi-Lipschitz,
+
+    |tab_beta(x) - cs_beta(x)| <= 2 pi/4096 + 2^-20 < 1/625.                    (4.1)
+
+## 5. Label extraction LE
+
+Input: a data register holding chi_k for a latent k, beside arbitrary
+spectators. An upper bound Qcap on the number of LE calls is fixed in advance
+(Section 11). LE makes a cheap estimate (5.2), checks it with a randomized
+verification (5.3), and only if the check rejects runs the high-confidence
+extraction (5.4). A global counter caps the number of high-confidence runs (5.5).
+Parameters:
+
+    J_e = n + 4,   h_e = ceil(log2(Qcap (n+5))) + 14,   h_A = 2 ceil(log2(n+5)) + 14,
+    t_V = 64 h_e,  F(h) = 2^21 h,  T_V = ceil(log2(n+20)) + 14,  G = n + 40 + T_V.
+
+Translation Tr_c: u -> u + c mod N satisfies Tr_c chi_k = omega^(-k c) chi_k.
+A TEST WITH SHIFT c (0 <= c < N) works as follows. Prepare an ancilla in |+>.
+Apply Tr_((N - c) mod N) controlled by it, so the |1> branch gets eigenvalue
+omega^(k c). Measure the ancilla in X (H then Z) or in Y (S^dagger, H, then Z).
+The +-1 outcome has mean cos(2 pi c k/N) or sin(2 pi c k/N). Conditioned on
+k, chi_k and every spectator are unchanged and outcomes are independent. A test
+at LEVEL j is the test with shift 2^j mod N. Each test costs one controlled
+modular addition, O(n) core steps.
+
+### 5.1 RUN(F): level-wise extraction
+
+For each j = 0..J_e take F tests at level j per basis, giving empirical means
+x_j and y_j. Then decode as follows.
+
+Decoding each level. Pick the least dr in [0,64) maximizing
+x_j Cos[64 dr] + y_j Sin[64 dr].
+- If |x_j - cos| and |y_j - sin| are at most 1/1024, each computed dot product
+  differs from cos(2 pi (2^j k/N - dr/64)) by at most 2/1024 + 2^-19 < 1/256.
+- The nearest direction has true dot >= cos(pi/64) >= 511/512.
+- Any direction at circular distance >= 1/16 has dot <= cos(pi/8) <= 31/32.
+- The gap 15/512 exceeds 2/256. So alpha_j = dr/64 is within circular distance
+  1/16 of 2^j k/N.
+
+Unwrapping. Set g_(J_e) = alpha_(J_e). For j = J_e - 1 down to 0, let g_j be
+whichever of g_(j+1)/2 and (g_(j+1)+1)/2 (mod 1) is circularly closer to alpha_j
+(ties: the first).
+- Suppose g_(j+1) is within e < 1/16 of 2^(j+1) k/N. The correct preimage is
+  within e/2 of 2^j k/N, hence within 1/16 + e/2 < 3/32 of alpha_j.
+- The other preimage is at least 1/2 - e/2 from 2^j k/N, hence more than 13/32
+  from alpha_j.
+- So the choice is correct and the error halves. Finally g_0 is within
+  2^-(J_e)/16 = 2^-(n+8) < 1/(2N) of k/N.
+
+RUN(F) outputs floor(N g_0 + 1/2) mod N, which then equals k. On any input it
+returns a value in [0,N) after its fixed number of tests.
+
+Concentration. For F independent +-1 variables, the centered log-moment
+generating function has second derivative at most 1 (a tilted variance) and
+vanishes with its first derivative at 0. Hence
+Pr(|mean - E mean| > delta) <= 2 exp(-F delta^2/2). With delta = 1/1024 and
+F = F(h) this is 2 exp(-h). So RUN(F(h)) returns a value other than k with
+probability at most 4 (J_e + 1) e^(-h) = 4 (n+5) e^(-h), uniformly in k.
+RUN(F(h)) uses 2 (J_e + 1) F(h) tests, that is O(n^2 h) core steps.
+
+### 5.2 Estimate
+
+k_A = RUN(F(h_A)). Since e^(-h_A) <= 2^(-h_A) <= 2^-14 (n+5)^-2,
+
+    Pr[k_A != k] <= 4 (n+5) 2^-14 (n+5)^-2 <= 2^-12/(n+5) <= 1/(2n).        (5.E)
+
+Cost O(n^2 log n).
+
+### 5.3 Verification
+
+Precomputation. By long division compute rh = floor(k_A 2^G / N), O(n G) = O(n^2)
+bit operations, so rh 2^-G is within 2^-G of k_A/N. For i = 0..n+19 let f_i be
+the T_V bits of rh in positions G-i-1 down to G-i-T_V (all exist, since
+G-i-T_V >= 21). Then f_i 2^-(T_V) is within 2^-(T_V) + 2^(i-G) of frac(2^i k_A/N)
+in circular distance on R/Z.
+
+Round r = 1..t_V:
+- Draw c uniformly from [0, 2^(n+20)) using n+20 fresh fair bits, each obtained by
+  measuring H|0> (O(1) core steps, as in Section 9), and
+  compute cN = c mod N (at most 21 quotient bits: O(n) bit operations).
+- Run one X test and one Y test with shift cN, with outcomes zX, zY in {+1,-1}.
+  Their means are cos(2 pi c k/N) and sin(2 pi c k/N).
+- Predicted phase: xh = (sum over the 1-bits i of c of f_i) mod 2^(T_V), read as
+  the fraction xh 2^-(T_V) in [0,1). Since frac(c k_A/N) = sum_i c_i frac(2^i k_A/N)
+  mod 1, its circular distance to frac(c k_A/N) is at most
+  (n+20) 2^-(T_V) + sum_(i <= n+19) 2^(i-G) <= 2^-14 + 2^-20 < 2^-13. This costs
+  O(n T_V) = O(n log n) bit operations.
+- Score s_r = zX tab_0(xh 2^-(T_V)) + zY tab_1(xh 2^-(T_V)), with tab from Section 4.
+
+ACCEPT iff s_1 + ... + s_(t_V) >= t_V/2.
+
+Lemma 5.1. Conditioned on k and k_A: if k_A = k, verification rejects with
+probability at most e^(-h_e); if k_A != k, it accepts with probability at most
+e^(-h_e).
+
+Proof. Rounds are i.i.d. given (k, k_A): each uses fresh coins and fresh tests,
+and the data register is unchanged. By (4.1) and 2 pi 2^-13 < 1/1300, each table
+value is within 1/625 + 1/1300 < 1/400 of the cosine or sine of 2 pi c k_A/N.
+So, given c, E[s_r | c] = cos(2 pi c (k - k_A)/N) + err with |err| <= 2/400 = 1/200.
+- If k_A = k, E s_r >= 1 - 1/200.
+- If k_A != k, put dl = (k - k_A) mod N, which is nonzero. Write 2^(n+20) = qq N + rr
+  with 0 <= rr < N. Over each full period of N consecutive values of c the sum
+  of exp(2 pi i c dl/N) is 0, so |E_c exp(2 pi i c dl/N)| <= rr/2^(n+20) < 2^-20.
+  Hence E s_r <= 1/200 + 2^-20.
+Each |s_r| <= 2 (1 + 2^-20) < 2.01. By Hoeffding, a sum of t_V i.i.d. terms in
+an interval of length 4.02 deviates from its mean by at least
+Dev = (1/2 - 1/200 - 2^-20) t_V >= 0.494 t_V with probability at most
+exp(-2 Dev^2/(4.02^2 t_V)) <= exp(-0.03 t_V) = exp(-1.92 h_e) <= e^(-h_e). QED.
+
+Cost per call: O(n^2) precomputation plus t_V rounds of O(n log n), that is
+O(n^2 + n^(3/2) log n) = O(n^2) core steps. Classical scratch O(n log n) bits.
+
+### 5.4 High-confidence extraction and output
+
+If verification accepts, LE outputs k_A. Otherwise it runs k_H = RUN(F(h_e)),
+the high-confidence extraction, and outputs k_H, subject to the cap in 5.5.
+After the last test of the call, the data register is reset. LE uses no
+Fourier transform, no lookup, and no rotation other than H and S, and O(n)
+quantum scratch (n data qubits, one ancilla, arithmetic).
+
+### 5.5 Cap on high-confidence runs
+
+Let sn be the least integer >= sqrt n (computed exactly by integer arithmetic) and Cf = ceil(Qcap/sn). A counter
+records the number of RUN(F(h_e)) executions. If a call would start the
+(Cf+1)-st one, BL1 stops, releases everything and outputs 0 (ABORT).
+
+Lemma 5.2. Pr[ABORT] <= 2^-20.
+
+Proof. A call reaches 5.4's high-confidence branch only if k_A != k, or k_A = k
+and verification rejects. Conditioned on the entire history before the call
+(including k), by (5.E) and Lemma 5.1 this has probability at most
+1/(2n) + e^(-h_e) <= 1/n, because the call's tests and coins are fresh. Hence
+the indicators of the at most Qcap calls can be coupled with i.i.d. Bernoulli(1/n)
+variables that dominate them (compare each indicator with an independent uniform
+threshold), and the number of high-confidence runs is stochastically dominated by
+X ~ Bin(Qcap, 1/n), with mean EX = Qcap/n. For x > EX the Chernoff bound gives
+Pr[X >= x] <= (exp(1) EX/x)^x. With x = Cf >= Qcap/sn >= Qcap/(sqrt n + 1),
+exp(1) EX/x <= exp(1) (sqrt n + 1)/n <= exp(1) * 9/64 < 1/2 for n >= 64, since
+(sqrt n + 1)/n decreases. Also Cf >= 20, because Qcap = 1024 Q* >= 6144 * 2^mmax (kappa+1+v) K >= 6144 w >= 20 (sqrt n + 1), with Q* from
+Section 11. This uses J + 1 >= 1, mmax >= 1, K >= 1 and kappa+1+v >= w/2; J and K are computed also when M = 1.
+So Pr[ABORT] <= 2^-20. QED.
+
+### 5.6 Correctness and cost of LE
+
+Per call, the output differs from k only if (k_A != k and verification accepts)
+or (a high-confidence run returns a value other than k). By Lemma 5.1 and the
+concentration bound of 5.1 this has probability at most e^(-h_e) + 4(n+5) e^(-h_e) = (4n+21) e^(-h_e),
+uniformly in k and in the adaptive schedule. Over at most Qcap calls the
+probability that ANY call returns a wrong label is at most
+(4n+21) Qcap e^(-h_e) <= 5 * 2^(h_e-14) e^(-h_e) < 2^-11.
+
+Cost. Without its high-confidence branch, a call costs O(n^2 log n) core steps
+(5.2 dominates). Each high-confidence run costs O(n^2 h_e), and on EVERY branch
+there are at most Cf <= Qcap/sqrt(n) + 1 of them, for O(n^(3/2) h_e) Qcap + O(n^2 h_e)
+= O(n^2) Qcap + O(n^(5/2)) core steps in total. So on every branch, all LE calls
+together cost O(n^2 log n) Qcap + O(n^(5/2)) core steps.
+
+IDEAL run. The ideal run is BL1 in the latent-label model with every LE output
+replaced by the latent k and without the cap of 5.5. The actual and ideal runs
+can be coupled to coincide unless some LE call returns a wrong label or ABORT
+occurs, so every event's probability differs between them by less than
+2^-11 + 2^-20. Resource bounds are proved for every ACTUAL branch directly,
+because they rest only on caps and fixed allocations.
+
+## 6. Phase vectors and the linear merge
+
+A PHASE VECTOR of length 2^lam is a lam-qubit index register with a classical
+label table lab[0..2^lam). In the ideal run its state is
+2^(-lam/2) sum_x exp(2 pi i lab[x] th) |x>, up to a global phase, for a fixed
+real th. Labels are nonnegative integers. The vector is COLLIMATED TO p if all
+lab[x] are congruent modulo 2^p.
+
+STORAGE. A table collimated to p is stored as its common residue
+c = lab[0] mod 2^p (one p-bit number) and the HIGH PARTS hi[x] = floor(lab[x]/2^p),
+so lab[x] = c + 2^p hi[x]. Each high part is stored in a fixed field of fw bits,
+where fw is any bound with lab[x] < 2^(p+fw) for all x (Section 7 fixes fw per
+level). Every quantity used below is computed from (c, hi) exactly; lab[x] is
+never written out in full except in LEAF, where p = 0 and hi = lab.
+
+### 6.1 Lookups
+
+LOOKUP(tab), for a classical table of E rows with fw-bit entries, XORs tab[x]
+into a clean fw-bit register, controlled by a lam-qubit index x. For each row
+x0 = 0..E-1 it computes the flag [x = x0] with a Toffoli chain on O(lam)
+scratch, applies CNOTs from the flag to the output bits where tab[x0] has a 1,
+and uncomputes the chain. Indices outside [0,E) give output 0. The circuit is
+its own inverse, has O(E (lam + fw)) gates and O(lam + fw) qubits, and is
+generated by reading each table bit once.
+
+### 6.2 MERGE(X1, X2; p, b, lam')
+
+Precondition: X1 and X2 are phase vectors from disjoint sets of copies, both of
+length 2^lam, collimated to p, with index registers x and y and tables al and be.
+Both are stored as in STORAGE: al[x] = cA + 2^p hA[x] and be[y] = cB + 2^p hB[y],
+with 0 <= cA, cB < 2^p. Let car = floor((cA + cB)/2^p) in {0,1}.
+Define residues aa[x] = hA[x] mod 2^b and bb[y] = hB[y] mod 2^b.
+Then bits p..p+b-1 of al[x] + be[y] equal (aa[x] + bb[y] + car) mod 2^b.
+
+1. LOOKUP aa into a fresh b-bit register Ru and bb into Rv. Add Ru + Rv + car
+   (mod 2^b) cleanly into a fresh register Rz, and clear Ru and Rv by repeating
+   both lookups. Measure Rz, obtaining e, and reset Rz from that known value.
+2. Classical. Let S_e = {(x,y) : aa[x] + bb[y] + car = e mod 2^b} and sz = |S_e|.
+   - Merge-sort the indices y by the key (bb[y], y) into order[]; pos[y] is the
+     position of y.
+   - For each x the partners y form one contiguous run of order[], namely the
+     residue class cls[x] = (e - car - aa[x]) mod 2^b. Find its start lo[x] and
+     length cnt[x] by binary search.
+   - Put off[x] = sum_(x' < x) cnt[x'] and rank(x,y) = off[x] + pos[y] - lo[x].
+     The rank is a bijection from S_e onto [0, sz).
+   - If sz < 2^lam', declare FAIL.
+3. Let R have 2 lam + 1 bits. LOOKUP pos into Rp and Dx[x] = (off[x] - lo[x]) mod 2^(2lam+1)
+   into Rd. Add Rp + Rd (mod 2^(2lam+1)) cleanly into a fresh R, and clear Rp
+   and Rd by repeating the lookups. On S_e, R = rank(x,y).
+4. Measure bl = floor(R / 2^lam'), the bits of R above the low lam'. If
+   (bl+1) 2^lam' > sz, declare FAIL.
+5. Classical. For z in [0, 2^lam'), find the unique (x_z, y_z) with rank
+   bl 2^lam' + z, in one scan over x with running offsets. Apply LOOKUP
+   z -> (x_z, y_z) on the low lam' bits of R, XORing into the registers x and y,
+   which become |0>. Reset the high bits of R from their known value bl.
+6. Output the low lam' bits of R as the index register, with table
+   lab[z] = al[x_z] + be[y_z], stored as in STORAGE with p+b in place of p:
+   put sv = hA[x_z] + hB[y_z] + car, which is congruent to e modulo 2^b. Then
+   lab[z] = (cA + cB - car 2^p + 2^p e) + 2^(p+b) floor(sv/2^b). The first term
+   c' = cA + cB - car 2^p + 2^p e lies in [0, 2^(p+b)) and does not depend on z.
+   So the stored output is the common residue c' and the high parts
+   hi'[z] = floor(sv/2^b).
+
+On FAIL, both inputs are reset and released and never reused. All registers
+have fixed widths, so memory is allocated deterministically.
+
+Correctness (ideal run). Before step 1 the state is X1 (x) X2: equal
+magnitudes over all pairs (x,y), with phases 2 pi (al[x] + be[y]) th. Steps 1
+and 3 compute functions of (x,y) into clean registers and measure them. So
+after step 4 the state is the equal-magnitude superposition over the 2^lam'
+pairs of block bl, with their original phases. Step 5 maps (x_z, y_z) to z
+bijectively. The output is therefore a phase vector with table lab. Every
+label is congruent to cA + cB + 2^p ((e - car) mod 2^b) modulo 2^(p+b), so the
+output is collimated to p+b.
+
+Lemma 6.1 (distribution-free failure). For ANY input tables collimated to p,
+the measurement law in steps 1 and 4 depends only on aa, bb and car (that is,
+on label bits below p+b), and Pr[FAIL] <= 2^(b + lam' - 2 lam).
+
+Proof. Each measurement is a computational-basis measurement of a function of
+(x,y) on an equal-magnitude superposition. Its outcome probabilities are
+therefore ratios of counts, independent of the phases. The outcome e has
+probability sz_e / 2^(2lam). Given e, the measured rank is uniform on [0, sz_e).
+So FAIL has conditional probability rem_e / sz_e, where rem_e = sz_e mod 2^lam'
+(this also covers sz_e < 2^lam'). Hence
+Pr[FAIL] = sum_e rem_e / 2^(2lam) <= 2^b (2^lam' - 1) / 2^(2lam). QED.
+
+Cost. Write L = 2^lam and L' = 2^lam'. A merge makes eight lookup passes of L
+rows and one of L' rows, each with O(lam + b) bit fields. Classically it
+performs O(L lam) comparisons of (b + lam)-bit keys, O(L) binary searches of
+O(lam) steps on b-bit keys, and O(L') additions of high parts of at most
+O(n) bits. With lam, b = O(sqrt n) (Section 7), this is O(n (L + L')) core steps.
+The quantum scratch is O(sqrt n) beyond the two index registers. The classical
+scratch (order, pos, lo, cnt, off, Dx, aa, bb and the inverse block table) is
+O((L + L') sqrt n) bits, and the output table is L' fields of fw' bits plus
+p + b bits for c', where fw' is the output field width (fw_(i+1) in Section 7).
+
+## 7. The tree TREE_D
+
+Input: a supplier of LEAF QUBITS. Each is a positive qubit with a known label
+uniform on [0, 2^D), D >= 2, independently. Put B = D - 1 <= n, the number of bits
+to collimate.
+
+Global parameters, functions of n only and computed by exact integer arithmetic:
+
+    w = ceil(sqrt n),   kappa = ceil(log2 w) + 1,   v = ceil(w/2) + 6 kappa,
+    Sum(m) = (m+1) v + m(m+1)/2 + kappa   (m >= 1),
+    mmax = min{ m >= 1 : Sum(m) >= n }.
+
+Per-tree parameters:
+
+    m = min{ m >= 1 : Sum(m) >= B },
+    lam_i = kappa + 1 + v + i (0 <= i <= m-1),  lam_m = 1,
+    bmax_i = v + i (0 <= i <= m-2),  bmax_(m-1) = kappa + 2v + 2m - 1.
+
+So a leaf table already has length 2^(kappa+1+v) (LEAF BOOST v), and lengths
+grow by one bit per level on every level below the root. There is no width
+cap. When m = 1 there are no growing merges, and the root merges two leaves.
+
+Basic facts:
+- By direct summation, sum_i bmax_i = (m-1) v + (m-1)(m-2)/2 + kappa + 2v + 2m - 1 =
+  Sum(m) >= B.
+- Sum(m) - Sum(m-1) = v + m > 0 for m >= 2, so Sum is increasing. Since B <= n,
+  m <= mmax for every tree.
+- Depth bound. Since v >= w/2,
+
+      Sum(w) >= (w+1)(w/2 + w/2) + kappa = w^2 + w + kappa > w^2 >= n,
+
+  so 1 <= m <= mmax <= w for every tree.                                      (7.0)
+- 2^kappa >= 2w >= 2m and 2^kappa < 4w, because 2^(ceil(log2 w)) lies in [w, 2w).
+- Short depth. Let n >= 2^24, so w >= 4096, and put m0 = w - 4 kappa. Here
+  kappa < log2 w + 2, and 16 (log2 w + 2)^2 <= w: this holds at w = 4096
+  (16 * 196 = 3136), and x -> 16 (log2 x + 2)^2 - x is decreasing for x >= 4096,
+  because its derivative 32 (log2 x + 2)/(x ln 2) - 1 is decreasing in x and equals 448/(4096 ln 2) - 1 < 0 at x = 4096. So
+  16 kappa^2 <= w, hence m0 >= 1, and since v + m0/2 >= w/2 + 6 kappa + w/2 - 2 kappa,
+
+      Sum(m0) = (m0+1)(v + m0/2) + kappa >= (w - 4 kappa + 1)(w + 4 kappa) + kappa
+              = w^2 - 16 kappa^2 + w + 5 kappa > w^2 >= n.
+
+  So mmax <= w - 4 kappa, and, using 2^kappa >= 2w, w^4 >= n^2 and 2^w < 2 * 2^(sqrt n),
+
+      2^mmax <= 2^w / 2^(4 kappa) <= 2^w / (16 w^4) < 2^(sqrt n) / (8 n^2).      (7.0')
+
+- For 64 <= n < 2^24, (7.0) gives n^2 2^mmax <= n^2 2^w < 2^48 * 2 * 2^(sqrt n). With
+  (7.0'), for every n >= 64,
+
+      n^2 2^mmax < 2^49 2^(sqrt n).                                          (7.0'')
+
+Allocate b_(m-1), b_(m-2), ..., b_0 in that order greedily, b_i = min(bmax_i,
+B - (already allocated)). Then sum_i b_i = B; some low levels may get b_i = 0. Put
+p_0 = 0 and p_(i+1) = p_i + b_i, so p_m = B, and let nq_D = 2^m (kappa+1+v) be
+the number of leaf qubits per tree. Substituting directly in the two cases
+(growing levels 0 <= i <= m-2: lam_(i+1) = lam_i + 1 and bmax_i = v + i =
+lam_i - kappa - 1; root i = m-1: lam_m = 1 and bmax_(m-1) = kappa + 2v + 2m - 1 =
+2 lam_(m-1) - kappa - 1) gives
+
+    b_i + lam_(i+1) - 2 lam_i <= bmax_i + lam_(i+1) - 2 lam_i = -kappa,        (7.1)
+
+at every level 0 <= i <= m-1, so by Lemma 6.1 every merge fails with probability
+at most 2^-kappa <= 1/(2m).
+
+LEAF: take kappa+1+v leaf qubits as the index register (bit j = qubit j). Build
+the table incrementally, lab[0] = 0 and lab[x + 2^j] = lab[x] + k_j for x < 2^j:
+one addition per entry. The table has length 2^(lam_0), is collimated to p_0 = 0,
+and in the ideal run is exactly the tensor product state.
+
+Field widths. A level-i label (output of VEC(i)) is a sum of at most
+2^i (kappa+1+v) leaf labels below 2^(B+1), so it is below 2^(B+1+i+gw) with
+gw = ceil(log2(kappa+1+v)). Level-i tables are collimated to p_i and stored with
+fw_i = B + 1 + i + gw - p_i bits per high part.
+
+VEC(i): if i = 0 return LEAF. Otherwise repeat:
+- X1 = VEC(i-1);
+- X2 = VEC(i-1);
+- out = MERGE(X1, X2; p_(i-1), b_(i-1), lam_i);
+- if out != FAIL, return out.
+
+TREE_D returns VEC(m), a one-qubit phase vector with labels lab[0] and lab[1],
+congruent modulo 2^B. Its ideal state is, up to global phase,
+(|0> + exp(2 pi i 2^B W th)|1>)/sqrt 2 with the known integer
+
+    W = (lab[1] - lab[0]) / 2^B = hi[1] - hi[0],                              (7.2)
+
+because the root table is collimated to p_m = B.
+
+Each label is a sum of at most nq_D leaf labels below 2^(B+1), so |W| < 2 nq_D.
+Depth-first evaluation holds at most one finished sibling per level.
+
+Size bounds for B <= n and n >= 64 (so sqrt n >= 8):
+- sqrt n <= w < sqrt n + 1, so 2^w < 2 * 2^(sqrt n).
+- 2^kappa < 4w < 4 sqrt n + 4 <= (9/2) sqrt n, because 4 <= sqrt(n)/2.
+- kappa <= log2 w + 2 < log2(sqrt n + 1) + 2 <= sqrt(n)/2 + 2. The last step holds
+  at sqrt n = 8 (log2 9 < 4), and thereafter, since d/dx log2(x + 1) =
+  1/((x+1) ln 2) < 1/2 for x >= 8.
+- v <= (w+1)/2 + 6 kappa < (sqrt(n)/2 + 1) + (3 sqrt n + 12) = (7/2) sqrt n + 13, and
+  kappa + 1 + v < 4 sqrt n + 16 <= 6 sqrt n.
+- Put lam* = kappa + v + mmax. Every lam_i of every tree is at most
+  lam_(m-1) = kappa + v + m <= lam*, and lam* <= kappa + v + w < 5 sqrt n + 16 <= 7 sqrt n.
+- Every b_i <= bmax_i <= bmax_(m-1) = kappa + 2v + 2m - 1 <= kappa + 2v + 2w - 1
+  < (sqrt(n)/2 + 2) + (7 sqrt n + 26) + (2 sqrt n + 2) - 1 = (19/2) sqrt n + 29 <= 14 sqrt n.
+  So lam_i and b_i are O(sqrt n).
+- The stacked index registers total sum_i lam_i <= (m+1) lam* <= (w+1) 7 sqrt n
+  < (sqrt n + 2) 7 sqrt n <= (5/4) 7 n < 9n, because 2 <= sqrt(n)/4.
+- 2^v <= 2^((w+1)/2) (2^kappa)^6 < 2 * 2^(sqrt(n)/2) ((9/2) sqrt n)^6 < 2^15 n^3 2^(sqrt(n)/2).
+- nq_D = 2^m (kappa+1+v) <= 2^mmax 6 sqrt n < 6 * 2^49 n^(-3/2) 2^(sqrt n), by (7.0'').
+- 2^(lam*) = 2^kappa 2^v 2^mmax < (9/2) sqrt n * 2^15 n^3 2^(sqrt(n)/2) * 2^49 n^(-2) 2^(sqrt n)
+  < 2^67 n^(3/2) 2^((3/2) sqrt n), by (7.0'').
+
+## 8. Top-bit independence
+
+Write each leaf label as k_j = low_j + 2^B tau_j, with 0 <= low_j < 2^B and
+tau_j in {0,1}. Since k_j is uniform on [0, 2^(B+1)), low_j and tau_j are
+independent and tau_j is a fair bit. Let Gt be the sigma-field generated by:
+- all low_j of the tree's leaves, including those of discarded attempts;
+- all measurement outcomes (e, bl) of its merges;
+- all tree-construction decisions of the controller (merge parameters, FAIL
+  and retry decisions, leaf acceptance tests and which copies are used).
+Gt does NOT include LE's internal coins, test outcomes, accept/reject verdicts or
+fallback decisions (Section 5). In the ideal run these feed no decision: every LE
+output is replaced by the latent k and there is no fallback cap. Given k, they are
+independent of everything else, so they are averaged out and never conditioned on.
+
+Lemma 8.1. In the ideal run, conditional on Gt and on all other independent
+randomness (other copies, controller coins, earlier root outcomes), the top
+bits tau_j of the leaves of the returned root are i.i.d. fair.
+
+Proof, by induction over the controller's steps. Every tree-construction decision, residue,
+sort key, rank and block partition uses only label bits below position B,
+since Section 6.2 reads bits p..p+b-1 with p + b <= B, together with index
+order. Bits below B of a sum of leaf labels depend only on the low_j: adding
+multiples of 2^B does not change them. By Lemma 6.1, each measurement's
+conditional law, given the labels and the earlier outcomes, is a function of
+the low_j and the earlier outcomes only. Inductively, the joint law of
+(all tau, all low, all outcomes and decisions) factorizes as
+law(tau) x law(low) x law(outcomes and decisions | low). Retries use fresh
+copies, whose labels enter the same factorization. QED.
+
+Let x0 and x1 be the leaf-incidence vectors of the two root entries. Distinct
+indices at a node correspond to distinct incidence vectors: this holds at
+leaves, is preserved by concatenating disjoint coordinate sets, and
+re-indexing is a bijection. So hd = |x0 xor x1| >= 1. From (7.2),
+
+    W = cst + sum_(j in Sp) tau_j - sum_(j in Sm) tau_j,                        (8.1)
+
+where cst = (sum_j low_j (x1_j - x0_j)) / 2^B is a Gt-measurable integer, and Sp and
+Sm are disjoint Gt-measurable sets with |Sp| + |Sm| = hd. A fair bit tau has
+E exp(2 pi i phi tau) = e^(i pi phi) cos(pi phi). Hence, for every real phi,
+
+    | E[ exp(2 pi i phi W) | Gt ] | = |cos(pi phi)|^hd <= |cos(pi phi)|,       (8.2)
+
+and, with phi = 1/2, Pr[W odd | Gt] = 1/2.                                     (8.3)
+
+## 9. Odd part: s1 = s mod M by free-frequency decoding
+
+If M = 1, put s1 = 0 and skip this section. Otherwise M >= 3, so N >= 3 * 2^a2
+and d - 1 >= a2. Put theta = s1/M in [0,1). Every stage uses D = d, B = d - 1,
+nq = nq_d and
+
+    K = 2^13 (ceil(log2 nq) + ceil(log2 n) + 30).
+
+The stages are j = 0, 1, ..., J, where J = min{ j >= 0 : 2^(j+3) > 2M }. By
+minimality, J + 1 <= log2 M <= n.
+
+Source for stage j. Compute alpha_j by extended Euclid and CRT so that
+alpha_j = 1 (mod 2^a2) and alpha_j = 2^j (2^(d-1-a2))^(-1) (mod M). Then alpha_j is a
+unit modulo N. A leaf qubit is made as follows:
+- acquire a fresh copy and apply Mult_(alpha_j);
+- run LE to obtain k, and accept iff k < 2^d (otherwise discard the copy and
+  acquire again);
+- on acceptance, apply X to the control.
+
+In the ideal run, accepted labels are i.i.d. uniform on [0, 2^d), each copy is
+accepted with probability 2^d/N > 1/2, and the qubit is pq_k(alpha_j s), i.e. it
+has phase exp(2 pi i k th) with th = alpha_j s/N. For every integer W,
+
+    2^(d-1) W th = W 2^(d-1-a2) alpha_j s / M = 2^j W s1 / M   (mod 1),            (9.1)
+
+because 2^(d-1-a2) alpha_j = 2^j (mod M) and s = s1 (mod M). So a TREE_d root of
+stage j is, ideally, (|0> + exp(2 pi i f theta)|1>)/sqrt 2 with the known
+frequency f = 2^j W.
+
+Measurement. For i = 1..K:
+- run TREE_d;
+- obtain a fair bit beta_i by measuring H|0>;
+- measure the root in X (beta_i = 0) or Y (beta_i = 1), recording Z_i in {+1,-1}
+  together with W_i and beta_i.
+
+Ideally E[Z_i | f_i, beta_i] = cs_(beta_i)(f_i theta) with f_i = 2^j W_i.
+
+Candidates. Put P_j = j + ceil(log2 nq) + 8, and identify an integer c with the
+point zeta = c/2^(P_j) on the circle R/Z.
+- Stage 0 uses every c in [0, 2^(P_0)).
+- Stage j >= 1 uses every c whose point lies within circular distance
+  rad_j = 2^-(j+2) of the previous center z_(j-1). This is one or two explicit
+  integer intervals.
+- Both z_(j-1) (denominator 2^(P_(j-1))) and rad_j are multiples of 2^-(P_j),
+  so the two arc endpoints are themselves candidates.
+- There are at most 2^(ceil(log2 nq)+7) + 2 <= 2^(ceil(log2 nq)+8) candidates.
+
+The candidate set is fixed by information available at the start of the stage.
+
+Score. For each candidate, using exact integer arithmetic,
+
+    score(c) = sum_i Z_i * tab_(beta_i)( ((f_i c) mod 2^(P_j)) / 2^(P_j) ).
+
+Enumerate the candidates in increasing order, keeping the K residues
+(f_i c) mod 2^(P_j) and updating each with one addition per step, and keep a
+running maximum. Let z_j = c*/2^(P_j) for the least maximizer c*. All loops have
+fixed lengths, and the decoder returns a candidate on every branch.
+
+Lemma 9.1. Suppose theta is within circular distance rad_j of z_(j-1) (no
+condition when j = 0). Then, in the ideal run, with probability at least
+1 - 2^-20/n, theta is within circular distance 2^-(j+3) of z_j.
+
+Proof. Let Fs_i be the sigma-field of everything up to and including root i
+of the stage, and Gt_i the sigma-field of Section 8 for tree i. For a
+candidate point zeta, let Delta = theta - zeta, taken as a circular
+difference, and let xi_i = Z_i cs_(beta_i)(f_i zeta). Conditional on
+Fs_(i-1), Gt_i and the top bits of tree i (hence on W_i), averaging over the
+fair basis bit gives
+
+    E[xi_i | ...] = (1/2)[cos(2 pi f_i theta) cos(2 pi f_i zeta) + sin(..) sin(..)]
+                  = (1/2) cos(2 pi f_i Delta).
+
+By (4.1), the computed score differs from sum_i xi_i by at most K/625.
+
+Near point. Let zeta0 be the candidate nearest theta. In stage 0 the
+candidates cover the circle. In stage j >= 1 the candidate arc contains theta
+and has candidate endpoints. Either way |Delta0| <= 2^-(P_j + 1). Since
+|f_i| < 2^j 2 nq,
+
+    |f_i Delta0| < 2^(j+1) nq 2^-(P_j + 1) <= 2^-8.
+
+So E[xi_i | Fs_(i-1)] >= (1/2) cos(pi/128) for every realization.
+
+Far points. Call zeta far if |Delta| >= 2^-(j+3). In stage 0 we always have
+|Delta| <= 1/2. In stage j >= 1, both theta and zeta lie within rad_j of
+z_(j-1), so |Delta| <= 2^-(j+1). Hence xx = 2^j |Delta| lies in [1/8, 1/2] for
+every far zeta. Tree i uses copies independent of Fs_(i-1). By Lemma 8.1, its
+top bits are fair and independent given Fs_(i-1) and Gt_i. So by (8.2) with
+phi = 2^j Delta, and since a real part is at most the modulus,
+
+    E[xi_i | Fs_(i-1)] = E[ (1/2) Re E[exp(2 pi i 2^j Delta W_i) | Fs_(i-1), Gt_i] | Fs_(i-1) ]
+                       <= (1/2) cos(pi xx) <= (1/2) cos(pi/8).
+
+Concentration. For each fixed candidate, sum_i (xi_i - E[xi_i | Fs_(i-1)]) is a
+martingale whose increments lie in intervals of length 2. By Azuma-Hoeffding
+it deviates by at least K/64 with probability at most
+exp(-(K/64)^2/(2K)) = exp(-K/8192). Outside these events for zeta0 and every far
+candidate,
+
+    score(zeta0) >= (K/2) cos(pi/128) - K/64 - K/625
+                 >  (K/2) cos(pi/8)   + K/64 + K/625 >= score(far zeta),
+
+because (1/2)(cos(pi/128) - cos(pi/8)) > 0.0379 > 2/64 + 2/625 = 0.03445. So the
+maximizer is not far. There are at most 2^(ceil(log2 nq)+9) events, and since
+e^-x <= 2^-x, exp(-K/8192) <= 2^-(ceil(log2 nq) + ceil(log2 n) + 30). The failure
+probability is therefore at most 2^(9-30)/n <= 2^-20/n. QED.
+
+For stage j+1 the hypothesis of Lemma 9.1 is the conclusion of stage j, since
+2^-(j+3) = rad_(j+1). By induction, with probability at least 1 - 2^-20, theta
+lies within 2^-(J+3) < 1/(2M) of z_J. Output s1 = floor(M z_J + 1/2) mod M. This
+equals s mod M because theta = s1/M, and the circular distance handles
+wrap-around.
+
+## 10. 2-adic part: s2 bit by bit
+
+If a2 = 0, put s2 = 0 and skip this section. Otherwise s - s1 = M s2 (mod N) for
+a unique s2 in [0, 2^a2). The bits of s2 are found at levels g = 0..a2-1. Let
+s2low be the known low g bits. Put sh_g = s1 + M s2low (mod N), wd = a2 - g, and
+rem = (s2 - s2low)/2^g in Z/2^wd. Then s - sh_g = M 2^g rem (mod N).
+
+Leaf qubit for level g:
+- acquire a copy and apply Shift_(sh_g), which makes the secret s - sh_g;
+- run LE to obtain k, and apply X to the control.
+
+Ideally the phase is exp(2 pi i k M 2^g rem/N) = exp(2 pi i kk rem/2^wd), with
+kk = k mod 2^wd. Since 2^wd divides N and k is uniform on Z/NZ, kk is uniform on
+[0, 2^wd). Use kk as the label.
+
+- If wd = 1: if kk = 1, measure X; the outcome is + iff rem is even. If kk = 0,
+  discard and repeat.
+- If wd >= 2: run TREE_wd (D = wd). If W is even, discard and repeat. If W is
+  odd, the root is (|0> + exp(pi i W rem)|1>)/sqrt 2 = (|0> + (-1)^rem |1>)/sqrt 2,
+  and an X measurement gives rem mod 2 exactly.
+
+By (8.3), each attempt succeeds with probability exactly 1/2, even if s1 was
+wrong. Set bit g of s2. In the ideal run with s1 correct, every bit is correct.
+Output (s1 + M s2) mod N.
+
+## 11. The complete algorithm and its source cap
+
+Finite branch (n < 64, i.e. N <= 2^63). For each cand = 0..N-1 in order, use
+n+10 fresh copies: apply Shift_cand, measure the control in X, and reject cand
+at the first minus outcome. Output the first cand with no rejection, or 0.
+- For cand = s every outcome is plus.
+- For cand != s the two data branches are orthogonal, so each outcome is uniform.
+- A union bound over cand gives Pr[wrong] <= N 2^-(n+10) <= 2^-10.
+- Q <= N(n+10), and all other resources are bounded by absolute constants.
+
+Main branch (n >= 64). Compute a2, M, d, J, K and all tree parameters (J and K
+are computed also when M = 1). The values w, kappa, v and mmax are those of
+Section 7, and m <= mmax for every tree, by (7.0). Put
+
+    Q* = 6 * 2^mmax (kappa+1+v) ((J+1)K + 2 a2) + 2 a2,    Qcap = 1024 Q*,
+
+and then h_e, h_A, t_V and Cf from Section 5. A binary down-counter of acquisitions
+is kept, at amortized O(1) bit flips per acquisition. BL1 stops, releases everything
+and outputs 0 before an acquisition would exceed Qcap. Otherwise it runs
+Section 9 and then Section 10. Parameter, CRT and table computations are
+polynomial in n.
+
+Lemma 11.1 (expected ideal acquisitions). In the ideal UNCAPPED run, the
+expected number of acquisitions is at most Q*.
+
+Proof. Given everything before it, an accepted leaf qubit needs at most 2
+acquisitions in expectation (each fresh copy is accepted with probability > 1/2
+in Section 9, and 1 in Section 10). Put Qv_0 = 2(kappa+1+v) and Qv_(i+1) = 2 rt Qv_i
+with rt = 2^kappa/(2^kappa - 1). We show by induction on i that, given everything
+before it, a call of VEC(i) uses at most Qv_i acquisitions in expectation. For
+i = 0 this is the first sentence. For VEC(i+1), let attempt t = 1, 2, ... use A_t
+acquisitions, let tau be the number of attempts, and let F_(t-1) be the history
+before attempt t. By induction E[A_t | F_(t-1)] <= 2 Qv_i. By Lemma 6.1 and (7.1)
+each attempt fails with conditional probability at most 2^-kappa given its past,
+so Pr[tau >= t] <= 2^(-kappa (t-1)) and E[tau] <= rt. Since {tau >= t} is determined
+by F_(t-1),
+
+    E[sum_t A_t 1{tau >= t}] = sum_t E[1{tau >= t} E[A_t | F_(t-1)]] <= 2 Qv_i E[tau] <= Qv_(i+1),
+
+and the same computation holds conditionally on the history before the call.
+Moreover rt^m <= exp(m/(2^kappa - 1)) <= exp(m/(2m - 1)) <= e < 3, since 2^kappa >= 2m.
+So a tree uses at most Qv_m <= 3 * 2^m * 2(kappa+1+v) <= 6 * 2^mmax (kappa+1+v)
+acquisitions in expectation, given its past. Section 9 runs (J+1)K trees.
+Section 10 needs, per bit and by the same stopping argument, an expected 2 trees
+by (8.3), or, when wd = 1, an expected 2 single acquisitions since kk is uniform
+on {0,1}. Summing gives the bound. QED.
+
+Lemma 11.2 (work per branch). On every actual branch of the main branch, the
+number of core steps is at most
+O(n^2 log n + n^(3/2) 2^v) Qcap + O(n^(5/2) nq) + poly(n),
+where nq = nq_d.
+
+Proof. Charge every core step to an acquisition, or to the fixed-length loops.
+- Each acquisition (transform, acceptance test, X, counter update) takes O(n^2)
+  core steps. All LE calls together take O(n^2 log n) Qcap + O(n^(5/2)) core
+  steps on every branch (Section 5.6), since there is one LE call per
+  acquisition and Q <= Qcap.
+- A leaf table of 2^(kappa+1+v) entries costs O(n 2^(kappa+1+v)) (one addition
+  of O(n)-bit labels per entry). Charged to its kappa+1+v acquisitions, that is
+  O(n 2^(kappa+1+v)/(kappa+1+v)) per acquisition.
+- A merge attempt producing level i+1 (0 <= i <= m-1) costs O(n 2^(kappa+2+v+i))
+  (Section 6), since its input length 2^(lam_i) and its output length
+  2^(lam_(i+1)) (which is 2 at the root) are at most 2^(kappa+2+v+i). Its two
+  inputs were built from 2^(i+1)(kappa+1+v) acquisitions that no other attempt
+  at that level uses, since inputs of a failed merge are discarded and never
+  reused. That is O(n 2^(kappa+1+v)/(kappa+1+v)) per acquisition per level.
+  Each acquisition lies below at most m merge attempts, one per level, so the
+  leaf and merge share is O(n (m+1) 2^(kappa+1+v)/(kappa+1+v)) per acquisition.
+  By (7.0) and Section 7, m <= w, 2^kappa < 4w and kappa+1+v > v >= w/2, so
+  this share is below a constant times n (w+1) 8w 2^v/(w/2) = 16 n (w+1) 2^v,
+  which is O(n^(3/2) 2^v).
+- Root measurements and bookkeeping are O(n) per tree, and each tree uses at
+  least one acquisition.
+- The decoder's fixed loops cost (J+1) * 2^(ceil(log2 nq)+8) * K * O(n)
+  = O(n * nq * sqrt n * n) core steps.
+- Setup is poly(n) in total. The parameters, extended Euclid and CRT for at most
+  n stages, the Mult constants, Q*, h_e, the table of Section 4 and the Section 10
+  shift values are computed once. The decoder's initial residues (f_i c) mod 2^(P_j)
+  are computed per stage, poly(n) per stage for at most n stages.
+
+Every loop is either fixed-length or consumes acquisitions, so every branch
+terminates with this many core steps. QED.
+
+## 12. Success probability
+
+In the ideal UNCAPPED run, Section 9 errs with probability at most 2^-20, and
+Section 10 then never errs. By Markov and Lemma 11.1, the source cap is reached
+in the ideal run with probability at most 1/1024. Capping changes the run only
+on that event. The actual run differs from the ideal one only if some LE call
+returns a wrong label or the high-confidence cap aborts, which has probability
+below 2^-11 + 2^-20 (Section 5.6, Lemma 5.2). So
+
+    Pr[output = s] >= 1 - 2^-20 - 2^-10 - 2^-11 - 2^-20 >= 1 - 2^-8 > 2/3.
+
+The finite branch succeeds with probability at least 1 - 2^-10. These are
+additive couplings. There is no conditioning on favorable labels, caps or
+outcomes.
+
+## 13. Resources on every branch
+
+Throughout, n >= 64; the finite branch is O(1). From Section 7 we use
+m <= mmax <= w < sqrt n + 1, n^2 2^mmax < 2^49 2^(sqrt n) (7.0''), kappa + 1 + v < 6 sqrt n,
+2^kappa < (9/2) sqrt n, 2^v < 2^15 n^3 2^(sqrt(n)/2), nq < 6 * 2^49 n^(-3/2) 2^(sqrt n) and
+2^(lam*) < 2^67 n^(3/2) 2^((3/2) sqrt n).
+
+Sizes. log2 nq < sqrt n + 52 = O(sqrt n), so K = O(sqrt n). Also J + 1 <= n and
+a2 <= n. So (J+1)K + 2 a2 = O(n^(3/2)), and
+Q* < 6 * 2^mmax * 6 sqrt n * O(n^(3/2)) + 2n = O(n^2 2^mmax) + 2n = O(2^(sqrt n)), by (7.0'').
+Also log2 Qcap = O(sqrt n), so h_e = O(sqrt n), and h_A, T_V = O(log n).
+
+Q. On every branch, Q <= Qcap = 1024 Q* = O(2^(sqrt n)).
+
+Core steps. By Lemma 11.2, the merge and leaf part is
+O(n^(3/2) 2^v) Qcap = O(n^(3/2) n^3 2^(sqrt(n)/2)) * O(2^(sqrt n)) = O(n^(9/2) 2^((3/2) sqrt n)).
+The LE part is O(n^2 log n) Qcap = O(n^2 (log2 n) 2^(sqrt n)), which is smaller. The
+decoder term O(n^(5/2) nq) = O(n 2^(sqrt n)) and the poly(n) setup are smaller too.
+In total the number of core steps is O(n^(9/2) 2^((3/2) sqrt n)).
+
+S_Q. The depth-first stack holds fewer than 9n index qubits (Section 7). A merge
+adds O(sqrt n) qubits of registers. LE uses O(n) qubits (data, ancilla,
+arithmetic), and the data register is reset after each call. Transforms use
+O(n), and each root qubit is measured at once. Released registers are reused.
+So S_Q = O(n).
+
+S_C. At any time the depth-first stack holds at most two tables per level (a
+finished sibling and the table being built or merged) plus one merge output.
+Every table of every tree has at most 2^(lam*) entries. Each stored label or high
+part has at most 3n bits, because a level-i label is below 2^(B+1+i+gw) and
+B + 1 + i + gw <= n + 1 + w + gw <= 3n (i <= m <= w, and gw = ceil(log2(kappa+1+v))
+<= ceil(log2(6 sqrt n)) <= sqrt n). Each residue has at most n bits. So the tables
+use at most 3(w+1)(3n 2^(lam*) + n) bits, which by the bounds above is
+O(sqrt n * n * n^(3/2) 2^((3/2) sqrt n)) = O(n^3 2^((3/2) sqrt n)).
+- Merge scratch is O((2^lam + 2^lam') sqrt n) = O(2^(lam*) sqrt n) =
+  O(n^2 2^((3/2) sqrt n)) bits (Section 6.2).
+- The decoder stores K triples (W_i, beta_i, Z_i) and K running residues, all
+  O(n) bits each. Its candidates are enumerated, never stored.
+- The table of Section 4 is O(1). Counters and parameters are O(n) bits. LE
+  uses O(n log n) classical scratch (Section 5.3) and the fallback counter.
+
+So S_C = O(n^3 2^((3/2) sqrt n)). These are fixed allocations, so the bound holds
+on every branch.
+
+T. By (2.1), with log2(S_C + S_Q + 2) = O(sqrt n),
+T = O(n^(9/2) 2^((3/2) sqrt n)) * O(sqrt n) + (n+1) Qcap = O(n^5 2^((3/2) sqrt n)).
+
+All four bounds hold simultaneously for the same execution, with absolute
+constants independent of N, s and outcomes.
+
+## 14. Exact growth indices and declared envelopes
+
+The envelopes are
+
+    B_T(n) = n^5 2^((3/2) sqrt n),     B_C(n) = n^3 2^((3/2) sqrt n),
+    B_Q(n) = n,                        B_samples(n) = 2^(sqrt n).
+
+By Section 13 the resources are O of these. For B(n) = 2^(a sqrt n) n^pw with
+a > 0 and pw >= 0, we have log2 B = a sqrt n + O(log n). So
+log2 log2 B = (1/2) log2 n + log2 a + o(1), and g(B) = 1/2. For B_Q(n) = n,
+log2 log2 n / log2 n -> 0, so g = 0. The structured objects in submission.json are
+exactly these envelopes.
+
+## 15. Error tolerance
+
+The fifth claim is epsilon(n) = 0 under the model in which every acquired copy
+is an independent ideal coset state. Everything above is proved under this
+model. No positive tolerance for malformed copies is claimed, and zero does
+not assert that robustness is impossible.
+
