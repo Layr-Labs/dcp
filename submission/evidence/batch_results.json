@@ -1,0 +1,47 @@
+{
+  "scope": "Exact finite instrument-law evidence; not an asymptotic or official proof review.",
+  "scenarios": [
+    [
+      4,
+      0,
+      0,
+      4
+    ],
+    [
+      8,
+      1,
+      0,
+      4
+    ],
+    [
+      8,
+      0,
+      1,
+      4
+    ],
+    [
+      8,
+      0,
+      0,
+      4
+    ],
+    [
+      16,
+      1,
+      1,
+      3
+    ]
+  ],
+  "conditional_joint_output_records": 370,
+  "truncated_prefix_checks": 128,
+  "negative_control_sorting_by_middle_label_breaks_uniformity": {
+    "flags": [
+      0,
+      1
+    ],
+    "conditional_output_probabilities": {
+      "(0,)": "57/91",
+      "(1,)": "34/91"
+    }
+  }
+}
