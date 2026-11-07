@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFCS1310-TAGBANK: saturated boosted implicit fibers with linear classical bits and lazy counted quantum records",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical IFCS1310-TAGBANK interpreter of proof.md executing COMPLETE IFCS1310S60 P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. All guarantees hold jointly on EVERY branch, including wrong labels, failed/rejected/discarded inputs, source/fallback aborts, initialization and cleanup. Fully charged time is O(2^((3403/2000)*sqrt n)), exact growth index1/2. Direct known-index basis-bit operations and lazy per-cell epoch tags cost polynomial overhead per source logical bit/gate/object operation. Every epoch word has (n+2)^20 COUNTED basis bits and is processed bit-serially with O(n) ordinary staging. Exact full renumbering repairs overflow with NO new failure/source event at every length; eventually no overflow occurs because log total generations is O(sqrt n). Complete reference branchwise work is O(n^(9/2)*2^(tau0*sqrt n)), tau0=244792007/143976000<3403/2000. Strict rational time slack absorbs all interpreter polynomials. One-time complete bank initialization/cleanup is smaller since mu0=5999/10000<tau0. Actual finite-length renumbering costs change only an outside constant. Original source/quantum instruments, caps, saturated windows and decoders are unchanged. No QRAM or assumed cheap full clear is used.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "3403/2000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical IFCS1310-TAGBANK interpreter of proof.md executing COMPLETE IFCS1310S60 P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. All guarantees hold jointly on EVERY branch, including wrong labels, failed/rejected/discarded inputs, source/fallback aborts, initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact growth index0. Input/output, constant-many O(n)-bit staged operands/physical addresses/current-frame words, finite control, reusable bit/carry and O(log n)-bit epoch loop indices are counted. The (n+2)^20-bit epoch VALUES are NEVER ordinary classical operands: tags, headers/global generation/backup words, return frames, numeric scratch, owner directory and all source records are fully banked. All long loops stream their fields. No physical classical recursion stack, large directory or growing measurement transcript exists.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical IFCS1310-TAGBANK interpreter of proof.md executing COMPLETE IFCS1310S60 P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. All guarantees hold jointly on EVERY branch, including wrong labels, failed/rejected/discarded inputs, source/fallback aborts, initialization and cleanup. Peak allocated quantum workspace is O(2^((3/5)*sqrt n)), exact growth index1/2. Complete fixed owners A=2^16*n^2,R=2^(Lam+kappa+16) rows,Wrow=2^16*n^2 bits give B=2^48*n^4*2^(Lam+kappa). Every logical bit has one value and e=(n+2)^20 tag bits; complete D=B*(e+1)+(A+8)*e+A+H+2^20*n^4 includes RAW headers/global epoch/backup, bindings, coherent pool H=2^32*n^2 and all unused spans. The WHOLE rounded paired prefix and source temporaries are counted. Source Lam=kappa+1+w_s,2^w_s<2*2^(mu0*sqrt n),2^kappa<=32sqrt n imply D=O(n^26*2^(mu0*sqrt n)),mu0=5999/10000. Exact gap3/5-mu0=1/10000 absorbs every polynomial into the pure declared quantum envelope. This is maximum-address storage independent of lifetime, not occupancy. Renumbering uses only its counted backup and fixed bank, with source coherent registers preserved.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "3/5",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical IFCS1310-TAGBANK interpreter of proof.md executing COMPLETE IFCS1310S60 P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. All guarantees hold jointly on EVERY branch, including wrong labels, failed/rejected/discarded inputs, source/fallback aborts, initialization and cleanup. All acquired DCP copies number O(2^((13/10)*sqrt n)), exact growth index1/2. Exactly one physical request executes each P request, preserving all rejection/failure/discard/source-abort/fallback branches and literal cap Qcap=1024*(6*2^hmax*(kappa+1+nu)*((J+1)*K+2a2)+2a2). Full reference proves Qcap=O(n^2*2^(H0*sqrt n)),H0=187165613/143976000<13/10. Its strict rational gap absorbs polynomial n^2. Zero bank/tag/padding wires, source moves and exact overflow repair use charged gates/storage rather than extra source copies.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "13/10",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical IFCS1310-TAGBANK interpreter of proof.md executing COMPLETE IFCS1310S60 P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. All guarantees hold jointly on EVERY branch, including wrong labels, failed/rejected/discarded inputs, source/fallback aborts, initialization and cleanup. Guaranteed malformed fraction is epsilon(n)=0 under the exact independent-ideal-copy model. The decoded correlated-CQ invariant pi composed with each physical logical-step instrument equals P composed with pi, including irreversible forgetting, allocation/free, exact overflow renumbering and original quantum/source operations. Arbitrary correlations with phase registers/references are allowed. Extra helper outcomes are marginalized, never added to inherited held-out-bit conditioning. No positive robustness, transfer to another adaptive supplier model or impossibility of greater robustness is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
