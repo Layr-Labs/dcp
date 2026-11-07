@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SPCC90-TAGBANK: a proved lower live-cap profile with linear ordinary classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical SPCC90-TAGBANK bit-code completion of proof.md executing COMPLETE ADAPTED SPCC90-P P in virtual.md recovers the WHOLE secret unconditionally with probability at least1-2^-8 from independent ideal copies. All bounds hold jointly on EVERY branch, including wrong labels, failed/recycled pairs, failed merges, rejected/discarded sources, supplier/demand/acquisition aborts, initialization and cleanup. Fully charged time is O(n^120*2^((139/100)*sqrt n)), exact growth index1/2. All original streamed NEXT/slot, capped table, source/delivered quota, LE/decoder and stopping laws are retained. Direct known-index basis records use lazy tags with exact finite-overflow repair and an indexed banked quantum free list, never an exponential pool scan per operation. Deterministic flow sum A_i<=2A_0 and disjoint fresh merge inputs yield O(n^4)*(C_P+Qcap+H+1) wire/ownership events. O(n^4) control completion and O(n^100) charged helpers give O(n^108)*(T_P+Qcap+H+1)+O(n^100)*D. Source T_P=O(n^6*2^(bT*sqrt n)),bT=139/100; D=O(n^28*2^(bS*sqrt n)),H=O(n^2*2^(bS*sqrt n)),bS=8999/10000. Exact gapbT-bS=4901/10000 absorbs prefix polynomial above the declared120. Eventually no epoch overflow occurs; every finite earlier overflow is exactly repaired with no new failure/source event, changing only an outside constant. The changed profile alpha337/1000,beta171/200,gamma107/200,omega8999/10000 has a complete new exact capacity/rounding proof in virtual Section8, leading16891875703/16800000000>1.005. All affected parameter/resource/size statements are updated. Original threshold2^28 and all source instruments/guards remain. Adapted virtual body is NOT byte-identical to original SPC-M1.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "139/100",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "120",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical SPCC90-TAGBANK bit-code completion of proof.md executing COMPLETE ADAPTED SPCC90-P P in virtual.md recovers the WHOLE secret unconditionally with probability at least1-2^-8 from independent ideal copies. All bounds hold jointly on EVERY branch, including wrong labels, failed/recycled pairs, failed merges, rejected/discarded sources, supplier/demand/acquisition aborts, initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact growth index0. Count input/output, constant-many O(n)-bit staged operands/addresses/current-frame words, finite control and reusable bits/indices. Every large slot/table, numerical/frame/profile/decoder/generator record, quantum free-list/descriptor field and tag value is COUNTED basis storage and streamed. Public parameters are computed in O(n) staging before bank initialization and full profiles banked afterward. Ccap/Dcap quota VALUES are O(n)-bit words, not huge ordinary arrays. Operation/event powers do not denote materialized ordinary scratch. No duplicate classical stack/directory/circuit or growing transcript exists.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +51,76 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical SPCC90-TAGBANK bit-code completion of proof.md executing COMPLETE ADAPTED SPCC90-P P in virtual.md recovers the WHOLE secret unconditionally with probability at least1-2^-8 from independent ideal copies. All bounds hold jointly on EVERY branch, including wrong labels, failed/recycled pairs, failed merges, rejected/discarded sources, supplier/demand/acquisition aborts, initialization and cleanup. Peak FULL allocated quantum workspace is O(n^28*2^((8999/10000)*sqrt n)), exact growth index1/2. Set U=2^w+1,w=floor((8999/10000)*ceil(sqrt n)),A=2^16*n^2,R=2^24*n^4*U,Wrow=2^16*n^2,H=2^20*n^2*U. Every actual SLOT/phase/merge array has <=O(2^w) rows, source coherent live slots <=1+ell*2^w plus polynomial scratch, and all H-row quantum metadata fit R because R/H=16n^2. Full B=2^56*n^8*U,e=(n+2)^20,D=B*(e+1)+(A+8)*e+A+2^20*n^4 include all value/tag/raw/header/backup/descriptor/free-list/inactive owner/row/field/pool/padding spans. Whole paired prefix and source temporaries give O(D+H+n). U=O(2^(bS*sqrt n)),bS=8999/10000,so D=O(n^28*2^(bS*sqrt n)). No cumulative Ccap-row memory is introduced. This is maximum-address storage independent of lifetime and outcomes, not occupancy or omitted metadata.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8999/10000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "28",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical SPCC90-TAGBANK bit-code completion of proof.md executing COMPLETE ADAPTED SPCC90-P P in virtual.md recovers the WHOLE secret unconditionally with probability at least1-2^-8 from independent ideal copies. All bounds hold jointly on EVERY branch, including wrong labels, failed/recycled pairs, failed merges, rejected/discarded sources, supplier/demand/acquisition aborts, initialization and cleanup. All acquired DCP copies number O(n^3*2^((1424/1025)*sqrt n)), exact growth index1/2. Exactly one physical request executes each original request. Literal Qcap=n*Ccap+K,Ccap=2^13*n*3^ell*(3*K*2^m*dl),K=O(sqrt n),dl=O(sqrt n),ell=ceil(337r/1000),m=ceil(171r/200),r=ceil(sqrt n) give Qcap=O(n^3*3^ell*2^m). Exact3^41<2^65 proves log2(3)<65/41 and bQ=(337/1000)*(65/41)+171/200=1424/1025. Ceilings change only outside constants. Every rejected supplier, recycled/failed pair, merge discard and quota/batch abort remains counted. Zero bank/pool padding, pointer operations, source SWAPs and exact tag repair are charged work/storage, not additional DCP queries.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1424/1025",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the SAME physical SPCC90-TAGBANK bit-code completion of proof.md executing COMPLETE ADAPTED SPCC90-P P in virtual.md recovers the WHOLE secret unconditionally with probability at least1-2^-8 from independent ideal copies. All bounds hold jointly on EVERY branch, including wrong labels, failed/recycled pairs, failed merges, rejected/discarded sources, supplier/demand/acquisition aborts, initialization and cleanup. Guaranteed malformed fraction is epsilon(n)=0 under the exact independent-ideal-copy model. Decoding active tags and the injective live-wire descriptor map preserves complete logical CQ states, source/output law, irreversible forgetting, original slot/pair/merge/decoder instruments and exact allocation/free/renumber channels with arbitrary references. Extra helper readouts are marginalized rather than added to inherited held-out-bit conditioning. No positive robustness, adaptive-supplier transfer or impossibility claim is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
