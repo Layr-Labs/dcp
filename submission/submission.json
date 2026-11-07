@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSG-LB2-BANK: linear classical memory for the published quasipolynomial-copy log-log-band sieve",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the ONE physical PSG-LB2-BANK interpreter in proof.md executing the COMPLETE selected P=PSG-LB2 in virtual.md recovers the WHOLE secret from independent ideal copies with unconditional probability at least1-2^-8. On EVERY branch fully charged sequential work is O(2^(n/(2log2n)-4n/(log2n)^2)), with an absolute constant and exact growth index1. The n=1 case is finite; the display describes n>=2. Every source/collective-extraction, actual integer log-log-band search, streamed verified-pair combiner, signed-label update, partial/zero-width shortcut, failed child, all-modulus decoder and BOTH source/weighted-attempt guards of P is preserved. All bank bit/address work, source SWAP, initialization, failed work and cleanup counts separately. The proved internal virtual estimate O(n^3(logn)^3 2^R) and explicit gap E-R>=n/(8(log2n)^2) absorb EVERY fixed polynomial bank/compiler overhead into the exact negative-correction envelope. All five claims concern this same physical implementation.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,95 +22,104 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
+              "logPower": "-1"
+            },
             {
-              "coefficient": "1",
+              "coefficient": "-4",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-2"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same physical PSG-LB2-BANK algorithm and every N,s on EVERY branch, peak allocated classical workspace is O(n) bits with an absolute constant and exact growth index0. The counted controller retains N, output, a fixed number of O(n)-bit staged operands, short address/scan fields and finite code. Every other virtual label, array, frame, return context, loop/cap counter, arithmetic field, generator descriptor and allocator record is stored in the counted basis-qubit bank, with no duplicate classical stack or growing measurement transcript. Input/output coexist and are included. proof.md Sections2-6 establish the complete physical implementation, jointly with full-secret success and all other claims.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For this same physical PSG-LB2-BANK algorithm and every N,s on EVERY branch, peak allocated quantum workspace is O(n^2) qubits, with an absolute constant and exact growth index0. Seven fixed packed virtual-classical regions of C*2^(2ceil(log2(n+2))) bits each, C=2^48, and fixed linear virtual-quantum pools bound maximum address spans independently of retry count. Virtual classical bit i is physical basis wire2i, virtual quantum q is wire2(q+1)+1, and the entire doubling paired prefix including unused padding is counted. All bank values, metadata, original coherent registers, fair-bit and temporary source scratch, allocation growth, failed work and cleanup are included. No per-bit keys/flags, coherent bank address or free QRAM is introduced. This is joint with unconditional full-secret success and all other claims.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical PSG-LB2-BANK interpreter, every N,s and EVERY branch, total acquired DCP copies are O(2^((log2n)^2)), with an absolute constant and exact growth index0. This is a QUASIPOLYNOMIAL guarantee, not a polynomial source bound. The exact CQ simulation performs one physical acquisition per virtual acquisition and no others, preserving all rejects, discards, failed attempts and cutoff aborts. P has actual q0=(2u+1)2^(R-u),H0=Sodd*K+2n,Qcap=1024(6q0H0+2n). Its reproduced virtual9 coefficient certificate log2Qcap<=L^2-(log2L-2)^2+O(1)<=L^2+O(1),L=log2n, proves the exact source envelope. Finite lengths change only outside constants. Fresh bank/padding zeros count work/storage, not source copies. Full-secret success and all other resource claims hold jointly.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "0",
+              "logPower": "2"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For this same physical PSG-LB2-BANK algorithm/configuration, the guaranteed malformed-source fraction is epsilon(n)=0 under the exact independent-ideal-copy model. For every N>=2 and every secret, all acquired copies are independent ideal coset states and full-secret recovery succeeds with unconditional probability at least1-2^-8 jointly with all four physical resource bounds. The bank simulation preserves the complete output and source law under this promise. Additional bank measurements may expose classical record bits under a different adaptive supplier model, for which no transfer or positive tolerance is claimed. Zero is not an impossibility assertion about greater robustness.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
