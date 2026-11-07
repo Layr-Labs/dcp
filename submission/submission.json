@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "ROB-GD2 with a heralded filter: O(2^{n/2} n^2 log^2 n) work, O(n^2) bits, O(n) qubits and copies, tolerance 1-1/(10^64-3)^4",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-GD2 algorithm (robust shadow scores plus Grover search) with every source acquisition served by the heralded filter FILTER of proof.md Section 11 (the identity when copies carry no herald; literal raw-acquisition cutoff D Q with D = (10^64-3)^4) and with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^8), Q = 2^33 (n+4) copies, q = 24 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-24, threshold 1/40000, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case total work T(N,s) = O(2^{n/2} n^2 (log2 n)^2) in the challenge cost model (all classical bit operations, circuit generation, gates, measurements, initialisation, table construction, address charge ceil(log2(M+2)) = O(log n) per counted operation, where M = O(n^2) is the number of allocated bits plus qubits; each source copy costs n+1; proof.md Section 7: at most 3 repetitions of at most 0.785 * 2^{n/2} Grover iterations, each with an oracle of O(Q n log n) gates, plus O(n^3 log^2 n) for acquisition and label estimation), i.e. uniform envelope B_T(n) = 2^{n/2} n^2 (log2 n)^2, whose growth index is exactly 1. This holds on every execution branch, for the clean problem and for every adversary of the heralded malformed-copy model of the fifth claim (proof.md Theorem 11.3), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-GD2 algorithm (robust shadow scores plus Grover search) with every source acquisition served by the heralded filter FILTER of proof.md Section 11 (the identity when copies carry no herald; literal raw-acquisition cutoff D Q with D = (10^64-3)^4) and with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^8), Q = 2^33 (n+4) copies, q = 24 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-24, threshold 1/40000, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case peak classical space S_C(N,s) = O(n^2) bits (Q records of n+p+4 bits, the 2^24-entry cosine table and its constant-size construction workspace, an O(n log log n + n)-bit label-estimation and long-division workspace, the O(n)-bit search controller (K, k_G, counters, current constants, threshold, one stored gate description); explicitly S_C <= 2^33 (n+4)(n+p+4) + 27 * 2^24 + O(n log log n + n)), i.e. envelope B_C(n) = n^2, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the heralded malformed-copy model of the fifth claim (proof.md Theorem 11.3), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-GD2 algorithm (robust shadow scores plus Grover search) with every source acquisition served by the heralded filter FILTER of proof.md Section 11 (the identity when copies carry no herald; literal raw-acquisition cutoff D Q with D = (10^64-3)^4) and with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^8), Q = 2^33 (n+4) copies, q = 24 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-24, threshold 1/40000, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) has worst-case peak quantum space S_Q(N,s) = O(n) qubits (acquisition: one held (n+1)-qubit source copy, one test control, O(n) adder ancillas and one fair-bit qubit, released after each copy; search: n candidate qubits, O(log n) qubits for the phase accumulator, table index, table word and score accumulator, O(n) comparator and diffusion ancillas), i.e. envelope B_Q(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the heralded malformed-copy model of the fifth claim (proof.md Theorem 11.3), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,49 +72,43 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the ROB-GD2 algorithm (robust shadow scores plus Grover search) with every source acquisition served by the heralded filter FILTER of proof.md Section 11 (the identity when copies carry no herald; literal raw-acquisition cutoff D Q with D = (10^64-3)^4) and with the single parameter rule of proof.md Section 4 (J = max(1, n-2), r1 = 200 bitlength(16(J+1) 10^8), Q = 2^33 (n+4) copies, q = 24 angle bits, p = q + 1 + bitlength(n) phase bits, cosine table of precision 2^-24, threshold 1/40000, K = floor(2^{n/2}), k_G = floor(785K/1000) Grover iterations, at most three repetitions) acquires exactly Q = 2^33 (n+4) <= 5 * 2^33 n fresh source copies on every execution branch of the clean problem (a deterministic count; the acquisition phase is never restarted, and the search circuit is repeated at most three times on the same records, acquiring no copies; there are no aborts in the clean problem), and under the heralded model of the fifth claim it hands over exactly Q well-formed copies and acquires at most D Q raw copies on every branch, D a fixed absolute integer (proof.md Lemma 11.1 and Theorem 11.3); so Q(N,s) = O(n) in both cases, envelope B_samples(n) = n, whose growth index is exactly 0. This holds on every execution branch, for the clean problem and for every adversary of the heralded malformed-copy model of the fifth claim (proof.md Theorem 11.3), jointly with the other three resource bounds and full-secret success probability at least 49/64 (> 2/3) of the same algorithm and configuration. All constants are absolute (independent of N, s, the adversary and all outcomes).",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same ROB-GD2 algorithm and configuration in proof.md, with every source acquisition served by the heralded filter FILTER of proof.md Section 11 (literal raw-acquisition cutoff D Q, D = x^4, x = 10^64 - 3, Q = 2^33 (n+4)), the proved fractional error tolerance is epsilon(n) = 9999999999999999999999999999999999999999999999999999999999999996*9999999999999999999999999999999999999999999999999999999999999998*5909009547859618446014307935656485996455360061473289284034355157*8461654968574415353741992088106541809421651544931744139485636465*2/9999999999999999999999999999999999999999999999999999999999999997^4 = 1 - 1/x^4, a constant in (0,1), valid for every N >= 2, under the heralded malformed-copy model stated in error_model; the displayed integers of proof.md Section 11 multiply to x^2 + 1. If at most floor(epsilon(n) Q') of the Q' acquired copies are malformed on every branch, then for every N >= 2 and every s in Z/NZ the output equals the entire s with probability at least 49/64 > 2/3, jointly with the four resource bounds of claims 0-3 on every execution branch (proof.md Lemmas 11.1-11.2 and Theorem 11.3, using Theorem 2 for the clean problem). With no herald (the clean problem) the algorithm is exactly ROB-GD2. No tolerance of undetectable corruption is claimed here.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "9999999999999999999999999999999999999999999999999999999999999996*9999999999999999999999999999999999999999999999999999999999999998*5909009547859618446014307935656485996455360061473289284034355157*8461654968574415353741992088106541809421651544931744139485636465*2/9999999999999999999999999999999999999999999999999999999999999997^4",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
