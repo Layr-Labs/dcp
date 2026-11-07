@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFW1232-FILTERED: explicit reduced ideal filtration and fresh-attempt costs for the typed bank",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), the ONE physical IFW1232-FILTERED implementation in proof.md executing complete reference P in virtual-phase.md and virtual-decode.md recovers the WHOLE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch, fully charged work is O(n^104*2^((43/18)sqrt n)), with absolute constant and exact growth index1/2. The updated balanced profile and inherited phase instruments, serial coherent queries, failures, source/fallback caps and full-modulus decoders are preserved. The typed basis bank reserves phase-vector slots by depth and ONE shared merge scratch pool, since children complete before any merge primitive begins and merge primitives do not recursively construct children. Direct known-index READ/WRITE and full allocation/free clears are counted. Same-height disjoint fresh-source accounting bounds BIG clear events by O(n*(Qcap+1)). Explicit O(n^100) charged per-elementary-operation overhead times the complete original O(n^(7/2)*2^((3/2)sqrt n+(8/9)sqrt n)) bound fits n^104 times the same exponential. All full clears cost fixed polynomial times 2^((3/4)sqrt n+(8/9)sqrt n) and their strict exponent gap absorbs excess polynomial factors without changing combined leading coefficient43/18. Initialization, cleanup, SMALL scratch, source moves and finite branches are jointly counted. The COMPLETE actual IFW-12-32 reference proof is supplied COMPLETELY across two explicitly ADAPTED virtual bodies. Its profile is a=1/2,A=3/2,C=3/4,threshold4096; exact endpoint fact2w-lw in{0,1} is retained. Original work is O(n^(7/2)*2^((43/18)sqrt n)). The strict (3/4)sqrt n gap between original work exponent and all BIG clears absorbs their excess polynomial. No predecessor verdict or JSON supplies this changed declaration's correctness. The full inherited Hp/LE-transcript proof gap is repaired in new virtual5.7,8.2,11.1: reduce the ideal law before conditioning, prove low/high factorization on finite traces and random stopped coordinate sets, then bound retry costs by conditional fresh-attempt sums without assuming current cost/success independence. No claim is conditional on marginalized current LE transcripts; no earlier local rejection or public verdict supplies acceptance.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "43/18",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "104",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the SAME physical IFW1232-FILTERED interpreter, every N,s and EVERY branch, peak ordinary classical workspace is O(n) bits, with an absolute constant and exact growth index0. Input/output coexist with constant-many O(n)-bit staged logical operands, physical addresses/current-frame fields, finite control and reused bits/loop indices. Every original table/heap/list, numerical scratch, long counter, call/return frame, decoder, generator and allocator record lives in COUNTED basis qubits in BIG or the polynomial SMALL arena. The controller streams banked scratch instead of materializing polynomial arrays classically. No duplicate physical classical stack, large ordinary directory or growing measurement transcript is retained. The fixed complete spans give O(n)-bit addresses. Full region clears and source/abort cleanup use the same O(n) staging, jointly with success and all other resource bounds.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the SAME physical IFW1232-FILTERED implementation, every N,s and EVERY branch, full peak allocated quantum workspace is O(n^2*2^((3/4)sqrt n)), with absolute constant and exact growth index1/2. The complete rounded paired prefix counts all active and inactive values, scratch, owners, rows, fields, metadata, original coherent registers, source temporaries and padding. Fixed typed maxima are Wrow=2^16*n, Aphase=2^16*(mu+5), Rphase=2^(Lam+8), Ascratch=2^16, Rscratch=2^(Lam+kappa+16). Thus total BIG span B=2^32*n*((mu+5)*2^(Lam+8)+2^(Lam+kappa+16)). At most five phase vectors per depth coexist; ALL children finish before their parent merge begins, so at most one merge scratch scope is active, on every wrong-label, failure, retry and source-abort branch. Polynomial scalar/frame/LE/decoder records use the separately fully counted SMALL arena. Exact bounds mu+5=O(sqrt n),2^kappa=O(sqrt n),2^Lam=O(sqrt n*2^((3/4)sqrt n)) prove B=O(n^2*2^((3/4)sqrt n)). SMALL/H additions are polynomial and smaller. This is a maximum-address bound independent of lifetime, not occupancy or omitted scratch per depth. Physical indices are classical; original coherent lookups remain serial circuits without free QRAM. All claims hold jointly.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "3/4",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical IFW1232-FILTERED interpreter, every N,s and EVERY branch, all acquired DCP copies number O(n^2*2^((8/9)sqrt n)), with an absolute constant and exact growth index1/2. Exactly one physical request executes each P request and no others, preserving every rejection, failed/discarded input, fallback/source abort and both full-secret recovery stages. The COMPLETE virtual proof supplies Qcap=1024Q*,Q*=6*nqmax*((J+1)K+2a2)+2a2,nqmax=16*4^mu*Lam and4^mu<4*2^((8/9)sqrt n), proving the exact coefficient8/9 and polynomial power2. Fresh zero arena/padding bits, BIG/SMALL clears and indexed control use charged gates/storage, NOT DCP queries. Source precision/guards are unchanged; the finite tester changes only outside constants. All other resource and success claims hold jointly.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8/9",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME physical IFW1232-FILTERED algorithm/configuration, the guaranteed malformed-source fraction is epsilon(n)=0 under the exact independent-ideal-copy model. For every N>=2,s, all acquired copies are independent ideal coset states and WHOLE-secret success is unconditional at least1-2^-8 jointly with all four counted physical envelopes. The correlated-CQ and irreversible-forgetting argument preserves the complete reduced logical state/output/source law even when stored measured records and live phases are correlated. Extra helper outcomes are marginalized, not conditioned on in the inherited held-out-bit analysis. No transfer to a different adaptive malformed supplier model, positive robustness or impossibility of greater robustness is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
