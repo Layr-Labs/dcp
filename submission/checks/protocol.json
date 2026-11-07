@@ -1,0 +1,12 @@
+{
+  "status": "fixed-before-diagnostics",
+  "limits": {"address_space_bytes": 805306368, "cpu_seconds": 60},
+  "main_rule": "critical step ceil_log2((q(b)+2)^2), base ceil_sqrt(B), least feasible sequential B",
+  "comparison_rules": ["critical-quarter", "half-geometric-quarter", "inherited-quarter"],
+  "all_D_n": [256, 257, 511, 512, 1024],
+  "selected_D_n": [4096, 65536],
+  "exact_profile_grid_n": [256, 1024, 4096, 16384, 65536, 262144, 1048576],
+  "certificate_scope": "All-D maxima only where every D is enumerated. Other exact values are root-only or explicitly selected-D. No finite data proves the all-N theorem or asymptotic separation.",
+  "normalized_guard_widths": "1..10000 and 2^j-1,2^j,2^j+1 for j=16..128; no giant exponential integers at those widths",
+  "source": "No source copies, GPU or provider calls. Exact integer and rational CPU diagnostics."
+}

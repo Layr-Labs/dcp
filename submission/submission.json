@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PPC: critical-width partial-pivot collimation with a square-root base",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, PPC is the single critical-profile, square-root-base algorithm specified in proof.md Sections 1-7, with n=ceil(log2 N), L=log2 n. For n>=256 it uses the least sequentially feasible maximum width B, decrement ceil(log2((q(b)+2)^2)), q(b)=b+ceil(log2(b+1))+4, and base U=ceil(sqrt(B)); it is not the separate quarter-base comparison configuration. For 1<=n<256 it uses the specified exhaustive branch. From independent ideal source copies it returns the entire secret with unconditional probability at least 1-2^-8>2/3. Total charged sequential work is O(n^(11/4) L^(13/4) 2^((177/250)sqrt(nL))). For n>=256, the stronger exact-profile bound is O(n B^(7/2) log2(B+2)^(-1/2) log2(n+2)^2 2^(B/2)). It includes classical bit operations, addressing, circuit generation, every acquisition, extraction precision, decoding, retries and abort work. The supported envelope has exact growth index 1/2. All four bounds hold jointly on every execution branch, including wrong labels, incorrect earlier estimates, failures and aborts. The asymptotic representatives apply for n>=2; every 1<=n<256, including n=1, uses the specified finite branch. Constants are absolute and independent of N,s and outcomes.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "177/250",
+              "nPower": "1/2",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "11/4",
+          "logPower": "13/4"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, PPC is the single critical-profile, square-root-base algorithm specified in proof.md Sections 1-7, with n=ceil(log2 N), L=log2 n. For n>=256 it uses the least sequentially feasible maximum width B, decrement ceil(log2((q(b)+2)^2)), q(b)=b+ceil(log2(b+1))+4, and base U=ceil(sqrt(B)); it is not the separate quarter-base comparison configuration. For 1<=n<256 it uses the specified exhaustive branch. From independent ideal source copies it returns the entire secret with unconditional probability at least 1-2^-8>2/3. Peak classical storage is O(n^2) bits, including full signed labels, exact arithmetic, generated circuit descriptors, counters and decoder records. The supported envelope n^2 has exact growth index 0. All four bounds hold jointly on every execution branch, including wrong labels, incorrect earlier estimates, failures and aborts. The asymptotic representatives apply for n>=2; every 1<=n<256, including n=1, uses the specified finite branch. Constants are absolute and independent of N,s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +57,14 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, PPC is the single critical-profile, square-root-base algorithm specified in proof.md Sections 1-7, with n=ceil(log2 N), L=log2 n. For n>=256 it uses the least sequentially feasible maximum width B, decrement ceil(log2((q(b)+2)^2)), q(b)=b+ceil(log2(b+1))+4, and base U=ceil(sqrt(B)); it is not the separate quarter-base comparison configuration. For 1<=n<256 it uses the specified exhaustive branch. From independent ideal source copies it returns the entire secret with unconditional probability at least 1-2^-8>2/3. Peak quantum storage is O(n) qubits, including retained siblings, query preparation, source registers, reversible arithmetic and all scratch. The supported envelope n has exact growth index 0. All four bounds hold jointly on every execution branch, including wrong labels, incorrect earlier estimates, failures and aborts. The asymptotic representatives apply for n>=2; every 1<=n<256, including n=1, uses the specified finite branch. Constants are absolute and independent of N,s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,44 +75,51 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, PPC is the single critical-profile, square-root-base algorithm specified in proof.md Sections 1-7, with n=ceil(log2 N), L=log2 n. For n>=256 it uses the least sequentially feasible maximum width B, decrement ceil(log2((q(b)+2)^2)), q(b)=b+ceil(log2(b+1))+4, and base U=ceil(sqrt(B)); it is not the separate quarter-base comparison configuration. For 1<=n<256 it uses the specified exhaustive branch. From independent ideal source copies it returns the entire secret with unconditional probability at least 1-2^-8>2/3. For n>=256, the total fresh source acquisitions satisfy Q<=ceil(1024*(2 Emax*(nK+2n)+2n)) on every branch, with exact all-D rational Emax and K fixed in Sections 5 and 7. For 1<=n<256, Q<=N(n+10). Every rejected, discarded, retried and partly used copy is counted. Uniformly Q=O(n^(7/4) L^(3/4) 2^((177/250)sqrt(nL)-(59/100)(nL)^(1/4))). For n>=256, the stronger profile cap is O(n B^(3/2) 2^((B-U)/2)). The supported envelope has exact growth index 1/2. All four bounds hold jointly on every execution branch, including wrong labels, incorrect earlier estimates, failures and aborts. The asymptotic representatives apply for n>=2; every 1<=n<256, including n=1, uses the specified finite branch. Constants are absolute and independent of N,s and outcomes.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "177/250",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "-59/100",
+              "nPower": "1/4",
+              "logPower": "1/4"
+            }
+          ],
+          "nPower": "7/4",
+          "logPower": "3/4"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, PPC is the single critical-profile, square-root-base algorithm specified in proof.md Sections 1-7, with n=ceil(log2 N), L=log2 n. For n>=256 it uses the least sequentially feasible maximum width B, decrement ceil(log2((q(b)+2)^2)), q(b)=b+ceil(log2(b+1))+4, and base U=ceil(sqrt(B)); it is not the separate quarter-base comparison configuration. For 1<=n<256 it uses the specified exhaustive branch. From independent ideal source copies it returns the entire secret with unconditional probability at least 1-2^-8>2/3. For every n>=1 the guaranteed malformed fraction is epsilon(n)=0: at most floor(0*Q)=0 acquisitions may be malformed, so every acquired copy is an independent ideal coset state. Under exactly this model, the same unconditional success and all four every-branch resource bounds hold jointly. No positive tolerance or impossibility of positive tolerance is asserted.",
+      "evidence": [
+        "proof.md",
+        "sources.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
