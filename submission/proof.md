@@ -1,104 +1,563 @@
-# Exhaustive shift testing
+# IFCS60-LOWBOOST: indexed generation-tag storage for a saturated boosted sieve
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 0. One physical implementation and joint theorem
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For every N>=2,s in Z/NZ let n=ceil(log2N). The ONE physical
+IFCS60-LOWBOOST implementation below executing complete IFCS1310S60
+reference P recovers the WHOLE secret with unconditional probability
+at least1-2^-8 from independent ideal source copies. On EVERY branch,
+including failures, discarded/rejected inputs, source/fallback aborts,
+wrong extracted labels, initialization and cleanup, jointly
+ T=O(n^(249/2)*2^((116613001/71988000)*sqrt n)),
+ S_C=O(n) ordinary classical bits,
+ S_Q=O(n^26*2^((5999/10000)*sqrt n)) allocated qubits,
+ Q=O(n^2*2^((107614501/71988000)*sqrt n)) acquired DCP copies.
+Outside constants are absolute, independent of N,s and outcomes.
+Exact growth indices are[1/2,0,1/2,1/2]; only time scores[1/2].
+The fifth expression is0 under the exact canonical model
 
-## Correctness
+Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies.
 
-On a component with offset x, controlled subtraction produces
+Fixed classically indexed basis wires store every exponential classical
+record as COUNTED quantum allocation. Per-cell generation tags implement
+lazy zero arrays; exact overflow renumbering works at every length and
+introduces no extra abort or error event. Original coherent queries
+remain serial circuits; no bank QRAM is assumed. This different sample/
+space/time configuration is not a priority, optimality, practical-speed
+or cube-root-time claim. The original n<4096 finite tester is retained.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+The directly used exact source-degree accounting predecessor is
+IFCS1310_FILTERED_P124H, with complete corrected-source parent
+IFCS1310_FILTERED_SHARP. This candidate CHANGES the real profile's
+boost to d0=1/8, retaining mu0=5999/10000 and rederiving its exact
+height/source/work envelope and all finite-size inequalities. Main
+Section2 and full virtual Section7 supply the new integer schedule.
+All source/LE/merge/saturation/decoder instruments and physical bank,
+filtration/CQ/source/overflow/control methods remain. This is not a
+renaming of the old profile, and no old verdict is a proof premise.
+Actual published predecessors must be fully checked before upload.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+## 1. Actual complete sources and evidence scope
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+The COMPLETE selected virtual program P is IFCS1310S60, public
+7bd3dabc-c131-48b7-a46d-30fe2e1301fb, commit
+4a86c6fc47fab61ec0eec71ebe756f9a2404606b, full proof SHA256
+1ebbab84308e96da2d6f8f148ccabd9bf6822cd7539c9b07efece2e69800cb3b.
+The ENTIRE source argument is supplied across virtual-phase.md then
+virtual-decode.md with VIRTUAL-ONLY resource scope. It is NOT byte-exact:
+new5.7 marginalizes CURRENT LE transcripts in the ideal law,8.2 defines
+precise low-bit Hp with full stopped-coordinate factorization, and11.1
+uses explicit conditional fresh-attempt costs. The newly selected source profile is rederived in virtual7; all
+LE/error/fallback/source caps, saturated r=0/unsaturated merge cases,
+moment algebra, both full decoders and success proof are supplied.
+Original pure envelopes remain true VIRTUAL reference statements;
+this main proves sharper raw physical bounds with explicit powers.
+No original JSON, public verdict or graph edge supplies a theorem.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+The immediate tagged-bank method predecessor is actual public
+IFCS1310-TAGBANK fc8aa038-cba6-42bf-a317-df1c36c956f7,commit
+f761015e2fa6cdb58dfb8b2fec05a28136108f14, main SHA256
+a5652df5cb9098207a1d7650aa2eef0cd13b41bcb2dbf8355529d1cba2c0820c.
+Its fixed tags, exact finite overflow repair, indexed bit-serial fields,
+whole spans and arbitrary-reference CQ/source channels are adapted.
+Its OLD unrestricted Hp success lemma is NOT a premise and its native
+or hosted acceptance cannot cure the known LE-transcript conditioning
+gap. Original uncorrected family remains on publication hold.
 
-## Implementing the controlled subtraction
+The separate proof-repair source is local IFW1232-FILTERED, main
+c9e9a9f7f8d5cd8078044952c930a51a624700264664c8b0c81d4b81d2966c94,
+phasef91d8ec7d7da6142462fb37d55803f63beba169355dbf51cf09bc7d3a24aa37d,
+decode52da08dd3db91d2e6788af82415987f9dc8260e362b5465c32708b37f758a79a.
+It supplies reduced ideal law, coarser low-bit/stopped selection lemma
+and conditional fresh-attempt cost proof, NOT its constant-width source
+profile or native verdict. Here a NEW saturated low-boost profile is fully supplied;
+its lower bound p0=1-1/(2mu) replaces the width-source mu+4 expression.
+Source r=0 Stage1 has indicator0 and needs no nontrivial independence;
+Stage2 still uses its positive r' as supplied. Actual public repair
+identity must be bound before upload; no placeholder is submitted.
+This changed complete saturated declaration needs its OWN fresh review.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+The distinct corrected measured-bank method source is LLV-GBANKQ25,
+public fbb8f36c-3904-4bf0-9ddf-e9f5d83657ae, commit
+100a8e307fd90c489c4d90717613869fed576b3b, full main SHA256
+08608c19bf8d7ba42b50cf01f86662bc4e38ae0de63a2825ed4f86c8f10ca7d0.
+Its direct-wire bit interpreter, fixed complete ranges, measured CQ
+and irreversible-forgetting/source coupling and uniform generated
+instructions are adapted here. Its different quarter-square-root
+virtual program and unused historical finishing comparison are not
+adopted. Full raw source identities and all five official evidence
+bindings were checked; all unique declaration/show/history rationales,
+evidence/citations and decision metadata were read with no cursor.
+P has13 pending declarations/no accepted edges; pending is neither
+verified ancestry nor false and supplies no mathematical premise.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The original tag prototype was never natively reviewed or submitted.
+Its history remains credited through the published tagged predecessor;
+no prototype score or unrelated phase program supplies a theorem.
+Generation tags are standard programming, not an invention claim.
+All source-author IFC1, IFC-B/IFCB45, BL1, IFC34, CW1, MW4/MWG716K,
+CS1/CS1-LB, CS1-C3L, LL-150, Howgrave-Graham/Joux, Schroeppel/Shamir
+and Kuperberg credits in the full body remain. Original first-person
+provenance in the adapted body denotes its original authors.
+Bank-method PSG21 and PSG2-QSTORE credits remain as in that source.
+No external quantum-walk, coherent data structure or positive-corruption
+theorem is used. Material public sources must receive both-endpoint
+exact-file citations before upload.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+## 2. Exactly selected stream, profile and finite branch
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+For n<4096 execute P's original exhaustive tester: for candidate0..N-1
+in order take at most n+10 fresh copies, apply Shift_candidate, measure
+control in X, and reject on the first minus. Output the first passing
+candidate, or0. The true candidate always passes and each wrong one
+passes a fresh test with probability1/2. Union bound gives error<=2^-10.
+Stream with O(n) ordinary classical bits and O(n) qubits. All these
+finitely many lengths change only outside constants of the envelopes.
 
-## Joint costs and indices
+For n>=4096 execute EXACTLY IFCS1310S60 P with fixed rationals
+ mu0=5999/10000, d0=1/8,
+ H0=107614501/71988000, tau0=116613001/71988000=H0+d0.
+Its literal integer parameters are
+ w_s=least w with100000000*w^2>=35988001*n,
+ v_s=least v with64*v^2>=n,
+ nu=v_s,gamma=0,Astar=(w_s-nu)*(w_s+nu-1)/2,
+ G=least integer>=0 with Sstar(G)>=n,
+ Sstar(J)=Astar+sum_(j<J)min(2w_s+2j+gamma+3,3w_s+3),
+ mu=w_s-nu+G+1,kappa=ceil(log2mu)+3,Lam=kappa+1+w_s,
+ hmax=w_s-nu+2G+2.
+These are source variables. The physical generation word G_tag is
+DIFFERENT from source G and source precision G of LE. All square-root
+ceilings and finite sums are computed by integer arithmetic, no real
+log/square-root oracle. Full virtual Section7 specifies every actual
+binary/four-input input exponent, saturated r=0 window, root/partial
+width and greedy capacity, including its Lemmas7.0/7.1 and premises.
+They are not replaced by a constant-width or favorable-label schedule.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+Set nqmax=2^hmax*(kappa+1+nu). The UNCHANGED literal source cap is
+ Q*=6*nqmax*((J+1)*K+2a2)+2a2,Qcap=1024Q*,
+where J is the odd-decoder stage count, not the sum index. Keep the LE
+fallback cap Cf=ceil(Qcap/ceil(sqrt n)), all other LE/verification caps,
+source rejections, failures, retries, stopping and both decoder guards
+at EXACTLY their logical positions. Compiler work is separately charged;
+no source call or logical quantum instrument is inserted or omitted.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Use fixed finite streamed bit code for ripple/schoolbook arithmetic,
+merge sort, array heaps, flat lists and source gate generation. Resolve
+unspecified heap ties by original LOGICAL tuple/row indices, never
+physical owner IDs. Source arrays keep their lengths/field widths,
+logical equality/aliasing, bounds checks and row domains. A fixed zero
+completion of fresh scratch is valid. All source fields are O(n) bits;
+only constant-many ordinary operands are staged, while return frames,
+loop contexts, numeric scratch and generator state are banked. There
+is no exponentially stored instruction/circuit list or duplicate
+ordinary classical recursion stack. Original coins, measurements,
+resets, exact constant Clifford+T Toffoli word and source instruments
+are retained, including wrong-label and abort paths.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## 3. Source-specific capacities bound MAXIMUM addresses
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Layout symbols A,B,D,H,e,G_tag in this main are physical parameters.
+Source P's own homonymous logical fields remain exactly its own; in
+particular its LE precision parameter is not the physical epoch counter.
 
-## Fractional error tolerance
+This is a concrete layout, not an inference from observed occupancy.
+Virtual Sections6-7,11,13 establish on EVERY main-branch execution:
+ - depth<=mu+1<=2sqrt n+1<=n, arity<=4;
+ - every phase exponent lam_i<=Lam and table rows<=2^Lam;
+ - high labels<=3n bits, heap/sort/run arrays O(2^Lam) rows;
+ - Buf,Tl<=Cp<=2^(Lam+kappa+3)+1 rows, including saturated r=0;
+ - fixed constant-many named array families per frame/merge;
+ - K=2^13*(ceil(log2nq)+ceil(log2n)+30)=O(sqrt n) decoder records,
+   no stored candidate grid; all scalar/LE/helper frames polynomial;
+ - original pending/scratch/source/LE/transform qubits use O(n).
+Fixed lengths and cutoff guards hold with wrong numerical labels too.
+The complete probability proof and source work/cap arguments are the
+full supplied reference, not an earlier score or graph declaration.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+Use A=2^16*n^2 reusable owner slots. Give each owner R=2^(Lam+kappa+16)
+rows, each of Wrow=2^16*n^2 logical bit cells. Actual arrays use their
+source lengths and field widths, with the remaining region padding
+ignored by the logical program. A global/scalar/frame block can pack
+many ordinary fields in rows; a table or stream array receives its own
+owner. An owner handle plus row/bit offset is an injective stable address.
+Release/reuse returns the SAME owner, not a lifetime-growing address.
+
+For explicit conservative counting, fewer than512 named table, heap,
+sort, run, list, arithmetic, generator and frame families per depth suffice:
+there are at most five retained phase tables per level; binary scratch
+has the listed order,pos,lo,cnt,off,Dx,residue and inverse-block arrays;
+the four-input step adds two heaps, sort/run fields, Buf,Tl and block
+maps; LE/transform, scalar and decoder families are fixed in the supplied
+code. Packing each additional scalar family in one row is more than
+sufficient. Also
+ K<=2^13*(hmax+ceil(log2Lam)+ceil(log2n)+32)<=O(n).
+Thus512(mu+5)+K+4096<A on the main branch (even the crude K<=2^16n
+suffices). Every row bound, including Cp and sentinels, is below R;
+every ordinary row's constant-many O(n)-bit entries fit Wrow. Schoolbook
+scratch can use polynomially many rows in these same families. These
+are analytic upper capacities, independent of success/retry history.
+
+The complete logical classical address span is therefore at most
+ B=A*R*Wrow=2^48*n^4*2^(Lam+kappa).
+All allocator bindings, flags and free-owner state are counted below.
+Choosing a free owner can scan the A slots, which costs only poly(n).
+Alternatively an active logical object can be found by a scan of this
+polynomial owner directory. No scan over B cells is required to find a
+classical address. Source array identity/equality and within-array offsets
+are preserved; handles are never used as numerical phase labels or tie
+breaks. The memory representation adds only polynomial work per logical
+object/bit operation. A bounded-owner allocator completion uses polynomial bookkeeping per
+logical object/bit operation. Total added allocations are at most
+poly(n)*(C_P+1), with C_P the original elementary operation count;
+these costs are explicitly included in Section9. No O(poly(n)*Qcap)
+allocation claim is needed for inner helper loops. Its live directory
+space is the fixed counted raw region, independent of lifetime. No source probability
+argument depends on a physical allocation address.
+
+Pad original quantum objects to a fixed pool of H=2^32*n^2 slots.
+This includes the source's at most30n pending index qubits and its
+current O(n) arithmetic/lookups, source, extraction, comparison and
+reset scratch, with generous polynomial padding. Quantum slot metadata
+is counted raw basis data. Quantum free/reinitialize may scan a whole
+polynomial-sized register/pool if necessary; that costs poly(n), not B.
+Such a scan resets ONLY the released owner slots; all other live P
+quantum registers remain untouched.
+Original coherent addresses are canonical pool offsets, not lifetime IDs.
+
+## 4. All tag, raw metadata and paired-prefix storage is counted
+
+Put e=(n+2)^20, the NUMBER OF BITS in an epoch word. It is a public
+polynomial integer. A logical bit cell i has a stored basis value and
+an e-bit stored tag. Additional RAW basis regions hold each owner's
+current e-bit epoch, allocated flag/object binding, one global e-bit
+generation counter G_tag, one reusable e-bit backup, and fixed interpreter/
+quantum-pool metadata. These raw regions are not themselves tag-recursive.
+Owner/object directory fields are streamed bit records, not uncounted
+classical maps. A conservative total raw basis-slot limit is
+ D_bank=D=B*(e+1)+(A+8)*e+A+H+2^20*n^4.
+The last polynomial region covers flags, owner bindings, pool records and
+fixed scratch; unused capacity is included. Full epoch words are NEVER
+held as e-bit ordinary classical operands. Compare/copy/increment them
+bit-serially with a reusable bit/carry and O(log e)-bit loop counters.
+
+RAW slot j is physical even wire2j. Original quantum q is odd wire
+2(q+1)+1; reserve odd wire1 for a fresh fair bit. Let h be the least
+power of two at least max(D,H+1,2). Initially allocate and initialize
+the WHOLE prefix0,...,2h-1 to zero. Every unused owner, row, field,
+tag, generation word and padding wire counts in S_Q. Addresses stay
+fixed throughout P; no per-bit sparse directory or lifetime allocations
+outside this prefix are added. The global persistent owner starts at
+epoch1, G_tag=1, with logical input/globals initialized by the bit interface.
+
+A temporary source register of n+1 wires is also counted. For each
+original request acquire ONE rho_s, SWAP it into the zero mapped source
+slots, then release the now-zero temporary register. SWAP is three CNOTs
+per qubit and every address is charged. Initialization/padding uses
+fresh zero qubits, not DCP copies. No inverse/control of unknown source
+preparation, accessible source purification or reflection is supplied.
+
+For main n, all physical address WORDS have O(n) bits. Indeed
+Lam+kappa<= mu0*sqrt n+2log2n+O(1), so
+ log2B<= mu0*sqrt n+6log2n+O(1),
+ log2(D+H+2)<= mu0*sqrt n+26log2n+O(1).
+This is O(n), including complete fixed spans, not only live occupancy.
+All address addition/multiplication/shifts on these words use charged
+schoolbook bit operations and O(n) staged space. Numeric e and its loop
+indices have O(log n) bits although an epoch VALUE has e stored bits.
+
+## 5. Explicit indexed bit and lazy-array operations
+
+RAW_READ(j) measures known even wire2j in Z into one reusable classical
+bit. RAW_WRITE(j,b) reads old z, applies X iff z differs from b, then
+forgets z after use. All addresses are CLASSICAL known words. No gate
+is addressed by a superposed bank index, and no coherent dictionary
+or RAM operation is assumed. Bit arithmetic and loop/address generation
+are charged. Source classical Boolean gates become a fixed number of
+such reads/writes; logical multi-bit operations remain explicit loops.
+
+READ(owner,i): compare that cell's tag with the owner's current epoch,
+bit by bit, using a reusable equality bit. On equality return its stored
+value; otherwise return0. All temporary raw outcomes are forgotten.
+WRITE(owner,i,b): set the value by RAW_WRITE, then copy the owner's
+current epoch into the tag bit-serially. Intermediate physical substeps
+are internal to this logical primitive; no P step or source call is
+interleaved. Initial tags are0 and active epochs are nonzero.
+
+ALLOC chooses a free owner. Before using a new generation, if G_tag is
+all ones run the exact renumbering of Section6. Increment G_tag bit-serially
+and copy it into the owner's epoch; mark that owner active. NO per-cell
+clear is performed. All its old tags differ from the fresh generation,
+so every unwritten cell logically reads0. FREE marks the logical owner
+inactive and drops the logical reference; its old data/tags remain
+counted ignored junk. The next allocation gets a new generation. Do not
+erase an exponential array on each free/retry.
+
+This realizes zero-initialized classical arrays. Where source code only
+specifies fresh scratch, the zero convention is a valid fixed completion;
+every logically used source entry is initialized or checked as specified.
+P's row domains, lengths, bounds checks and masks are unchanged: padding
+does not create extra tuples or circuit rows. Logical copies/updates
+retain their original bit loops and logical aliasing. Return/pass of an
+array transfers its owner handle; retained siblings keep distinct live
+owners. The source's discard-and-rebuild rule never reuses a released
+logical input as an accepted new one.
+
+P's LOOKUP is STILL its original SERIAL known-row circuit. For each
+known row/bit, READ that logical table bit and emit the SAME controlled
+gate on P's original quantum index/equality/output registers. A
+superposed P index is not a bank address. Heap and stream accesses are
+classically selected. Every source gate, coin, measurement, guard,
+failure and retry executes at the specified logical point. No subtree
+construction or source request is placed inside a quantum lookup.
+
+Only constant-many O(n)-bit operands, public address words/current frame
+location, finite control and bit-serial helper counters are ordinary
+classical storage. All original long arrays, scalar records, recursion/
+return frames, generator contexts, loop/cap counters and allocator state
+remain in counted basis memory. The fixed code generates instructions
+online. There is no growing classical transcript or physical call stack.
+
+## 6. Exact overflow renumbering, with no additional failure
+
+We do NOT assume a counter can never wrap at every input length.
+The e-bit G_tag represents0,...,2^e-1, tested by a bit-serial all-ones scan;
+2^e need not be materialized as an ordinary classical integer. If ALLOC
+needs a new generation when G_tag is maximal, PAUSE P and do the following.
+
+For each owner j=0,...,A-1:
+ - If active, copy its OLD epoch into the counted raw backup word.
+   For every one of its R*Wrow cells, compute the OLD decoded value
+   using that backup; store this value and replace its tag by j+1,
+   padded to e bits. Only after all cells set its owner epoch to j+1.
+ - If inactive, set all its values/tags and epoch to0.
+Then set G_tag=A, clear/reuse the backup, and resume the requested ALLOC.
+
+A+2<2^e, so there is room for another generation. This is a finite
+exact reencoding of the SAME logical record, including unwritten cells;
+it adds no abort, accepted event, source request or probability error.
+It clears stale generations even in inactive owners. Afterward every
+stored tag is at most A, current active epochs are j+1, and G_tag=A.
+Until the next renumbering every new generation exceeds all prior tags.
+Inductively ALLOC's unwritten cells always decode0; WRITE stamps the
+current owner generation; FREE cannot expose stale data. Repeated wraps
+are handled in exactly the same way. It makes progress after every wrap
+and does not rely on unknown constants in a resource estimate.
+
+During this scan store the old epoch only in the raw backup, not in
+an e-bit classical register. Loop indices for owners/cells/epoch bits
+are O(n)-bit words. No P quantum operation or source query occurs until
+the reencoding ends. The source's live original quantum registers can
+remain untouched throughout. Cost is D*poly(n); space is the fixed
+prefix plus the already counted backup/short staging. It is NOT claimed
+to be a cheap operation if triggered at a finite small length.
+
+## 7. Decoded correlated-CQ invariant and full correctness
+
+At aligned logical steps, including any arbitrary reference R, the
+physical state is of the form
+ sum_z p_z |z><z|_(basis bank/raw metadata) tensor rho_z_(mapped P quantum,R),
+with short finite control/staged classical fields included as necessary.
+The basis records may be correlated with the phase/query registers and
+R. No product-state assumption between bank and quantum data is made.
+Tags, obsolete values, unused padding and released records are included
+in z and remain counted; they need not be independent of retained data.
+
+Define pi by decoding active logical arrays through their current epochs,
+keeping P's logical control/object bindings and mapped quantum registers,
+and forgetting all physical-only tags/allocator details/junk. Thus the
+conditional P state for logical record c is the mixture over every z
+with decoded record c, not one selected physical history.
+
+Initially this gives P's prescribed input and zero scratch. On a basis
+branch, each logical READ returns exactly its decoded bit. RAW Z reads
+leave a CQ state unchanged nonselectively; they may reveal a branch
+label to a short helper, which is then forgotten. Boolean updates and
+WRITE change the decoded record just as P requests. When old records
+merge after overwriting or forgetting, their conditional quantum states
+mix exactly as classical irreversible forgetting requires. ALLOC decodes
+to a fresh zero array; FREE drops just the logical object; renumbering
+has the same decoded record on every basis branch. Extra obsolete
+records are never passed as logical operands. By linearity these
+identities hold for arbitrary conditional rho_z and arbitrary R.
+
+Original quantum gates and classically controlled serial LOOKUP have
+P's same conditional action on its quantum registers. Original
+measurements/coins have the same instruments. Reset/discard is trace-out
+followed by fresh zero even with references; use that allowed channel,
+or Z measurement, conditional X and forgetting, on mapped slots.
+Every ideal fresh source supplies the same independent rho_s and the
+SWAP map preserves it exactly. Consequently at aligned steps
+ pi o Phi_physical = Phi_P o pi,
+including all actual extraction-error, failed-merge, partial-child,
+rejected-source and abort branches. The complete reduced logical state,
+unconditional output law and source-request sequence equal P's.
+
+In particular the FULL virtual Sections3-12 establish unconditional
+whole-secret recovery at least1-2^-8 for every N,s: their latent-label
+and LE coupling, conditional incidence/fiber bounds, fresh-child/source
+and high-confidence caps, both all-modulus decoders and finite tester
+are all present. No prior review is a theorem premise. We do NOT claim
+their held-out-bit failure bounds conditional on every new helper
+measurement transcript; those extra outcomes are marginalized by pi.
+The logical distribution is what is preserved. Under a different
+adaptive malformed supplier model such extra measurements could matter;
+no positive robustness or such transfer is asserted here.
+
+## 8. Every classical bit and allocated qubit is charged
+
+Ordinary classical storage consists of input N, final n-bit output,
+constant-many O(n)-bit operands/addresses/current-frame fields and finite
+control. Owner scans and cell/epoch loops keep only their O(n)-bit
+indices and reusable bits. An e-bit epoch word is stored ONLY in the
+basis bank and processed bit-serially. All P frames, numerical scratch,
+labels, heaps, lists, decoder records, long counters, allocator maps
+and old histories are bank records. Therefore S_C=O(n), even when
+input, output and source staging coexist. No e-bit or array-sized
+ordinary classical temporary is introduced.
+
+The FULL prefix, not just occupied cells, satisfies
+ S_Q<=2h+O(n)=O(D+H+n).
+Since Lam+kappa<=mu0*sqrt n+2log2n+O(1),
+ B=O(n^6*2^(mu0*sqrt n)), D=O(n^26*2^(mu0*sqrt n)).
+Retain this explicit raw bound rather than hiding its polynomial:
+ S_Q=O(n^26*2^((5999/10000)*sqrt n)).
+mu0=5999/10000 is exact; all polynomial additions and prefix rounding
+are counted. This sharper upper envelope is asymptotically below the
+older pure3/5 envelope, but is not a practical-size memory assertion.
+Original quantum pools, all tags,
+owner words, values, obsolete junk, free flags/bindings, backup, unused
+padding, fair-bit/source scratch, growth/initialization and cleanup are
+included. Bounds do not depend on labels being numerically correct or
+on how many retry histories were realized.
+
+## 9. Charged access cost and eventual absence of renumbering
+
+All physical indices have O(n) bits (Section4), and each gate/bit action
+pays its FULL address debit log2(S_C+S_Q+2)=O(sqrt n)<=O(n).
+Address addition, multiplication, division and field decoding use
+explicit schoolbook bit loops with O(n) staged space. Owner-directory
+search has A=O(n^2) entries. A logical bit read/write compares/copies
+e=O(n^20) raw bits with fixed-depth loops; there is no B scan.
+Fetching a constant number of O(n)-bit logical operands repeats these
+bit primitives, not a unit-cost long-word operation. Source bit code
+and gate descriptors are finite; current frame/pointer indices can be
+kept short while return contexts stay banked. Finite helper loop
+nesting is polynomial in n. A conservative O(n^100) CHARGED work per
+logical bit/gate/array operation bounds all these loops, including
+address fees, ordinary operand decoding, epoch increment/copy, pool
+search and polynomial-sized quantum-pool reset. These use O(n), not
+O(n^100), ordinary classical scratch: long loops stream their fields.
+
+For example a raw bit action needs only a known address and one bit;
+schoolbook arithmetic on O(n)-bit address words is polynomial and
+linear-space. Epoch comparison/copy is e such actions. A logical word
+has O(n) bits and repeats those reads. Directory comparison scans
+O(n^2) O(n)-bit records. These fixed products are far below n^100.
+No helper recursively materializes an epoch value or an entire array
+as ordinary classical storage. P's exponentially long row scans
+remain its own counted loops; the added cost PER such logical action
+is polynomial, not proportional to the exponential bank size.
+
+Fix finite ripple/schoolbook and bit-serial code. Decomposing the
+source's O(n)-bit field/loop/gate-generation operations uses at most
+O(n^4) extra elementary control steps per old bit/gate/loop operation.
+All long control/word/frame records remain banked. Original source
+qubit pools have O(n^2) fixed slots; each source supplies O(n) wires,
+and original MERGE/LE primitives have O(n) current scratch. Transfers
+retain handles rather than allocate unknown duplicates. A coarse
+O(n^16)*(C_P+Qcap+H+1) bound covers wire/ownership/frame/descriptor
+events with these fixed helper roles and directory/pool scans. Here
+C_P counts actual old bit/gate/control loops; array-length loops are
+already explicit P operations, not newly hidden helpers. Polynomial
+quantum-pool scans are included in n^100 charged helpers of this
+section. All maximum families/fields are fixed by Sections3-5.
+Even charging control completion again, eventually total work is
+ O(n^120)*(T_P+Qcap+H+1)+O(n^100)*D.
+Each source-copy/primitive event has fixed polynomial-size descriptor
+and scratch domains; neither an exponential B scan per event nor an
+unbounded polynomial is put inside this bound.
+
+There are at most O(n^20)*(C_P+Qcap+H+1) new generations, by the same
+fixed control/frame/array-scope accounting; loops generate work, not
+ordinary O(n^20) scratch. All old branch budgets are at most a fixed
+polynomial times2^(tau0*sqrt n).
+Thus the logarithm of the number of new
+generations is O(sqrt n), uniformly over EVERY branch. In contrast
+e=(n+2)^20 grows faster. For all sufficiently large n the entire run
+uses fewer than2^e-A-2 generations, so G_tag never reaches its maximum
+and NO renumbering occurs. This is an ANALYTIC eventual fact, not an
+unchecked all-input assertion or a new runtime guard.
+
+For every remaining fixed finite length, the original program has
+finite deterministic source/fallback/loop budgets, and each actual
+overflow is repaired exactly by Section6 with finite fixed D. Every
+logical allocation triggers at most one such finite scan and then makes
+progress. Thus correctness, termination and fixed storage bounds hold
+even on those earlier branches. No failure event is hidden or excluded.
+
+## 10. Exact raw coefficients and explicit polynomial powers
+
+The COMPLETE CORRECTED virtual source proves the NEW profile and raw
+resource formulas on every actual branch:
+ T_P=O(n^(9/2)*2^(tau0*sqrt n)),
+ Qcap=O(n^2*2^(H0*sqrt n)),
+ tau0=116613001/71988000,H0=107614501/71988000,
+ mu0=5999/10000,H=O(n^2),D=O(n^26*2^(mu0*sqrt n)).
+New source5.7/8.2/11.1 supplies its corrected success/cap analysis;
+all original deterministic actual caps and work formulas remain.
+All three positive exact coefficients satisfy mu0<H0<tau0.
+
+Eventually no renumbering occurs by Section9. Substituting into the
+EXPLICIT n^120 event/control and n^100 prefix bounds gives source,
+quota,pool,prefix degrees124.5,122,122,126, respectively, with
+exponential coefficients tau0,H0,0,mu0. The source term has
+EXACT degree249/2=124.5 and coefficienttau0. The three remaining
+coefficients are strictly smaller than tau0, so their fixed polynomial
+excesses are absorbed: n^a*2^{-delta*sqrt n}=O(1) for every fixeda
+anddelta>0. Explicitly this follows from log2n/sqrt n->0. Hence each
+quota/pool/prefix term is O(n^(249/2)*2^(tau0*sqrt n)), including the
+prefix degree126. This is an analysis bound with absolute constants,
+not a new runtime branch or ignored finite overflow. Therefore
+ T=O(n^(249/2)*2^((116613001/71988000)*sqrt n)).
+This includes every address debit, whole initialization/output-first
+cleanup, failed/rejected/aborted work, source moves, metadata and
+quantum/register events. No unspecified polynomial is assigned a
+power. Ordinary space remains O(n) because those degrees count
+operations, not arrays or epoch values staged classically.
+
+Exactly ONE physical copy executes each original request. Fresh zero
+metadata, pointer actions and exact epoch repair use charged gates
+and space, not DCP copies. Thus literal Qcap, with all failed/discarded
+inputs and both decoder stages, gives
+ Q=O(n^2*2^((107614501/71988000)*sqrt n)).
+No pure-envelope slack or new stopping guard is used for this bound.
+
+Every finite earlier length runs ACTUAL exact overflow repair and the
+original finite tester with deterministic finite source/fallback/loop
+budgets. Finite worst-case ratios are bounded by absolute outside
+constants; no analysis-only sufficient threshold is a runtime branch.
+On all lengths, including wrong labels, the decoded channels and
+source-request sequence are unchanged and repair spends no failure
+probability. All four bounds and success concern ONE implementation.
+
+## 11. Exact indices and proved improvement scope
+
+Positive sqrt-n exponentials times fixed polynomial powers249/2,26,2
+have exact growth index1/2; ordinary n has index0. Only time scores
+[1/2]. Canonical fraction0 is a clean independent-ideal-copy guarantee,
+not a positive robustness or impossibility claim, jointly with whole
+secret success>=1-2^-8 for every N,s and EVERY branch's resource bounds.
+
+The new exact rational inequalities
+ tau0<1621/1000,H0<3/2,mu0<3/5
+support the adapted virtual pure envelopes. Compared with actual
+IFCS1310 profile, this lowers time coefficient from244792007/143976000
+to116613001/71988000, keeps ordinary space and quantum exponent,
+and increases source coefficient from187165613/143976000
+to107614501/71988000. Thus it is a time/sample tradeoff at the same
+quantum width, not four-coordinate dominance. It changes the literal
+boost parameter and every dependent profile/resource certificate.
+All full source algorithms, success/cap/decoder/filtration and physical
+bank proofs are supplied, with original author credits retained.
+No priority, optimality, practical speed or cube-root claim is made.
