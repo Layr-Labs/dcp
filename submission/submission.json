@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "BLOCK-L16: block decoding saves one logarithm in time and copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and shift s,n=ceil(log2N),the single BLOCK-L16 algorithm of proof.md uses finite exhaustive recovery below n=2^128 and otherwise m=ceil(16RLOG(n)),kappa=ceil(log2m)+1,base=ceil(n/(m+1)-m/2)+1,s0=kappa+1,dl=base+s0,H=base+m-1,L=floor(m/(4s0)),widths base+i+min(s0,floor((m-1-i)s0/L)),root1,Kc=8192(m+10u+100),Kp=8192(u+100),u=ceil(log2n),and the reproduced capped source/extractor,physical binary/radix/high-part instrument and full bootstrap/signed-near-parity/two-adic decoder. Under independent ideal copies whole-secret recovery succeeds with unconditional probability >=1-2^-8. All four worst-case branch bounds hold jointly,including errors,discards,retries and aborts. At n=1 logarithmic envelopes use their positive n=2 values; finite exhaustive copies <=N(n+10) affect only absolute outer constants. Total charged work O(n^11log2n 2^(n/(16log2n))),all gates,bit operations,lookups,addresses,source costs and initialization included; growth index1. The generalized batch usesh unused top bits; b0=floor(log2n),Lblk=ceil(n/b0). Uniform modular score decoding of both odd and two-adic blocks and the reduced deterministic global acquisition cap are in Sections9..13. All four bounds hold jointly.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -19,20 +19,49 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
+          "nPower": "11",
+          "logPower": "1",
           "exponent": [
             {
-              "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-1",
+              "coefficient": "1/16"
             }
-          ],
-          "nPower": "4",
-          "logPower": "0"
+          ]
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and shift s,n=ceil(log2N),the single BLOCK-L16 algorithm of proof.md uses finite exhaustive recovery below n=2^128 and otherwise m=ceil(16RLOG(n)),kappa=ceil(log2m)+1,base=ceil(n/(m+1)-m/2)+1,s0=kappa+1,dl=base+s0,H=base+m-1,L=floor(m/(4s0)),widths base+i+min(s0,floor((m-1-i)s0/L)),root1,Kc=8192(m+10u+100),Kp=8192(u+100),u=ceil(log2n),and the reproduced capped source/extractor,physical binary/radix/high-part instrument and full bootstrap/signed-near-parity/two-adic decoder. Under independent ideal copies whole-secret recovery succeeds with unconditional probability >=1-2^-8. All four worst-case branch bounds hold jointly,including errors,discards,retries and aborts. At n=1 logarithmic envelopes use their positive n=2 values; finite exhaustive copies <=N(n+10) affect only absolute outer constants. Peak classical bits O((n^9/log2n)2^(n/(16log2n))),actual-width high-field precision-weighted storage O(H2^H); growth index1. The generalized batch usesh unused top bits; b0=floor(log2n),Lblk=ceil(n/b0). Uniform modular score decoding of both odd and two-adic blocks and the reduced deterministic global acquisition cap are in Sections9..13. All four bounds hold jointly.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "9",
+          "logPower": "-1",
+          "exponent": [
+            {
+              "nPower": "1",
+              "logPower": "-1",
+              "coefficient": "1/16"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and shift s,n=ceil(log2N),the single BLOCK-L16 algorithm of proof.md uses finite exhaustive recovery below n=2^128 and otherwise m=ceil(16RLOG(n)),kappa=ceil(log2m)+1,base=ceil(n/(m+1)-m/2)+1,s0=kappa+1,dl=base+s0,H=base+m-1,L=floor(m/(4s0)),widths base+i+min(s0,floor((m-1-i)s0/L)),root1,Kc=8192(m+10u+100),Kp=8192(u+100),u=ceil(log2n),and the reproduced capped source/extractor,physical binary/radix/high-part instrument and full bootstrap/signed-near-parity/two-adic decoder. Under independent ideal copies whole-secret recovery succeeds with unconditional probability >=1-2^-8. All four worst-case branch bounds hold jointly,including errors,discards,retries and aborts. At n=1 logarithmic envelopes use their positive n=2 values; finite exhaustive copies <=N(n+10) affect only absolute outer constants. Peak accessible qubits O(n),all source,tree,lookup/controller scratch and roots; growth index0. The generalized batch usesh unused top bits; b0=floor(log2n),Lblk=ceil(n/b0). Uniform modular score decoding of both odd and two-adic blocks and the reduced deterministic global acquisition cap are in Sections9..13. All four bounds hold jointly.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,65 +78,36 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and shift s,n=ceil(log2N),the single BLOCK-L16 algorithm of proof.md uses finite exhaustive recovery below n=2^128 and otherwise m=ceil(16RLOG(n)),kappa=ceil(log2m)+1,base=ceil(n/(m+1)-m/2)+1,s0=kappa+1,dl=base+s0,H=base+m-1,L=floor(m/(4s0)),widths base+i+min(s0,floor((m-1-i)s0/L)),root1,Kc=8192(m+10u+100),Kp=8192(u+100),u=ceil(log2n),and the reproduced capped source/extractor,physical binary/radix/high-part instrument and full bootstrap/signed-near-parity/two-adic decoder. Under independent ideal copies whole-secret recovery succeeds with unconditional probability >=1-2^-8. All four worst-case branch bounds hold jointly,including errors,discards,retries and aborts. At n=1 logarithmic envelopes use their positive n=2 values; finite exhaustive copies <=N(n+10) affect only absolute outer constants. All acquired copies O(n^18/log2n),including rejected extraction and failed attempts; polynomial copies,growth index0. The generalized batch usesh unused top bits; b0=floor(log2n),Lblk=ceil(n/b0). Uniform modular score decoding of both odd and two-adic blocks and the reduced deterministic global acquisition cap are in Sections9..13. All four bounds hold jointly.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "18",
+          "logPower": "-1",
+          "exponent": []
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and shift s,n=ceil(log2N),the single BLOCK-L16 algorithm of proof.md uses finite exhaustive recovery below n=2^128 and otherwise m=ceil(16RLOG(n)),kappa=ceil(log2m)+1,base=ceil(n/(m+1)-m/2)+1,s0=kappa+1,dl=base+s0,H=base+m-1,L=floor(m/(4s0)),widths base+i+min(s0,floor((m-1-i)s0/L)),root1,Kc=8192(m+10u+100),Kp=8192(u+100),u=ceil(log2n),and the reproduced capped source/extractor,physical binary/radix/high-part instrument and full bootstrap/signed-near-parity/two-adic decoder. Under independent ideal copies whole-secret recovery succeeds with unconditional probability >=1-2^-8. All four worst-case branch bounds hold jointly,including errors,discards,retries and aborts. At n=1 logarithmic envelopes use their positive n=2 values; finite exhaustive copies <=N(n+10) affect only absolute outer constants. Proved malformed fraction0 under independent ideal copies,without positive robustness or impossibility. The generalized batch usesh unused top bits; b0=floor(log2n),Lblk=ceil(n/b0). Uniform modular score decoding of both odd and two-adic blocks and the reduced deterministic global acquisition cap are in Sections9..13. All four bounds hold jointly.",
       "evidence": [
         "proof.md"
       ],
