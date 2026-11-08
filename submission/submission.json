@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "RLS4L16-FIXEDBANK: shifted robust stages with exact 63-term exponent and linear classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "Define E63(n)=sum_{j=0}^{62}((-4)^j/4)*n*(log2n)^(-(j+1)); this finite expression is exact. For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical RLS4L16-FIXEDBANK implementation of proof.md executing COMPLETE virtual RLS-4L P in virtual.md has unconditional WHOLE-secret success at least9/10 for EVERY adversary of the EXACT adaptive malformed-copy model in claim4, with epsilon(n)=1/(4194304n^4). All four envelopes hold jointly on EVERY branch, including arbitrary malformed/entangled inputs, failures, discards, unused blocks, source moves, initialization and cleanup. Fully charged work is O(n^132*2^E63(n)), exact growth index1. Source instruments are unchanged; fixed shifted profile and all bounds are explicitly rederived. Full acquisition occurs before ANY measurement/fairbit/bankREAD; known-index SWAP to fixed held slots preserves arbitrary delivered states, with zero temporary discarded without measurement. Fixed raw basis buffers use direct indexed bit operations, bottom-up sort, no exponential pool scan and no whole-bank clear per operation. Explicit n^4 control completion and n^100 charged helpers give n^104*T_P+n^104*(B+H+Q0+1), with source T_P=O(n^17/log2n*2^E63(n)),B+H=O(nQ0+n^21),Q0=O(n13log2n*2^E63(n)). All polynomial degrees are bounded explicitly by132, including rounded-prefix and scope work. Finite robust exhaustive branch n<8192 is retained, not replaced by a clean tester. No prior verdict supplies acceptance.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,100 +22,1040 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/4",
               "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
+              "logPower": "-1"
+            },
             {
-              "coefficient": "1",
+              "coefficient": "-1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-2"
+            },
+            {
+              "coefficient": "4",
+              "nPower": "1",
+              "logPower": "-3"
+            },
+            {
+              "coefficient": "-16",
+              "nPower": "1",
+              "logPower": "-4"
+            },
+            {
+              "coefficient": "64",
+              "nPower": "1",
+              "logPower": "-5"
+            },
+            {
+              "coefficient": "-256",
+              "nPower": "1",
+              "logPower": "-6"
+            },
+            {
+              "coefficient": "1024",
+              "nPower": "1",
+              "logPower": "-7"
+            },
+            {
+              "coefficient": "-4096",
+              "nPower": "1",
+              "logPower": "-8"
+            },
+            {
+              "coefficient": "16384",
+              "nPower": "1",
+              "logPower": "-9"
+            },
+            {
+              "coefficient": "-65536",
+              "nPower": "1",
+              "logPower": "-10"
+            },
+            {
+              "coefficient": "262144",
+              "nPower": "1",
+              "logPower": "-11"
+            },
+            {
+              "coefficient": "-1048576",
+              "nPower": "1",
+              "logPower": "-12"
+            },
+            {
+              "coefficient": "4194304",
+              "nPower": "1",
+              "logPower": "-13"
+            },
+            {
+              "coefficient": "-16777216",
+              "nPower": "1",
+              "logPower": "-14"
+            },
+            {
+              "coefficient": "67108864",
+              "nPower": "1",
+              "logPower": "-15"
+            },
+            {
+              "coefficient": "-268435456",
+              "nPower": "1",
+              "logPower": "-16"
+            },
+            {
+              "coefficient": "1073741824",
+              "nPower": "1",
+              "logPower": "-17"
+            },
+            {
+              "coefficient": "-4294967296",
+              "nPower": "1",
+              "logPower": "-18"
+            },
+            {
+              "coefficient": "17179869184",
+              "nPower": "1",
+              "logPower": "-19"
+            },
+            {
+              "coefficient": "-68719476736",
+              "nPower": "1",
+              "logPower": "-20"
+            },
+            {
+              "coefficient": "274877906944",
+              "nPower": "1",
+              "logPower": "-21"
+            },
+            {
+              "coefficient": "-1099511627776",
+              "nPower": "1",
+              "logPower": "-22"
+            },
+            {
+              "coefficient": "4398046511104",
+              "nPower": "1",
+              "logPower": "-23"
+            },
+            {
+              "coefficient": "-17592186044416",
+              "nPower": "1",
+              "logPower": "-24"
+            },
+            {
+              "coefficient": "70368744177664",
+              "nPower": "1",
+              "logPower": "-25"
+            },
+            {
+              "coefficient": "-281474976710656",
+              "nPower": "1",
+              "logPower": "-26"
+            },
+            {
+              "coefficient": "1125899906842624",
+              "nPower": "1",
+              "logPower": "-27"
+            },
+            {
+              "coefficient": "-4503599627370496",
+              "nPower": "1",
+              "logPower": "-28"
+            },
+            {
+              "coefficient": "18014398509481984",
+              "nPower": "1",
+              "logPower": "-29"
+            },
+            {
+              "coefficient": "-72057594037927936",
+              "nPower": "1",
+              "logPower": "-30"
+            },
+            {
+              "coefficient": "288230376151711744",
+              "nPower": "1",
+              "logPower": "-31"
+            },
+            {
+              "coefficient": "-1152921504606846976",
+              "nPower": "1",
+              "logPower": "-32"
+            },
+            {
+              "coefficient": "4611686018427387904",
+              "nPower": "1",
+              "logPower": "-33"
+            },
+            {
+              "coefficient": "-18446744073709551616",
+              "nPower": "1",
+              "logPower": "-34"
+            },
+            {
+              "coefficient": "73786976294838206464",
+              "nPower": "1",
+              "logPower": "-35"
+            },
+            {
+              "coefficient": "-295147905179352825856",
+              "nPower": "1",
+              "logPower": "-36"
+            },
+            {
+              "coefficient": "1180591620717411303424",
+              "nPower": "1",
+              "logPower": "-37"
+            },
+            {
+              "coefficient": "-4722366482869645213696",
+              "nPower": "1",
+              "logPower": "-38"
+            },
+            {
+              "coefficient": "18889465931478580854784",
+              "nPower": "1",
+              "logPower": "-39"
+            },
+            {
+              "coefficient": "-75557863725914323419136",
+              "nPower": "1",
+              "logPower": "-40"
+            },
+            {
+              "coefficient": "302231454903657293676544",
+              "nPower": "1",
+              "logPower": "-41"
+            },
+            {
+              "coefficient": "-1208925819614629174706176",
+              "nPower": "1",
+              "logPower": "-42"
+            },
+            {
+              "coefficient": "4835703278458516698824704",
+              "nPower": "1",
+              "logPower": "-43"
+            },
+            {
+              "coefficient": "-19342813113834066795298816",
+              "nPower": "1",
+              "logPower": "-44"
+            },
+            {
+              "coefficient": "77371252455336267181195264",
+              "nPower": "1",
+              "logPower": "-45"
+            },
+            {
+              "coefficient": "-309485009821345068724781056",
+              "nPower": "1",
+              "logPower": "-46"
+            },
+            {
+              "coefficient": "1237940039285380274899124224",
+              "nPower": "1",
+              "logPower": "-47"
+            },
+            {
+              "coefficient": "-4951760157141521099596496896",
+              "nPower": "1",
+              "logPower": "-48"
+            },
+            {
+              "coefficient": "19807040628566084398385987584",
+              "nPower": "1",
+              "logPower": "-49"
+            },
+            {
+              "coefficient": "-79228162514264337593543950336",
+              "nPower": "1",
+              "logPower": "-50"
+            },
+            {
+              "coefficient": "316912650057057350374175801344",
+              "nPower": "1",
+              "logPower": "-51"
+            },
+            {
+              "coefficient": "-1267650600228229401496703205376",
+              "nPower": "1",
+              "logPower": "-52"
+            },
+            {
+              "coefficient": "5070602400912917605986812821504",
+              "nPower": "1",
+              "logPower": "-53"
+            },
+            {
+              "coefficient": "-20282409603651670423947251286016",
+              "nPower": "1",
+              "logPower": "-54"
+            },
+            {
+              "coefficient": "81129638414606681695789005144064",
+              "nPower": "1",
+              "logPower": "-55"
+            },
+            {
+              "coefficient": "-324518553658426726783156020576256",
+              "nPower": "1",
+              "logPower": "-56"
+            },
+            {
+              "coefficient": "1298074214633706907132624082305024",
+              "nPower": "1",
+              "logPower": "-57"
+            },
+            {
+              "coefficient": "-5192296858534827628530496329220096",
+              "nPower": "1",
+              "logPower": "-58"
+            },
+            {
+              "coefficient": "20769187434139310514121985316880384",
+              "nPower": "1",
+              "logPower": "-59"
+            },
+            {
+              "coefficient": "-83076749736557242056487941267521536",
+              "nPower": "1",
+              "logPower": "-60"
+            },
+            {
+              "coefficient": "332306998946228968225951765070086144",
+              "nPower": "1",
+              "logPower": "-61"
+            },
+            {
+              "coefficient": "-1329227995784915872903807060280344576",
+              "nPower": "1",
+              "logPower": "-62"
+            },
+            {
+              "coefficient": "5316911983139663491615228241121378304",
+              "nPower": "1",
+              "logPower": "-63"
             }
           ],
+          "nPower": "132",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "Define E63(n)=sum_{j=0}^{62}((-4)^j/4)*n*(log2n)^(-(j+1)); this finite expression is exact. For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical RLS4L16-FIXEDBANK implementation of proof.md executing COMPLETE virtual RLS-4L P in virtual.md has unconditional WHOLE-secret success at least9/10 for EVERY adversary of the EXACT adaptive malformed-copy model in claim4, with epsilon(n)=1/(4194304n^4). All four envelopes hold jointly on EVERY branch, including arbitrary malformed/entangled inputs, failures, discards, unused blocks, source moves, initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact index0. Count input/output, constant-many O(n)-bit size/delivery/row/copy/address/current-frame words, finite control and reusable bits/indices. All key/rank/label/offset/counter/parameter/F_t/numerical/frame/generator records live in COUNTED raw basis qubits and are streamed. Public size words are computed before delivery using the same O(n) staging; no bank measurement occurs before the last copy. Stable bottom-up sorting and fixed role buffers have no ordinary recursive stack or large cache. Full initialization/cleanup uses O(n) staging on arbitrary branches.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "Define E63(n)=sum_{j=0}^{62}((-4)^j/4)*n*(log2n)^(-(j+1)); this finite expression is exact. For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical RLS4L16-FIXEDBANK implementation of proof.md executing COMPLETE virtual RLS-4L P in virtual.md has unconditional WHOLE-secret success at least9/10 for EVERY adversary of the EXACT adaptive malformed-copy model in claim4, with epsilon(n)=1/(4194304n^4). All four envelopes hold jointly on EVERY branch, including arbitrary malformed/entangled inputs, failures, discards, unused blocks, source moves, initialization and cleanup. Peak FULL allocated quantum workspace is O(n^14*(log2n)*2^E63(n)), exact index1. Complete fixed raw span B=2^30*n*(Q0+(n+2)^20),original held/scratch H=(n+1)Q0+2^20*(n+2)^4,D=B+H+2^20*(n+2)^4 are counted, including constant-many Q0/M/2^b row families, every inactive cell/role/field/header, source records, scalar frames and paired-prefix padding. Whole prefix0..2h-1 for least power2 h>=max(D,H+1,2),plusO(n)receivingwires,is allocated. Source formula Q0<2^80 n13log2n*2^E63(n) gives O(nQ0+n^21) space; positive exponential absorbs the additive polynomial without any runtime switch. Original-source slotj/bitf has direct known index(n+1)j+f. No H scan per gate/allocation/source, no unknown wire cloning and no QRAM. Finite earlier input ratios alter only absolute constants.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/4",
+              "nPower": "1",
+              "logPower": "-1"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1",
+              "logPower": "-2"
+            },
+            {
+              "coefficient": "4",
+              "nPower": "1",
+              "logPower": "-3"
+            },
+            {
+              "coefficient": "-16",
+              "nPower": "1",
+              "logPower": "-4"
+            },
+            {
+              "coefficient": "64",
+              "nPower": "1",
+              "logPower": "-5"
+            },
+            {
+              "coefficient": "-256",
+              "nPower": "1",
+              "logPower": "-6"
+            },
+            {
+              "coefficient": "1024",
+              "nPower": "1",
+              "logPower": "-7"
+            },
+            {
+              "coefficient": "-4096",
+              "nPower": "1",
+              "logPower": "-8"
+            },
+            {
+              "coefficient": "16384",
+              "nPower": "1",
+              "logPower": "-9"
+            },
+            {
+              "coefficient": "-65536",
+              "nPower": "1",
+              "logPower": "-10"
+            },
+            {
+              "coefficient": "262144",
+              "nPower": "1",
+              "logPower": "-11"
+            },
+            {
+              "coefficient": "-1048576",
+              "nPower": "1",
+              "logPower": "-12"
+            },
+            {
+              "coefficient": "4194304",
+              "nPower": "1",
+              "logPower": "-13"
+            },
+            {
+              "coefficient": "-16777216",
+              "nPower": "1",
+              "logPower": "-14"
+            },
+            {
+              "coefficient": "67108864",
+              "nPower": "1",
+              "logPower": "-15"
+            },
+            {
+              "coefficient": "-268435456",
+              "nPower": "1",
+              "logPower": "-16"
+            },
+            {
+              "coefficient": "1073741824",
+              "nPower": "1",
+              "logPower": "-17"
+            },
+            {
+              "coefficient": "-4294967296",
+              "nPower": "1",
+              "logPower": "-18"
+            },
+            {
+              "coefficient": "17179869184",
+              "nPower": "1",
+              "logPower": "-19"
+            },
+            {
+              "coefficient": "-68719476736",
+              "nPower": "1",
+              "logPower": "-20"
+            },
+            {
+              "coefficient": "274877906944",
+              "nPower": "1",
+              "logPower": "-21"
+            },
+            {
+              "coefficient": "-1099511627776",
+              "nPower": "1",
+              "logPower": "-22"
+            },
+            {
+              "coefficient": "4398046511104",
+              "nPower": "1",
+              "logPower": "-23"
+            },
+            {
+              "coefficient": "-17592186044416",
+              "nPower": "1",
+              "logPower": "-24"
+            },
+            {
+              "coefficient": "70368744177664",
+              "nPower": "1",
+              "logPower": "-25"
+            },
+            {
+              "coefficient": "-281474976710656",
+              "nPower": "1",
+              "logPower": "-26"
+            },
+            {
+              "coefficient": "1125899906842624",
+              "nPower": "1",
+              "logPower": "-27"
+            },
+            {
+              "coefficient": "-4503599627370496",
+              "nPower": "1",
+              "logPower": "-28"
+            },
+            {
+              "coefficient": "18014398509481984",
+              "nPower": "1",
+              "logPower": "-29"
+            },
+            {
+              "coefficient": "-72057594037927936",
+              "nPower": "1",
+              "logPower": "-30"
+            },
+            {
+              "coefficient": "288230376151711744",
+              "nPower": "1",
+              "logPower": "-31"
+            },
+            {
+              "coefficient": "-1152921504606846976",
+              "nPower": "1",
+              "logPower": "-32"
+            },
+            {
+              "coefficient": "4611686018427387904",
+              "nPower": "1",
+              "logPower": "-33"
+            },
+            {
+              "coefficient": "-18446744073709551616",
+              "nPower": "1",
+              "logPower": "-34"
+            },
+            {
+              "coefficient": "73786976294838206464",
+              "nPower": "1",
+              "logPower": "-35"
+            },
+            {
+              "coefficient": "-295147905179352825856",
+              "nPower": "1",
+              "logPower": "-36"
+            },
+            {
+              "coefficient": "1180591620717411303424",
+              "nPower": "1",
+              "logPower": "-37"
+            },
+            {
+              "coefficient": "-4722366482869645213696",
+              "nPower": "1",
+              "logPower": "-38"
+            },
+            {
+              "coefficient": "18889465931478580854784",
+              "nPower": "1",
+              "logPower": "-39"
+            },
+            {
+              "coefficient": "-75557863725914323419136",
+              "nPower": "1",
+              "logPower": "-40"
+            },
+            {
+              "coefficient": "302231454903657293676544",
+              "nPower": "1",
+              "logPower": "-41"
+            },
+            {
+              "coefficient": "-1208925819614629174706176",
+              "nPower": "1",
+              "logPower": "-42"
+            },
+            {
+              "coefficient": "4835703278458516698824704",
+              "nPower": "1",
+              "logPower": "-43"
+            },
+            {
+              "coefficient": "-19342813113834066795298816",
+              "nPower": "1",
+              "logPower": "-44"
+            },
+            {
+              "coefficient": "77371252455336267181195264",
+              "nPower": "1",
+              "logPower": "-45"
+            },
+            {
+              "coefficient": "-309485009821345068724781056",
+              "nPower": "1",
+              "logPower": "-46"
+            },
+            {
+              "coefficient": "1237940039285380274899124224",
+              "nPower": "1",
+              "logPower": "-47"
+            },
+            {
+              "coefficient": "-4951760157141521099596496896",
+              "nPower": "1",
+              "logPower": "-48"
+            },
+            {
+              "coefficient": "19807040628566084398385987584",
+              "nPower": "1",
+              "logPower": "-49"
+            },
+            {
+              "coefficient": "-79228162514264337593543950336",
+              "nPower": "1",
+              "logPower": "-50"
+            },
+            {
+              "coefficient": "316912650057057350374175801344",
+              "nPower": "1",
+              "logPower": "-51"
+            },
+            {
+              "coefficient": "-1267650600228229401496703205376",
+              "nPower": "1",
+              "logPower": "-52"
+            },
+            {
+              "coefficient": "5070602400912917605986812821504",
+              "nPower": "1",
+              "logPower": "-53"
+            },
+            {
+              "coefficient": "-20282409603651670423947251286016",
+              "nPower": "1",
+              "logPower": "-54"
+            },
+            {
+              "coefficient": "81129638414606681695789005144064",
+              "nPower": "1",
+              "logPower": "-55"
+            },
+            {
+              "coefficient": "-324518553658426726783156020576256",
+              "nPower": "1",
+              "logPower": "-56"
+            },
+            {
+              "coefficient": "1298074214633706907132624082305024",
+              "nPower": "1",
+              "logPower": "-57"
+            },
+            {
+              "coefficient": "-5192296858534827628530496329220096",
+              "nPower": "1",
+              "logPower": "-58"
+            },
+            {
+              "coefficient": "20769187434139310514121985316880384",
+              "nPower": "1",
+              "logPower": "-59"
+            },
+            {
+              "coefficient": "-83076749736557242056487941267521536",
+              "nPower": "1",
+              "logPower": "-60"
+            },
+            {
+              "coefficient": "332306998946228968225951765070086144",
+              "nPower": "1",
+              "logPower": "-61"
+            },
+            {
+              "coefficient": "-1329227995784915872903807060280344576",
+              "nPower": "1",
+              "logPower": "-62"
+            },
+            {
+              "coefficient": "5316911983139663491615228241121378304",
+              "nPower": "1",
+              "logPower": "-63"
+            }
+          ],
+          "nPower": "14",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "Define E63(n)=sum_{j=0}^{62}((-4)^j/4)*n*(log2n)^(-(j+1)); this finite expression is exact. For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical RLS4L16-FIXEDBANK implementation of proof.md executing COMPLETE virtual RLS-4L P in virtual.md has unconditional WHOLE-secret success at least9/10 for EVERY adversary of the EXACT adaptive malformed-copy model in claim4, with epsilon(n)=1/(4194304n^4). All four envelopes hold jointly on EVERY branch, including arbitrary malformed/entangled inputs, failures, discards, unused blocks, source moves, initialization and cleanup. Total acquired source copies equal Q0=G(nM+k) on EVERY main-branch path, with R=4bitlength(n-1)+16,b=ceil((n-1)/R),M=R*2^(b+2R+6),G=2^(R+9),k=64bitlength(100G). ALLQ0 arrive before first measurement/fairbit. Every unused/rejected/discarded/tie/early-output block is acquired and counted. Thus Q=O(n^13*(log2n)*2^E63(n)), exact index1. For n<8192 acquire literalN*2^20 copies before measurements and run the unchanged robust permutation/test branch. Exactly one physical request executes each P request; metadata/padding and SWAPs are paid gates/storage, not extra queries.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/4",
+              "nPower": "1",
+              "logPower": "-1"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1",
+              "logPower": "-2"
+            },
+            {
+              "coefficient": "4",
+              "nPower": "1",
+              "logPower": "-3"
+            },
+            {
+              "coefficient": "-16",
+              "nPower": "1",
+              "logPower": "-4"
+            },
+            {
+              "coefficient": "64",
+              "nPower": "1",
+              "logPower": "-5"
+            },
+            {
+              "coefficient": "-256",
+              "nPower": "1",
+              "logPower": "-6"
+            },
+            {
+              "coefficient": "1024",
+              "nPower": "1",
+              "logPower": "-7"
+            },
+            {
+              "coefficient": "-4096",
+              "nPower": "1",
+              "logPower": "-8"
+            },
+            {
+              "coefficient": "16384",
+              "nPower": "1",
+              "logPower": "-9"
+            },
+            {
+              "coefficient": "-65536",
+              "nPower": "1",
+              "logPower": "-10"
+            },
+            {
+              "coefficient": "262144",
+              "nPower": "1",
+              "logPower": "-11"
+            },
+            {
+              "coefficient": "-1048576",
+              "nPower": "1",
+              "logPower": "-12"
+            },
+            {
+              "coefficient": "4194304",
+              "nPower": "1",
+              "logPower": "-13"
+            },
+            {
+              "coefficient": "-16777216",
+              "nPower": "1",
+              "logPower": "-14"
+            },
+            {
+              "coefficient": "67108864",
+              "nPower": "1",
+              "logPower": "-15"
+            },
+            {
+              "coefficient": "-268435456",
+              "nPower": "1",
+              "logPower": "-16"
+            },
+            {
+              "coefficient": "1073741824",
+              "nPower": "1",
+              "logPower": "-17"
+            },
+            {
+              "coefficient": "-4294967296",
+              "nPower": "1",
+              "logPower": "-18"
+            },
+            {
+              "coefficient": "17179869184",
+              "nPower": "1",
+              "logPower": "-19"
+            },
+            {
+              "coefficient": "-68719476736",
+              "nPower": "1",
+              "logPower": "-20"
+            },
+            {
+              "coefficient": "274877906944",
+              "nPower": "1",
+              "logPower": "-21"
+            },
+            {
+              "coefficient": "-1099511627776",
+              "nPower": "1",
+              "logPower": "-22"
+            },
+            {
+              "coefficient": "4398046511104",
+              "nPower": "1",
+              "logPower": "-23"
+            },
+            {
+              "coefficient": "-17592186044416",
+              "nPower": "1",
+              "logPower": "-24"
+            },
+            {
+              "coefficient": "70368744177664",
+              "nPower": "1",
+              "logPower": "-25"
+            },
+            {
+              "coefficient": "-281474976710656",
+              "nPower": "1",
+              "logPower": "-26"
+            },
+            {
+              "coefficient": "1125899906842624",
+              "nPower": "1",
+              "logPower": "-27"
+            },
+            {
+              "coefficient": "-4503599627370496",
+              "nPower": "1",
+              "logPower": "-28"
+            },
+            {
+              "coefficient": "18014398509481984",
+              "nPower": "1",
+              "logPower": "-29"
+            },
+            {
+              "coefficient": "-72057594037927936",
+              "nPower": "1",
+              "logPower": "-30"
+            },
+            {
+              "coefficient": "288230376151711744",
+              "nPower": "1",
+              "logPower": "-31"
+            },
+            {
+              "coefficient": "-1152921504606846976",
+              "nPower": "1",
+              "logPower": "-32"
+            },
+            {
+              "coefficient": "4611686018427387904",
+              "nPower": "1",
+              "logPower": "-33"
+            },
+            {
+              "coefficient": "-18446744073709551616",
+              "nPower": "1",
+              "logPower": "-34"
+            },
+            {
+              "coefficient": "73786976294838206464",
+              "nPower": "1",
+              "logPower": "-35"
+            },
+            {
+              "coefficient": "-295147905179352825856",
+              "nPower": "1",
+              "logPower": "-36"
+            },
+            {
+              "coefficient": "1180591620717411303424",
+              "nPower": "1",
+              "logPower": "-37"
+            },
+            {
+              "coefficient": "-4722366482869645213696",
+              "nPower": "1",
+              "logPower": "-38"
+            },
+            {
+              "coefficient": "18889465931478580854784",
+              "nPower": "1",
+              "logPower": "-39"
+            },
+            {
+              "coefficient": "-75557863725914323419136",
+              "nPower": "1",
+              "logPower": "-40"
+            },
+            {
+              "coefficient": "302231454903657293676544",
+              "nPower": "1",
+              "logPower": "-41"
+            },
+            {
+              "coefficient": "-1208925819614629174706176",
+              "nPower": "1",
+              "logPower": "-42"
+            },
+            {
+              "coefficient": "4835703278458516698824704",
+              "nPower": "1",
+              "logPower": "-43"
+            },
+            {
+              "coefficient": "-19342813113834066795298816",
+              "nPower": "1",
+              "logPower": "-44"
+            },
+            {
+              "coefficient": "77371252455336267181195264",
+              "nPower": "1",
+              "logPower": "-45"
+            },
+            {
+              "coefficient": "-309485009821345068724781056",
+              "nPower": "1",
+              "logPower": "-46"
+            },
+            {
+              "coefficient": "1237940039285380274899124224",
+              "nPower": "1",
+              "logPower": "-47"
+            },
+            {
+              "coefficient": "-4951760157141521099596496896",
+              "nPower": "1",
+              "logPower": "-48"
+            },
+            {
+              "coefficient": "19807040628566084398385987584",
+              "nPower": "1",
+              "logPower": "-49"
+            },
+            {
+              "coefficient": "-79228162514264337593543950336",
+              "nPower": "1",
+              "logPower": "-50"
+            },
+            {
+              "coefficient": "316912650057057350374175801344",
+              "nPower": "1",
+              "logPower": "-51"
+            },
+            {
+              "coefficient": "-1267650600228229401496703205376",
+              "nPower": "1",
+              "logPower": "-52"
+            },
+            {
+              "coefficient": "5070602400912917605986812821504",
+              "nPower": "1",
+              "logPower": "-53"
+            },
+            {
+              "coefficient": "-20282409603651670423947251286016",
+              "nPower": "1",
+              "logPower": "-54"
+            },
+            {
+              "coefficient": "81129638414606681695789005144064",
+              "nPower": "1",
+              "logPower": "-55"
+            },
+            {
+              "coefficient": "-324518553658426726783156020576256",
+              "nPower": "1",
+              "logPower": "-56"
+            },
+            {
+              "coefficient": "1298074214633706907132624082305024",
+              "nPower": "1",
+              "logPower": "-57"
+            },
+            {
+              "coefficient": "-5192296858534827628530496329220096",
+              "nPower": "1",
+              "logPower": "-58"
+            },
+            {
+              "coefficient": "20769187434139310514121985316880384",
+              "nPower": "1",
+              "logPower": "-59"
+            },
+            {
+              "coefficient": "-83076749736557242056487941267521536",
+              "nPower": "1",
+              "logPower": "-60"
+            },
+            {
+              "coefficient": "332306998946228968225951765070086144",
+              "nPower": "1",
+              "logPower": "-61"
+            },
+            {
+              "coefficient": "-1329227995784915872903807060280344576",
+              "nPower": "1",
+              "logPower": "-62"
+            },
+            {
+              "coefficient": "5316911983139663491615228241121378304",
+              "nPower": "1",
+              "logPower": "-63"
+            }
+          ],
+          "nPower": "13",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "Define E63(n)=sum_{j=0}^{62}((-4)^j/4)*n*(log2n)^(-(j+1)); this finite expression is exact. For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical RLS4L16-FIXEDBANK implementation of proof.md executing COMPLETE virtual RLS-4L P in virtual.md has unconditional WHOLE-secret success at least9/10 for EVERY adversary of the EXACT adaptive malformed-copy model in claim4, with epsilon(n)=1/(4194304n^4). All four envelopes hold jointly on EVERY branch, including arbitrary malformed/entangled inputs, failures, discards, unused blocks, source moves, initialization and cleanup. Guaranteed malformed fraction is EXACTepsilon(n)=1/(4194304n^4) in the verbatim source adaptive model. No measurement/fairbit/helperREAD occurs before last delivery, so adversary-visible outcome history is literally empty throughout acquisition; its possibly E-entangled deliveries are mapped faithfully into fixed held slots. After last delivery it has no access/future supplies. The full arbitrary-reference correlated-CQ/forgetting interpretation preserves P reduced logical channels, uniform permutation, forgotten twirls/F_t outcomes, robust sieve/vote/test and source/output law. Helper readouts are MARGINALIZED, not inserted into original conditional-independence fields. Source Theorems1-2 give success>=9/10 for every N and permitted adversary, including clean. The tolerance counts malformed acquired copies, not a per-copy corruption probability.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{1}{4194304n^4}",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
