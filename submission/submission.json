@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "QUDIT-L16: explicitly decoded fine phase vectors and fewer source copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the single QUDIT-L16 algorithm in proof.md and qudit_decoder.md recovers the entire secret with unconditional probability>=2/3 under exactly claim5's adaptive model and epsilon(n)=(log2n)^2/(1048576n^18),epsilon(1)=0. Main n>=2^128 uses the reproduced exact RLOG depth16,tapered binary/radix/high-part merge,source extraction and odd/two-adic physical block identities. Set Kc=8192(m+10u+100),Kp=8192(u+100),Ct=65536dl2^m,Y=ceil(log2Ct),E=4u,r=ceil(log2(n^5)),Lblk=ceil(n/floor(log2n)),A=4Lblk,Qcap=Ct*(Kc*(Y+6+E)+A)+Kp. Coarse1-qubit capped roots are immediately measured with missing scorezero. Fine r-qubit roots retrymissing under ONE global attempt capA; each completed vector is decoded by explicitly enumerated frequency-bin compression,controlled uniform-rank unpreparation and inverse Fourier measurement with charged finite-precision Clifford+T synthesis. Pairwise frequency-difference uniformity proves worst-secret success,without independent vector entries or a subset-sum/QRAM oracle. Coarse bootstrap extends to J0=min(Jfull,Y+5+E); the direct final two-adic block usesKp single-qubit scores. Each selected source call uses a1024-copy microbank acquired with core idle,then10 new fair bits chooseone; unchosen copies reset,padding makes actualQ=1024Qcap. Section18's first-bad comparison preserves the unconditional clean reference law. Below the cutoff whole-bank prefetch,bounded-bias fixed-time Fisher-Yates and complete fixed candidate blocks k=n+10 have a separate robustness proof. All four resource bounds hold jointly on EVERY branch,including errors,retries,missing roots,global-cap abort,unused copies,synthesis,circuit generation,addresses,lookups and cleanup. Absolute outer constants cover the fixed finite prefix; resource logarithms usepositive n=2 values atn=1. Total charged work O(n^11 2^(n/(16log2n))),growth index1.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -19,26 +20,57 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
+          "nPower": "11",
+          "logPower": "0",
           "exponent": [
             {
-              "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-1",
+              "coefficient": "1/16"
             }
-          ],
-          "nPower": "4",
-          "logPower": "0"
+          ]
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the single QUDIT-L16 algorithm in proof.md and qudit_decoder.md recovers the entire secret with unconditional probability>=2/3 under exactly claim5's adaptive model and epsilon(n)=(log2n)^2/(1048576n^18),epsilon(1)=0. Main n>=2^128 uses the reproduced exact RLOG depth16,tapered binary/radix/high-part merge,source extraction and odd/two-adic physical block identities. Set Kc=8192(m+10u+100),Kp=8192(u+100),Ct=65536dl2^m,Y=ceil(log2Ct),E=4u,r=ceil(log2(n^5)),Lblk=ceil(n/floor(log2n)),A=4Lblk,Qcap=Ct*(Kc*(Y+6+E)+A)+Kp. Coarse1-qubit capped roots are immediately measured with missing scorezero. Fine r-qubit roots retrymissing under ONE global attempt capA; each completed vector is decoded by explicitly enumerated frequency-bin compression,controlled uniform-rank unpreparation and inverse Fourier measurement with charged finite-precision Clifford+T synthesis. Pairwise frequency-difference uniformity proves worst-secret success,without independent vector entries or a subset-sum/QRAM oracle. Coarse bootstrap extends to J0=min(Jfull,Y+5+E); the direct final two-adic block usesKp single-qubit scores. Each selected source call uses a1024-copy microbank acquired with core idle,then10 new fair bits chooseone; unchosen copies reset,padding makes actualQ=1024Qcap. Section18's first-bad comparison preserves the unconditional clean reference law. Below the cutoff whole-bank prefetch,bounded-bias fixed-time Fisher-Yates and complete fixed candidate blocks k=n+10 have a separate robustness proof. All four resource bounds hold jointly on EVERY branch,including errors,retries,missing roots,global-cap abort,unused copies,synthesis,circuit generation,addresses,lookups and cleanup. Absolute outer constants cover the fixed finite prefix; resource logarithms usepositive n=2 values atn=1. Peak classical bits O((n^9/log2n)2^(n/(16log2n))),growth index1.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "qudit_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "9",
+          "logPower": "-1",
+          "exponent": [
+            {
+              "nPower": "1",
+              "logPower": "-1",
+              "coefficient": "1/16"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the single QUDIT-L16 algorithm in proof.md and qudit_decoder.md recovers the entire secret with unconditional probability>=2/3 under exactly claim5's adaptive model and epsilon(n)=(log2n)^2/(1048576n^18),epsilon(1)=0. Main n>=2^128 uses the reproduced exact RLOG depth16,tapered binary/radix/high-part merge,source extraction and odd/two-adic physical block identities. Set Kc=8192(m+10u+100),Kp=8192(u+100),Ct=65536dl2^m,Y=ceil(log2Ct),E=4u,r=ceil(log2(n^5)),Lblk=ceil(n/floor(log2n)),A=4Lblk,Qcap=Ct*(Kc*(Y+6+E)+A)+Kp. Coarse1-qubit capped roots are immediately measured with missing scorezero. Fine r-qubit roots retrymissing under ONE global attempt capA; each completed vector is decoded by explicitly enumerated frequency-bin compression,controlled uniform-rank unpreparation and inverse Fourier measurement with charged finite-precision Clifford+T synthesis. Pairwise frequency-difference uniformity proves worst-secret success,without independent vector entries or a subset-sum/QRAM oracle. Coarse bootstrap extends to J0=min(Jfull,Y+5+E); the direct final two-adic block usesKp single-qubit scores. Each selected source call uses a1024-copy microbank acquired with core idle,then10 new fair bits chooseone; unchosen copies reset,padding makes actualQ=1024Qcap. Section18's first-bad comparison preserves the unconditional clean reference law. Below the cutoff whole-bank prefetch,bounded-bias fixed-time Fisher-Yates and complete fixed candidate blocks k=n+10 have a separate robustness proof. All four resource bounds hold jointly on EVERY branch,including errors,retries,missing roots,global-cap abort,unused copies,synthesis,circuit generation,addresses,lookups and cleanup. Absolute outer constants cover the fixed finite prefix; resource logarithms usepositive n=2 values atn=1. Peak accessible quantum space O(n),including source/core/measurement/synthesis scratch and uniform finite-range constants,growth index0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,72 +81,45 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the single QUDIT-L16 algorithm in proof.md and qudit_decoder.md recovers the entire secret with unconditional probability>=2/3 under exactly claim5's adaptive model and epsilon(n)=(log2n)^2/(1048576n^18),epsilon(1)=0. Main n>=2^128 uses the reproduced exact RLOG depth16,tapered binary/radix/high-part merge,source extraction and odd/two-adic physical block identities. Set Kc=8192(m+10u+100),Kp=8192(u+100),Ct=65536dl2^m,Y=ceil(log2Ct),E=4u,r=ceil(log2(n^5)),Lblk=ceil(n/floor(log2n)),A=4Lblk,Qcap=Ct*(Kc*(Y+6+E)+A)+Kp. Coarse1-qubit capped roots are immediately measured with missing scorezero. Fine r-qubit roots retrymissing under ONE global attempt capA; each completed vector is decoded by explicitly enumerated frequency-bin compression,controlled uniform-rank unpreparation and inverse Fourier measurement with charged finite-precision Clifford+T synthesis. Pairwise frequency-difference uniformity proves worst-secret success,without independent vector entries or a subset-sum/QRAM oracle. Coarse bootstrap extends to J0=min(Jfull,Y+5+E); the direct final two-adic block usesKp single-qubit scores. Each selected source call uses a1024-copy microbank acquired with core idle,then10 new fair bits chooseone; unchosen copies reset,padding makes actualQ=1024Qcap. Section18's first-bad comparison preserves the unconditional clean reference law. Below the cutoff whole-bank prefetch,bounded-bias fixed-time Fisher-Yates and complete fixed candidate blocks k=n+10 have a separate robustness proof. All four resource bounds hold jointly on EVERY branch,including errors,retries,missing roots,global-cap abort,unused copies,synthesis,circuit generation,addresses,lookups and cleanup. Absolute outer constants cover the fixed finite prefix; resource logarithms usepositive n=2 values atn=1. Total acquired raw copies O(n^18/(log2n)^2),including every unused/padding/discarded copy,growth index0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "qudit_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "18",
+          "logPower": "-2",
+          "exponent": []
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the single QUDIT-L16 algorithm in proof.md and qudit_decoder.md recovers the entire secret with unconditional probability>=2/3 under exactly claim5's adaptive model and epsilon(n)=(log2n)^2/(1048576n^18),epsilon(1)=0. Main n>=2^128 uses the reproduced exact RLOG depth16,tapered binary/radix/high-part merge,source extraction and odd/two-adic physical block identities. Set Kc=8192(m+10u+100),Kp=8192(u+100),Ct=65536dl2^m,Y=ceil(log2Ct),E=4u,r=ceil(log2(n^5)),Lblk=ceil(n/floor(log2n)),A=4Lblk,Qcap=Ct*(Kc*(Y+6+E)+A)+Kp. Coarse1-qubit capped roots are immediately measured with missing scorezero. Fine r-qubit roots retrymissing under ONE global attempt capA; each completed vector is decoded by explicitly enumerated frequency-bin compression,controlled uniform-rank unpreparation and inverse Fourier measurement with charged finite-precision Clifford+T synthesis. Pairwise frequency-difference uniformity proves worst-secret success,without independent vector entries or a subset-sum/QRAM oracle. Coarse bootstrap extends to J0=min(Jfull,Y+5+E); the direct final two-adic block usesKp single-qubit scores. Each selected source call uses a1024-copy microbank acquired with core idle,then10 new fair bits chooseone; unchosen copies reset,padding makes actualQ=1024Qcap. Section18's first-bad comparison preserves the unconditional clean reference law. Below the cutoff whole-bank prefetch,bounded-bias fixed-time Fisher-Yates and complete fixed candidate blocks k=n+10 have a separate robustness proof. All four resource bounds hold jointly on EVERY branch,including errors,retries,missing roots,global-cap abort,unused copies,synthesis,circuit generation,addresses,lookups and cleanup. Absolute outer constants cover the fixed finite prefix; resource logarithms usepositive n=2 values atn=1. Guaranteed malformed fraction exactly (log2n)^2/(1048576n^18) with no validity threshold. Allowed malformed raw count>=4 on every main-range input; no growing count or optimum is claimed.",
+      "evidence": [
+        "proof.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{(\\log_2 n)^2}{1048576 n^{18}}",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
