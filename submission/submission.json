@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PARTADAPT-193-TAGBANK:uniform growing odd-partition recycling,jointT/SQ/Q exp((1154701/1000000)sqrt n),ordinarylinear",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For the single uniform PARTADAPT-193-TAGBANK physical algorithm supplied completely in proof.md and virtual.md (complete peer source/LE/linearmerge/full-modulusdecoders;NEWpublicinput-dependentk=leastoddinteger>=ceil(n^(1/8)),odd-partitioncover,exactdyadicdilation,finiteidentitytrialcap,uniform2<q<=2+7/sqrt(k)rate andfullychargedgrowingcompiler;mainn>=2^512,r=ceil(sqrt n),ell=m=dl=ceil(5773503r/10000000),completecapacity/failure/resourceproof;publicu=ceil(11547007r/10000000)+2,U=2^u,A=2^16n²,R=2^128n64U,Wrow=2^16n²,H=2^96n64U,e=(n+2)^20 andcountedfullbasis-bank/unknown-wire/CQimplementation;finiteprefixstreamingtester),for everyN>=2 ands moduloN,n=ceil(log2N),unconditionalENTIRE-secret recovery succeedswithprobabilityatleast1-2^-7 fromindependentidealcopies. JointlyonEVERYbranch T=O(2^((1154701/1000000)*sqrt n)),ordinaryclassicalS_C=O(n),fullallocatedS_Q=O(2^((1154701/1000000)*sqrt n)),totalacquisitionsQ=O(2^((1154701/1000000)*sqrt n));allfailures,discard,partialattempt,retry,guard,abort,initialization,fulladdress,source transfer,lifecycle,finiteepochrepair/cleanup andinput-dependentcompiler/parameterworkcount. Exponentcoefficientsareexact1154701/1000000,outsideconstantsabsolute. The time upperenvelopehasexactindex1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -19,26 +20,27 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "1154701/1000000",
+              "nPower": "1/2",
               "logPower": "0"
             }
-          ],
-          "nPower": "4",
-          "logPower": "0"
+          ]
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For the single uniform PARTADAPT-193-TAGBANK physical algorithm supplied completely in proof.md and virtual.md (complete peer source/LE/linearmerge/full-modulusdecoders;NEWpublicinput-dependentk=leastoddinteger>=ceil(n^(1/8)),odd-partitioncover,exactdyadicdilation,finiteidentitytrialcap,uniform2<q<=2+7/sqrt(k)rate andfullychargedgrowingcompiler;mainn>=2^512,r=ceil(sqrt n),ell=m=dl=ceil(5773503r/10000000),completecapacity/failure/resourceproof;publicu=ceil(11547007r/10000000)+2,U=2^u,A=2^16n²,R=2^128n64U,Wrow=2^16n²,H=2^96n64U,e=(n+2)^20 andcountedfullbasis-bank/unknown-wire/CQimplementation;finiteprefixstreamingtester),for everyN>=2 ands moduloN,n=ceil(log2N),unconditionalENTIRE-secret recovery succeedswithprobabilityatleast1-2^-7 fromindependentidealcopies. JointlyonEVERYbranch T=O(2^((1154701/1000000)*sqrt n)),ordinaryclassicalS_C=O(n),fullallocatedS_Q=O(2^((1154701/1000000)*sqrt n)),totalacquisitionsQ=O(2^((1154701/1000000)*sqrt n));allfailures,discard,partialattempt,retry,guard,abort,initialization,fulladdress,source transfer,lifecycle,finiteepochrepair/cleanup andinput-dependentcompiler/parameterworkcount. Exponentcoefficientsareexact1154701/1000000,outsideconstantsabsolute. The ordinary classicalspace upperenvelopehasexactindex0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -48,68 +50,77 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
-          "logPower": "0"
+          "logPower": "0",
+          "exponent": []
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For the single uniform PARTADAPT-193-TAGBANK physical algorithm supplied completely in proof.md and virtual.md (complete peer source/LE/linearmerge/full-modulusdecoders;NEWpublicinput-dependentk=leastoddinteger>=ceil(n^(1/8)),odd-partitioncover,exactdyadicdilation,finiteidentitytrialcap,uniform2<q<=2+7/sqrt(k)rate andfullychargedgrowingcompiler;mainn>=2^512,r=ceil(sqrt n),ell=m=dl=ceil(5773503r/10000000),completecapacity/failure/resourceproof;publicu=ceil(11547007r/10000000)+2,U=2^u,A=2^16n²,R=2^128n64U,Wrow=2^16n²,H=2^96n64U,e=(n+2)^20 andcountedfullbasis-bank/unknown-wire/CQimplementation;finiteprefixstreamingtester),for everyN>=2 ands moduloN,n=ceil(log2N),unconditionalENTIRE-secret recovery succeedswithprobabilityatleast1-2^-7 fromindependentidealcopies. JointlyonEVERYbranch T=O(2^((1154701/1000000)*sqrt n)),ordinaryclassicalS_C=O(n),fullallocatedS_Q=O(2^((1154701/1000000)*sqrt n)),totalacquisitionsQ=O(2^((1154701/1000000)*sqrt n));allfailures,discard,partialattempt,retry,guard,abort,initialization,fulladdress,source transfer,lifecycle,finiteepochrepair/cleanup andinput-dependentcompiler/parameterworkcount. Exponentcoefficientsareexact1154701/1000000,outsideconstantsabsolute. The full allocatedquantumspace upperenvelopehasexactindex1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
+          "exponent": [
+            {
+              "coefficient": "1154701/1000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For the single uniform PARTADAPT-193-TAGBANK physical algorithm supplied completely in proof.md and virtual.md (complete peer source/LE/linearmerge/full-modulusdecoders;NEWpublicinput-dependentk=leastoddinteger>=ceil(n^(1/8)),odd-partitioncover,exactdyadicdilation,finiteidentitytrialcap,uniform2<q<=2+7/sqrt(k)rate andfullychargedgrowingcompiler;mainn>=2^512,r=ceil(sqrt n),ell=m=dl=ceil(5773503r/10000000),completecapacity/failure/resourceproof;publicu=ceil(11547007r/10000000)+2,U=2^u,A=2^16n²,R=2^128n64U,Wrow=2^16n²,H=2^96n64U,e=(n+2)^20 andcountedfullbasis-bank/unknown-wire/CQimplementation;finiteprefixstreamingtester),for everyN>=2 ands moduloN,n=ceil(log2N),unconditionalENTIRE-secret recovery succeedswithprobabilityatleast1-2^-7 fromindependentidealcopies. JointlyonEVERYbranch T=O(2^((1154701/1000000)*sqrt n)),ordinaryclassicalS_C=O(n),fullallocatedS_Q=O(2^((1154701/1000000)*sqrt n)),totalacquisitionsQ=O(2^((1154701/1000000)*sqrt n));allfailures,discard,partialattempt,retry,guard,abort,initialization,fulladdress,source transfer,lifecycle,finiteepochrepair/cleanup andinput-dependentcompiler/parameterworkcount. Exponentcoefficientsareexact1154701/1000000,outsideconstantsabsolute. The acquisitions upperenvelopehasexactindex1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
+          "exponent": [
+            {
+              "coefficient": "1154701/1000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For the single uniform PARTADAPT-193-TAGBANK physical algorithm supplied completely in proof.md and virtual.md (complete peer source/LE/linearmerge/full-modulusdecoders;NEWpublicinput-dependentk=leastoddinteger>=ceil(n^(1/8)),odd-partitioncover,exactdyadicdilation,finiteidentitytrialcap,uniform2<q<=2+7/sqrt(k)rate andfullychargedgrowingcompiler;mainn>=2^512,r=ceil(sqrt n),ell=m=dl=ceil(5773503r/10000000),completecapacity/failure/resourceproof;publicu=ceil(11547007r/10000000)+2,U=2^u,A=2^16n²,R=2^128n64U,Wrow=2^16n²,H=2^96n64U,e=(n+2)^20 andcountedfullbasis-bank/unknown-wire/CQimplementation;finiteprefixstreamingtester),for everyN>=2 ands moduloN,n=ceil(log2N),unconditionalENTIRE-secret recovery succeedswithprobabilityatleast1-2^-7 fromindependentidealcopies. JointlyonEVERYbranch T=O(2^((1154701/1000000)*sqrt n)),ordinaryclassicalS_C=O(n),fullallocatedS_Q=O(2^((1154701/1000000)*sqrt n)),totalacquisitionsQ=O(2^((1154701/1000000)*sqrt n));allfailures,discard,partialattempt,retry,guard,abort,initialization,fulladdress,source transfer,lifecycle,finiteepochrepair/cleanup andinput-dependentcompiler/parameterworkcount. Exponentcoefficientsareexact1154701/1000000,outsideconstantsabsolute. Cleanmalformedfractionexpression0requires everyacquiredcopyindependentideal;no positive robustnessor impossibilityisclaimed.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
