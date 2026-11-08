@@ -1,0 +1,57 @@
+{
+  "checker_sha256": "4615b8ec90b1de8811db16be5e888c580654f328f2bc088dac6c656317916836",
+  "controlled_addition_basis_cases": 28768,
+  "cpu_seconds": 33.240072835,
+  "exact_controlled_Grover_columns": 480,
+  "ledgers": [
+    {
+      "N": 2,
+      "gates": 1613,
+      "labels": [
+        0,
+        1,
+        1
+      ],
+      "qubits": 47
+    },
+    {
+      "N": 3,
+      "gates": 2537,
+      "labels": [
+        1,
+        1,
+        2
+      ],
+      "qubits": 71
+    },
+    {
+      "N": 5,
+      "gates": 3461,
+      "labels": [
+        1,
+        2,
+        4
+      ],
+      "qubits": 95
+    },
+    {
+      "N": 7,
+      "gates": 4609,
+      "labels": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "qubits": 97
+    }
+  ],
+  "modular_circuits": 527,
+  "process_memory": [
+    "VmPeak:\t   28908 kB",
+    "VmHWM:\t   14816 kB"
+  ],
+  "scope": "Actual emitted X/CNOT/Toffoli/H/Z/CZ gates; coherent target and PE control signs are checked. The full phase-estimation loop is not emitted.",
+  "status": "pass",
+  "wrong_diffusion_sign_control_overlap": []
+}

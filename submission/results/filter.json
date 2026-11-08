@@ -1,0 +1,176 @@
+{
+  "checker_sha256": "077ab2cb4d5cf72c5855253023a5d43f03b7df7a5950a9b8354798f2cec749f3",
+  "cpu_seconds": 0.9722915889999999,
+  "exact_constants": {
+    "bit_lengths_checked": 1023,
+    "filter_squared_error_upper": "139263/268402688",
+    "success_lower": "241/320"
+  },
+  "finite_readout": [
+    {
+      "N": 3,
+      "labels": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "scope": "Full coherent target readout using a deliberately small grid, not the production guard.",
+      "toy_phase_grid": 64,
+      "true_secret_probabilities": [
+        0.3333333333333334,
+        0.3333333333333334,
+        0.3333333333333334
+      ]
+    },
+    {
+      "N": 4,
+      "labels": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "scope": "Full coherent target readout using a deliberately small grid, not the production guard.",
+      "toy_phase_grid": 64,
+      "true_secret_probabilities": [
+        0.9480323464828225,
+        0.9480323464828225,
+        0.9480323464828225,
+        0.9480323464828225
+      ]
+    },
+    {
+      "N": 3,
+      "labels": [
+        0,
+        1,
+        1,
+        2
+      ],
+      "scope": "Full coherent target readout using a deliberately small grid, not the production guard.",
+      "toy_phase_grid": 64,
+      "true_secret_probabilities": [
+        0.9774634818051012,
+        0.9774634818051012,
+        0.9774634818051012
+      ]
+    },
+    {
+      "N": 5,
+      "labels": [
+        1,
+        2,
+        3,
+        4,
+        1
+      ],
+      "scope": "Full coherent target readout using a deliberately small grid, not the production guard.",
+      "toy_phase_grid": 64,
+      "true_secret_probabilities": [
+        0.9948712583877372,
+        0.9948712583877372,
+        0.9948712583877372,
+        0.9948712583877372,
+        0.9948712583877372
+      ]
+    },
+    {
+      "N": 8,
+      "labels": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "scope": "Full coherent target readout using a deliberately small grid, not the production guard.",
+      "toy_phase_grid": 64,
+      "true_secret_probabilities": [
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992,
+        0.6269579502812992
+      ]
+    }
+  ],
+  "phase_filter": {
+    "cases": 372,
+    "max_norm_discrepancy": 1.354472090042691e-14,
+    "max_squared_error_identity_discrepancy": 3.774758283725532e-15,
+    "scope": "Floating-point circuit simulation on small grids. Production guard constants are checked separately by exact inequalities.",
+    "wrong_sign_maps_to_complement": true
+  },
+  "population_ensembles": [
+    {
+      "N": 2,
+      "certified_PGM_success_lower_bound": "2213609288823177776993/2361183241434822606848",
+      "distinct_profiles": 2,
+      "exact_collision_mean": "36",
+      "label_lists": 8,
+      "m": 3
+    },
+    {
+      "N": 3,
+      "certified_PGM_success_lower_bound": "8487046770583471996777/8965117619822842085376",
+      "distinct_profiles": 5,
+      "exact_collision_mean": "96",
+      "label_lists": 81,
+      "m": 4
+    },
+    {
+      "N": 4,
+      "certified_PGM_success_lower_bound": "69227279176463921958653/75557863725914323419136",
+      "distinct_profiles": 6,
+      "exact_collision_mean": "76",
+      "label_lists": 256,
+      "m": 4
+    },
+    {
+      "N": 5,
+      "certified_PGM_success_lower_bound": "1755184700485886904773933/1844674407370955161600000",
+      "distinct_profiles": 12,
+      "exact_collision_mean": "1152/5",
+      "label_lists": 3125,
+      "m": 5
+    },
+    {
+      "N": 6,
+      "certified_PGM_success_lower_bound": "2861851369086928392498457/3060093480899530098475008",
+      "distinct_profiles": 19,
+      "exact_collision_mean": "592/3",
+      "label_lists": 7776,
+      "m": 5
+    },
+    {
+      "N": 7,
+      "certified_PGM_success_lower_bound": "64270159027003998834950305/69447711792891361218265088",
+      "distinct_profiles": 20,
+      "exact_collision_mean": "1216/7",
+      "label_lists": 16807,
+      "m": 5
+    },
+    {
+      "N": 8,
+      "certified_PGM_success_lower_bound": "140783173641708930189450513/154742504910672534362390528",
+      "distinct_profiles": 28,
+      "exact_collision_mean": "156",
+      "label_lists": 32768,
+      "m": 5
+    }
+  ],
+  "process_memory": [
+    "VmPeak:\t   27692 kB",
+    "VmHWM:\t   14184 kB"
+  ],
+  "source": {
+    "exact_source_matrix_entries": 93632,
+    "max_probability_mass_error": 2.4424906541753444e-15,
+    "rounding_eigenstate_cases": 456
+  },
+  "status": "pass"
+}
