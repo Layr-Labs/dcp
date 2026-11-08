@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "FT-P128: time coefficient1.4143 with geometric classical storage",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the single FT-P128 algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), H=floor(13933r/10000), dl=ceil(3r/10000), Qtarget=ceil(707r/500), A=H-dl, L4=ceil((Qtarget-A)/2), Mmax=A+L4, hmax=A+2L4, kappa=ceil(log2Mmax)+3, minimal mixed-tree prefixes with binary input widths dl+i and quartic widths H-floor(j/128), aux=H+1+2j and full four-input windows, Kc=8192(2r+u+30), Kp=8192(u+100), u=ceil(log2n), full-label implicit-fiber implementation, coarse-cost mixed-arity exponential-demand cutoffs, bounded odd bootstrap, signed near-parity votes and smaller two-adic root budgets) recovers the entire secret with unconditional probability at least1-2^-8. On every branch total charged work is O(n^3 log2(n)2^((14143/10000)sqrt n)), with stronger main-branch bound O(n^3 log2(n)2^(hmax+dl)). All gates, bit sorting/listing, scan lookups, addresses, source costs, initialization, failed attempts, discards and resets are included. Its exact growth index is1/2, jointly with the other claims. For n=1 logarithmic envelopes use their positive values at n=2, without changing the structured asymptotic forms.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,67 +21,21 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "14143/10000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "3",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the single FT-P128 algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), H=floor(13933r/10000), dl=ceil(3r/10000), Qtarget=ceil(707r/500), A=H-dl, L4=ceil((Qtarget-A)/2), Mmax=A+L4, hmax=A+2L4, kappa=ceil(log2Mmax)+3, minimal mixed-tree prefixes with binary input widths dl+i and quartic widths H-floor(j/128), aux=H+1+2j and full four-input windows, Kc=8192(2r+u+30), Kp=8192(u+100), u=ceil(log2n), full-label implicit-fiber implementation, coarse-cost mixed-arity exponential-demand cutoffs, bounded odd bootstrap, signed near-parity votes and smaller two-adic root budgets) recovers the entire secret with unconditional probability at least1-2^-8. On every branch peak classical workspace is O(n2^((13933/10000)sqrt n)) bits, with stronger main-branch bound O(n2^H), including all retained full-label tables, heap/list/rank/tuple scratch, counter and decoder records. Its exact growth index is1/2, jointly with the other claims. For n=1 logarithmic envelopes use their positive values at n=2, without changing the structured asymptotic forms.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,8 +50,8 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "13933/10000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
@@ -107,7 +61,59 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the single FT-P128 algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), H=floor(13933r/10000), dl=ceil(3r/10000), Qtarget=ceil(707r/500), A=H-dl, L4=ceil((Qtarget-A)/2), Mmax=A+L4, hmax=A+2L4, kappa=ceil(log2Mmax)+3, minimal mixed-tree prefixes with binary input widths dl+i and quartic widths H-floor(j/128), aux=H+1+2j and full four-input windows, Kc=8192(2r+u+30), Kp=8192(u+100), u=ceil(log2n), full-label implicit-fiber implementation, coarse-cost mixed-arity exponential-demand cutoffs, bounded odd bootstrap, signed near-parity votes and smaller two-adic root budgets) recovers the entire secret with unconditional probability at least1-2^-8. On every branch peak accessible quantum workspace is O(n), including the full mixed depth-first stack, source/data, modular/extractor and lookup scratch, roots and reset wires. No QRAM or coherent bank is used. Its exact growth index is0, jointly with the other claims. For n=1 logarithmic envelopes use their positive values at n=2, without changing the structured asymptotic forms.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the single FT-P128 algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), H=floor(13933r/10000), dl=ceil(3r/10000), Qtarget=ceil(707r/500), A=H-dl, L4=ceil((Qtarget-A)/2), Mmax=A+L4, hmax=A+2L4, kappa=ceil(log2Mmax)+3, minimal mixed-tree prefixes with binary input widths dl+i and quartic widths H-floor(j/128), aux=H+1+2j and full four-input windows, Kc=8192(2r+u+30), Kp=8192(u+100), u=ceil(log2n), full-label implicit-fiber implementation, coarse-cost mixed-arity exponential-demand cutoffs, bounded odd bootstrap, signed near-parity votes and smaller two-adic root budgets) recovers the entire secret with unconditional probability at least1-2^-8. On every branch total acquired source copies are O(n^(3/2)log2(n)2^((707/500)sqrt n)), including rejected labels, failed inputs and aborted work. Main-branch exact cap is Q<=(Y+6)Ccap+2nCf+Kp, with D_R=8*dl*2^hmax*(R+u+16), C_R=4*D_R, Ccap=C_Kc, Cf=C_Kp, Y=ceil(log2Ccap). Finite exhaustive recovery acquires at most N(n+10) copies and is included through absolute outer constants; no main cap is asserted there. Its exact growth index is1/2, jointly with the other claims. For n=1 logarithmic envelopes use their positive values at n=2, without changing the structured asymptotic forms.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "707/500",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the single FT-P128 algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), H=floor(13933r/10000), dl=ceil(3r/10000), Qtarget=ceil(707r/500), A=H-dl, L4=ceil((Qtarget-A)/2), Mmax=A+L4, hmax=A+2L4, kappa=ceil(log2Mmax)+3, minimal mixed-tree prefixes with binary input widths dl+i and quartic widths H-floor(j/128), aux=H+1+2j and full four-input windows, Kc=8192(2r+u+30), Kp=8192(u+100), u=ceil(log2n), full-label implicit-fiber implementation, coarse-cost mixed-arity exponential-demand cutoffs, bounded odd bootstrap, signed near-parity votes and smaller two-adic root budgets) recovers the entire secret with unconditional probability at least1-2^-8. The proved malformed fraction is epsilon(n)=0 under independent ideal source copies. The same whole-secret success and four joint bounds apply under this promise. No positive robustness or impossibility of it is asserted. For n=1 logarithmic envelopes use their positive values at n=2, without changing the structured asymptotic forms.",
       "evidence": [
         "proof.md"
       ],
