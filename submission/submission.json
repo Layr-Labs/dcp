@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFCS65-FILTERED-SHARP: repaired lower-time saturated profile with explicit raw bounds",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical IFCS65-FILTERED-SHARP implementation in proof.md executing the COMPLETE CORRECTED saturated IFCS65S70 reference across virtual-phase.md and virtual-decode.md has unconditional WHOLE-secret success at least1-2^-8 from independent ideal copies. All bounds are joint on EVERY branch, including wrong labels, extraction/merge failures, recycled/discarded/rejected sources, fallback/acquisition aborts, initialization and cleanup. Fully charged time is O(n^132*2^((680159623/419940000)*sqrt n)), exact index1/2. Source profile/guards and all saturated/unsaturated instruments are unchanged. New virtual5.7/8.2/11.1 gives reduced ideal law marginalizing current LE transcripts, exact low-bit/stopped-coordinate factorization and conditional fresh-attempt costs without own cost/success independence. The tagged bank uses direct indexed bit-serial epochs and exact finite overflow repair, not full BIG clears per access/array release. Explicit n^4 control completion,n^16 wire/context events,n^100 charged helpers give n^120*(T_P+Qcap+H+1)+n^100*D. Raw T_P=n^(9/2)exp(tau0sqrt),Qcap=O(n^2*2^(H0*sqrt n)),H=O(n^2),D=O(n^26*2^(mu0*sqrt n)),mu0<H0<tau0, produce degrees124.5/122/122/126 all<=132. Eventually no epoch overflow; every finite earlier overflow is exactly repaired without error/source event, affecting only outside constants. No predecessor verdict supplies acceptance.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "680159623/419940000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "132",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical IFCS65-FILTERED-SHARP implementation in proof.md executing the COMPLETE CORRECTED saturated IFCS65S70 reference across virtual-phase.md and virtual-decode.md has unconditional WHOLE-secret success at least1-2^-8 from independent ideal copies. All bounds are joint on EVERY branch, including wrong labels, extraction/merge failures, recycled/discarded/rejected sources, fallback/acquisition aborts, initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact index0. Input/output coexist with constant-many O(n)-bit operands, addresses/current-frame words, finite control and reusable indices/bits. Every original array, numerical/frame/decoder/generator record, quantum pointer field and all epoch bits are COUNTED basis qubits and processed bit-serially. No e=(n+2)^20-bit epoch or polynomial scratch array is staged ordinary; loop/event powers count work, not classical memory. All cleanup/source/abort paths use the same O(n) staging.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical IFCS65-FILTERED-SHARP implementation in proof.md executing the COMPLETE CORRECTED saturated IFCS65S70 reference across virtual-phase.md and virtual-decode.md has unconditional WHOLE-secret success at least1-2^-8 from independent ideal copies. All bounds are joint on EVERY branch, including wrong labels, extraction/merge failures, recycled/discarded/rejected sources, fallback/acquisition aborts, initialization and cleanup. Peak FULL quantum workspace is O(n^26*2^((6999/10000)*sqrt n)), exact index1/2. Retain complete fixed A=2^16*n\u00b2,R=2^(Lambda+kappa+16),Wrow=2^16*n\u00b2,B=2^48*n^4*2^(Lambda+kappa),e=(n+2)^20,H=2^32*n\u00b2,D=B*(e+1)+(A+8)*e+A+H+2^20*n^4. Every value/tag/raw/header/backup/binding/free-flag/owner/row/field/original slot and inactive paired-prefix padding counts. Source Lambda+kappa<=mu0*sqrt n+2log2n+O(1),mu0=6999/10000, givesB=O(n^6*2^(mu0*sqrt n)),D=O(n^26*2^(mu0*sqrt n)),wholeprefixO(D+H+n). Maximum spans are independent of contents/lifetime; exact renumbering preserves decoded values/live original wires and adds no abort/error.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "6999/10000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "26",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical IFCS65-FILTERED-SHARP implementation in proof.md executing the COMPLETE CORRECTED saturated IFCS65S70 reference across virtual-phase.md and virtual-decode.md has unconditional WHOLE-secret success at least1-2^-8 from independent ideal copies. All bounds are joint on EVERY branch, including wrong labels, extraction/merge failures, recycled/discarded/rejected sources, fallback/acquisition aborts, initialization and cleanup. Total acquired copies are O(n^2*2^((100782161/83988000)*sqrt n)), exact index1/2. Exactly one physical query executes each original request, including all rejected/discarded/failure/abort work. Literal Qcap=1024Q*,Q*=6*nqmax*((J+1)K+2a2)+2a2,nqmax=2^hmax*(kappa+1+nu),and raw saturated source 2^hmax<2^cH*2^(H0*sqrt n),H0=100782161/83988000,prove the envelope. Full selected source uses mu0=6999/10000,d0=4197/10000,nu=v_s,gamma0 and complete source7 capacity/root/partial widths. Tags/metadata/sourceSWAPs/repair are counted work/space, not additional source copies. No rounded-envelope slack supplies this query bound.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "100782161/83988000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2,s in Z/NZ,n=ceil(log2N), ONE physical IFCS65-FILTERED-SHARP implementation in proof.md executing the COMPLETE CORRECTED saturated IFCS65S70 reference across virtual-phase.md and virtual-decode.md has unconditional WHOLE-secret success at least1-2^-8 from independent ideal copies. All bounds are joint on EVERY branch, including wrong labels, extraction/merge failures, recycled/discarded/rejected sources, fallback/acquisition aborts, initialization and cleanup. Guaranteed malformed fraction is epsilon(n)=0 under the exact canonical independent-ideal-copy model. Arbitrary-reference correlated-CQ/logical-forgetting and tag/slot channels preserve full reduced logical state, source/output law and every original instrument. Extra bank helper readouts and CURRENT LE transcripts are MARGINALIZED, not added to held-out-bit/merge-moment conditioning. Full corrected virtual reduced ideal and fresh-attempt expectation argument supplies unconditional correctness for this exact saturated profile, with r=0 stage1 indicator0 case retained. No positive robustness or impossibility claim is made.",
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
