@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LQF-COMP: precision-weighted high-part storage for logarithmic collimation",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the one LQF-COMP algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), ell=RLOG(n), the explicit rational lower logarithm routine of Section8.0, m=ceil(r/(4ell)), kappa=ceil(log2m)+1, dl=ceil((n+1+m*kappa-m(m-1)/2)/(m+1)), H=dl+m-1, binary widths lambda_i=dl+i for i<m and root width1, u=ceil(log2n), K=2^13(m+10u+100), g_w=ceil(log2dl), exact common-prefix/high-part storage with level field w_i=B+1+i+g_w-tp_i, counted stable digit-radix/query-run processing, exact source extraction and full odd/two-adic decoding) recovers the entire secret with unconditional probability at least1-2^-8. On every branch total charged sequential work is O(n^4 2^F(n)/(log2(n))^2), F(n)=4sqrt(n)log2(n)+(1/8)sqrt(n)/log2(n)-16(log2n)^2, with the stronger main-branch (n>=2^48) bound O(n^(7/2)2^(m+dl)/ell). Source costs, wider-key sorting, implemented lookups, addresses, initialization, failed attempts and resets are included. The envelope has exact growth index1/2 and holds jointly with all other claims. For n=1, the displayed logarithmic resource envelope is extended by its positive value at n=2; this leaves the asymptotic structured form unchanged.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,67 +21,31 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "4",
+              "nPower": "1/2",
+              "logPower": "1"
+            },
+            {
+              "coefficient": "1/8",
+              "nPower": "1/2",
+              "logPower": "-1"
+            },
+            {
+              "coefficient": "-16",
+              "nPower": "0",
+              "logPower": "2"
             }
           ],
           "nPower": "4",
-          "logPower": "0"
+          "logPower": "-2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the one LQF-COMP algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), ell=RLOG(n), the explicit rational lower logarithm routine of Section8.0, m=ceil(r/(4ell)), kappa=ceil(log2m)+1, dl=ceil((n+1+m*kappa-m(m-1)/2)/(m+1)), H=dl+m-1, binary widths lambda_i=dl+i for i<m and root width1, u=ceil(log2n), K=2^13(m+10u+100), g_w=ceil(log2dl), exact common-prefix/high-part storage with level field w_i=B+1+i+g_w-tp_i, counted stable digit-radix/query-run processing, exact source extraction and full odd/two-adic decoding) recovers the entire secret with unconditional probability at least1-2^-8. On every branch peak classical space is O(n 2^F(n)), F(n)=4sqrt(n)log2(n)+(1/8)sqrt(n)/log2(n)-16(log2n)^2 bits, with the stronger main-branch (n>=2^48) bound O(H2^H), including every retained exact common-prefix/high-part table, merge scratch, counter and decoder record. Its exact growth index is1/2, jointly with all other claims. For n=1, the displayed logarithmic resource envelope is extended by its positive value at n=2; this leaves the asymptotic structured form unchanged.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,9 +60,19 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "4",
+              "nPower": "1/2",
+              "logPower": "1"
+            },
+            {
+              "coefficient": "1/8",
+              "nPower": "1/2",
+              "logPower": "-1"
+            },
+            {
+              "coefficient": "-16",
+              "nPower": "0",
+              "logPower": "2"
             }
           ],
           "nPower": "1",
@@ -107,7 +81,59 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the one LQF-COMP algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), ell=RLOG(n), the explicit rational lower logarithm routine of Section8.0, m=ceil(r/(4ell)), kappa=ceil(log2m)+1, dl=ceil((n+1+m*kappa-m(m-1)/2)/(m+1)), H=dl+m-1, binary widths lambda_i=dl+i for i<m and root width1, u=ceil(log2n), K=2^13(m+10u+100), g_w=ceil(log2dl), exact common-prefix/high-part storage with level field w_i=B+1+i+g_w-tp_i, counted stable digit-radix/query-run processing, exact source extraction and full odd/two-adic decoding) recovers the entire secret with unconditional probability at least1-2^-8. On every branch peak accessible quantum workspace is O(n), including the full depth-first stack, boosted leaf register, physical source/data, modular and extractor scratch, implemented lookup ancillas, roots and reset wires. There is no QRAM or coherent bank. Its exact growth index is0, jointly with all other claims. For n=1, the displayed logarithmic resource envelope is extended by its positive value at n=2; this leaves the asymptotic structured form unchanged.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the one LQF-COMP algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), ell=RLOG(n), the explicit rational lower logarithm routine of Section8.0, m=ceil(r/(4ell)), kappa=ceil(log2m)+1, dl=ceil((n+1+m*kappa-m(m-1)/2)/(m+1)), H=dl+m-1, binary widths lambda_i=dl+i for i<m and root width1, u=ceil(log2n), K=2^13(m+10u+100), g_w=ceil(log2dl), exact common-prefix/high-part storage with level field w_i=B+1+i+g_w-tp_i, counted stable digit-radix/query-run processing, exact source extraction and full odd/two-adic decoding) recovers the entire secret with unconditional probability at least1-2^-8. On every branch total acquired source copies, including rejected labels, failed merges and aborted work, are O(n\u00b2 2^((1/4)sqrt(n)/log2(n))), with main-branch (n>=2^48) cap Q<=nCcap+K=O(n\u00b22^m); the finite exhaustive branch acquires at most N(n+10) copies and is included only through the uniform asymptotic envelope. Its exact growth index is1/2, jointly with all other claims. For n=1, the displayed logarithmic resource envelope is extended by its positive value at n=2; this leaves the asymptotic structured form unchanged.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/4",
+              "nPower": "1/2",
+              "logPower": "-1"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s modulo N, n=ceil(log2N), the one LQF-COMP algorithm in proof.md (finite exhaustive branch n<2^48; otherwise r=ceil(sqrt n), ell=RLOG(n), the explicit rational lower logarithm routine of Section8.0, m=ceil(r/(4ell)), kappa=ceil(log2m)+1, dl=ceil((n+1+m*kappa-m(m-1)/2)/(m+1)), H=dl+m-1, binary widths lambda_i=dl+i for i<m and root width1, u=ceil(log2n), K=2^13(m+10u+100), g_w=ceil(log2dl), exact common-prefix/high-part storage with level field w_i=B+1+i+g_w-tp_i, counted stable digit-radix/query-run processing, exact source extraction and full odd/two-adic decoding) recovers the entire secret with unconditional probability at least1-2^-8. The proved malformed fraction is epsilon(n)=0 under the independent ideal-copy model. No positive robustness or impossibility of robustness is claimed. All four resource bounds hold jointly under this promise.",
       "evidence": [
         "proof.md"
       ],
