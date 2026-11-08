@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFCS60-LOGBOOST: logarithmic boost and sharper source/work prefactors",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For everyN>=2,s,n=ceil(log2N),ONE physical IFCS60-LOGBOOST implementation of proof.md and COMPLETE adapted phase/decode source has unconditional WHOLE-secret success>=1-2^-8 from independent ideal copies,with all four resources jointly on EVERY branch,including wrong labels,failures,rejections/discards,source/cap/fallback aborts,initialization and cleanup. Charged time is O(n^124*(log2n)*2^((38662667/23996000)*sqrt n)),index1/2. Literal schedule v=bitlength(n),nu=v,gamma0 andw=ceil((5999/10000)sqrt n) has complete new height/B1-B7 proofs. Height hmax<H00sqrt n-v+7 and logarithmic leaf multiplier yield raw TP=O(n4logn expH00sqrt),Qcap=O(n^(1/2)logn expH00sqrt). Complete n120/n100 physical ledger gives source124logn,quota120.5logn with sameH00;lower-coefficient prefix126 and polynomial pool are absorbed byH00-mu0>0. Full corrected filtration,windowr0,caps,decoders,CQ/tag/overflow and bit-cost argument are supplied,without prior verdicts.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "38662667/23996000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "124",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For everyN>=2,s,n=ceil(log2N),ONE physical IFCS60-LOGBOOST implementation of proof.md and COMPLETE adapted phase/decode source has unconditional WHOLE-secret success>=1-2^-8 from independent ideal copies,with all four resources jointly on EVERY branch,including wrong labels,failures,rejections/discards,source/cap/fallback aborts,initialization and cleanup. Peak ordinary classical workspace is O(n) bits, exact index0. Input/output coexist with constant-many O(n)-bit operands, addresses/current-frame words, finite control and reusable indices/bits. Every original array, numerical/frame/decoder/generator record, quantum pointer field and all epoch bits are COUNTED basis qubits and processed bit-serially. No e=(n+2)^20-bit epoch or polynomial scratch array is staged ordinary; loop/event powers count work, not classical memory. All cleanup/source/abort paths use the same O(n) staging.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For everyN>=2,s,n=ceil(log2N),ONE physical IFCS60-LOGBOOST implementation of proof.md and COMPLETE adapted phase/decode source has unconditional WHOLE-secret success>=1-2^-8 from independent ideal copies,with all four resources jointly on EVERY branch,including wrong labels,failures,rejections/discards,source/cap/fallback aborts,initialization and cleanup. Peak FULL quantum workspace is O(n^26*2^((5999/10000)*sqrt n)), exact index1/2. Retain complete fixed A=2^16*n\u00b2,R=2^(Lambda+kappa+16),Wrow=2^16*n\u00b2,B=2^48*n^4*2^(Lambda+kappa),e=(n+2)^20,H=2^32*n\u00b2,D=B*(e+1)+(A+8)*e+A+H+2^20*n^4. Every value/tag/raw/header/backup/binding/free-flag/owner/row/field/original slot and inactive paired-prefix padding counts. Source Lambda+kappa<=mu0*sqrt n+2log2n+O(1),mu0=5999/10000, givesB=O(n^6*2^(mu0*sqrt n)),D=O(n^26*2^(mu0*sqrt n)),wholeprefixO(D+H+n). Maximum spans are independent of contents/lifetime; exact renumbering preserves decoded values/live original wires and adds no abort/error.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "5999/10000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "26",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,s,n=ceil(log2N),ONE physical IFCS60-LOGBOOST implementation of proof.md and COMPLETE adapted phase/decode source has unconditional WHOLE-secret success>=1-2^-8 from independent ideal copies,with all four resources jointly on EVERY branch,including wrong labels,failures,rejections/discards,source/cap/fallback aborts,initialization and cleanup. Total acquired copies are O(n^(1/2)*(log2n)*2^((38662667/23996000)*sqrt n)),index1/2. Literal v=bitlength(n),nu=v,gamma0 andsamew/Sstar/G formula has hmax<H00sqrt n-v+7. The complete cap Qcap=1024Q*,Q*=6*2^hmax*(kappa+1+nu)*((J+1)K+2a2)+2a2 has kappa+1+nu=O(logn),K=O(sqrt n),J<=n,a2<=n. HenceQcap=O(n^(3/2)logn2^hmax)=O(n^(1/2)logn2^(H00sqrt n)),since2^v>=n. Every failed/discarded/capped source request counts;physical helper actions do not add queries.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "38662667/23996000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "1/2",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,s,n=ceil(log2N),ONE physical IFCS60-LOGBOOST implementation of proof.md and COMPLETE adapted phase/decode source has unconditional WHOLE-secret success>=1-2^-8 from independent ideal copies,with all four resources jointly on EVERY branch,including wrong labels,failures,rejections/discards,source/cap/fallback aborts,initialization and cleanup. Guaranteed malformed fraction is epsilon(n)=0 under the exact canonical independent-ideal-copy model. Arbitrary-reference correlated-CQ/logical-forgetting and tag/slot channels preserve full reduced logical state, source/output law and every original instrument. Extra bank helper readouts and CURRENT LE transcripts are MARGINALIZED, not added to held-out-bit/merge-moment conditioning. Full corrected virtual reduced ideal and fresh-attempt expectation argument supplies unconditional correctness for this exact saturated profile, with r=0 stage1 indicator0 case retained. No positive robustness or impossibility claim is made.",
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
