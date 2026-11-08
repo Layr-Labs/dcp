@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFCS60-QBOOST163-POLYLEDGER: .5999 quarter-boost with explicit n20 time and n2 quantum polynomial ledger",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s, n=ceil(log2 N), the ONE physical IFCS60-QBOOST163-POLYLEDGER algorithm supplied completely in proof.md, virtual-phase.md and virtual-decode.md uses the finite tester for n<4096 and otherwise mu0=5999/10000,H00=38662667/23996000,w_s the least integer with100000000*w_s\u00b2>=35988001*n,v_s the least integer withv_s^4>=n,nu=v_s,gamma0,the complete saturated binary/four-input schedule,original source/LE/fallback/delivery guards and both full-modulus decoders,typed SMALL/GLOBALBIG basis banks and the explicit acyclic helper/driver completion. Its unconditional ENTIRE-secret success is at least1-2^-8 from independent ideal copies. Jointly on EVERY branch T=O(n^20*2^((38662667/23996000)*sqrt(n))),ordinary S_C=O(n),full allocated S_Q=O(n^2*2^((5999/10000)*sqrt(n))),and total Q=O(n^(7/4)*2^((38662667/23996000)*sqrt(n)-n^(1/4))). All failures,rejections,discards,partial attempts,retries,source/fallback/cap aborts,initialization,full address debits,source moves,lifecycle work,finite exact epoch repair and cleanup count with absolute outside constants and exact displayed coefficients/powers. The corresponding resource claim is total work, with exact growth index 1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "38662667/23996000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "20",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s, n=ceil(log2 N), the ONE physical IFCS60-QBOOST163-POLYLEDGER algorithm supplied completely in proof.md, virtual-phase.md and virtual-decode.md uses the finite tester for n<4096 and otherwise mu0=5999/10000,H00=38662667/23996000,w_s the least integer with100000000*w_s\u00b2>=35988001*n,v_s the least integer withv_s^4>=n,nu=v_s,gamma0,the complete saturated binary/four-input schedule,original source/LE/fallback/delivery guards and both full-modulus decoders,typed SMALL/GLOBALBIG basis banks and the explicit acyclic helper/driver completion. Its unconditional ENTIRE-secret success is at least1-2^-8 from independent ideal copies. Jointly on EVERY branch T=O(n^20*2^((38662667/23996000)*sqrt(n))),ordinary S_C=O(n),full allocated S_Q=O(n^2*2^((5999/10000)*sqrt(n))),and total Q=O(n^(7/4)*2^((38662667/23996000)*sqrt(n)-n^(1/4))). All failures,rejections,discards,partial attempts,retries,source/fallback/cap aborts,initialization,full address debits,source moves,lifecycle work,finite exact epoch repair and cleanup count with absolute outside constants and exact displayed coefficients/powers. The corresponding resource claim is ordinary classical space, with exact growth index 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,84 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s, n=ceil(log2 N), the ONE physical IFCS60-QBOOST163-POLYLEDGER algorithm supplied completely in proof.md, virtual-phase.md and virtual-decode.md uses the finite tester for n<4096 and otherwise mu0=5999/10000,H00=38662667/23996000,w_s the least integer with100000000*w_s\u00b2>=35988001*n,v_s the least integer withv_s^4>=n,nu=v_s,gamma0,the complete saturated binary/four-input schedule,original source/LE/fallback/delivery guards and both full-modulus decoders,typed SMALL/GLOBALBIG basis banks and the explicit acyclic helper/driver completion. Its unconditional ENTIRE-secret success is at least1-2^-8 from independent ideal copies. Jointly on EVERY branch T=O(n^20*2^((38662667/23996000)*sqrt(n))),ordinary S_C=O(n),full allocated S_Q=O(n^2*2^((5999/10000)*sqrt(n))),and total Q=O(n^(7/4)*2^((38662667/23996000)*sqrt(n)-n^(1/4))). All failures,rejections,discards,partial attempts,retries,source/fallback/cap aborts,initialization,full address debits,source moves,lifecycle work,finite exact epoch repair and cleanup count with absolute outside constants and exact displayed coefficients/powers. The corresponding resource claim is full allocated quantum space, with exact growth index 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "5999/10000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s, n=ceil(log2 N), the ONE physical IFCS60-QBOOST163-POLYLEDGER algorithm supplied completely in proof.md, virtual-phase.md and virtual-decode.md uses the finite tester for n<4096 and otherwise mu0=5999/10000,H00=38662667/23996000,w_s the least integer with100000000*w_s\u00b2>=35988001*n,v_s the least integer withv_s^4>=n,nu=v_s,gamma0,the complete saturated binary/four-input schedule,original source/LE/fallback/delivery guards and both full-modulus decoders,typed SMALL/GLOBALBIG basis banks and the explicit acyclic helper/driver completion. Its unconditional ENTIRE-secret success is at least1-2^-8 from independent ideal copies. Jointly on EVERY branch T=O(n^20*2^((38662667/23996000)*sqrt(n))),ordinary S_C=O(n),full allocated S_Q=O(n^2*2^((5999/10000)*sqrt(n))),and total Q=O(n^(7/4)*2^((38662667/23996000)*sqrt(n)-n^(1/4))). All failures,rejections,discards,partial attempts,retries,source/fallback/cap aborts,initialization,full address debits,source moves,lifecycle work,finite exact epoch repair and cleanup count with absolute outside constants and exact displayed coefficients/powers. The corresponding resource claim is total acquired copies, with exact growth index 1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "38662667/23996000",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "7/4",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s, n=ceil(log2 N), the ONE physical IFCS60-QBOOST163-POLYLEDGER algorithm supplied completely in proof.md, virtual-phase.md and virtual-decode.md uses the finite tester for n<4096 and otherwise mu0=5999/10000,H00=38662667/23996000,w_s the least integer with100000000*w_s\u00b2>=35988001*n,v_s the least integer withv_s^4>=n,nu=v_s,gamma0,the complete saturated binary/four-input schedule,original source/LE/fallback/delivery guards and both full-modulus decoders,typed SMALL/GLOBALBIG basis banks and the explicit acyclic helper/driver completion. Its unconditional ENTIRE-secret success is at least1-2^-8 from independent ideal copies. Jointly on EVERY branch T=O(n^20*2^((38662667/23996000)*sqrt(n))),ordinary S_C=O(n),full allocated S_Q=O(n^2*2^((5999/10000)*sqrt(n))),and total Q=O(n^(7/4)*2^((38662667/23996000)*sqrt(n)-n^(1/4))). All failures,rejections,discards,partial attempts,retries,source/fallback/cap aborts,initialization,full address debits,source moves,lifecycle work,finite exact epoch repair and cleanup count with absolute outside constants and exact displayed coefficients/powers. The supported malformed fraction is0 under the stated independent-ideal-copy model; no positive robustness or impossibility is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual-phase.md",
+        "virtual-decode.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
