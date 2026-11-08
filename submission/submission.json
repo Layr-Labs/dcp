@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "G4-124: HPC-127 with a four-qubit odd-pair recycling instrument, all four resources O(2^((31/25) sqrt n))",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single G4-124 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^28; otherwise r = ceil(sqrt n), ell = ceil(77r/200) recycling G4 levels, each applying to equal-key quadruples of the coherent qubit pool the exact four-qubit instrument G4 with Kraus operators Pi_{0000,1111}, (1/2) Pi_{x_a != x_b} for the six pairs, (1/2) Pi_{x1 != x4, x2 = x3} and (1/2) Pi_{x2 != x3, x1 = x4}, with pool sizes C_i = ceil(18 ell C_(i+1)/(7(ell-1))), a linear-merge collimation tree of depth m = ceil(57r/80), leaf tables from dl = ceil(21r/40) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, discards and aborts, its total charged sequential work is T(N,s) = O(2^((31/25) sqrt n)), with an absolute constant. The stronger main-branch bound is T = O(n^6 2^((99/80) sqrt n)) (proof.md Section 14), and 99/80 < 31/25. The uniform bit-length envelope B_T(n) = 2^((31/25) sqrt n) has growth index exactly 1/2. The inner coefficient 31/25 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,67 +21,21 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "31/25",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single G4-124 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^28; otherwise r = ceil(sqrt n), ell = ceil(77r/200) recycling G4 levels, each applying to equal-key quadruples of the coherent qubit pool the exact four-qubit instrument G4 with Kraus operators Pi_{0000,1111}, (1/2) Pi_{x_a != x_b} for the six pairs, (1/2) Pi_{x1 != x4, x2 = x3} and (1/2) Pi_{x2 != x3, x1 = x4}, with pool sizes C_i = ceil(18 ell C_(i+1)/(7(ell-1))), a linear-merge collimation tree of depth m = ceil(57r/80), leaf tables from dl = ceil(21r/40) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, discards and aborts, its peak classical memory is S_C(N,s) = O(2^((31/25) sqrt n)) bits, with an absolute constant, including the pool label tables, sort scratch, depth-first merge tables and decoder records. The stronger main-branch bound is S_C = O(n^3 2^((99/80) sqrt n)). The envelope B_C(n) = 2^((31/25) sqrt n) has growth index exactly 1/2. The inner coefficient 31/25 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,18 +50,76 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "31/25",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "1",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single G4-124 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^28; otherwise r = ceil(sqrt n), ell = ceil(77r/200) recycling G4 levels, each applying to equal-key quadruples of the coherent qubit pool the exact four-qubit instrument G4 with Kraus operators Pi_{0000,1111}, (1/2) Pi_{x_a != x_b} for the six pairs, (1/2) Pi_{x1 != x4, x2 = x3} and (1/2) Pi_{x2 != x3, x1 = x4}, with pool sizes C_i = ceil(18 ell C_(i+1)/(7(ell-1))), a linear-merge collimation tree of depth m = ceil(57r/80), leaf tables from dl = ceil(21r/40) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, discards and aborts, its peak quantum memory is S_Q(N,s) = O(2^((31/25) sqrt n)) qubits, with an absolute constant, including the coherently held qubit pool of the G4 stage, the G4 ancillas, the depth-first index registers and all other ancillas. The stronger main-branch bound is S_Q = O(n^2 2^((99/80) sqrt n)). The envelope B_Q(n) = 2^((31/25) sqrt n) has growth index exactly 1/2. The inner coefficient 31/25 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "31/25",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single G4-124 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^28; otherwise r = ceil(sqrt n), ell = ceil(77r/200) recycling G4 levels, each applying to equal-key quadruples of the coherent qubit pool the exact four-qubit instrument G4 with Kraus operators Pi_{0000,1111}, (1/2) Pi_{x_a != x_b} for the six pairs, (1/2) Pi_{x1 != x4, x2 = x3} and (1/2) Pi_{x2 != x3, x1 = x4}, with pool sizes C_i = ceil(18 ell C_(i+1)/(7(ell-1))), a linear-merge collimation tree of depth m = ceil(57r/80), leaf tables from dl = ceil(21r/40) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including all failures, discards and aborts, the total number Q(N,s) of fresh DCP source copies acquired, including every discarded copy and every failed or aborted attempt, is O(2^((31/25) sqrt n)), with an absolute constant. The stronger main-branch bound is Q <= Qcap = 4 n C_0 + K = O(n^3 2^((99/80) sqrt n)), with C_0 and K defined in proof.md; the finite branch uses at most N(n+10) copies. The uniform bit-length envelope B_samples(n) = 2^((31/25) sqrt n) has growth index exactly 1/2. The inner coefficient 31/25 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "31/25",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same G4-124 algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-7 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
