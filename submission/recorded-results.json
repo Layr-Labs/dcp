@@ -1,0 +1,23 @@
+{
+  "all_passed": true,
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "arithmetic": "fractions.Fraction throughout",
+  "gap_below": "256318304059827/58720256000000000000",
+  "gap_above": "24376142481/5872025600000000",
+  "gamma": "1/250000",
+  "angle_lower": "70499/55296",
+  "angle_upper": "4171/2688",
+  "sine_success_lower": "245618323006225/272747603165184",
+  "unconditional_success_lower": "395079601/536870912",
+  "parameter_cases": 4077,
+  "capped_sampler_cases": 186,
+  "exact_small_search_circuits": 297,
+  "missing_inverse_negative_control_detected": true,
+  "original_markov_slack_counterexample": {
+    "mean": 100,
+    "threshold": 100,
+    "probability_above_threshold": "99/100"
+  },
+  "scope": "Small exact H-layer/Boolean-phase-oracle circuits; not emitted score gates or production DCP source replay.",
+  "cpu_seconds": 0.7461777669999999
+}

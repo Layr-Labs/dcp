@@ -1,15 +1,19 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "FNS1: filtered robust search, O(2^(n/2) n log^3 n) work and linear copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2, every fixed secret s in Z/NZ and every admissible adversary in the adaptive malformed-copy model in sources/error-model.txt, set n=ceil(log2 N). FNS1 is the single configuration in proof.md: acquire exactly Q=2^33(n+4) copies using the inherited ROB-G2 record construction; for n>=20 use gamma=1/250000, d=ceil(log2(n+2)), a=4d+8, L=125000000000*a, b=max(12,n-a+12), G=2^b, k=floor((isqrt(2^(n-b))-1)/2), j=floor(3*isqrt(G)/4), capped independent uniform index sampling with replacement, and the stated two-level exact amplification circuit; for n<20 use the bounded inherited output procedure on the same records. It returns the entire secret with unconditional success at least 395079601/536870912>2/3; the finite fallback has success at least 49/64. The tolerated malformed fraction is 3333/10000. Total charged sequential work is T=O(2^(n/2)n(log2 n)^3), including source acquisition, all classical preprocessing, the rational table, index generation, all exact gates, measurements, resets, initialization, arithmetic, addressing, circuit generation, reverse execution and bounded failure branches. Its exact envelope growth index is 1. These bounds hold jointly on every execution branch, including bad records, unsuccessful output and failed capped index generation. Constants are absolute and independent of N, s, the admissible adversary, records and outcomes. Structured logarithmic representatives apply for n>=2, while n=1 has fixed finite cost. No expected-work guarantee is substituted for a branchwise bound.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/ROB-G2-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "check.py"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +25,28 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "3"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2, every fixed secret s in Z/NZ and every admissible adversary in the adaptive malformed-copy model in sources/error-model.txt, set n=ceil(log2 N). FNS1 is the single configuration in proof.md: acquire exactly Q=2^33(n+4) copies using the inherited ROB-G2 record construction; for n>=20 use gamma=1/250000, d=ceil(log2(n+2)), a=4d+8, L=125000000000*a, b=max(12,n-a+12), G=2^b, k=floor((isqrt(2^(n-b))-1)/2), j=floor(3*isqrt(G)/4), capped independent uniform index sampling with replacement, and the stated two-level exact amplification circuit; for n<20 use the bounded inherited output procedure on the same records. It returns the entire secret with unconditional success at least 395079601/536870912>2/3; the finite fallback has success at least 49/64. The tolerated malformed fraction is 3333/10000. Peak allocated classical space is S_C=O(n^2) bits, including the records, table, index multiset, counters, arithmetic scratch and streamed circuit descriptors. Its exact envelope growth index is 0. These bounds hold jointly on every execution branch, including bad records, unsuccessful output and failed capped index generation. Constants are absolute and independent of N, s, the admissible adversary, records and outcomes. Structured logarithmic representatives apply for n>=2, while n=1 has fixed finite cost. No expected-work guarantee is substituted for a branchwise bound.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/ROB-G2-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "check.py"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +63,17 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2, every fixed secret s in Z/NZ and every admissible adversary in the adaptive malformed-copy model in sources/error-model.txt, set n=ceil(log2 N). FNS1 is the single configuration in proof.md: acquire exactly Q=2^33(n+4) copies using the inherited ROB-G2 record construction; for n>=20 use gamma=1/250000, d=ceil(log2(n+2)), a=4d+8, L=125000000000*a, b=max(12,n-a+12), G=2^b, k=floor((isqrt(2^(n-b))-1)/2), j=floor(3*isqrt(G)/4), capped independent uniform index sampling with replacement, and the stated two-level exact amplification circuit; for n<20 use the bounded inherited output procedure on the same records. It returns the entire secret with unconditional success at least 395079601/536870912>2/3; the finite fallback has success at least 49/64. The tolerated malformed fraction is 3333/10000. Peak allocated accessible quantum space is S_Q=O(n) qubits, including each incoming raw copy, candidate register, phase-test controls and reusable arithmetic, lookup and comparison scratch. Its exact envelope growth index is 0. These bounds hold jointly on every execution branch, including bad records, unsuccessful output and failed capped index generation. Constants are absolute and independent of N, s, the admissible adversary, records and outcomes. Structured logarithmic representatives apply for n>=2, while n=1 has fixed finite cost. No expected-work guarantee is substituted for a branchwise bound.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/ROB-G2-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "check.py"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +84,51 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2, every fixed secret s in Z/NZ and every admissible adversary in the adaptive malformed-copy model in sources/error-model.txt, set n=ceil(log2 N). FNS1 is the single configuration in proof.md: acquire exactly Q=2^33(n+4) copies using the inherited ROB-G2 record construction; for n>=20 use gamma=1/250000, d=ceil(log2(n+2)), a=4d+8, L=125000000000*a, b=max(12,n-a+12), G=2^b, k=floor((isqrt(2^(n-b))-1)/2), j=floor(3*isqrt(G)/4), capped independent uniform index sampling with replacement, and the stated two-level exact amplification circuit; for n<20 use the bounded inherited output procedure on the same records. It returns the entire secret with unconditional success at least 395079601/536870912>2/3; the finite fallback has success at least 49/64. The tolerated malformed fraction is 3333/10000. Exactly Q=2^33(n+4) original DCP source copies are acquired on every branch, including index-generation failure. No fresh source copies are used by either search or its adjoints, and the finite fallback reuses the same records. Thus Q=O(n), with exact envelope growth index 0. These bounds hold jointly on every execution branch, including bad records, unsuccessful output and failed capped index generation. Constants are absolute and independent of N, s, the admissible adversary, records and outcomes. Structured logarithmic representatives apply for n>=2, while n=1 has fixed finite cost. No expected-work guarantee is substituted for a branchwise bound.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/ROB-G2-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "check.py"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2, every fixed secret s in Z/NZ and every admissible adversary in the adaptive malformed-copy model in sources/error-model.txt, set n=ceil(log2 N). FNS1 is the single configuration in proof.md: acquire exactly Q=2^33(n+4) copies using the inherited ROB-G2 record construction; for n>=20 use gamma=1/250000, d=ceil(log2(n+2)), a=4d+8, L=125000000000*a, b=max(12,n-a+12), G=2^b, k=floor((isqrt(2^(n-b))-1)/2), j=floor(3*isqrt(G)/4), capped independent uniform index sampling with replacement, and the stated two-level exact amplification circuit; for n<20 use the bounded inherited output procedure on the same records. It returns the entire secret with unconditional success at least 395079601/536870912>2/3; the finite fallback has success at least 49/64. The tolerated malformed fraction is 3333/10000. The guaranteed malformed fraction is epsilon(n)=3333/10000 under the full adaptive model supplied verbatim in sources/error-model.txt. On each execution branch at most floor(epsilon(n)*Q) of the fixed Q acquired copies may be malformed in that model; all other copies are fresh independent ideal coset states on delivery. This is a fraction of acquired copies, not an independent per-copy corruption probability. The same success and all four resource guarantees hold jointly, including the clean adversary. These bounds hold jointly on every execution branch, including bad records, unsuccessful output and failed capped index generation. Constants are absolute and independent of N, s, the admissible adversary, records and outcomes. Structured logarithmic representatives apply for n>=2, while n=1 has fixed finite cost. No expected-work guarantee is substituted for a branchwise bound.",
+      "evidence": [
+        "proof.md",
+        "sources/ROB-G2-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "check.py"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "3333/10000",
+        "error_model": "Adaptive malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm, and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy is an arbitrary (n+1)-qubit state (the register shape of an ideal copy) supplied from the adversary's system: it may be pure or mixed, may be entangled with the adversary's remaining system and with other malformed copies, and may depend on all of the information above; it is not entangled with clean copies or with the algorithm's workspace, ancillas or internal random bits. Every copy that is not malformed is clean: at the moment of its delivery, a fresh ideal coset state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}| in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace), i.e. clean copies are independent ideal coset states. The adversary interacts with the algorithm only by supplying copies; after delivery it has no access to the copy or to the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],

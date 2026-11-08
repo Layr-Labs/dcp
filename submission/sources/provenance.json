@@ -1,0 +1,9 @@
+{
+  "submission_id": "55a6ce76-34af-468f-b735-a1197f3d3459",
+  "evaluated_commit": "77b383ed0ea3c8b9765c332de88add12c3d2b52d",
+  "proof_sha256": "64a87926620815ae4030997207eedff9f4507b5fb825c3c07d88c5794f566228",
+  "error_model_sha256": "fd67d2af7a9a9733f2422981afd4a6ce00bb9ceac8c29d345f29535cc0156475",
+  "url": "https://github.com/Layr-Labs/dcp/blob/77b383ed0ea3c8b9765c332de88add12c3d2b52d/submission/proof.md",
+  "snapshot": "dcp-opus-next-directions-20261109/evidence/submissions-20261109.json",
+  "status": "Proof bytes match the snapshot; hosted validity is not a proof premise."
+}
