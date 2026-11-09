@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "n_values": 965,
+  "n_min": 64,
+  "n_max": 8191,
+  "nu": "59/524288",
+  "bad_size_sum": 4.1706299928176964e-13,
+  "delta_coarse": 0.00024443864864094,
+  "worst_good_size_amplitude_ratio": 0.9994658375637078,
+  "success_lower": 0.695068061351359,
+  "cpu_seconds": 1.107664678,
+  "scope": "Exact parameter arithmetic only; not a proof of the probabilistic lemmas."
+}
