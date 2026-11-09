@@ -1,0 +1,12 @@
+{
+  "word_checks": 560,
+  "antisym": 560,
+  "role_records": 800,
+  "max_role_disc": 0.3449593338311887,
+  "transpose_checks": 42,
+  "pair_checks": 42,
+  "max_pair_excess": 0,
+  "status": "passed",
+  "cpu_seconds": 0.8164197670000001,
+  "scope": "Random finite replicas of the Sec. 6 arithmetic; structural, not a proof."
+}

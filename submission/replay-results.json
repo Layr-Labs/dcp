@@ -1,0 +1,15 @@
+{
+  "all_passed": true,
+  "checks": [
+    {
+      "script": "check_constants.py",
+      "mathematical_results_match": true
+    },
+    {
+      "script": "check_structure.py",
+      "mathematical_results_match": true
+    }
+  ],
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "wall_seconds": 2.703677190002054
+}
