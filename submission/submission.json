@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSG-D4 with a heralded filter: four-level robust records, tolerance 1-1/(10^128-184)^2",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, put n=ceil(log2 N). Use the ONE PSG-D4 algorithm and all four required proofs psg_depth_four.md, psg_depth_four_base.md, psg_depth_four_compiler.md, psg_depth_four_family.md. The actual program fixes d=4,C_4=7,n_4=2^256. The n>=2^256 branch uses the exact first-feasible four-level constant-gap profile, q0=(2R+1)^4,Qroot=7168q0,Wroot=8192*2^R,K=2^17n in every odd and multi-bit2-adic stage,Proot=7168n^4,Hmax=8192K=2^30n. The n<2^256 branch uses mF=2^20(n+16),the separate old finite EXTRACT precision P_label_old=2^40n^4,and the explicit exact N-candidate scan. Both branches pad actual acquisition to exactly Q=7*2^40n^5=7696581394432n^5 acquisition events, each served by the heralded filter FILTER of psg_depth_four.md Section 7 (the identity when copies carry no herald, so the clean problem is exactly PSG-D4 with exactly Q acquired copies; under the heralded model exactly Q well-formed copies are handed over and at most D Q raw copies are acquired, D=(10^128-184)^2 a fixed absolute integer, literal raw cutoff D Q). The selected full online controller is the complete literal compiler. For the clean problem and for every adversary in claim5's heralded malformed-copy model (psg_depth_four.md Lemmas 7.1-7.2 and Theorem 7.3; the unflagged model of Section 1 is not claim5's),including no corruption,it outputs the entire s with unconditional probability at least1-2^-8>2/3. All five claims and all four bounds hold jointly on every execution branch,including failed/neutral roots,retries,discarded copies,malformed inputs,numerical errors and all padding. Constants are absolute and independent of N,s,the adversary and outcomes. Worst-case total charged sequential work is T=O(n^(9/2)log2(n+2)2^(n/8)), equivalent asymptotically to the structured log2 n representative. It counts every classical bit operation,raw source cost n+1,precision,exact gate and inverse,circuit/address generation,tape/head/marker action,indexed access,initialization,measurement,reset,counter and failed work. Its exact growth index is1.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "psg_depth_four.md",
+        "psg_depth_four_base.md",
+        "psg_depth_four_compiler.md",
+        "psg_depth_four_family.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +24,27 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/8",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "9/2",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, put n=ceil(log2 N). Use the ONE PSG-D4 algorithm and all four required proofs psg_depth_four.md, psg_depth_four_base.md, psg_depth_four_compiler.md, psg_depth_four_family.md. The actual program fixes d=4,C_4=7,n_4=2^256. The n>=2^256 branch uses the exact first-feasible four-level constant-gap profile, q0=(2R+1)^4,Qroot=7168q0,Wroot=8192*2^R,K=2^17n in every odd and multi-bit2-adic stage,Proot=7168n^4,Hmax=8192K=2^30n. The n<2^256 branch uses mF=2^20(n+16),the separate old finite EXTRACT precision P_label_old=2^40n^4,and the explicit exact N-candidate scan. Both branches pad actual acquisition to exactly Q=7*2^40n^5=7696581394432n^5 acquisition events, each served by the heralded filter FILTER of psg_depth_four.md Section 7 (the identity when copies carry no herald, so the clean problem is exactly PSG-D4 with exactly Q acquired copies; under the heralded model exactly Q well-formed copies are handed over and at most D Q raw copies are acquired, D=(10^128-184)^2 a fixed absolute integer, literal raw cutoff D Q). The selected full online controller is the complete literal compiler. For the clean problem and for every adversary in claim5's heralded malformed-copy model (psg_depth_four.md Lemmas 7.1-7.2 and Theorem 7.3; the unflagged model of Section 1 is not claim5's),including no corruption,it outputs the entire s with unconditional probability at least1-2^-8>2/3. All five claims and all four bounds hold jointly on every execution branch,including failed/neutral roots,retries,discarded copies,malformed inputs,numerical errors and all padding. Constants are absolute and independent of N,s,the adversary and outcomes. Worst-case peak classical storage is S_C=O(n^2) bits,including full signed labels,one compact residue DATA array,four frames,all stage records,streamed grids,exact numerical work,all counters,online strips,ready operand fields and tape-head locations. Its exact growth index is0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "psg_depth_four.md",
+        "psg_depth_four_base.md",
+        "psg_depth_four_compiler.md",
+        "psg_depth_four_family.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +61,16 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, put n=ceil(log2 N). Use the ONE PSG-D4 algorithm and all four required proofs psg_depth_four.md, psg_depth_four_base.md, psg_depth_four_compiler.md, psg_depth_four_family.md. The actual program fixes d=4,C_4=7,n_4=2^256. The n>=2^256 branch uses the exact first-feasible four-level constant-gap profile, q0=(2R+1)^4,Qroot=7168q0,Wroot=8192*2^R,K=2^17n in every odd and multi-bit2-adic stage,Proot=7168n^4,Hmax=8192K=2^30n. The n<2^256 branch uses mF=2^20(n+16),the separate old finite EXTRACT precision P_label_old=2^40n^4,and the explicit exact N-candidate scan. Both branches pad actual acquisition to exactly Q=7*2^40n^5=7696581394432n^5 acquisition events, each served by the heralded filter FILTER of psg_depth_four.md Section 7 (the identity when copies carry no herald, so the clean problem is exactly PSG-D4 with exactly Q acquired copies; under the heralded model exactly Q well-formed copies are handed over and at most D Q raw copies are acquired, D=(10^128-184)^2 a fixed absolute integer, literal raw cutoff D Q). The selected full online controller is the complete literal compiler. For the clean problem and for every adversary in claim5's heralded malformed-copy model (psg_depth_four.md Lemmas 7.1-7.2 and Theorem 7.3; the unflagged model of Section 1 is not claim5's),including no corruption,it outputs the entire s with unconditional probability at least1-2^-8>2/3. All five claims and all four bounds hold jointly on every execution branch,including failed/neutral roots,retries,discarded copies,malformed inputs,numerical errors and all padding. Constants are absolute and independent of N,s,the adversary and outcomes. Worst-case peak accessible quantum storage is S_Q=O(n) qubits,including held/current sibling phases,original and separate query registers,reused clean row carries,source transforms,label extraction,all resets and the padding slot. Its exact growth index is0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "psg_depth_four.md",
+        "psg_depth_four_base.md",
+        "psg_depth_four_compiler.md",
+        "psg_depth_four_family.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +81,49 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, put n=ceil(log2 N). Use the ONE PSG-D4 algorithm and all four required proofs psg_depth_four.md, psg_depth_four_base.md, psg_depth_four_compiler.md, psg_depth_four_family.md. The actual program fixes d=4,C_4=7,n_4=2^256. The n>=2^256 branch uses the exact first-feasible four-level constant-gap profile, q0=(2R+1)^4,Qroot=7168q0,Wroot=8192*2^R,K=2^17n in every odd and multi-bit2-adic stage,Proot=7168n^4,Hmax=8192K=2^30n. The n<2^256 branch uses mF=2^20(n+16),the separate old finite EXTRACT precision P_label_old=2^40n^4,and the explicit exact N-candidate scan. Both branches pad actual acquisition to exactly Q=7*2^40n^5=7696581394432n^5 acquisition events, each served by the heralded filter FILTER of psg_depth_four.md Section 7 (the identity when copies carry no herald, so the clean problem is exactly PSG-D4 with exactly Q acquired copies; under the heralded model exactly Q well-formed copies are handed over and at most D Q raw copies are acquired, D=(10^128-184)^2 a fixed absolute integer, literal raw cutoff D Q). The selected full online controller is the complete literal compiler. For the clean problem and for every adversary in claim5's heralded malformed-copy model (psg_depth_four.md Lemmas 7.1-7.2 and Theorem 7.3; the unflagged model of Section 1 is not claim5's),including no corruption,it outputs the entire s with unconditional probability at least1-2^-8>2/3. All five claims and all four bounds hold jointly on every execution branch,including failed/neutral roots,retries,discarded copies,malformed inputs,numerical errors and all padding. Constants are absolute and independent of N,s,the adversary and outcomes. The actual number of acquisition events is exactly Q=7696581394432n^5 on every branch,including source rejection,failed roots,record padding,dummy records and finite final padding. In the clean problem these are exactly Q acquired copies. Under the heralded model of claim5 they are exactly Q well-formed copies handed over by FILTER and at most D Q raw acquired copies, D=(10^128-184)^2 a fixed absolute integer (psg_depth_four.md Lemma 7.1 and Theorem 7.3), an O(n^5) count in both cases. Its upper envelope is O(7696581394432n^5),with exact growth index0. The heralded fraction of claim5 is evaluated at the raw count,not at a big-O surrogate.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "psg_depth_four.md",
+        "psg_depth_four_base.md",
+        "psg_depth_four_compiler.md",
+        "psg_depth_four_family.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "7696581394432",
+          "exponent": [],
+          "nPower": "5",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same PSG-D4 algorithm and all four required proofs psg_depth_four.md,psg_depth_four_base.md,psg_depth_four_compiler.md,psg_depth_four_family.md, with every source acquisition served by the heralded filter FILTER of psg_depth_four.md Section 7 (literal raw-acquisition cutoff D Q, D = y^2, y = 10^128 - 184, Q = 7*2^40n^5), the proved fractional error tolerance is epsilon(n) = \\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2} = 1 - 1/y^2, a constant in (0,1), valid for every N >= 2, under the heralded malformed-copy model stated in error_model; the displayed integers of psg_depth_four.md Section 7 multiply to y - 1, y + 1 and y. If at most floor(epsilon(n) Q') of the Q' acquired raw copies are malformed on every branch, then for every N >= 2 and every s in Z/NZ the output equals the entire s with probability at least 1-2^-8>2/3, jointly with the four resource bounds of claims 0-3 on every execution branch (psg_depth_four.md Lemmas 7.1-7.2 and Theorem 7.3, using the unconditional success proof of Section 4 for the clean problem). With no herald (the clean problem) the algorithm is exactly PSG-D4. The unflagged tolerance 1/(60129542144n^4) of the original PSG-D4 is still proved in the files but is not claimed here. No tolerance of undetectable corruption is claimed.",
+      "evidence": [
+        "psg_depth_four.md",
+        "psg_depth_four_base.md",
+        "psg_depth_four_compiler.md",
+        "psg_depth_four_family.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2}",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
