@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "NONPOWER-QUARTER: exact fourth-root depth with negative square-root correction",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the SINGLE NONPOWER-QUARTER algorithm of proof.md/qudit_decoder.md/robust_decoder.md recovers the ENTIRE secret with unconditional success>=1-2^-8 on independent ideal coset copies. Mainn>=2^48 uses exact m=ceil(n^(1/4)), exact nonpower intermediate lengths M_i=(1-2^(i-m-2))2^(base+i), base=ceil(n/(m+1)-m/2)+2, final full2^d root, measured leafrange, explicit rank/division/inverseinterval merge and proved conditional bucket moments/freshtrial renewal, bmax=floor(H/2)-1024u, per-block r=b+ceilLog(n^5), ONE explicit wide-top coarse batch, sequential signed odd/twoadic vectors and ONE global A=4Lblk fine-attempt cap. All source rejections, failed/missing/capped attempts, incorrect histories, bit operations, actual lookups, addresses, source/extraction, table/circuit generation, explicit finiteprecision Clifford+T synthesis, initialization,gates,measurements,resets and ALL acquired/discarded/padded1024-copy microbanks count. ALLFOUR bounds hold JOINTLY on EVERY branch,with separately proved finite exhaustive correctness and uniform absolute resource constants. F(n)=n^(3/4)-n^(1/2)+(3/2)n^(1/4) is the complete exact exponent. Resource envelopes usepositive n2 values atn1. Total charged work O(n^(9/4)2^F), exact index3/4.",
       "score": {
-        "numerator": "1",
-        "denominator": "1"
+        "numerator": "3",
+        "denominator": "4"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md",
+        "robust_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -22,69 +25,36 @@
           "exponent": [
             {
               "coefficient": "1",
-              "nPower": "1",
+              "nPower": "3/4",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "3/2",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "9/4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the SINGLE NONPOWER-QUARTER algorithm of proof.md/qudit_decoder.md/robust_decoder.md recovers the ENTIRE secret with unconditional success>=1-2^-8 on independent ideal coset copies. Mainn>=2^48 uses exact m=ceil(n^(1/4)), exact nonpower intermediate lengths M_i=(1-2^(i-m-2))2^(base+i), base=ceil(n/(m+1)-m/2)+2, final full2^d root, measured leafrange, explicit rank/division/inverseinterval merge and proved conditional bucket moments/freshtrial renewal, bmax=floor(H/2)-1024u, per-block r=b+ceilLog(n^5), ONE explicit wide-top coarse batch, sequential signed odd/twoadic vectors and ONE global A=4Lblk fine-attempt cap. All source rejections, failed/missing/capped attempts, incorrect histories, bit operations, actual lookups, addresses, source/extraction, table/circuit generation, explicit finiteprecision Clifford+T synthesis, initialization,gates,measurements,resets and ALL acquired/discarded/padded1024-copy microbanks count. ALLFOUR bounds hold JOINTLY on EVERY branch,with separately proved finite exhaustive correctness and uniform absolute resource constants. F(n)=n^(3/4)-n^(1/2)+(3/2)n^(1/4) is the complete exact exponent. Resource envelopes usepositive n2 values atn1. Peak classical bits O(n^(3/4)2^F), exact index3/4.",
       "score": {
-        "numerator": "0",
-        "denominator": "1"
+        "numerator": "3",
+        "denominator": "4"
       },
       "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md",
+        "robust_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -97,7 +67,75 @@
           "exponent": [
             {
               "coefficient": "1",
-              "nPower": "1",
+              "nPower": "3/4",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-1",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "3/2",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/4",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the SINGLE NONPOWER-QUARTER algorithm of proof.md/qudit_decoder.md/robust_decoder.md recovers the ENTIRE secret with unconditional success>=1-2^-8 on independent ideal coset copies. Mainn>=2^48 uses exact m=ceil(n^(1/4)), exact nonpower intermediate lengths M_i=(1-2^(i-m-2))2^(base+i), base=ceil(n/(m+1)-m/2)+2, final full2^d root, measured leafrange, explicit rank/division/inverseinterval merge and proved conditional bucket moments/freshtrial renewal, bmax=floor(H/2)-1024u, per-block r=b+ceilLog(n^5), ONE explicit wide-top coarse batch, sequential signed odd/twoadic vectors and ONE global A=4Lblk fine-attempt cap. All source rejections, failed/missing/capped attempts, incorrect histories, bit operations, actual lookups, addresses, source/extraction, table/circuit generation, explicit finiteprecision Clifford+T synthesis, initialization,gates,measurements,resets and ALL acquired/discarded/padded1024-copy microbanks count. ALLFOUR bounds hold JOINTLY on EVERY branch,with separately proved finite exhaustive correctness and uniform absolute resource constants. F(n)=n^(3/4)-n^(1/2)+(3/2)n^(1/4) is the complete exact exponent. Resource envelopes usepositive n2 values atn1. Peak accessible quantum qubits O(n), exact index0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md",
+        "robust_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the SINGLE NONPOWER-QUARTER algorithm of proof.md/qudit_decoder.md/robust_decoder.md recovers the ENTIRE secret with unconditional success>=1-2^-8 on independent ideal coset copies. Mainn>=2^48 uses exact m=ceil(n^(1/4)), exact nonpower intermediate lengths M_i=(1-2^(i-m-2))2^(base+i), base=ceil(n/(m+1)-m/2)+2, final full2^d root, measured leafrange, explicit rank/division/inverseinterval merge and proved conditional bucket moments/freshtrial renewal, bmax=floor(H/2)-1024u, per-block r=b+ceilLog(n^5), ONE explicit wide-top coarse batch, sequential signed odd/twoadic vectors and ONE global A=4Lblk fine-attempt cap. All source rejections, failed/missing/capped attempts, incorrect histories, bit operations, actual lookups, addresses, source/extraction, table/circuit generation, explicit finiteprecision Clifford+T synthesis, initialization,gates,measurements,resets and ALL acquired/discarded/padded1024-copy microbanks count. ALLFOUR bounds hold JOINTLY on EVERY branch,with separately proved finite exhaustive correctness and uniform absolute resource constants. F(n)=n^(3/4)-n^(1/2)+(3/2)n^(1/4) is the complete exact exponent. Resource envelopes usepositive n2 values atn1. ALL acquired source copies O(n2^(n^(1/4))), exact index1/4.",
+      "score": {
+        "numerator": "1",
+        "denominator": "4"
+      },
+      "evidence": [
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md",
+        "robust_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
@@ -107,9 +145,12 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and secret s,n=ceil(log2N),the SINGLE NONPOWER-QUARTER algorithm of proof.md/qudit_decoder.md/robust_decoder.md recovers the ENTIRE secret with unconditional success>=1-2^-8 on independent ideal coset copies. Mainn>=2^48 uses exact m=ceil(n^(1/4)), exact nonpower intermediate lengths M_i=(1-2^(i-m-2))2^(base+i), base=ceil(n/(m+1)-m/2)+2, final full2^d root, measured leafrange, explicit rank/division/inverseinterval merge and proved conditional bucket moments/freshtrial renewal, bmax=floor(H/2)-1024u, per-block r=b+ceilLog(n^5), ONE explicit wide-top coarse batch, sequential signed odd/twoadic vectors and ONE global A=4Lblk fine-attempt cap. All source rejections, failed/missing/capped attempts, incorrect histories, bit operations, actual lookups, addresses, source/extraction, table/circuit generation, explicit finiteprecision Clifford+T synthesis, initialization,gates,measurements,resets and ALL acquired/discarded/padded1024-copy microbanks count. ALLFOUR bounds hold JOINTLY on EVERY branch,with separately proved finite exhaustive correctness and uniform absolute resource constants. F(n)=n^(3/4)-n^(1/2)+(3/2)n^(1/4) is the complete exact exponent. Resource envelopes usepositive n2 values atn1. The exact malformed fraction is0; every acquired copy is independent ideal. No positive resilience or impossibility is asserted.",
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md",
+        "robust_decoder.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
