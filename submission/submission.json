@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SEGMENT-VECTOR-SQRTLOGCAP: intermediate growing allowance gives explicit subpolynomial time penalty",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For EVERY integer N>=2 and secret s moduloN, n=ceil(log2N), the SINGLE finite SEGMENT-VECTOR-SQRTLOGCAP algorithm of proof.md/nonpower_merge.md/qudit_decoder.md recovers the ENTIRE secret with unconditional probability>=1-2^-8 on independent ideal coset copies. ALLFOUR resource bounds hold JOINTLY on EVERY execution branch in the stated charged Clifford+T/bit/source/address model, including all failures/retries/real projections, rejected/discarded/partial acquisitions, incorrect labels/prefixes, initialization/table/circuit generation, gates/measurements/reset and finite-prefix costs. Mainn>=2^128 uses actualCleaf=ceil(sqrt(u))+64,u=ceil(log2n), atmost128 support-reset cycles, finite physicalCRT/Dirichlet coarse jumps and full fine-vector PGM with the exact source/controller caps of the proof. Actualplateau/initialization growing factors are included. The finite prefix has a separate all-secret success proof and uniform absolute resource constants. Exactq=141421/100000,t=39999899241/28284200000. Total charged work isO(n^(5/2)2^(t sqrt n+sqrt(log2n))),exactgrowthindex1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +23,31 @@
           "coefficient": "1",
           "exponent": [
             {
+              "nPower": "1/2",
+              "logPower": "0",
+              "coefficient": "39999899241/28284200000"
+            },
+            {
               "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "nPower": "0",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
+          "nPower": "5/2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For EVERY integer N>=2 and secret s moduloN, n=ceil(log2N), the SINGLE finite SEGMENT-VECTOR-SQRTLOGCAP algorithm of proof.md/nonpower_merge.md/qudit_decoder.md recovers the ENTIRE secret with unconditional probability>=1-2^-8 on independent ideal coset copies. ALLFOUR resource bounds hold JOINTLY on EVERY execution branch in the stated charged Clifford+T/bit/source/address model, including all failures/retries/real projections, rejected/discarded/partial acquisitions, incorrect labels/prefixes, initialization/table/circuit generation, gates/measurements/reset and finite-prefix costs. Mainn>=2^128 uses actualCleaf=ceil(sqrt(u))+64,u=ceil(log2n), atmost128 support-reset cycles, finite physicalCRT/Dirichlet coarse jumps and full fine-vector PGM with the exact source/controller caps of the proof. Actualplateau/initialization growing factors are included. The finite prefix has a separate all-secret success proof and uniform absolute resource constants. Exactq=141421/100000,t=39999899241/28284200000. Peak classical bits areO(2^(t sqrt n-(3/2)n^(1/4)(log2n)^(1/4))),exactgrowthindex1/2.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,9 +59,70 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "nPower": "1/2",
+              "logPower": "0",
+              "coefficient": "39999899241/28284200000"
+            },
+            {
+              "coefficient": "-3/2",
+              "nPower": "1/4",
+              "logPower": "1/4"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For EVERY integer N>=2 and secret s moduloN, n=ceil(log2N), the SINGLE finite SEGMENT-VECTOR-SQRTLOGCAP algorithm of proof.md/nonpower_merge.md/qudit_decoder.md recovers the ENTIRE secret with unconditional probability>=1-2^-8 on independent ideal coset copies. ALLFOUR resource bounds hold JOINTLY on EVERY execution branch in the stated charged Clifford+T/bit/source/address model, including all failures/retries/real projections, rejected/discarded/partial acquisitions, incorrect labels/prefixes, initialization/table/circuit generation, gates/measurements/reset and finite-prefix costs. Mainn>=2^128 uses actualCleaf=ceil(sqrt(u))+64,u=ceil(log2n), atmost128 support-reset cycles, finite physicalCRT/Dirichlet coarse jumps and full fine-vector PGM with the exact source/controller caps of the proof. Actualplateau/initialization growing factors are included. The finite prefix has a separate all-secret success proof and uniform absolute resource constants. Exactq=141421/100000,t=39999899241/28284200000. Peak accessible quantum wires areO(n),exactgrowthindex0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For EVERY integer N>=2 and secret s moduloN, n=ceil(log2N), the SINGLE finite SEGMENT-VECTOR-SQRTLOGCAP algorithm of proof.md/nonpower_merge.md/qudit_decoder.md recovers the ENTIRE secret with unconditional probability>=1-2^-8 on independent ideal coset copies. ALLFOUR resource bounds hold JOINTLY on EVERY execution branch in the stated charged Clifford+T/bit/source/address model, including all failures/retries/real projections, rejected/discarded/partial acquisitions, incorrect labels/prefixes, initialization/table/circuit generation, gates/measurements/reset and finite-prefix costs. Mainn>=2^128 uses actualCleaf=ceil(sqrt(u))+64,u=ceil(log2n), atmost128 support-reset cycles, finite physicalCRT/Dirichlet coarse jumps and full fine-vector PGM with the exact source/controller caps of the proof. Actualplateau/initialization growing factors are included. The finite prefix has a separate all-secret success proof and uniform absolute resource constants. Exactq=141421/100000,t=39999899241/28284200000. All acquired original source copies areO(n2^(q sqrt n)),exactgrowthindex1/2.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "nPower": "1/2",
+              "logPower": "0",
+              "coefficient": "141421/100000"
             }
           ],
           "nPower": "1",
@@ -107,9 +131,11 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For EVERY integer N>=2 and secret s moduloN, n=ceil(log2N), the SINGLE finite SEGMENT-VECTOR-SQRTLOGCAP algorithm of proof.md/nonpower_merge.md/qudit_decoder.md recovers the ENTIRE secret with unconditional probability>=1-2^-8 on independent ideal coset copies. ALLFOUR resource bounds hold JOINTLY on EVERY execution branch in the stated charged Clifford+T/bit/source/address model, including all failures/retries/real projections, rejected/discarded/partial acquisitions, incorrect labels/prefixes, initialization/table/circuit generation, gates/measurements/reset and finite-prefix costs. Mainn>=2^128 uses actualCleaf=ceil(sqrt(u))+64,u=ceil(log2n), atmost128 support-reset cycles, finite physicalCRT/Dirichlet coarse jumps and full fine-vector PGM with the exact source/controller caps of the proof. Actualplateau/initialization growing factors are included. The finite prefix has a separate all-secret success proof and uniform absolute resource constants. Exactq=141421/100000,t=39999899241/28284200000. The exact malformed fraction is0 under the independent ideal copy promise; no positive resilience or impossibility is asserted.",
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "nonpower_merge.md",
+        "qudit_decoder.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
