@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "OTP-FLQ110-Y2: one-time-pad label purification of FLQ110, tolerance 1 - 1/(10^128-184)^2 of coherent label steering (model X), S_Q = Q = O(2^((11/10) sqrt n)) and T = S_C = O(2^((629/500) sqrt n))",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), and for every adversary of the coherent label-steering error model (model X) of the fifth claim with fraction 1 - 1/(10^128-184)^2, including the adversary that corrupts nothing, the single OTP-FLQ110-Y2 algorithm and configuration specified in full in proof.md, which is the algorithm P' = OTP(P) of proof.md Section B (on the main branch, n >= 2^40, P' first acquires all Q' = wo Qcap copies into a store, wo = y^2 (ceil(log2 Qcap) + 12) with y = 10^128 - 184, before generating any random bit; then shuffles the stored registers in place by a swap-based Fisher-Yates shuffle whose indices are (2 ceil(log2 Q') + 20)-bit fair integers reduced mod (i+1); then runs P with each copy that P acquires replaced by a block of wo consecutive stored copies, each transformed as P prescribes and label-extracted by P's LE sized for Q', and merged by wo - 1 CNOT-measure merges into one coin whose label is the signed sum of their labels mod N; for n < 2^40 P' is the robust tester of proof.md Section B.5, which acquires and shuffles N(n+10)y^2 (2n+15) copies and tests each candidate on its own (n+10)y^2 (2n+15) of them), where P is the algorithm FLQ110 whose complete specification and proof are given in virtual.md (r = ceil(sqrt n), ell = ceil(23547r/50000) recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(62899r/100000) with leaf tables from dl = ceil(62899r/100000) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part), outputs the entire s with probability at least 1 - 2^-8 > 2/3, and on EVERY execution branch and for every such adversary, including the acquire-all store, the shuffle, every OTP block, wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its total charged sequential work is T(N,s) = O(2^((629/500) sqrt n)), with an absolute constant, including every acquisition, the shuffle and every OTP block. The stronger main-branch bound is T = O(n^(13/2) 2^((62899/50000) sqrt n)) (proof.md Section C), and 62899/50000 < 629/500. The uniform bit-length envelope B_T(n) = 2^((629/500) sqrt n) has growth index exactly 1/2. The inner coefficient 629/500 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "629/500",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), and for every adversary of the coherent label-steering error model (model X) of the fifth claim with fraction 1 - 1/(10^128-184)^2, including the adversary that corrupts nothing, the single OTP-FLQ110-Y2 algorithm and configuration specified in full in proof.md, which is the algorithm P' = OTP(P) of proof.md Section B (on the main branch, n >= 2^40, P' first acquires all Q' = wo Qcap copies into a store, wo = y^2 (ceil(log2 Qcap) + 12) with y = 10^128 - 184, before generating any random bit; then shuffles the stored registers in place by a swap-based Fisher-Yates shuffle whose indices are (2 ceil(log2 Q') + 20)-bit fair integers reduced mod (i+1); then runs P with each copy that P acquires replaced by a block of wo consecutive stored copies, each transformed as P prescribes and label-extracted by P's LE sized for Q', and merged by wo - 1 CNOT-measure merges into one coin whose label is the signed sum of their labels mod N; for n < 2^40 P' is the robust tester of proof.md Section B.5, which acquires and shuffles N(n+10)y^2 (2n+15) copies and tests each candidate on its own (n+10)y^2 (2n+15) of them), where P is the algorithm FLQ110 whose complete specification and proof are given in virtual.md (r = ceil(sqrt n), ell = ceil(23547r/50000) recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(62899r/100000) with leaf tables from dl = ceil(62899r/100000) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part), outputs the entire s with probability at least 1 - 2^-8 > 2/3, and on EVERY execution branch and for every such adversary, including the acquire-all store, the shuffle, every OTP block, wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its peak classical memory is S_C(N,s) = O(2^((629/500) sqrt n)) bits, with an absolute constant, including the pool label tables, sort scratch, depth-first merge tables, decoder records and the O(n)-bit shuffle and block words (no permutation is stored). The stronger main-branch bound is S_C = O(n^3 2^((62899/50000) sqrt n)) (proof.md Section C). The envelope B_C(n) = 2^((629/500) sqrt n) has growth index exactly 1/2. The inner coefficient 629/500 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,25 +52,86 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "629/500",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "1",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), and for every adversary of the coherent label-steering error model (model X) of the fifth claim with fraction 1 - 1/(10^128-184)^2, including the adversary that corrupts nothing, the single OTP-FLQ110-Y2 algorithm and configuration specified in full in proof.md, which is the algorithm P' = OTP(P) of proof.md Section B (on the main branch, n >= 2^40, P' first acquires all Q' = wo Qcap copies into a store, wo = y^2 (ceil(log2 Qcap) + 12) with y = 10^128 - 184, before generating any random bit; then shuffles the stored registers in place by a swap-based Fisher-Yates shuffle whose indices are (2 ceil(log2 Q') + 20)-bit fair integers reduced mod (i+1); then runs P with each copy that P acquires replaced by a block of wo consecutive stored copies, each transformed as P prescribes and label-extracted by P's LE sized for Q', and merged by wo - 1 CNOT-measure merges into one coin whose label is the signed sum of their labels mod N; for n < 2^40 P' is the robust tester of proof.md Section B.5, which acquires and shuffles N(n+10)y^2 (2n+15) copies and tests each candidate on its own (n+10)y^2 (2n+15) of them), where P is the algorithm FLQ110 whose complete specification and proof are given in virtual.md (r = ceil(sqrt n), ell = ceil(23547r/50000) recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(62899r/100000) with leaf tables from dl = ceil(62899r/100000) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part), outputs the entire s with probability at least 1 - 2^-8 > 2/3, and on EVERY execution branch and for every such adversary, including the acquire-all store, the shuffle, every OTP block, wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its peak quantum memory is S_Q(N,s) = O(2^((11/10) sqrt n)) qubits, with an absolute constant, including the store of Q'(n+1) qubits that holds every acquired copy, the coherently held qubit pool of the FW stage, the FW ancillas and repeat-until-success registers, the label-extraction ancillas, the depth-first index registers and all other ancillas. The stronger main-branch bound is S_Q = O(n^(9/2) 2^((54999/50000) sqrt n)) (proof.md Section C). The envelope B_Q(n) = 2^((11/10) sqrt n) has growth index exactly 1/2. The inner coefficient 11/10 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "11/10",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), and for every adversary of the coherent label-steering error model (model X) of the fifth claim with fraction 1 - 1/(10^128-184)^2, including the adversary that corrupts nothing, the single OTP-FLQ110-Y2 algorithm and configuration specified in full in proof.md, which is the algorithm P' = OTP(P) of proof.md Section B (on the main branch, n >= 2^40, P' first acquires all Q' = wo Qcap copies into a store, wo = y^2 (ceil(log2 Qcap) + 12) with y = 10^128 - 184, before generating any random bit; then shuffles the stored registers in place by a swap-based Fisher-Yates shuffle whose indices are (2 ceil(log2 Q') + 20)-bit fair integers reduced mod (i+1); then runs P with each copy that P acquires replaced by a block of wo consecutive stored copies, each transformed as P prescribes and label-extracted by P's LE sized for Q', and merged by wo - 1 CNOT-measure merges into one coin whose label is the signed sum of their labels mod N; for n < 2^40 P' is the robust tester of proof.md Section B.5, which acquires and shuffles N(n+10)y^2 (2n+15) copies and tests each candidate on its own (n+10)y^2 (2n+15) of them), where P is the algorithm FLQ110 whose complete specification and proof are given in virtual.md (r = ceil(sqrt n), ell = ceil(23547r/50000) recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(62899r/100000) with leaf tables from dl = ceil(62899r/100000) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part), outputs the entire s with probability at least 1 - 2^-8 > 2/3, and on EVERY execution branch and for every such adversary, including the acquire-all store, the shuffle, every OTP block, wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, the total number Q(N,s) of DCP source copies acquired, including every malformed, discarded or unused copy, is O(2^((11/10) sqrt n)), with an absolute constant. On the main branch exactly Q' = wo Qcap = O(n^(7/2) 2^((54999/50000) sqrt n)) copies are acquired, with Qcap = 4 n C_0 + K as defined in virtual.md (proof.md Section C); the finite branch acquires N(n+10)y^2 (2n+15) copies. The uniform bit-length envelope B_samples(n) = 2^((11/10) sqrt n) has growth index exactly 1/2. The inner coefficient 11/10 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "11/10",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same OTP-FLQ110-Y2 algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 1 - 1/(10^128-184)^2, valid for every N >= 2 (no validity threshold), under the coherent label-steering model (model X) stated in error_model: of the Q acquired copies at most floor((1 - 1/y^2) Q) are malformed, their positions chosen adaptively by an adversary that knows N, s, the algorithm and all earlier measurement outcomes and may use a private quantum system; a malformed copy is arbitrary except that its joint state with the adversary and all other malformed copies is supported on V_s = span{psi_{x,s}} (equivalently, its Fourier labels may be steered coherently while each label's coin is exact), and it is in tensor product with clean copies, with the algorithm's workspace and with every qubit prepared after its delivery; every other copy is, at delivery, exactly rho_s in tensor product with everything else; the adversary cannot act after delivery. The algorithm acquires all Q copies before it generates any random bit, so the malformed positions and contents are independent of its private randomness. For every N >= 2, every s in Z/NZ and every such adversary, including the one that corrupts nothing (the clean problem), the output equals the entire s with probability at least 1 - 2^-8 > 2/3 (proof.md Sections A and B: Lemma B.1 sampling, Lemma B.2 purification, Lemma B.3 robust finite branch and Section B.6), jointly with the four resource bounds above, which hold on every execution branch for every adversary (proof.md Section C). The underlying Theorem B.4 holds for every fixed fraction below 1; 1 - 1/(10^128-184)^2 is the declared constant. Coin dephasing, coin phase flips, Regev's registers |b,x> and every other corruption outside V_s are excluded by the model; nothing is claimed about them, about any larger fraction, or under any other error model. The expression is the product of the nine integers of proof.md Section G (numerator (10^128-185)(10^128-183), denominator (10^128-184)^2).",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2}",
+        "error_model": "Coherent label-steering model (model X) with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires, and epsilon(n) the tolerated malformed fraction. An ideal copy is the (n+1)-qubit state rho_s = (1/N) sum_x |psi_{x,s}><psi_{x,s}|, psi_{x,s} = (|0,x> + |1,x+s>)/sqrt2, x in Z/NZ. Let V_s = span{psi_{x,s} : x in Z/NZ} (dimension N) and Pi_s its orthogonal projector, so rho_s = Pi_s/N. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed; on every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. A malformed copy C is an (n+1)-qubit system supplied from the adversary's system whose support lies in V_s: conditioned on every outcome of every measurement made before its delivery (by the algorithm or the adversary), the joint state w of C and all other systems (the adversary's system and the other malformed copies, including copies the adversary delivers later) satisfies (Pi_s)_C w (Pi_s)_C = w. Apart from this a malformed copy is arbitrary: pure or mixed, entangled with the adversary's system and with other malformed copies, and dependent on all the information above. Equivalently, since V_s = span{phi_k(s) (x) chi_k : k in Z/NZ} with chi_k = N^(-1/2) sum_u exp(2 pi i k u/N)|u> and phi_k(s) = (|0> + exp(-2 pi i k s/N)|1>)/sqrt2, the adversary may steer the Fourier labels k coherently and arbitrarily while each label's coin qubit is exact. Examples: |+>|chi_0> (which lies in V_t for every t), phi_k(s)|chi_k> for chosen k, their superpositions and entangled versions, and any mixture of the psi_{x,s} (non-uniform or repeated source randomness x). Excluded: every state with support outside V_s, in particular coin dephasing, coin phase flips and Regev's registers |b,x>. At its delivery, and conditioned on all outcomes obtained before it, a malformed copy is in tensor product with clean copies, with the algorithm's workspace and with every qubit the algorithm prepares after its delivery (including the qubits that generate its random bits). Every copy that is not malformed is clean: at the moment of its delivery it is exactly rho_s in tensor product with everything else (the adversary's system, all other copies and the algorithm's workspace). The adversary's decision for copy j and the state it supplies as copy j are determined by N, s, the algorithm's description, its private system and the outcomes obtained before copy j is delivered; they do not depend on any random bit the algorithm generates after that delivery. Hence, for an algorithm that acquires all Q copies before it generates any random bit or obtains any measurement outcome that is not a fixed function of N, the set of malformed positions and the malformed contents are independent of all of its private randomness. The adversary interacts with the algorithm only by supplying copies; after delivery it cannot act on the copy or on the algorithm's quantum or classical systems. All measurements have countably many outcomes. The algorithm is not told which copies are malformed. Quantifiers: the guarantee must hold for every N >= 2 (no validity threshold), every s in Z/NZ and every such adversary, including the adversary that corrupts nothing (the clean problem): the algorithm outputs the entire s with probability at least 2/3, and the four declared resource bounds hold on every execution branch. The fraction bounds the number of malformed copies among acquired copies; it is not a per-copy corruption probability."
       }
     }
   ],
