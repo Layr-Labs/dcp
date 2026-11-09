@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Saved-copy shift search with a heralded filter: tolerance 1-1/(10^128-184)^2",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, let n = ceil(log2 N), L = 2^n, and k = n+24. The streamed saved-copy shift-search algorithm of proof.md acquires exactly k well-formed DCP copies once through the heralded filter FILTER of proof.md Section 8 (exactly k ideal copies in the clean problem); for n >= 2 it performs r = isqrt(9L) // 4 iterations of its implemented candidate-controlled all-pass reflection and diffusion; for n = 1 (N = 2) it tests t = 0 on all k copies and outputs 0 if all pass and 1 otherwise. The total sequential work in the challenge model is T(N,s) = O(2^(n/2) n^2 log2 n) for n >= 2. A bound valid for all n >= 1 is C 2^(n/2) n^2 max{1,log2 n}, with an absolute C; the n=1 branch has constant work. The eventually positive uniform time envelope B_T(n) = 2^(n/2) n^2 log2 n has exact growth index 1. Work includes initialization, source acquisition, all gates, exact gate decomposition, uniform streamed circuit generation, bit operations, addressing, preprocessing, measurements and output. All constants are absolute and independent of N, s and outcomes. This is a worst-case bound on every execution branch, in the clean problem and under the heralded malformed-copy model of claim 4 (proof.md Section 8), jointly with the other three resource bounds and unconditional recovery of the entire s with probability at least 25573/36864 > 2/3.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "diagnostic.py"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, let n = ceil(log2 N), L = 2^n, and k = n+24. The streamed saved-copy shift-search algorithm of proof.md acquires exactly k well-formed DCP copies once through the heralded filter FILTER of proof.md Section 8 (exactly k ideal copies in the clean problem); for n >= 2 it performs r = isqrt(9L) // 4 iterations of its implemented candidate-controlled all-pass reflection and diffusion; for n = 1 (N = 2) it tests t = 0 on all k copies and outputs 0 if all pass and 1 otherwise. Peak allocated classical storage is S_C(N,s) = O(n) bits, including N, integer preprocessing scratch, the search limit and counter, gate-generation counters and descriptors, and the output. Its uniform envelope B_C(n) = n has exact growth index 0. All constants are absolute and independent of N, s and outcomes. This is a worst-case bound on every execution branch, in the clean problem and under the heralded malformed-copy model of claim 4 (proof.md Section 8), jointly with the other three resource bounds and unconditional recovery of the entire s with probability at least 25573/36864 > 2/3.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "diagnostic.py"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,72 +51,69 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N >= 2 and every s in Z/NZ, let n = ceil(log2 N), L = 2^n, and k = n+24. The streamed saved-copy shift-search algorithm of proof.md acquires exactly k well-formed DCP copies once through the heralded filter FILTER of proof.md Section 8 (exactly k ideal copies in the clean problem); for n >= 2 it performs r = isqrt(9L) // 4 iterations of its implemented candidate-controlled all-pass reflection and diffusion; for n = 1 (N = 2) it tests t = 0 on all k copies and outputs 0 if all pass and 1 otherwise. Peak allocated quantum storage is S_Q(N,s) = O(n^2) qubits, including k(n+1) retained source qubits, the candidate, all arithmetic and phase ancillas, and exact gate-decomposition scratch. Its uniform envelope B_Q(n) = n^2 has exact growth index 0. All constants are absolute and independent of N, s and outcomes. This is a worst-case bound on every execution branch, in the clean problem and under the heralded malformed-copy model of claim 4 (proof.md Section 8), jointly with the other three resource bounds and unconditional recovery of the entire s with probability at least 25573/36864 > 2/3.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "diagnostic.py"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and every s in Z/NZ, let n = ceil(log2 N), L = 2^n, and k = n+24. The streamed saved-copy shift-search algorithm of proof.md acquires exactly k well-formed DCP copies once through the heralded filter FILTER of proof.md Section 8 (exactly k ideal copies in the clean problem); for n >= 2 it performs r = isqrt(9L) // 4 iterations of its implemented candidate-controlled all-pass reflection and diffusion; for n = 1 (N = 2) it tests t = 0 on all k copies and outputs 0 if all pass and 1 otherwise. The total number of source copies is exactly Q(N,s) = n+24 on every execution branch in the clean problem, and at most D(n+24) raw copies under the heralded model of claim 4, where D = (10^128-184)^2 is a fixed absolute integer (proof.md Lemma 8.1); hence O(n) in both cases, with uniform envelope B_samples(n) = n and exact growth index 0. All acquired copies and final discards are counted; there are no additional samples for unsuccessful measurements or restarts. All constants are absolute and independent of N, s and outcomes. This is a worst-case bound on every execution branch, in the clean problem and under the heralded malformed-copy model of claim 4 (proof.md Section 8), jointly with the other three resource bounds and unconditional recovery of the entire s with probability at least 25573/36864 > 2/3.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "diagnostic.py"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and every s in Z/NZ, let n = ceil(log2 N), L = 2^n, and k = n+24. The streamed saved-copy shift-search algorithm of proof.md acquires exactly k well-formed DCP copies once through the heralded filter FILTER of proof.md Section 8 (exactly k ideal copies in the clean problem); for n >= 2 it performs r = isqrt(9L) // 4 iterations of its implemented candidate-controlled all-pass reflection and diffusion; for n = 1 (N = 2) it tests t = 0 on all k copies and outputs 0 if all pass and 1 otherwise. Under the heralded malformed-copy model stated in the structured error_model, with FILTER's literal raw cutoff D k, D = y^2, y = 10^128 - 184, the proved fractional error tolerance is epsilon(n) = \\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2} = 1 - 1/y^2, a constant in (0,1); the displayed integers of proof.md Section 8 multiply to y - 1, y + 1 and y. For every N >= 2 and every s, if at most floor(epsilon(n) Q) of the Q acquired copies are malformed on every branch, the algorithm recovers the entire s with unconditional probability at least 25573/36864 > 2/3 jointly with the four resource bounds of claims 0-3 in the form stated there (proof.md Lemmas 8.1-8.2). In the clean problem the algorithm is unchanged. No tolerance of undetectable corruption is claimed.",
+      "evidence": [
+        "proof.md",
+        "diagnostic.py"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2}",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
