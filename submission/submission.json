@@ -1,122 +1,133 @@
 {
-  "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
-  "claims": [
-    {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
+ "version": 1,
+ "title": "CS1-WINDOW-P: fractional-depth space tradeoff",
+ "claims": [
+  {
+   "statement": "For every N >= 2 and s in Z/NZ, put n=ceil(log2 N) and P=10^512-1. The CS1-WINDOW-P algorithm in proof.md recovers the entire s with unconditional probability at least 1-2^-8 from independent ideal coset copies. Its total charged work on every execution branch is O(n^20 2^(c sqrt(n))), where c=sqrt(2+4/P^2). With the exact Pell rational a and E defined in proof.md Section 14, this is O(E(n)); the complete supported expression E is the structured time bound. This same configuration and success guarantee establish all other resource and tolerance claims jointly. The exact time-envelope growth index is 1/2. The same bound also holds on every branch under the heralded-erasure model and fractional promise of claim 4, counting all raw acquisitions, because the filter overhead is an absolute constant.",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+       "nPower": "1/2",
+       "logPower": "0"
       },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
+      {
+       "coefficient": "-28",
+       "nPower": "1/2",
+       "logPower": "-1"
       }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
-      }
+     ],
+     "nPower": "0",
+     "logPower": "0"
     }
-  ],
-  "experiments": []
+   }
+  },
+  {
+   "statement": "For every N >= 2 and s in Z/NZ, put n=ceil(log2 N), P=10^512-1, c=sqrt(2+4/P^2), and beta=c-sqrt(2)/P. The same CS1-WINDOW-P algorithm and parameters in proof.md use at most O(n^20 2^(beta sqrt(n))) classical bits on every execution branch. With the exact rational b=419741971666553971282916932570822276947104845837809243324342043951943770925744573959245445992404588514938137098297073261135829062554208235158014714511206124185249574287233772471083150864787977090810512838897460033775067586508407041077572703106112402893590779837371250540943137855097325806092143984588366730347739253153479652438701220693618076150224570025334692932006236902304720844279/296802394514032009698154832317054897878147834971246744543956058448060806116133379983563347375026057335268551161319629263371829296577042649575140914892753213265657733259985714911347616591836031405448133987436470808990134053990598704963710102110267768351140803558519136794946731603050687642182937677116210005975548120575989054936792395653500977543426704085104743737636741219553145456589, proved in Section 14 to exceed beta, this is O(2^(b sqrt(n))). All bounds, the clean-source tolerance and recovery probability at least 1-2^-8 hold jointly for this configuration. The exact growth index of the declared envelope is 1/2. The same bound also holds on every branch under the heralded-erasure model and fractional promise of claim 4, counting all raw acquisitions, because the filter overhead is an absolute constant.",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393/4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "0",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every integer N >= 2 and s in Z/NZ, put n = ceil(log2 N). The single CS1-WINDOW-P algorithm in proof.md recovers the whole s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies. On EVERY branch, including failures, retries, discards and aborts, peak quantum workspace is O(n), with declared envelope n. All four resource bounds and tolerance hold jointly for the same configuration, with absolute outside constants. The exact growth index of this envelope is 0. The same bound also holds on every branch under the heralded-erasure model and fractional promise of claim 4, counting all raw acquisitions, because the filter overhead is an absolute constant.",
+   "score": {
+    "numerator": "0",
+    "denominator": "1"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [],
+     "nPower": "1",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "For every N >= 2 and s in Z/NZ, put n=ceil(log2 N), P=10^512-1, c=sqrt(2+4/P^2), and beta=c-sqrt(2)/P. The same CS1-WINDOW-P algorithm and parameters in proof.md use at most O(n^20 2^(beta sqrt(n))) acquired source copies on every execution branch. With the exact rational b=419741971666553971282916932570822276947104845837809243324342043951943770925744573959245445992404588514938137098297073261135829062554208235158014714511206124185249574287233772471083150864787977090810512838897460033775067586508407041077572703106112402893590779837371250540943137855097325806092143984588366730347739253153479652438701220693618076150224570025334692932006236902304720844279/296802394514032009698154832317054897878147834971246744543956058448060806116133379983563347375026057335268551161319629263371829296577042649575140914892753213265657733259985714911347616591836031405448133987436470808990134053990598704963710102110267768351140803558519136794946731603050687642182937677116210005975548120575989054936792395653500977543426704085104743737636741219553145456589, proved in Section 14 to exceed beta, this is O(2^(b sqrt(n))). All bounds, the clean-source tolerance and recovery probability at least 1-2^-8 hold jointly for this configuration. The exact growth index of the declared envelope is 1/2. The same bound also holds on every branch under the heralded-erasure model and fractional promise of claim 4, counting all raw acquisitions, because the filter overhead is an absolute constant.",
+   "score": {
+    "numerator": "1",
+    "denominator": "2"
+   },
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-bounds-v4",
+    "comparator": "asymptotic-v1",
+    "scope": "dcp-cyclic-group-order",
+    "model": "dcp-uniform-clifford-t-bit-operations-v1",
+    "notation": "big-o",
+    "bound": {
+     "coefficient": "1",
+     "exponent": [
+      {
+       "coefficient": "5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393/4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885",
+       "nPower": "1/2",
+       "logPower": "0"
+      }
+     ],
+     "nPower": "0",
+     "logPower": "0"
+    }
+   }
+  },
+  {
+   "statement": "The same CS1-WINDOW-P configuration, with the heralded filter FILTER of proof.md Section 11.1 (literal raw-acquisition cutoff D Qcap*, with D = m^4 and Qcap* = Qcap on the main branch, N(n+10) on the finite branch), proves fractional error tolerance epsilon(n) = 9994611312796487755881848654079456777805183045569497927783747881*9994611312796487755881848654079456777805183045569497927783747883*9999999999999999999999999906587220629241422304506584841132897669*9989225529387953241424683186546005111325213024773532711531961825/9994611312796487755881848654079456777805183045569497927783747882^4 = 1 - 1/m^4, a constant in (0,1), where m, F and G are the integers of proof.md Section 15 (F G = m^2 + 1 by the Brahmagupta-Fibonacci identity). Under the stated heralded malformed-copy model, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), if at most floor(epsilon(n) Q) of the Q acquired copies are malformed on every branch, the algorithm outputs the entire s with probability at least 1 - 2^-8 > 2/3, and the four resource bounds of claims 0-3 hold jointly on every execution branch in the form stated there for the heralded model. With no malformed copies (the clean problem, no herald) the algorithm is the clean algorithm. No positive tolerance is claimed for undetectable corruptions.",
+   "evidence": [
+    "proof.md"
+   ],
+   "structured": {
+    "version": "dcp-fractional-error-tolerance-v1",
+    "expression": "9994611312796487755881848654079456777805183045569497927783747881*9994611312796487755881848654079456777805183045569497927783747883*9999999999999999999999999906587220629241422304506584841132897669*9989225529387953241424683186546005111325213024773532711531961825/9994611312796487755881848654079456777805183045569497927783747882^4",
+    "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
+   }
+  }
+ ],
+ "experiments": []
 }
