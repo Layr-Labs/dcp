@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "WD22-MARGIN160: a twenty-two-input recursive window dissection extension at smaller classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ,n=ceil(log2 N),the single WD22-MARGIN160 configuration completely defined in proof.md(finite exhaustive branch below2^32768;otherwise r=ceil(sqrt n),U=min{u>=0:u^100>=n^49},actualw=floor(3r/20)-16U,y7=ceil(3w/4),y11=ceil(35w/34),y16=ceil(7w/8),y22=ceil(1533r/10000),binary/seven/eleven/sixteen/twenty-two-input measured-window recursive whole-fiber listing,finiteStepCap2^(2kappa+14),K=8192(3r+ceilLog2n+30),actualsource/demand caps and physical odd/twoadic decoding) recovers the ENTIRE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch,including wrong estimates,discarded copies,list/merge failures and cap aborts,charged sequential work is O(2^[(1112693/471750)sqrt(n)-160n^(49/100)]),with an absolute constant. All four exact resource objects hold JOINTLY with the same complete success guarantee. Every coefficient,negative correction and outside polynomial power is literal. The displayed envelope has exact growth index1/2. Sections2-10 establish the complete physical branchwise ledger and Section11 derives the exact objects.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -19,20 +19,59 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "1112693/471750",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-160",
+              "nPower": "49/100",
               "logPower": "0"
             }
-          ],
-          "nPower": "4",
-          "logPower": "0"
+          ]
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ,n=ceil(log2 N),the single WD22-MARGIN160 configuration completely defined in proof.md(finite exhaustive branch below2^32768;otherwise r=ceil(sqrt n),U=min{u>=0:u^100>=n^49},actualw=floor(3r/20)-16U,y7=ceil(3w/4),y11=ceil(35w/34),y16=ceil(7w/8),y22=ceil(1533r/10000),binary/seven/eleven/sixteen/twenty-two-input measured-window recursive whole-fiber listing,finiteStepCap2^(2kappa+14),K=8192(3r+ceilLog2n+30),actualsource/demand caps and physical odd/twoadic decoding) recovers the ENTIRE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch,including wrong estimates,discarded copies,list/merge failures and cap aborts,peak allocated classical bits is O(2^[(3/20)sqrt(n)-12n^(49/100)]),with an absolute constant. All four exact resource objects hold JOINTLY with the same complete success guarantee. Every coefficient,negative correction and outside polynomial power is literal. The displayed envelope has exact growth index1/2. Sections2-10 establish the complete physical branchwise ledger and Section11 derives the exact objects.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
+          "exponent": [
+            {
+              "coefficient": "3/20",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-12",
+              "nPower": "49/100",
+              "logPower": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ,n=ceil(log2 N),the single WD22-MARGIN160 configuration completely defined in proof.md(finite exhaustive branch below2^32768;otherwise r=ceil(sqrt n),U=min{u>=0:u^100>=n^49},actualw=floor(3r/20)-16U,y7=ceil(3w/4),y11=ceil(35w/34),y16=ceil(7w/8),y22=ceil(1533r/10000),binary/seven/eleven/sixteen/twenty-two-input measured-window recursive whole-fiber listing,finiteStepCap2^(2kappa+14),K=8192(3r+ceilLog2n+30),actualsource/demand caps and physical odd/twoadic decoding) recovers the ENTIRE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch,including wrong estimates,discarded copies,list/merge failures and cap aborts,peak allocated quantum qubits is O(n),with an absolute constant. All four exact resource objects hold JOINTLY with the same complete success guarantee. Every coefficient,negative correction and outside polynomial power is literal. The displayed envelope has exact growth index0. Sections2-10 establish the complete physical branchwise ledger and Section11 derives the exact objects.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -48,66 +87,48 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
-          "logPower": "0"
+          "logPower": "0",
+          "exponent": []
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ,n=ceil(log2 N),the single WD22-MARGIN160 configuration completely defined in proof.md(finite exhaustive branch below2^32768;otherwise r=ceil(sqrt n),U=min{u>=0:u^100>=n^49},actualw=floor(3r/20)-16U,y7=ceil(3w/4),y11=ceil(35w/34),y16=ceil(7w/8),y22=ceil(1533r/10000),binary/seven/eleven/sixteen/twenty-two-input measured-window recursive whole-fiber listing,finiteStepCap2^(2kappa+14),K=8192(3r+ceilLog2n+30),actualsource/demand caps and physical odd/twoadic decoding) recovers the ENTIRE secret with unconditional probability at least1-2^-8 from independent ideal copies. On EVERY branch,including wrong estimates,discarded copies,list/merge failures and cap aborts,total acquired source copies including discarded copies is O(2^[(1112693/471750)sqrt(n)-172n^(49/100)]),with an absolute constant. All four exact resource objects hold JOINTLY with the same complete success guarantee. Every coefficient,negative correction and outside polynomial power is literal. The displayed envelope has exact growth index1/2. Sections2-10 establish the complete physical branchwise ledger and Section11 derives the exact objects.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "nPower": "0",
+          "logPower": "0",
+          "exponent": [
+            {
+              "coefficient": "1112693/471750",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-172",
+              "nPower": "49/100",
+              "logPower": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ,n=ceil(log2 N),the single WD22-MARGIN160 configuration completely defined in proof.md(finite exhaustive branch below2^32768;otherwise r=ceil(sqrt n),U=min{u>=0:u^100>=n^49},actualw=floor(3r/20)-16U,y7=ceil(3w/4),y11=ceil(35w/34),y16=ceil(7w/8),y22=ceil(1533r/10000),binary/seven/eleven/sixteen/twenty-two-input measured-window recursive whole-fiber listing,finiteStepCap2^(2kappa+14),K=8192(3r+ceilLog2n+30),actualsource/demand caps and physical odd/twoadic decoding) recovers the ENTIRE secret with unconditional probability at least1-2^-8 from independent ideal copies. The proved malformed-copy fractional tolerance is the exact expression0,requiring all acquired copies to be independent ideal coset states. All four branchwise resources hold jointly. No positive robustness or impossibility thereof is claimed.",
       "evidence": [
         "proof.md"
       ],
