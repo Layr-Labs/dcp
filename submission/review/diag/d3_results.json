@@ -1,0 +1,25 @@
+{
+  "runs": 2259,
+  "K": 3,
+  "Hmax": 15,
+  "Bcap": [
+    1024,
+    512,
+    128,
+    64
+  ],
+  "visited_fraction": 0.984506418769367,
+  "failure_reasons": {
+    "true_removed_or_cap": 35
+  },
+  "champion_success": 0.984506418769367,
+  "last_pivot_wrong_but_champion_right": 275,
+  "mean_tokens_to_visit": 634.0737410071943,
+  "max_tokens_to_visit": 2523,
+  "analytic_expected_bound_2_16_sqrtD": 4194304,
+  "accepted_samples": 22195,
+  "uniformity_chi2_9dof": 9.73304798378013,
+  "min_beta_ratio": 0.505051961909885,
+  "cpu_seconds": 22.019442087,
+  "scope": "Scaled abstract controller; checks sampler uniformity/recursion/champion wiring only."
+}

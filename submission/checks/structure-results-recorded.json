@@ -1,0 +1,29 @@
+{
+  "dependent_seed_bound": "1",
+  "dependent_seed_mean": "2",
+  "full_tournament_champion": 0,
+  "full_winner": 0,
+  "geometric": {
+    "2_rho_pow_4": "81/128",
+    "quarter": "1/4",
+    "tail_16": "33232930569601/281474976710656",
+    "three_quarters": "3/4"
+  },
+  "independent_seed_pairs": 4164,
+  "last_pivot": 1,
+  "nested_vector_cases": 27,
+  "non_nested_negative_cases": 3,
+  "sampler_clock_cases": 96,
+  "status": "passed",
+  "tournaments_by_vertices": {
+    "1": 1,
+    "2": 2,
+    "3": 8,
+    "4": 64,
+    "5": 1024
+  },
+  "visited_pivots": [
+    0,
+    1
+  ]
+}

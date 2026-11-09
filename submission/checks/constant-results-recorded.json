@@ -1,0 +1,154 @@
+{
+  "all_passed": true,
+  "arithmetic": "exact fractions and integers",
+  "parameter_cases": 4036,
+  "bad_size_bound": "295147906278864453632/174085316078951569381392375",
+  "relative_loss_bound": "17/24576",
+  "coarse_failure_bound": "4579465929687041/18446744073709551616",
+  "main_success_lower": "80482941274287034400889802021270046386479577271187346153374967082232156520447/115792089237316195423570985008687907853269984665640564039457584007913129639936",
+  "success_exceeds_11_16": true,
+  "all_secret_shadow_checks": [
+    {
+      "secret": 0,
+      "true_class": 0,
+      "full_score": "11/20",
+      "misleading_record": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "secret": 1,
+      "true_class": 1,
+      "full_score": "-11/20",
+      "misleading_record": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "secret": 2,
+      "true_class": 0,
+      "full_score": "11/20",
+      "misleading_record": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "secret": 3,
+      "true_class": 1,
+      "full_score": "-11/20",
+      "misleading_record": [
+        0,
+        0,
+        1
+      ]
+    }
+  ],
+  "physical_shadow_fixture": {
+    "modulus": 4,
+    "secret": 0,
+    "records": [
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        1,
+        1
+      ],
+      [
+        0,
+        1,
+        -1
+      ],
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        0,
+        1
+      ],
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        1,
+        -1
+      ],
+      [
+        2,
+        0,
+        1
+      ],
+      [
+        2,
+        0,
+        1
+      ],
+      [
+        2,
+        1,
+        1
+      ],
+      [
+        2,
+        1,
+        -1
+      ],
+      [
+        3,
+        0,
+        1
+      ],
+      [
+        3,
+        0,
+        1
+      ],
+      [
+        3,
+        1,
+        1
+      ],
+      [
+        3,
+        1,
+        -1
+      ]
+    ],
+    "full_class_score": "11/20",
+    "repeated_sketch_record": [
+      1,
+      1,
+      1
+    ],
+    "sketch_class_score": "-6/5",
+    "visited": [
+      0,
+      1
+    ],
+    "last_pivot": 1,
+    "full_shadow_champion": 0,
+    "finite_precision_signs_preserved": true
+  },
+  "scope": "Constants and a clean-record comparison fixture; no production circuit or complete solver replay.",
+  "cpu_seconds": 0.10907291000000001
+}

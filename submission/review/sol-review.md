@@ -1,0 +1,41 @@
+# Independent mathematical review
+
+Verdict: SUPPORTED.
+
+I found no material mathematical gap, changed source assumption, missing asymptotic resource factor, or contradiction between the described algorithm and the supplied finite diagnostics. This supports the stated all-N theorem, including exactly Q=3*2^40(n+32), epsilon=1/3, full-secret success at least 11/16, and branchwise resources T=O(2^(n/2)n log^3(n+2)), S_C=O(n^2), S_Q=O(n). No repair is required by this review. This is a mathematical review of the supplied specification, not an implementation certificate or authorization to submit.
+
+I derived the checks below before reading the earlier Opus review. I subsequently read that review to compare scope. In particular, I independently checked the inherited source extraction rather than assuming its correctness from Opus's verdict.
+
+## Inherited source interface
+
+RQ-SPLIT Section 2 has consistent Fourier signs. Expanding |x> in positive-exponent chi_k gives control phase omega^(-ks), and X changes it to the positive phase convention up to a global phase. Multiplication and controlled subtraction have the stated effects on the secret. The identity extension outside [0,N) makes the transforms permutations on the full input encoding space. The clean-state decomposition is an actual convex mixture, so it requires neither a purification nor a source inverse.
+
+In Section 3, Tr_c has eigenvalue omega^(-kc), so controlling Tr_-c gives the claimed positive phase. Measuring Y by S-dagger then H has the claimed sine sign. For a fixed clean latent k, each probe leaves both its eigenstate and the row unchanged. The collective translation is the product of the individual translations; therefore its ancillas factor, and their outcomes are independent conditional on k. The reduction schedule is sufficient because x<2^(n+5)<64N; subtraction at 32N,16N,...,N reduces every such x below N. Storing the subtraction decisions allows clean reversal.
+
+The table and direction-decoding gaps suffice for circular error below 1/16. I checked the unwrapping as a statement on the circle, including wraparound. The correct doubling preimage is within e/2 of the true phase, while the other is half a turn away. The chosen preimage is therefore unique and its error halves at each level. After J_e=n+4 levels, error below 2^(-n-8) is strictly below 1/(2N), so nearest-integer recovery gives the exact label, including labels adjacent to zero.
+
+F=2^21 h and delta=2^-10 give F delta^2/2=h. The union bound over both bases and n+5 levels is consequently 4(n+5)e^-h. The chosen h gives at most 2^-62/Q per clean delivery. Conditional bounds remain valid when the delivery type is selected adaptively before the new clean label. Replacing only the reported clean label in the analytical process preserves the actual probe/position/reset feedback; the processes agree until the first report error. This justifies the global 2^-62 coupling error without conditioning on eventual correctness. Malformed inputs need no eigenstate or iid property; their bounded fixed instrument still returns a legal label.
+
+I also checked the late-split causal argument, score margin, phase-word role bound, and endpoint interface in Sections 4–8. The private shadow reordering acts on disjoint delivered rows and does not remove actual acquisition feedback. First retained clean parities are selected before their own fresh draws. Extending them by fresh bits makes the binomial comparison unconditional, which is the property the endpoint needs.
+
+## New coarse search
+
+For fixed E_score records, each new sketch is independent of its selected wrong pivot. The necessary true-oriented means have margin at least 3/256 and range width below six. Hoeffding gives exp(-ell/131072); at most two means are necessary and the factor four used in the proof is safe. This is a sequential bound before the first true visit, with no union over all candidate secrets.
+
+For contraction, couple the two hypothetical pivot roles with the same new index multiset and threshold. Max/min and averaging preserve the deterministic role discrepancy. Canonical ordering makes the two wins a threshold event and a perturbed complementary threshold event. Pair counting therefore yields the stated rho=3/4 contraction for every record string. It does not require a fixed tournament.
+
+The preparation recursion is exactly reflection about the previous prepared state after the prefix phase flip. On any nested history its marked amplitude changes by alpha -> alpha(3-4|P_j|alpha^2). Equal amplitudes persist even when alpha is negative or zero. In the zero case no marked outcome occurs under any clock; the proof correctly invokes good-size conditions for positive success probability, rather than inferring acceptance from uniformity alone. The sum of relative losses on good-size histories is below 1/1024. Immutable earlier prefix cutoffs are essential and explicitly present.
+
+For positive marked weight, two-reflection evolution keeps every marked amplitude equal. Thus acceptance is uniform conditional on any successful fixed clock and previous failures. The direct branch covers p>=1/2. For smaller p the cap includes a qualifying clock scale, and sixteen attempts give geometric failure below 1/4. The displayed expected cost bound 1024 sqrt(Dpad/h) has slack.
+
+The dyadic-band argument bounds the expected number of accepted steps in each band by 4/(1-81/128)<16. Summing the weighted bands gives less than 64. Stop the analytical process at exhaustion, Hmax, or the first bad-size event. Before this stopping time, its next seek has the required cost bound and uniform pivot law. No conditioning on future survival is needed. If an actual debit is refused before this analytical stop, the analytical total including that entire refused attempt exceeds Budget. Markov therefore bounds this event as claimed. Burning tokens after an empty set causes no correctness loss, because pre-visit survival implies that exhaustion follows a true visit.
+
+Saving an accepted representative before making its constraint handles index-generation aborts. The final full-bank champion wins whenever the true class was visited, independently of false-class cycles or post-visit sketch mistakes. This also handles the accepted-pivot cap. The champion and all coarse operations use measured shadows and independent work only, so the inherited retained-bank endpoint comparison remains valid. Subtracting the stated unconditional exceptional events gives the claimed success margin.
+
+## Resources and diagnostics
+
+Each sampled constraint generates fresh candidate phase words using ell=O(log n) indexed records. With the inherited bit and addressing charges its cost is O(n log^3(n+2)). Prefix-oracle cost is linear in its constraint count; the preparation recurrence therefore gives O(3^j U(n)). Classical verification, clocks, and token arithmetic fit O(B A_j U(n)) per attempt. The explicit stack requires O(n log n) bits and reuses the quantum work pool. Storing sampled pivot words costs O(n log n), indices O(n log^2 n), and all candidate labels and pivots O(n^2). No full-bank coherent cache is needed. All non-token work has bounded polynomial cost, absorbed by the stated exponential envelope. The finite n<64 fallback uses the unchanged source budget and inherited endpoint.
+
+I read both supplied check scripts and replayed copies under review-sol/replay, with 45 CPU second and 512 MiB limits per process. Both passed: 4,036 constant parameter cases, 27 exact nested-state cases, 96 clock cases, and the finite tournament/champion fixtures. These scripts test abstract structure and constants; they are explicitly not production DCP circuits. I found no claim in the proof that upgrades them into such a certificate. I did not review the unrelated benchmark/admission/export application code or run a production solver.
+
+After the review, all three frozen SHA-256 values in inputs.json matched the candidate files. The exact error-model text occurs verbatim in the inherited proof. Details are recorded in hash-verification.json. No frozen input, other packet, checkout, or Git configuration was changed; no package was installed and nothing was committed, submitted, or posted.

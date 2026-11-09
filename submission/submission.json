@@ -1,15 +1,21 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SPTS1-H: O(n) samples and qubits at T = O(2^(n/2) n log^3 n) with heralded tolerance 1 - 1/(10^128-184)^2 (sampled-pivot tournament search behind a heralded filter)",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every fixed secret s in Z/NZ, with n=ceil(log2 N), the single algorithm SPTS1-H: SPTS1 exactly as specified in proof.md and sources/RQ-SPLIT-proof.md of this snapshot (the inherited RQ-SPLIT acquisition and late source split with k_shadow=3*2^22(n+32) and exactly Q0=3*2^40(n+32) processed copies; for n<64 the original bounded coarse decoder and endpoint on that bank; for n>=64 Cblock=128, K=max{j:(64*n*3^j)^2<=2^n}, Hmax=128K, ell=2^17*ceil(log2(2^24(Hmax+1))), the specified capped fresh per-pivot index lists and thresholds, frozen-prefix recursive preparations and Budget=2^28*ceil(sqrt(2^n)) pre-debited tokens; all visited pivots saved, full-shadow champion, unchanged untouched-bank endpoint), with every acquisition served by FILTER of heralded.md H.2 (a flagged copy is reset in the raw input register; a down-counter enforces the raw cutoff D*Q0, D=(10^128-184)^2; when copies carry no herald FILTER hands every copy over). It outputs the entire s with probability at least 11/16>2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2 and Theorem H.3, with SPTS1's theorem for its adversary that corrupts nothing). On EVERY execution branch, including flagged copies, bad records, unsuccessful searches, refused debits, sampled-index aborts, the raw cutoff and endpoint failures, its total charged sequential work is T=O(2^(n/2)*n*(log2 n)^3): SPTS1's bound (proof.md Section 8, by its deterministic token budget) plus O(n^2 log(n+2)) for all raw acquisitions, herald reads, resets and counter steps of FILTER (heralded.md Theorem H.3). The envelope growth index is exactly 1. Constants are absolute and independent of N, s, the adversary and outcomes. All four resource bounds and the tolerance claim hold jointly for this one algorithm and parameter rule.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/RQ-SPLIT-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "checks/check_constants.py",
+        "checks/check_structure.py",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +27,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "3"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed secret s in Z/NZ, with n=ceil(log2 N), the single algorithm SPTS1-H: SPTS1 exactly as specified in proof.md and sources/RQ-SPLIT-proof.md of this snapshot (the inherited RQ-SPLIT acquisition and late source split with k_shadow=3*2^22(n+32) and exactly Q0=3*2^40(n+32) processed copies; for n<64 the original bounded coarse decoder and endpoint on that bank; for n>=64 Cblock=128, K=max{j:(64*n*3^j)^2<=2^n}, Hmax=128K, ell=2^17*ceil(log2(2^24(Hmax+1))), the specified capped fresh per-pivot index lists and thresholds, frozen-prefix recursive preparations and Budget=2^28*ceil(sqrt(2^n)) pre-debited tokens; all visited pivots saved, full-shadow champion, unchanged untouched-bank endpoint), with every acquisition served by FILTER of heralded.md H.2 (a flagged copy is reset in the raw input register; a down-counter enforces the raw cutoff D*Q0, D=(10^128-184)^2; when copies carry no herald FILTER hands every copy over). It outputs the entire s with probability at least 11/16>2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2 and Theorem H.3, with SPTS1's theorem for its adversary that corrupts nothing). On EVERY execution branch, including flagged copies, bad records, unsuccessful searches, refused debits, sampled-index aborts, the raw cutoff and endpoint failures, its peak allocated classical storage is S_C=O(n^2) bits: SPTS1's storage (proof.md Section 8) plus the raw down-counter of at most 893+ceil(log2(n+32)) bits and one herald bit. The envelope n^2 has growth index exactly 0. Constants are absolute and independent of N, s, the adversary and outcomes. All four resource bounds and the tolerance claim hold jointly for this one algorithm and parameter rule.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/RQ-SPLIT-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "checks/check_constants.py",
+        "checks/check_structure.py",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +67,19 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed secret s in Z/NZ, with n=ceil(log2 N), the single algorithm SPTS1-H: SPTS1 exactly as specified in proof.md and sources/RQ-SPLIT-proof.md of this snapshot (the inherited RQ-SPLIT acquisition and late source split with k_shadow=3*2^22(n+32) and exactly Q0=3*2^40(n+32) processed copies; for n<64 the original bounded coarse decoder and endpoint on that bank; for n>=64 Cblock=128, K=max{j:(64*n*3^j)^2<=2^n}, Hmax=128K, ell=2^17*ceil(log2(2^24(Hmax+1))), the specified capped fresh per-pivot index lists and thresholds, frozen-prefix recursive preparations and Budget=2^28*ceil(sqrt(2^n)) pre-debited tokens; all visited pivots saved, full-shadow champion, unchanged untouched-bank endpoint), with every acquisition served by FILTER of heralded.md H.2 (a flagged copy is reset in the raw input register; a down-counter enforces the raw cutoff D*Q0, D=(10^128-184)^2; when copies carry no herald FILTER hands every copy over). It outputs the entire s with probability at least 11/16>2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2 and Theorem H.3, with SPTS1's theorem for its adversary that corrupts nothing). On EVERY execution branch, including flagged copies, bad records, unsuccessful searches, refused debits, sampled-index aborts, the raw cutoff and endpoint failures, its peak allocated quantum storage is S_Q=O(n) qubits: raw copies occupy only SPTS1's raw input register, already counted in proof.md Section 8, and a flagged copy is reset before the next acquisition, so FILTER allocates no qubit. The envelope n has growth index exactly 0. Constants are absolute and independent of N, s, the adversary and outcomes. All four resource bounds and the tolerance claim hold jointly for this one algorithm and parameter rule.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/RQ-SPLIT-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "checks/check_constants.py",
+        "checks/check_structure.py",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +90,55 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every fixed secret s in Z/NZ, with n=ceil(log2 N), the single algorithm SPTS1-H: SPTS1 exactly as specified in proof.md and sources/RQ-SPLIT-proof.md of this snapshot (the inherited RQ-SPLIT acquisition and late source split with k_shadow=3*2^22(n+32) and exactly Q0=3*2^40(n+32) processed copies; for n<64 the original bounded coarse decoder and endpoint on that bank; for n>=64 Cblock=128, K=max{j:(64*n*3^j)^2<=2^n}, Hmax=128K, ell=2^17*ceil(log2(2^24(Hmax+1))), the specified capped fresh per-pivot index lists and thresholds, frozen-prefix recursive preparations and Budget=2^28*ceil(sqrt(2^n)) pre-debited tokens; all visited pivots saved, full-shadow champion, unchanged untouched-bank endpoint), with every acquisition served by FILTER of heralded.md H.2 (a flagged copy is reset in the raw input register; a down-counter enforces the raw cutoff D*Q0, D=(10^128-184)^2; when copies carry no herald FILTER hands every copy over). It outputs the entire s with probability at least 11/16>2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2 and Theorem H.3, with SPTS1's theorem for its adversary that corrupts nothing). On EVERY execution branch, including flagged copies, bad records, unsuccessful searches, refused debits, sampled-index aborts, the raw cutoff and endpoint failures, the number Q of acquired source copies, counting every raw copy (flagged ones included), is at most D*Q0=3*2^40*D*(n+32)=O(n), because the down-counter is decremented once per raw acquisition; exactly Q0 copies are handed to SPTS1 unless the cutoff halts the run, and no later step acquires a copy. The envelope n has growth index exactly 0. Constants are absolute and independent of N, s, the adversary and outcomes. All four resource bounds and the tolerance claim hold jointly for this one algorithm and parameter rule.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "sources/RQ-SPLIT-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "checks/check_constants.py",
+        "checks/check_structure.py",
+        "heralded.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same algorithm and configuration (SPTS1 with FILTER), the proved fractional tolerance is epsilon(n) = 1 - 1/(10^128 - 184)^2, a constant in (0,1), written as the product expression of heralded.md H.6 (numerator (10^128-185)(10^128-183), denominator (10^128-184)^2, each displayed factor at most 64 digits). Under the heralded malformed-copy model of heralded.md H.1 (structured error_model text): if Q copies are acquired on a branch, at most floor(epsilon(n) Q) of them are malformed, the herald is always correct, and the adversary chooses adaptively which copies are malformed and their arbitrary (possibly entangled) contents. For every N >= 2 and s the algorithm recovers the entire s with probability at least 11/16 > 2/3 under every such adversary, jointly with the four resource bounds above, which count all raw acquisitions (heralded.md Lemmas H.1-H.2, Theorem H.3). This covers detectable (heralded) malformed copies only; SPTS1's own tolerance 1/3 of undetectable adaptive corruption is not claimed for this snapshot. The clean problem is solved by the same algorithm with the same bounds.",
+      "evidence": [
+        "proof.md",
+        "sources/RQ-SPLIT-proof.md",
+        "sources/error-model.txt",
+        "sources.md",
+        "checks/check_constants.py",
+        "checks/check_structure.py",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{5335141990128885426609730276678720277683416502358554958365713865*1453784502951732741565122088722888544641192403053171515669467*12893*719055566230248251667422218800112619090393319415209063256198417*577059380141468332193372098822704305647887763344885788274559561*241}{(5075877125918923237102883636467494305708529717425087531949658494*9850514257858070894700972904055977636084650030052055871926891182*2)^2}",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
