@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSG49-F7H: polynomial-space sample tradeoff with heralded malformed-copy fraction 1-1/D",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2 N), the SINGLE PSG49-F7H=FILTER(PSG49-F7) configuration specified in proof.md Section 3, using the complete selected clean program in clean-proof.md, recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 both on independent ideal mixed coset states and under EVERY adversary of the exact heralded model in proof.md Section 2 with fraction 1-1/D, D=(16*10^126-1)(625*10^126-1). On EVERY execution branch its total sequential charged work obeys T(n)=O(2^((7401/9800)*sqrt(n log2 n)+(3/4)*sqrt(n)*(log2 n)^(-7/16))), with exact growth index 1/2; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 4-5 and clean-proof.md. All four bounds and the same heralded fraction guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "clean-proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,31 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "7401/9800",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "3/4",
+              "nPower": "1/2",
+              "logPower": "-7/16"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2 N), the SINGLE PSG49-F7H=FILTER(PSG49-F7) configuration specified in proof.md Section 3, using the complete selected clean program in clean-proof.md, recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 both on independent ideal mixed coset states and under EVERY adversary of the exact heralded model in proof.md Section 2 with fraction 1-1/D, D=(16*10^126-1)(625*10^126-1). On EVERY execution branch its peak allocated classical memory obeys S_C(n)=O(n^2) bits, with exact growth index 0; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 4-5 and clean-proof.md. All four bounds and the same heralded fraction guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "clean-proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +64,15 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2 N), the SINGLE PSG49-F7H=FILTER(PSG49-F7) configuration specified in proof.md Section 3, using the complete selected clean program in clean-proof.md, recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 both on independent ideal mixed coset states and under EVERY adversary of the exact heralded model in proof.md Section 2 with fraction 1-1/D, D=(16*10^126-1)(625*10^126-1). On EVERY execution branch its peak allocated quantum memory obeys S_Q(n)=O(n) qubits, with exact growth index 0; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 4-5 and clean-proof.md. All four bounds and the same heralded fraction guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "clean-proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +83,58 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2 N), the SINGLE PSG49-F7H=FILTER(PSG49-F7) configuration specified in proof.md Section 3, using the complete selected clean program in clean-proof.md, recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 both on independent ideal mixed coset states and under EVERY adversary of the exact heralded model in proof.md Section 2 with fraction 1-1/D, D=(16*10^126-1)(625*10^126-1). On EVERY execution branch its ALL raw acquired source copies, including flagged/discarded ones obeys Q(n)=O(2^((49/100)*sqrt(n log2 n)+(3/8)*sqrt(n)*(log2 n)^(-7/16))), with exact growth index 1/2; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 4-5 and clean-proof.md. All four bounds and the same heralded fraction guarantee hold jointly for this same configuration.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "clean-proof.md",
+        "family-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "49/100",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "3/8",
+              "nPower": "1/2",
+              "logPower": "-7/16"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME PSG49-F7H algorithm and exact configuration in proof.md Sections 1-3, the guaranteed malformed fraction is epsilon(n)=1-1/D, D=(16*10^126-1)(625*10^126-1), expressed by the exact product expression in proof.md Section 6. Under EVERY adversary of the exact heralded malformed-copy model of Section 2 and structured error_model, if Q_raw copies are acquired on a branch, at most floor(epsilon(n)Q_raw) are malformed. The correct herald identifies every malformed copy. For EVERY N>=2 and s the entire secret is recovered with unconditional probability >=1-2^-8>2/3, jointly with all four every-branch resource bounds, including every raw discarded copy, counter step, failed attempt and abort. The clean problem is covered too. Only detectable malformation is promised; no tolerance of undetectable errors is claimed.",
+      "evidence": [
+        "proof.md",
+        "clean-proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{1000000000000000000000000000000000000000000000000000000000000000^2*2189251513709577192973000802960123783290116879858557832979634351*858746507556703404750738054330397864679429*5319114725318138222421821}{4329632813347406305223297584667745034303743116654997715999733453*3695463493041522429397493437973995985916922777904245876619237883*8333333333333333333333333333333333333333333333333333333333333333*454542699741213689614002339379761334779789213398706674505003*165001}",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
