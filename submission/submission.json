@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "FLP27: F-LIMIT with a polylog-depth collimation tree, T = O(n^7 2^(n/(log2 n)^27 + (log2 n)^27)) and Q = O(n^(7/2) 2^((log2 n)^27))",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single FLP27 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^512; otherwise r = ceil(sqrt n), ell = 2 recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(j^27/2^(27p)) with p = 27 * bitlength(bitlength(n)) and j = ceil(2^p log2 n), so (log2 n)^27 <= m < (log2 n)^27 + 2, kappa = ceil(log2 m) + 1, with leaf tables from dl = ceil(n/m) - floor(m/2) + kappa + 2 pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its total charged sequential work is T(N,s) = O(n^7 2^(n/(log2 n)^27 + (log2 n)^27)), with an absolute constant (proof.md Sections 14-15: T = O(n^7 2^(m+dl)) with m + dl <= n/(log2 n)^27 + (log2 n)^27). The uniform bit-length envelope is B_T(n) = n^7 2^(n/(log2 n)^27 + (log2 n)^27). The envelope has growth index exactly 1 (log2 B = n/(log2 n)^27 + (log2 n)^27 + O(log n) is between n/(log2 n)^27 and 2n/(log2 n)^27 for large n, so log2 log2 B = log2 n - 27 log2 log2 n + O(1)). Its exponent coefficients and powers are explicit rationals, not unknown big-O constants; only the outer factor carries an absolute constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -23,62 +23,21 @@
             {
               "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-27"
+            },
+            {
+              "coefficient": "1",
+              "nPower": "0",
+              "logPower": "27"
             }
           ],
-          "nPower": "4",
+          "nPower": "7",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single FLP27 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^512; otherwise r = ceil(sqrt n), ell = 2 recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(j^27/2^(27p)) with p = 27 * bitlength(bitlength(n)) and j = ceil(2^p log2 n), so (log2 n)^27 <= m < (log2 n)^27 + 2, kappa = ceil(log2 m) + 1, with leaf tables from dl = ceil(n/m) - floor(m/2) + kappa + 2 pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its peak classical memory is S_C(N,s) = O(n 2^(n/(log2 n)^27 + (log2 n)^27)) bits, with an absolute constant, including the pool label tables, sort scratch, depth-first merge tables and decoder records (proof.md Section 14: S_C = O(n 2^(m+dl))). The envelope is B_C(n) = n 2^(n/(log2 n)^27 + (log2 n)^27). The envelope has growth index exactly 1 (log2 B = n/(log2 n)^27 + (log2 n)^27 + O(log n) is between n/(log2 n)^27 and 2n/(log2 n)^27 for large n, so log2 log2 B = log2 n - 27 log2 log2 n + O(1)). Its exponent coefficients and powers are explicit rationals, not unknown big-O constants; only the outer factor carries an absolute constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -98,7 +57,12 @@
             {
               "coefficient": "1",
               "nPower": "1",
-              "logPower": "0"
+              "logPower": "-27"
+            },
+            {
+              "coefficient": "1",
+              "nPower": "0",
+              "logPower": "27"
             }
           ],
           "nPower": "1",
@@ -107,7 +71,65 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single FLP27 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^512; otherwise r = ceil(sqrt n), ell = 2 recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(j^27/2^(27p)) with p = 27 * bitlength(bitlength(n)) and j = ceil(2^p log2 n), so (log2 n)^27 <= m < (log2 n)^27 + 2, kappa = ceil(log2 m) + 1, with leaf tables from dl = ceil(n/m) - floor(m/2) + kappa + 2 pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, its peak quantum memory is S_Q(N,s) = O(n^(5/2) 2^((log2 n)^27)) qubits, with an absolute constant, including the coherently held qubit pool of the FW stage (at most C_0 = O(n^(5/2) 2^m) qubits; this is not a polynomial bound), the FW ancillas and repeat-until-success registers, the depth-first index registers and all other ancillas. The envelope is B_Q(n) = n^(5/2) 2^((log2 n)^27). The envelope has growth index exactly 0 (log2 B = (log2 n)^27 + O(log n), so log2 log2 B = 27 log2 log2 n + O(1) = o(log2 n)). Its exponent coefficients and powers are explicit rationals, not unknown big-O constants; only the outer factor carries an absolute constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "0",
+              "logPower": "27"
+            }
+          ],
+          "nPower": "5/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single FLP27 algorithm and configuration specified in full in proof.md (finite exhaustive branch for n < 2^512; otherwise r = ceil(sqrt n), ell = 2 recycling levels applying to equal-key groups of w = 2^28 qubits of a coherent qubit pool the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, with pool sizes C_i = ceil(16385 ell C_(i+1)/(8192(ell-1))), a linear-merge collimation tree of depth m = ceil(j^27/2^(27p)) with p = 27 * bitlength(bitlength(n)) and j = ceil(2^p log2 n), so (log2 n)^27 <= m < (log2 n)^27 + 2, kappa = ceil(log2 m) + 1, with leaf tables from dl = ceil(n/m) - floor(m/2) + kappa + 2 pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges and discarded copies, the total number Q(N,s) of fresh DCP source copies acquired, including every discarded copy and every failed or aborted attempt, is O(n^(7/2) 2^((log2 n)^27)), with an absolute constant: Q <= Qcap = 4 n C_0 + K = O(n^(7/2) 2^m) on the main branch, with C_0 and K defined in proof.md, and at most N(n+10) copies on the finite branch. The uniform bit-length envelope is B_samples(n) = n^(7/2) 2^((log2 n)^27). The envelope has growth index exactly 0 (log2 B = (log2 n)^27 + O(log n), so log2 log2 B = 27 log2 log2 n + O(1) = o(log2 n)). Its exponent coefficients and powers are explicit rationals, not unknown big-O constants; only the outer factor carries an absolute constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "0",
+              "logPower": "27"
+            }
+          ],
+          "nPower": "7/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same FLP27 algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-7 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
