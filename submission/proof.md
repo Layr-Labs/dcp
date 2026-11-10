@@ -1,104 +1,354 @@
-# Exhaustive shift testing
+# LLV-GBANK-RATIONAL-LOGELASTIC: linear classical storage with a refined cube-root source bound
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 0. One physical algorithm and joint guarantee
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For every N>=2 and s in Z/NZ put n=ceil(log2N). The one physical
+LLV-GBANK-RATIONAL-LOGELASTIC interpreter below executes the complete virtual program V
+in virtual.md and recovers the entire secret with unconditional probability
+at least 1-2^-8 from independent ideal source copies. On EVERY branch,
+including failed extractions, retries, discarded sources, abort and cleanup,
+ T=O(2^((2/3)n^(2/3)*log2n+n^(2/3)*(log2n)^(1/8))),
+ S_C=O(n) classical bits, S_Q=O(n^2) allocated qubits,
+ Q=O(2^((1/2)n^(1/3)-(3/4)n^(1/3)*(log2n)^(-7/8)+n^(1/3)*(log2n)^(-15/16))) acquired source copies.
+All outside constants are absolute. The representatives apply for n>=2;
+the same finite virtual branch and physical simulator cover n=1.
+The four exact growth indices are [2/3,0,0,1/3]; only time scores [2/3].
+The guaranteed malformed fraction is 0 with this exact model:
 
-## Correctness
+Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies.
 
-On a component with offset x, controlled subtraction produces
+The basis-qubit bank, all its metadata and unused padding, original
+coherent data, source scratch and allocation growth count in S_Q.
+This is a concrete storage tradeoff and a sharper time representative
+for the same selected virtual parameters. It claims neither cube-root
+TIME nor dominance of the square-root-time, larger-source family.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+## 1. Actual direct sources and full evidence
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+The selected complete virtual program is GPS-RATIONAL-LOGELASTIC, supplied in
+virtual.md under a virtual-only scope header. Its full proof hash is
+dc6f009457b8dd2efe0b74d8d375d10b109aad706b624c441c7f6f1b5ee5851f.
+It selects p=3,q=1,beta=1/8,eta=1,gamma=-15/16 and recomputes all actual width,
+source/cap/precision/decoder quantities. The full proof is included,
+not an opaque historical theorem. Its public identifier and artifact
+checks accompany the note/dependency declaration before upload.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+Immediate physical-template source: LLV-GBANK-LOGELASTIC, full main hash
+83fd0fd40a93d030873a2f3300e533a04770dbbc054a8cd0f52bdb552ccfd1f4.
+Its public mapping and verified evidence accompany the note before upload.
+We retain its seven padded regions, typed ownership, measured READ/WRITE,
+growing paired span, exact CQ/channel proof, source moves, output-first
+cleanup and separately paid n^16 interpreter. Its narrower virtual
+profile is replaced by the complete selected widened-combiner program.
+Historical physical source LLV-GBANKQ13,
+32c09169-8484-4657-b441-5b3e1f4b542c, commit
+a048955fb8c3caa85916fd174db14971962f4f9b, was fetched and its full
+main/virtual hashes matched official resource evidence. No predecessor
+verdict or provisional graph relationship is a mathematical premise.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+The physical template credits LLV-GBANK, proof SHA-256
+488ba20d6ea74838bc45716fd7358866089a8e35cd8a46df8eb75b70f2d04b4f.
+We retain the template's complete fixed-region/direct-wire method, measured READ/WRITE,
+CQ/history proof, source-moving channel, complete decoding and separately
+charged overhead. Its different virtual tree/profile is not adopted.
+The selected virtual program here is exactly GPS-RATIONAL-LOGELASTIC in virtual.md.
+The bank source credits PSG21, 9fdfdb12-834d-441c-8bb1-717ab380abf3,
+proof 43e2ac8f392a5301733dbb393088588641b06c3345864d83002f123a6de3830f,
+for generic measured-basis storage, CQ coupling and overhead, and GordoAR's
+PSG2-QSTORE, 2b2b0036-7bbc-4ce5-80a8-b8928f0ce120,
+main 92b96a0fee5eb35ec700ef6449ec16c8cd05c806f0fe7cab980576099ccc776a,
+transfer 5c44c9268e55edf7bc55277ef244e97d9730dd1f09f1e13fa3746a54d34a5325,
+for fixed maximum address spans and direct stable mapping. These inherited
+credits and all V's credits remain. No Dense virtual program or PSG21
+parent algorithm is imported. The two immediate materials (the refined V and the physical template),
+public mappings and source/use citations accompany the submission; pending
+attribution is not a verified ancestry or redundancy decision.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+## 2. Exact virtual configuration and instruction stream
 
-## Implementing the controlled subtraction
+Run V's complete instruction, source, search, decoder and guard sequence.
+On its main branch n>=2^9216, compute integers
+ v=ceil(n^(2/3)), ell=ceil log2n, h=ceil(ell^(1/8)),
+ b=ceil(v*(4ell+6h-48)/3), m=ceil((n-1)/b).
+Integer root calculation, ceilings and all preprocessing are charged.
+For each requested D, 2<=D<=n, put B_width=D-1. Allocate widths TOP DOWN
+from level m to 1, b_i=min(b,remaining width), and r_i=b_i+1 on nonzero
+levels. Their total width is B_width. A zero level passes through the
+same owned qubit without cloning or allocating another state. Put
+ q0=(b+1)^m, G=(2(b+1))^m, R=b+1.
+The entire pair-search schedule, sign representation, EXTRACT verification,
+untouched-bit arithmetic, odd and 2-adic decoders remain precisely V's.
+The TWO executed guards are its global acquisition cap and global
+fallback/extraction cap. There is no substituted weighted-work cutoff.
+In particular every acquisition internal to a failed EXTRACT or fallback
+is simulated once; a delivered phase is not counted as one source copy.
+The selected finite exhaustive branch is n<2^9216, as in V.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Fix finite uniform bit implementations of Boolean logic, bit reads/writes,
+explicit loops, ripple/schoolbook arithmetic, exact Clifford+T primitives,
+computational measurement, fair coins, reset/discard and source requests.
+Long words are bit fields, never unit-cost operands. A fixed finite
+controller generates one instruction at a time. Every recursion frame,
+return context, generator cursor, cap/counter and allocator record is
+virtual data in the bank. No exponential circuit, full fiber or instruction
+history is preloaded. Numeric O(n)-bit counters may have exponential
+VALUES, but their bit-cell ADDRESSES use the fixed polynomial spans below.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+## 3. Fixed padded regions and maximum address spans
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Put r_addr=ceil(log2(n+2)), U=2^(2r_addr), C=2^48, W=C*U.
+Reserve seven virtual classical regions of W bit slots at bases tW:
+0 input/parameters/profile/caps/constants;
+1 retained signed labels, root/node pool and free/reference metadata;
+2 recursion frames/return contexts/loop state;
+3 current label sums/residues/search/pair-description scratch;
+4 source/EXTRACT/transforms and schoolbook bit arithmetic;
+5 decoder records, residues, scores/CRT and streamed candidate;
+6 reusable generator, allocator, instruction and remaining control scratch.
+All subfamilies have fixed padded row/field subranges. Freed, failed or
+retried objects reuse the SAME addresses; there is no lifetime-name
+counter, sparse address dictionary, per-bit key or external active flag.
+Profile indices and frame depth are at most m+1. No array grows with the
+number of attempts. Subrange bases can be prefix sums of the following
+analytic capacities, computed with charged bit operations.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Here are capacities independent of correctness events, including wrong
+extracted labels. Virtual9.1 gives R<=n and m<=n. Because
+m=ceil((n-1)/b), mb<n-1+b and thus mR< n-1+b+m<=3n.
+For any actual width, sum over nonzero r_i=B_width+number(nonzero)<=2n.
+The depth-first live phase count is B_width+1<=n+1; reserving R child
+slots at each of m levels even bounds their total fixed slots by 3n.
+Decoder root count K<=2^17*n^(1/3)<=2^15n on this main branch,
+from virtual9.1. The final comparison uses n>=2^9216.
+At most a fixed multiple of mR+K+R+1 nodes cover pending siblings,
+current roots, active source/combiner helpers and ownership references.
+A literal pool has 2^17n slots of 16n bits each. Each retained phase has
+one signed label, a bounded reference/owner and free metadata. Source9.2
+bounds label magnitude by q0*2^D; log2q0<=log2G<=3n^(1/3)<=n on the
+main branch by virtual9.1's coarse inequality. A full 3n-bit signed
+field therefore suffices, even for wrong labels. The 16n template covers
+label, pointers and fixed header fields for n>=2^9216. This pool uses
+2^21n^2 bits, below a region capacity. Root batches reuse these slots.
+Ownership passing at a zero level moves the reference to the SAME qubit;
+erasing an obsolete label/reference does not reset that qubit. Release
+quantum data only when V itself releases its final logical owner.
 
-## Joint costs and indices
+At most m+1 frames, their fixed number of O(n)-bit counter/cap fields,
+profile and return contexts fit 2^20n^2 bits. Acquisition and fallback
+caps have O(sqrt(n)+logn) bit lengths; search iteration words need at
+most R+O(logn)<=O(n) bits. For a current r_i-input combiner, signed labels,
+residue and pair description have at most O(n) rows of O(n)-bit fields.
+It retains only the fixed number of found Grover strings and a current
+query of at most R bits, not all subsets or fibers. The serial controlled
+label-sum/exclusion predicate streams known row j and label bit: read its
+classical value and emit the SAME controlled addition/exclusion gates on
+the coherent subset bits. A superposed subset y never selects a bank
+wire. These current arrays and fixed scratch copies fit 2^24n^2 bits.
+Schoolbook multiply/divide/Euclid and source transforms/EXTRACT reuse
+2^24n^2 bit templates, with streamed tests rather than saved outcomes.
+The fixed finite trigonometric table has fewer than 2^20 bits. Decoder
+K records and fixed copies of residues/score/current candidate fit
+2^24n^2 bits, by K<=2^15n. It streams candidates; no list of all candidates
+exists. The finite family of generator/allocator/control subfamilies fits
+2^40n^2 bits per collection, still below C*U since U>=n^2.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+The finite branch stores candidate/test/acquisition counters, source/shift
+scratch and streamed arithmetic, not all outcomes or candidates. Pad its
+fields to fixed multiples of n+1 rather than using the main 3n label
+shortcut. These same generous capacities cover every finite length,
+including n=1. Finite code and every compile step are charged.
+The MAXIMUM classical slot plus one is consequently B=7C*U=O(n^2),
+independent of retry count, not merely an observed live-space bound.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+For logical quantum slots use a fixed pool with maximum slot plus one
+H=2^32*2^r_addr=O(n). The mR<=3n per-level phase slots, K<=2^15n roots,
+O(R) query/residue scratch and O(n) source/EXTRACT/helpers fit this H.
+Alternatively allocate individual cells within the same fixed pool;
+free scans/bitmaps, heads and register-ID lists are counted bank data.
+A logical register uses an ordered bank-resident ID list; generate gates
+on its known IDs in logical bit order. Stream one ID per gate or source
+SWAP, never stage an entire n-entry map in physical classical memory.
+The O(nlogn) pool metadata fits the above capacities. Released cells use
+Section4's discard/reset channel; slot reuse never invents lifetime IDs.
+This is a maximum address range as well as a live-qubit bound, with no
+contiguous-free-block assumption. The finite branch also has O(n) live
+qubits. Both spans are polynomial; complete addresses have O(logn) bits.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## 4. Physical bank, access and executed operations
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Store virtual classical bit i as the basis value of physical wire2i.
+Store virtual quantum wireq at wire2(q+1)+1; reserve wire1 for a fair bit.
+Maintain one allocated paired prefix0,...,2h-1, initiallyh=2. Before
+accessingi>=h orq+1>=h doubleh until the slot fits, appending and
+initializing every new wire. Old indices/states remain fixed. Never
+shrink the prefix duringV. Every unused padding wire counts inS_Q.
+The maximumh is below2max(2,B,H+1), so the entire prefix isO(n^2).
+No per-bit key, active flag or translation directory is added. V's own
+allocator metadata remains in its counted virtual regions.
 
-## Fractional error tolerance
+READ(i) measures known wire2i inZ into a reusable classical bit.
+WRITE(i,b) reads oldz, appliesX exactly whenz differs fromb, then
+clears the temporaryz after its last use. Reset isWRITE(i,0).
+Read before writing operands, including aliased fields, inV's exact
+order. A Boolean primitive stages its fixed number of bits and writes
+its output. Multi-bit arithmetic and field decoding remain loops of
+these operations; no long word is a unit-cost fetch.
+A released virtual classical field is cleared byWRITE(i,0) on all its
+cells, with temporary read outcomes forgotten, before the same subrange
+is reused. All free/pool metadata is updated through the same interface.
+This avoids retaining an uncounted classical release history; the full
+range-clearing cost is included in the polynomial overhead.
+All bank addresses are CLASSICAL. Ordinary gates on classically selected
+wires are allowed; compute the complete wire index and pay its address
+fee. For a conservative upper work bound, charge even a full
+classical scan of the reserved bank per access, as well as all actual
+indexed gate/address work. There is no coherent bank query or extra QRAM oracle.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+V's original coherent table lookups are implemented by their existing
+SERIAL row scans. For each known row and bit, READ its stored classical
+value and generate the same controlled gate on the original quantum
+index/equality/scratch registers. A superposed original table index never
+becomes a bank wire address. This retains every coherent control and
+phase exactly, while using only classically chosen bank reads.
+Every gate/operand descriptor is generated/decoded through the same bit
+interface. Fixed Toffoli operations expand to exact Clifford+T words;
+no uncounted circuit compiler or stored exponential instruction list.
+
+Execute everyV gate, measurement, coin, reset, discard, source request,
+guard, failure and retry at its specified virtual position. Stage a
+measurement result only until it is streamed to its virtual field;
+there is no growing classical measurement transcript. A fresh fair bit
+usesH andZ on reserved wire1, writes it asV requests and resets it.
+For a source request ensure the mapped source slot exists and is zero,
+acquire exactly oneDCP copy on n+1 temporary wires, and if needed move
+it byn+1 SWAPs to the mapped slots. Each SWAP is three CNOTs; the
+now-zero temporary wires are released before prefix growth. This adds
+O(n) temporary qubits and counted work but no second source copy.
+No bank initialization or inverse calls the DCP source.
+
+For reset/discard use the allowed trace-out/reinitialize channel, or
+Z measurement followed by conditionalX with the outcome forgotten.
+This channel equals trace-out followed by fresh zero even with arbitrary
+references. It does not presume the discarded register is independent.
+AfterV terminates, stream its final residue to the countedO(n)-bit
+classical output FIRST; only then clear/release the entire prefix and
+short fields, retaining that output. All cleanup work is counted.
+
+## 5. Exact classical-quantum invariant
+
+At aligned virtual steps the joint state, including arbitrary referenceR,
+has the form
+ sum_(c,z) p(c,z) |z><z|_controller tensor |c><c|_bank
+                   tensor rho_(c,z)_(mapped V registers,R).
+Herez contains finite control and the cleared/staged short fields, and
+c is precisely
+V's current classical record, not a coherent unknown memory string.
+The bank and live registers may be correlated; a stored measured label
+can be correlated with a still-coherent phase/query register. No product
+or independence assumption between these systems is needed.
+
+Initialization gives the invariant. For READ of biti, projectors onto
+c_i=b leave the nonselective CQ state unchanged. Keeping the outcome
+only appends the virtual bit on each conditional record; rho_c is
+unchanged. WRITE produces precisely the updated basis string. When
+records merge after an irreversible overwrite, their conditional states
+mix exactly as classical forgetting requires. Boolean steps and pointer
+moves update the finite control identically. Original gates haveV's
+same conditional action; original measurements and coins have the same
+instruments and updatec. Reset/discard has Section4's channel identity.
+Each fresh ideal request supplies the same independentrho_s. Induction
+therefore preservesV's complete reduced state and classical history at
+every virtual step, including failed extraction labels, search failures,
+partial children, rejected samples and abort cleanup.
+
+This is not a claim that reading an arbitrary superposed bank is harmless.
+Only the reachable CQ representation is used. Extra bank outcomes are
+deterministic givenV's classical record. The unconditional full output
+law and actual source-request sequence are exactlyV's. In particular,
+virtual.md's complete argument establishes full-secret success at least
+1-2^-8 for everyN,s. No favorable-event conditioning, acceptance oracle,
+source reflection, inaccessible purification or unknown-state cloning.
+The argument covers ideal independent source copies only. Under a
+different adaptive corruption model extra bank measurements might be
+visible to a supplier and change future behavior; no such transfer is
+claimed. The exact canonical clean-model text and fraction0 are unchanged.
+
+## 6. Fully charged resources and strict time margin
+
+Input N, final output and a fixed number of O(n)-bit staged operands use
+O(n) physical classical bits. Short addresses/scan fields use O(logn)
+bits and finite controller code has constant size. All remaining labels,
+arrays, call/return state, numeric counters, generator/arithmetic fields
+and allocation metadata are in the counted bank. No duplicate classical
+recursion stack, map or measurement transcript exists. Thus S_C=O(n).
+The WHOLE paired prefix has O(B+H)=O(n^2) qubits, including all padding,
+metadata and original coherent data. Growth overlap, reserved fair-bit
+and temporary n+1 source wires also fit O(n^2), proving S_Q=O(n^2).
+All bounds hold on EVERY branch including initialization, wrong labels,
+failed work and cleanup. Basis states still count as allocated qubits.
+
+Every extra bank bit read/write, field decode, address comparison, gate
+operand, conditional reset, source SWAP and output-first cleanup is charged.
+B=O(n^2), H=O(n); even a full bank scan per accessed bit costs polynomial
+work. Clearing a region by separate scans costs O(B^2 polylogn). Emit
+schoolbook/ripple gates online, storing no full generated circuit. Source
+moves stream n+1 known IDs and cost O(n) gates plus full addresses on top
+of V's source charge. A conservative factor O(n^16) covers all these
+finite bit loops per charged virtual step, and startup/cleanup as well:
+ T_physical <= C1*n^16*(T_V+n^2), for n>=2.
+The original acquisition and fallback guards are checked at their exact
+virtual points. Added physical work is not hidden by changing a guard
+or replacing a branch bound with expected work.
+
+Use the stronger fully charged INTERNAL estimate in virtual Section9,
+equation(9.3). With L=log2n, y=n^(2/3), H=L^(1/8), for L>=2^256,
+
+ log2(T_V/C0)<=(2/3)yL+yH-3y.
+
+Every virtual source/circuit/decoder/address/generator charge and both caps
+are included. The physical interpreter adds at most16L to the exponent.
+Since x=n^(1/3)>=16L^2 and y>=x, 16L<=y for L>=1. Thus even after
+interpretation log2(T_physical/C2)<=(2/3)yL+yH-2y, up to startup and
+fixed outside constants. Startup and finite smaller lengths are absorbed
+by an absolute outside constant for the same capped executable program.
+This proves the exact physical time representative after all charges.
+No changed guard or favorable conditioning is used for the transfer.
+
+Every physical source request corresponds to exactly one virtual request,
+including all internal EXTRACT and fallback acquisitions; there are no
+others. Local zero bank/padding qubits are charged time/storage, not DCP
+copies. Source9.1 proves the stronger eventual branchwise cap
+Qcap<=2^((1/2)n^(1/3)-(3/4)n^(1/3)*L^(-7/8)+n^(1/3)*L^(-15/16)).
+The executed finite branch and finite analytic exceptions change only
+an absolute outside constant. This exact source envelope holds on every
+physical branch. Section5's exact
+CQ/channel induction preserves V's whole output law under independent
+ideal copies. Its full included proof therefore gives unconditional
+full-secret success >=1-2^-8 jointly with all resources and clean error0.
+
+## 7. Binding and exact indices
+
+All five current physical claims cite this main and full scoped virtual.md.
+No older JSON, historical verdict or missing algorithm is a premise.
+Virtual V's quadratic classical/linear quantum declarations are virtual
+only. The one current physical interpreter has S_C=n, S_Q=n^2 envelopes.
+The time logarithm has leading (2/3)n^(2/3)L and exact index2/3.
+The source logarithm is n^(1/3)*(1/2-(3/4)L^(-7/8)+L^(-15/16));
+its bracket tends to1/2 and exact index is1/3. Polynomial spaces have index0.
+Only time scores numerically. These are upper-envelope indices, not lower
+bounds. This row strictly refines the corresponding pure cube-root-copy
+bank's source envelope at identical time/spaces/success/model. It does not
+claim the cube-root TIME goal, optimality or positive corruption tolerance.
+
+
+## 8. Scope of the included family
+
+Virtual Section11 proves a complete fixed p,q,beta,eta,gamma family of changed
+width schedules with the corresponding exact positive-time and negative-
+source corrections. The current physical row selects only p=3,q=1,beta=1/8,
+eta=1,gamma=-15/16 and its explicit integer rule/finite threshold.
+Other virtual configurations are not silently combined with this row or
+its fixed padding constants. Parameters are fixed before asymptotics.
+Only the selected virtual program is interpreted by the current physical
+algorithm and numerically reviewed. No beta=0 endpoint, optimality,
+positive malformed tolerance or time index below1/2 is claimed.
