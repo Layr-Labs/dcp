@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "CYCLIC-GCAP: growing plateaus in cyclic-window collimation with source-aligned recovery",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and every s in Z/NZ, with n=ceil(log2 N), the single CYCLIC-GCAP algorithm and fixed configuration specified in proof.md and cyclic_base.md recovers the entire s with unconditional probability at least 1-2^-8 from independent ideal coset copies. On every execution branch, jointly with all other bounds and the tolerance claim, its total charged sequential work T is O(n^3 2^(a sqrt(n)+(3/5)n^(1/4))). Here a=8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393, the exact Pell rational u_333/v_333 of cyclic_base.md Section 0. All outside constants are absolute and independent of N,s and outcomes. This representative envelope has exact growth index 1/2. The growing terminal plateau and resulting resource analysis in proof.md supersede the original fixed16 cap and bounds in the included source; the source-aligned decoder, cyclic-window instrument and explicit source/attempt caps use the actual revised tree parameters.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cyclic_base.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +22,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "3/5",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "3",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and every s in Z/NZ, with n=ceil(log2 N), the single CYCLIC-GCAP algorithm and fixed configuration specified in proof.md and cyclic_base.md recovers the entire s with unconditional probability at least 1-2^-8 from independent ideal coset copies. On every execution branch, jointly with all other bounds and the tolerance claim, its peak allocated classical bits S_C is O(n^2 2^(a sqrt(n)-(5/4)n^(3/8)+(3/5)n^(1/4))). Here a=8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393, the exact Pell rational u_333/v_333 of cyclic_base.md Section 0. All outside constants are absolute and independent of N,s and outcomes. This representative envelope has exact growth index 1/2. The growing terminal plateau and resulting resource analysis in proof.md supersede the original fixed16 cap and bounds in the included source; the source-aligned decoder, cyclic-window instrument and explicit source/attempt caps use the actual revised tree parameters.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cyclic_base.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,20 +57,90 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-5/4",
+              "nPower": "3/8",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "3/5",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and every s in Z/NZ, with n=ceil(log2 N), the single CYCLIC-GCAP algorithm and fixed configuration specified in proof.md and cyclic_base.md recovers the entire s with unconditional probability at least 1-2^-8 from independent ideal coset copies. On every execution branch, jointly with all other bounds and the tolerance claim, its peak allocated qubits S_Q is O(n). Here a=8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393, the exact Pell rational u_333/v_333 of cyclic_base.md Section 0. All outside constants are absolute and independent of N,s and outcomes. This representative envelope has exact growth index 0. The growing terminal plateau and resulting resource analysis in proof.md supersede the original fixed16 cap and bounds in the included source; the source-aligned decoder, cyclic-window instrument and explicit source/attempt caps use the actual revised tree parameters.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "cyclic_base.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and every s in Z/NZ, with n=ceil(log2 N), the single CYCLIC-GCAP algorithm and fixed configuration specified in proof.md and cyclic_base.md recovers the entire s with unconditional probability at least 1-2^-8 from independent ideal coset copies. On every execution branch, jointly with all other bounds and the tolerance claim, its total fresh source copies Q, including failed merges, rejected labels and abandoned subtrees is O(n^(5/4) 2^(a sqrt(n)-18n^(1/4))). Here a=8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393, the exact Pell rational u_333/v_333 of cyclic_base.md Section 0. All outside constants are absolute and independent of N,s and outcomes. This representative envelope has exact growth index 1/2. The growing terminal plateau and resulting resource analysis in proof.md supersede the original fixed16 cap and bounds in the included source; the source-aligned decoder, cyclic-window instrument and explicit source/attempt caps use the actual revised tree parameters.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cyclic_base.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-18",
+              "nPower": "1/4",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "5/4",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same single CYCLIC-GCAP algorithm/configuration in proof.md and cyclic_base.md, epsilon(n)=0: every acquired source copy is an independent ideal coset state. For every N>=2 and s, unconditional full-secret success is at least 1-2^-8 jointly with all four every-branch resource bounds. No positive corruption tolerance or maximum possible tolerance is asserted.",
+      "evidence": [
+        "proof.md",
+        "cyclic_base.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
