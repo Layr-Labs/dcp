@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LLV-GRF320-DENSE: smaller counted classical backing with linear coherent storage",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE PHYSICAL LLV-GRF320-DENSE interpreter in proof.md executes the complete unchanged virtual program in virtual.md. Its main branch n>=2^4096 uses the same exact period-six fan-in, prefix capacity, finishing call, MERGEF/FIND, Dbar,Dcap,Ccap,Qcap and all-modulus decoder; the explicit finite branch is unchanged. Entire-secret unconditional success is at least1-2^-8. On EVERY branch including errors, failed/discarded work, source/leaf aborts, initialization and cleanup, charged time is O(2^((1/2)sqrt(n)log2n)), exact index1/2. The virtual strict sqrt(n) margin pays all separately charged dense interpretation. All constants are absolute and all four resources hold jointly for this SAME implementation under independent ideal DCP copies and clean fraction0. Let t=n+2,ell=bit_length(n-1),d=max(1,ell),lambda_bank=ceil(6ell/5),E=2^lambda_bank,A=2^16t,W=ceil(2^128t^2E/d),H=2^32t. The seven W-bit regions are ordinary CLASSICAL bits; H original coherent wires are allocated SEPARATELY, with every inactive cell counted. Mtab=ceil(8t/d), four Mlist=ceil(256tE/d) arrays and four Mres=ceil(8tE/d) arrays include full labels, frames, metadata and scratch by the all-size d*t<=12E proof. All genuine phase/query/source states remain quantum; the backing holds only classical records and handles. Every source fee, full combined-memory address fee, ordinary bit operation, serial original quantum lookup, arithmetic, gate generation, source move, reset and complete cleanup is counted. No quantum-addressed memory or inverse/controlled source is assumed.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "1"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE PHYSICAL LLV-GRF320-DENSE interpreter in proof.md executes the complete unchanged virtual program in virtual.md. Its main branch n>=2^4096 uses the same exact period-six fan-in, prefix capacity, finishing call, MERGEF/FIND, Dbar,Dcap,Ccap,Qcap and all-modulus decoder; the explicit finite branch is unchanged. Entire-secret unconditional success is at least1-2^-8. On EVERY branch including errors, failed/discarded work, source/leaf aborts, initialization and cleanup, physical classical workspace is O(n^(16/5)/log2n) bits for n>=2, with the n=1 case explicitly finite, exact index0. All constants are absolute and all four resources hold jointly for this SAME implementation under independent ideal DCP copies and clean fraction0. Let t=n+2,ell=bit_length(n-1),d=max(1,ell),lambda_bank=ceil(6ell/5),E=2^lambda_bank,A=2^16t,W=ceil(2^128t^2E/d),H=2^32t. The seven W-bit regions are ordinary CLASSICAL bits; H original coherent wires are allocated SEPARATELY, with every inactive cell counted. Mtab=ceil(8t/d), four Mlist=ceil(256tE/d) arrays and four Mres=ceil(8tE/d) arrays include full labels, frames, metadata and scratch by the all-size d*t<=12E proof. All genuine phase/query/source states remain quantum; the backing holds only classical records and handles. Every source fee, full combined-memory address fee, ordinary bit operation, serial original quantum lookup, arithmetic, gate generation, source move, reset and complete cleanup is counted. No quantum-addressed memory or inverse/controlled source is assumed.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,19 +51,20 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
+          "nPower": "16/5",
+          "logPower": "-1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE PHYSICAL LLV-GRF320-DENSE interpreter in proof.md executes the complete unchanged virtual program in virtual.md. Its main branch n>=2^4096 uses the same exact period-six fan-in, prefix capacity, finishing call, MERGEF/FIND, Dbar,Dcap,Ccap,Qcap and all-modulus decoder; the explicit finite branch is unchanged. Entire-secret unconditional success is at least1-2^-8. On EVERY branch including errors, failed/discarded work, source/leaf aborts, initialization and cleanup, ENTIRE physical quantum workspace is O(n) qubits, exact index0, including all H original coherent slots and temporary fresh-source wires. All constants are absolute and all four resources hold jointly for this SAME implementation under independent ideal DCP copies and clean fraction0. Let t=n+2,ell=bit_length(n-1),d=max(1,ell),lambda_bank=ceil(6ell/5),E=2^lambda_bank,A=2^16t,W=ceil(2^128t^2E/d),H=2^32t. The seven W-bit regions are ordinary CLASSICAL bits; H original coherent wires are allocated SEPARATELY, with every inactive cell counted. Mtab=ceil(8t/d), four Mlist=ceil(256tE/d) arrays and four Mres=ceil(8tE/d) arrays include full labels, frames, metadata and scratch by the all-size d*t<=12E proof. All genuine phase/query/source states remain quantum; the backing holds only classical records and handles. Every source fee, full combined-memory address fee, ordinary bit operation, serial original quantum lookup, arithmetic, gate generation, source move, reset and complete cleanup is counted. No quantum-addressed memory or inverse/controlled source is assumed.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,44 +75,46 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE PHYSICAL LLV-GRF320-DENSE interpreter in proof.md executes the complete unchanged virtual program in virtual.md. Its main branch n>=2^4096 uses the same exact period-six fan-in, prefix capacity, finishing call, MERGEF/FIND, Dbar,Dcap,Ccap,Qcap and all-modulus decoder; the explicit finite branch is unchanged. Entire-secret unconditional success is at least1-2^-8. On EVERY branch including errors, failed/discarded work, source/leaf aborts, initialization and cleanup, all original source acquisitions Q are O(2^((1/2)sqrt(n))), exact index1/2, with exactly one physical original copy per virtual request. All constants are absolute and all four resources hold jointly for this SAME implementation under independent ideal DCP copies and clean fraction0. Let t=n+2,ell=bit_length(n-1),d=max(1,ell),lambda_bank=ceil(6ell/5),E=2^lambda_bank,A=2^16t,W=ceil(2^128t^2E/d),H=2^32t. The seven W-bit regions are ordinary CLASSICAL bits; H original coherent wires are allocated SEPARATELY, with every inactive cell counted. Mtab=ceil(8t/d), four Mlist=ceil(256tE/d) arrays and four Mres=ceil(8tE/d) arrays include full labels, frames, metadata and scratch by the all-size d*t<=12E proof. All genuine phase/query/source states remain quantum; the backing holds only classical records and handles. Every source fee, full combined-memory address fee, ordinary bit operation, serial original quantum lookup, arithmetic, gate generation, source move, reset and complete cleanup is counted. No quantum-addressed memory or inverse/controlled source is assumed.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the SAME PHYSICAL LLV-GRF320-DENSE classical-storage interpreter in proof.md executing virtual.md, the guaranteed malformed fraction is epsilon(n)=0 under the canonical independent-ideal-copy model. Every N>=2,s has unconditional entire-secret success at least1-2^-8 jointly with all four exact branchwise resource objects and complete initialization/cleanup. No positive tolerance or impossibility is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
