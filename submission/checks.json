@@ -1,0 +1,240 @@
+{
+  "layout_cases": [
+    {
+      "n_bit_length": 1,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 2,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 2,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 3,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 5,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 6,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 7,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 7,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 9,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 11,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 17,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 129,
+      "mapping_and_capacity": true
+    },
+    {
+      "n_bit_length": 16385,
+      "mapping_and_capacity": true
+    }
+  ],
+  "kind": "finite arithmetic diagnostics, not mathematical certification",
+  "profile_cases": [
+    {
+      "n_bits": 16384,
+      "offset_bit_length": 16383,
+      "source_log_upper_over_declared_log": "0.9982506909440691367609980887639875943323983147235626385273597737779032680615517659956624706695071339",
+      "time_log_upper_over_explicit_log": "0.9967726319187703397776990706053430258797297392963179644005784766427363608400743824867354371559348807",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16385,
+      "offset_bit_length": 0,
+      "source_log_upper_over_declared_log": "0.9982506909440691367609980887639875943323983147235626385273597737779032680615517659956624706695071339",
+      "time_log_upper_over_explicit_log": "0.9967726319187703397776990706053430258797297392963179644005784766427363608400743824867354371559348807",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16385,
+      "offset_bit_length": 1,
+      "source_log_upper_over_declared_log": "0.9978869261302601283906880027040296207886452155893912445832453808929252871794619802387902732732042783",
+      "time_log_upper_over_explicit_log": "0.9971360543168781327251055628730158283639961549565469202419842422441121024450669976639904019282651136",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16385,
+      "offset_bit_length": 8193,
+      "source_log_upper_over_declared_log": "0.9978869261302601283906880027040296207886452155893912445832453808929252871794619802387902732732042783",
+      "time_log_upper_over_explicit_log": "0.9971360543168781327251055628730158283639961549565469202419842422441121024450669976639904019282651136",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16385,
+      "offset_bit_length": 16384,
+      "source_log_upper_over_declared_log": "0.9980085229744237920456874630899075113889812431001045180792468137249488794656734120174227905705339340",
+      "time_log_upper_over_explicit_log": "0.9970148439163758458269299604984306832147777178669618778499152541038864227373099654164040549811499498",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16386,
+      "offset_bit_length": 0,
+      "source_log_upper_over_declared_log": "0.9980085229744237920456874630899075113889812431001045180792468137249488794656734120174227905705339340",
+      "time_log_upper_over_explicit_log": "0.9970148439163758458269299604984306832147777178669618778499152541038864227373099654164040549811499498",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16386,
+      "offset_bit_length": 1,
+      "source_log_upper_over_declared_log": "0.9978870756917472412097364385745624516315256834181984223289191497099011643204002461661067630956233103",
+      "time_log_upper_over_explicit_log": "0.9971362063408108991799030703155396361811675892228212581884860131392418821142776540049868460849564612",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 16386,
+      "offset_bit_length": 8193,
+      "source_log_upper_over_declared_log": "0.9978870756917472412097364385745624516315256834181984223289191497099011643204002461661067630956233103",
+      "time_log_upper_over_explicit_log": "0.9971362063408108991799030703155396361811675892228212581884860131392418821142776540049868460849564612",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 20000,
+      "offset_bit_length": 19999,
+      "source_log_upper_over_declared_log": "0.9984239506709080663961834748620126158748802921046756482272202166219772874233409954881708170962126594",
+      "time_log_upper_over_explicit_log": "0.9974936466429795241705141656435964885724728032442784302585748641775492760079332256111738720708542361",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 20001,
+      "offset_bit_length": 0,
+      "source_log_upper_over_declared_log": "0.9984239506709080663961834748620126158748802921046756482272202166219772874233409954881708170962126594",
+      "time_log_upper_over_explicit_log": "0.9974936466429795241705141656435964885724728032442784302585748641775492760079332256111738720708542361",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 20001,
+      "offset_bit_length": 1,
+      "source_log_upper_over_declared_log": "0.9983243586415270293781142100614556586325639670459047091370511530518373938416415222108303919653099044",
+      "time_log_upper_over_explicit_log": "0.9975931701169364537004419955517829972434305396640193553796130940196426593138293924517500741398051593",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 20001,
+      "offset_bit_length": 10001,
+      "source_log_upper_over_declared_log": "0.9983243586415270293781142100614556586325639670459047091370511530518373938416415222108303919653099044",
+      "time_log_upper_over_explicit_log": "0.9975931701169364537004419955517829972434305396640193553796130940196426593138293924517500741398051593",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 32768,
+      "offset_bit_length": 32767,
+      "source_log_upper_over_declared_log": "0.9991228854145196952475600097377451520846825940124249197336760123915006852239601615049798905186124024",
+      "time_log_upper_over_explicit_log": "0.9983795827425687732860441765743027958773930418942906221860936907552695989783370056173967582511943024",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 32769,
+      "offset_bit_length": 0,
+      "source_log_upper_over_declared_log": "0.9991228854145196952475600097377451520846825940124249197336760123915006852239601615049798905186124024",
+      "time_log_upper_over_explicit_log": "0.9983795827425687732860441765743027958773930418942906221860936907552695989783370056173967582511943024",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 32769,
+      "offset_bit_length": 1,
+      "source_log_upper_over_declared_log": "0.9989404121193918562902142985042990269879455041069831437534607730156354394922432682178435145808651282",
+      "time_log_upper_over_explicit_log": "0.9985619696234198381879211731710345541763754215452776542501744421798183950230915836522488132551320725",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 32769,
+      "offset_bit_length": 16385,
+      "source_log_upper_over_declared_log": "0.9989404121193918562902142985042990269879455041069831437534607730156354394922432682178435145808651282",
+      "time_log_upper_over_explicit_log": "0.9985619696234198381879211731710345541763754215452776542501744421798183950230915836522488132551320725",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 65536,
+      "offset_bit_length": 65535,
+      "source_log_upper_over_declared_log": "0.9995607957788030536373545101089256545582749007797195644701894691912026744449033137334760549796411185",
+      "time_log_upper_over_explicit_log": "0.9991880480675559754816461808003637129928111756554345153797778715552647862058760939839047107073906289",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 65537,
+      "offset_bit_length": 0,
+      "source_log_upper_over_declared_log": "0.9995607957788030536373545101089256545582749007797195644701894691912026744449033137334760549796411185",
+      "time_log_upper_over_explicit_log": "0.9991880480675559754816461808003637129928111756554345153797778715552647862058760939839047107073906289",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 65537,
+      "offset_bit_length": 1,
+      "source_log_upper_over_declared_log": "0.9994694060158608200302455341561594716894904013684315136074341620312965823889886781330652580867260033",
+      "time_log_upper_over_explicit_log": "0.9992794161223885403826331264454946200766811483878459169890757567603840913569510665255370382939541700",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    },
+    {
+      "n_bits": 65537,
+      "offset_bit_length": 32769,
+      "source_log_upper_over_declared_log": "0.9994694060158608200302455341561594716894904013684315136074341620312965823889886781330652580867260033",
+      "time_log_upper_over_explicit_log": "0.9992794161223885403826331264454946200766811483878459169890757567603840913569510665255370382939541700",
+      "all_integer_checks": true,
+      "physical_time_margin": true
+    }
+  ],
+  "fiber_cases": [
+    {
+      "b": 1,
+      "label_vectors": 4,
+      "pair_projection_mean": "7/8",
+      "success_lower_bound_above_half": true
+    },
+    {
+      "b": 2,
+      "label_vectors": 64,
+      "pair_projection_mean": "199/256",
+      "success_lower_bound_above_half": true
+    },
+    {
+      "b": 3,
+      "label_vectors": 4096,
+      "pair_projection_mean": "23431/32768",
+      "success_lower_bound_above_half": true
+    }
+  ],
+  "logarithm_absorption_threshold_verified": true
+}
