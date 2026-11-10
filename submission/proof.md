@@ -1,104 +1,238 @@
-# Exhaustive shift testing
+# CS1-GCAP: a growing terminal plateau
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. The algorithm and the scope of the included source
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For every N >= 2 and s in Z/NZ let n = ceil(log2 N). CS1-GCAP is the
+following single uniform algorithm. Its primitive circuits, measurements,
+source transformations, label extraction, odd-part decoder, 2-adic decoder,
+and finite branch are specified in the included cs1_base.md. That file is
+an unmodified copy of the CS1 proof from Yukon submission
+f1481815-9577-4990-abe3-7b79fa5d9284, candidate commit
+200ef0387acb280adcd272f4fbcdb805d1786bbe. It is included as technical source,
+not as an appeal to its verdict. Its original theorem concerns its original
+parameters; the theorem for GCAP is the one proved here. The parameter and
+resource changes below supersede Sections 0, 7 and 11--14 of that source
+where applicable. All other instructions are retained literally. In particular,
+we use its original verified Kitaev label extraction, not later Fourier-circuit
+variants. The proof snapshot contains every circuit and probability argument
+needed here; fetching a reference is unnecessary for review.
 
-## Correctness
+GCAP outputs s with unconditional probability at least 1 - 2^-8, with all
+resource bounds below holding on every branch, including caps, failures,
+restarts and wrong-label branches. All constants are absolute. Put
 
-On a component with offset x, controlled subtraction produces
+    H(n) = sqrt(2n) + (2n)^(1/4),
+    E(n) = a sqrt(n) + (6/5) n^(1/4),
+    F(n) = a sqrt(n) - (5/4) n^(3/8) + (6/5) n^(1/4).
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Here a is EXACTLY u_333/v_333 defined and written in cs1_base.md Section 0;
+the displayed Pell recurrence proves a > sqrt(2), without a numerical fit.
+The joint bounds are
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+    T = O(n^4 (log2 n)^2 2^E(n)),
+    S_C = O(n^2 2^F(n)) bits,
+    S_Q = O(n) qubits,
+    Q = O(n^(3/2) (log2 n) 2^E(n)).
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+The main branch is n >= 64. The original exhaustive finite branch is used
+unchanged for n < 64, including its n+10 tests per candidate. Since only
+finitely many N occur there, its costs are absorbed in absolute constants.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+## 2. Exact parameter computation and schedule
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+For a TREE_D call let B=D-1 >= 1. Define using integer arithmetic
 
-## Implementing the controlled subtraction
+    mu = ceil(sqrt(2B)) + 1,
+    r = ceil(sqrt(mu)),
+    U = mu + r,
+    s = min(mu-1, floor(mu^(3/4))),
+    kappa = ceil(log2 U) + 1,
+    m = min{z >= s+1: z(z+1)/2 - s(s-1)/2 + kappa >= B}.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Here floor(mu^(3/4)) means the largest integer v with v^4 <= mu^3;
+ceil square roots and ceil logarithms are integer comparisons, not real
+arithmetic or advice. Binary search computes them with polynomial work.
+Use the original Section 7 formulas, with THESE mu,s,kappa,m:
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+    lam_i = kappa+1+min(i,m-s),  0 <= i < m; lam_m=1,
+    bmax_i = i,                         0 <= i < m-s,
+    bmax_i = m-s+1,                     m-s <= i < m-1,
+    bmax_(m-1) = kappa+2(m-s)+1.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Allocate b_i from the root down greedily as in that source, summing to B.
+The leaf takes kappa+1 qubits, as in the source; no leaf boost is used.
+Depth-first evaluation, failed-input disposal and VEC retries are unchanged.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Lemma 1. The schedule exists, s+1 <= m <= U, all b_i >= 0, and every merge
+fails with conditional probability at most 2^-kappa <= 1/(2U) <= 1/(2m).
 
-## Joint costs and indices
+Proof. mu >= 3, 1 <= s <= mu-1, and s^2 <= mu^(3/2). Since r >= sqrt(mu),
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+    U(U+1) - s(s-1)
+    >= mu^2 + 2mu r + r^2 + mu + r - mu^(3/2)
+    >= mu^2 >= 2B.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Thus U meets the capacity inequality and U >= s+1. The original exact sum
+identity remains valid:
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+    sum_i bmax_i = m(m+1)/2 - s(s-1)/2 + kappa >= B.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+The greedy allocation therefore exists. Substitution, separately for growing,
+capped and root levels, gives b_i+lam_(i+1)-2lam_i <= -kappa, exactly as in
+(7.1) of the included source. Its distribution-free counting proof Lemma 6.1
+then gives the failure bound for every pair of input tables, without a
+random-label assumption. Finally 2U <= 2^kappa < 4U. QED.
 
-## Fractional error tolerance
+Let nq_D=2^m(kappa+1). Field widths remain B+1+i+ceil(log2(kappa+1))-p_i.
+The quantum stack is O(m(kappa+m))=O(n) because U=O(sqrt n). All label
+widths are O(n), and lam,b=O(sqrt n), uniformly for B<=n. These asymptotic
+bounds also hold for small B; constants cover any finite exceptions to the
+source's convenient numerical inequalities such as '8n' and '3n'.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+## 3. Revised acquisition cap and correctness
+
+For B=n compute mu*,r*,U*,kappa* by the definitions above. All these quantities
+are nondecreasing in B, so m(B)<=U* and kappa(B)<=kappa*. Replace Q* by
+
+    nq* = 2^U* (kappa*+1),
+    K* = 2^13 (ceil(log2 nq*) + ceil(log2 n) + 30),
+    Q* = 6*2^U* (kappa*+1) (n K*+2a2) + 2a2,
+    Qcap = 1024 Q*.
+
+The actual decoder uses J,K,a2 from the included source's Sections 9--11;
+its odd-part acquisition contribution is at most n K*. When M=1 that
+decoder is skipped entirely, and no J or K is required. All LE parameters, the acquisition down-counter,
+and fallback cap are computed from this revised Qcap. On an acquisition
+or fallback overflow, release everything and output 0, as before.
+
+The correctness proof is unchanged in substance but its parameter checks
+are supplied here. An accepted leaf has the same uniform label law. Lemma 1
+makes the retry multiplier rt=2^kappa/(2^kappa-1) satisfy
+
+    rt^m <= exp(m/(2^kappa-1)) <= exp(m/(2m-1)) <= e < 3.
+
+Thus the expected acquisitions for a root are at most
+6*2^U*(kappa*+1), and the complete ideal uncapped run uses at most Q*
+acquisitions in expectation. Markov bounds acquisition-cap failure by 2^-10.
+
+No residue operation reads the top label bit: all measured windows still
+lie below B and all reindexing uses only those windows and index order.
+The induction of cs1_base.md Section 8 therefore applies to the new schedule
+verbatim. In particular |E exp(2 pi i phi W)| <= |cos(pi phi)| and W is odd
+with probability 1/2, conditional on the low-bit tree history. Distinct
+root indices still have distinct incidence vectors. Its odd-part decoder
+Lemma 9.1 and exact 2-adic recovery therefore retain their original error
+bounds, now using the actual nq_D in K and the candidate grid.
+
+The LE error argument is uniform in the adaptive history. Since
+log2 Qcap=O(sqrt n), h_e=O(sqrt n) remains true. Moreover Qcap is at least
+the original lower bound used in Lemma 5.2, because U*>=mu*. Its cap
+Cf=ceil(Qcap/ceil(sqrt n)) and the same cheap-estimate and verification
+bounds still give fallback overflow probability <=2^-20. The per-label
+union bound is <2^-11, using h_e=ceil(log2(Qcap(n+5)))+14. The actual
+and ideal capped runs couple except on those events. Consequently
+
+    Pr[output=s] >= 1-2^-20-2^-10-2^-11-2^-20 >= 1-2^-8.
+
+All statements are unconditional and for every N and s, with clean,
+independent ideal copies. Epsilon(n)=0 is the tolerance guarantee; no
+claim of a maximum possible tolerance is made.
+
+## 4. Every-branch resource analysis
+
+Write x=sqrt(2n). Since mu*<=x+2 and ceil(sqrt(mu*))<=sqrt(mu*)+1,
+
+    U* <= x+sqrt(x)+4 = H(n)+4.
+
+The elementary estimate sqrt(x+2)<=sqrt(x)+1 holds for x>=1.
+Thus 2^U*=O(2^H(n)), kappa*=O(log n), 2^kappa*=O(sqrt n).
+The decoder uses K=O(log nq+log n)=O(sqrt n) roots per stage and at most
+n stages. Its nq <=2^U*(kappa*+1). Hence
+
+    Q <= Qcap = O(n^(3/2) (log2 n) 2^H(n)).
+
+The original every-branch charging argument (Lemma 11.2) uses only
+m=O(sqrt n), 2^kappa=O(sqrt n), lam,b=O(sqrt n), and fixed caps. Each
+acquisition is charged at most one merge per level, even on wrong-label
+branches, because failed inputs are discarded. It yields
+
+    core work = O(n^2 log n)Qcap + O(n^(5/2)nq) + poly(n)
+              = O(n^(7/2)(log2 n)^2 2^H(n)).
+
+This includes label extraction and its capped high-confidence runs,
+transforms, table construction, generation, initialization, disposal,
+measurements and classical arithmetic. Source cost is (n+1)Q.
+
+The quantum stack remains O(n), including data, labels, merge scratch,
+and transform arithmetic. The classical stack has O(m) tables, at most
+2^(kappa+1+m-s) rows each, and O(n)-bit fields. Merge scratch is smaller.
+Decoder records and LE scratch are polynomial. Thus uniformly over the
+actual TREE_D calls,
+
+    S_C <= O(n^2 max_(1<=B<=n) 2^(m(B)-s(B))) + poly(n).
+
+For every integer mu>=3, floor(mu^(3/4))<=mu-1 (because mu^(3/4)<mu),
+so s=floor(mu^(3/4)) >=mu^(3/4)-1. Consequently
+
+    m-s <= mu+sqrt(mu)-mu^(3/4)+2.
+
+The function f(z)=z+sqrt(z)-z^(3/4) is increasing for z>=1, since
+f'(z)=1+1/(2sqrt z)-3/(4z^(1/4)) >=1/4. Also mu<=x+2. Therefore
+
+    m(B)-s(B) <= f(x+2)+2
+                <= x+sqrt(x)-x^(3/4)+5
+                 = sqrt(2n)+(2n)^(1/4)-(2n)^(3/8)+5.
+
+We used sqrt(x+2)<=sqrt(x)+1 and (x+2)^(3/4)>=x^(3/4).
+This establishes the stronger real-radical space bound
+
+    S_C=O(n^2 2^(sqrt(2n)-(2n)^(3/8)+(2n)^(1/4))).
+
+Polynomial ancillary storage is absorbed because the exponent is eventually
+positive and of order sqrt n; the finite initial range only changes the
+absolute constant. Address cost log2(S_C+S_Q+2)=O(sqrt n). Multiplying the
+core-work bound by that charge, and adding source costs, gives
+
+    T=O(n^4 (log2 n)^2 2^H(n)).
+
+These allocations and caps are deterministic bounds, not expectations.
+
+## 5. Exact structured envelopes and comparison
+
+a>sqrt2 is proved by the Pell recurrence in the included source. Further,
+(6/5)^4=1296/625>2, so 6/5>2^(1/4), and
+(5/4)^8=390625/65536<8, so 5/4<2^(3/8). Termwise comparison therefore gives
+H(n)<=E(n), and
+
+    sqrt(2n)-(2n)^(3/8)+(2n)^(1/4) <= F(n).
+
+No unspecified coefficient inside an exponential is substituted in a
+structured object. The retained polynomial factors are precisely those
+proved above. The envelopes are 2^E n^4(log2 n)^2, 2^F n^2, n, and
+2^E n^(3/2)log2 n, respectively. The three exponential envelopes have
+log2 B=a sqrt n+o(sqrt n), so log2 log2 B=(1/2)log2 n+O(1)+o(1).
+Their exact growth indices are 1/2. The envelope n has index 0. Constants
+and the finite branch do not change these limits.
+
+This is a time/space tradeoff, not a claim that GCAP dominates CS1 in all
+resources. It has a larger explicitly retained n^(1/4) term in time and
+samples, but a classical-space saving of order n^(3/8) in the exponent.
+Its classical envelope is eventually smaller than
+2^(a sqrt n - c n^(1/4)) times any fixed polynomial for every fixed c.
+It preserves O(n) quantum space and time growth index 1/2. It does not
+achieve the challenge's 1/3 goal. Other submissions can have different
+tradeoffs; no global frontier membership is asserted without comparison.
+
+## 6. Provenance
+
+The complete CS1 source and its proofs are reused from submission
+f1481815-9577-4990-abe3-7b79fa5d9284. In particular, source-label extraction,
+linear merge/reindexing, the top-bit characteristic function, general-N
+CRT decoding, finite branch and cutoff accounting are inherited. Their
+prior published sources are identified in cs1_base.md Section 1, including
+Kuperberg arXiv:1112.3333v1 and the earlier COL3 submission. The growing
+mu^(3/4) terminal plateau, its U=mu+ceil(sqrt mu) depth certificate, and
+the resulting explicit mixed-power resource analysis are the change here.
+CS1-LBQ's public note was read as a comparison with constant-multiple
+sqrt(mu) caps; none of its later leaf-boost or Fourier-circuit changes is
+used. Earlier verdicts are not a premise of this proof.
