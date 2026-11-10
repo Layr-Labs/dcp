@@ -1,90 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "LST-H-T2: linear classical and quantum memory with heralded tolerance 1 - 1/((16*10^126-1)(625*10^126-1)) (streamed cutoff shift tester behind a heralded filter)",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single algorithm LST-H: LST of proof.md (k = n+4 shifted X-tests per candidate, global cap 48N handed-over copies, streamed linear-size reversible arithmetic) with every acquisition served by FILTER of heralded.md H.2 (flagged copies are disposed of; an (n+857)-bit down-counter enforces the raw cutoff 48 D N, D = (16*10^126 - 1)(625*10^126 - 1); when copies carry no herald FILTER hands every copy over). It recovers the entire s with probability above 5/6 > 2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2, Theorem H.3). On EVERY execution branch, including every flagged copy, failed test, cutoff and abort, its total charged work, counting every raw acquisition, herald read, disposal and counter step, is T = O(N n log2(n+2)) (heralded.md Theorem H.3), hence the envelope B_T(n) = 2^n n log2 n for n >= 2, with growth index exactly 1. All constants are absolute. The four resource bounds and the tolerance claim hold jointly for this single configuration.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "4",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
+        "proof.md",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -102,19 +28,98 @@
             }
           ],
           "nPower": "1",
+          "logPower": "1"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single algorithm LST-H: LST of proof.md (k = n+4 shifted X-tests per candidate, global cap 48N handed-over copies, streamed linear-size reversible arithmetic) with every acquisition served by FILTER of heralded.md H.2 (flagged copies are disposed of; an (n+857)-bit down-counter enforces the raw cutoff 48 D N, D = (16*10^126 - 1)(625*10^126 - 1); when copies carry no herald FILTER hands every copy over). It recovers the entire s with probability above 5/6 > 2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2, Theorem H.3). On EVERY execution branch, including every flagged copy, failed test, cutoff and abort, its peak allocated classical space is O(n) bits, including the raw down-counter and the herald bit; the envelope B_C(n) = n has growth index exactly 0. All constants are absolute. The four resource bounds and the tolerance claim hold jointly for this single configuration.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "heralded.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single algorithm LST-H: LST of proof.md (k = n+4 shifted X-tests per candidate, global cap 48N handed-over copies, streamed linear-size reversible arithmetic) with every acquisition served by FILTER of heralded.md H.2 (flagged copies are disposed of; an (n+857)-bit down-counter enforces the raw cutoff 48 D N, D = (16*10^126 - 1)(625*10^126 - 1); when copies carry no herald FILTER hands every copy over). It recovers the entire s with probability above 5/6 > 2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2, Theorem H.3). On EVERY execution branch, including every flagged copy, failed test, cutoff and abort, its peak allocated quantum space is O(n) qubits: raw copies occupy only LST's sample wires, which are disposed of before the next acquisition; the envelope B_Q(n) = n has growth index exactly 0. All constants are absolute. The four resource bounds and the tolerance claim hold jointly for this single configuration.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "heralded.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single algorithm LST-H: LST of proof.md (k = n+4 shifted X-tests per candidate, global cap 48N handed-over copies, streamed linear-size reversible arithmetic) with every acquisition served by FILTER of heralded.md H.2 (flagged copies are disposed of; an (n+857)-bit down-counter enforces the raw cutoff 48 D N, D = (16*10^126 - 1)(625*10^126 - 1); when copies carry no herald FILTER hands every copy over). It recovers the entire s with probability above 5/6 > 2/3 from independent ideal copies and under every adversary of the heralded malformed-copy model of claim 4 (heralded.md Lemmas H.1-H.2, Theorem H.3). On EVERY execution branch, including every flagged copy, failed test, cutoff and abort, the number Q of acquired source copies, counting every raw copy (flagged ones included) and every failed or discarded test, is at most 48 D N = O(N); the envelope B_samples(n) = 2^n has growth index exactly 1. All constants are absolute. The four resource bounds and the tolerance claim hold jointly for this single configuration.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "heralded.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same algorithm and configuration (LST with FILTER), the proved fractional tolerance is epsilon(n) = 1 - 1/D with D = (16*10^126 - 1)(625*10^126 - 1) = 10^256 - 641*10^126 + 1, a constant in (0,1), written as the product expression of heralded.md H.6 (numerator 10^126 (10^130 - 641) = D - 1, denominator (16*10^126 - 1)(625*10^126 - 1) = D, each displayed factor at most 64 digits). Under the heralded malformed-copy model of heralded.md H.1 (structured error_model text): if Q copies are acquired on a branch, at most floor(epsilon(n) Q) of them are malformed, the herald is always correct, and the adversary chooses adaptively which copies are malformed and their arbitrary (possibly entangled) contents. For every N >= 2 and s the algorithm recovers the entire s with probability above 5/6 > 2/3 under every such adversary, jointly with the four resource bounds above, which count all raw acquisitions (heralded.md Lemmas H.1-H.2, Theorem H.3). This covers detectable (heralded) malformed copies only; no tolerance of undetectable corruption is claimed. The clean problem is solved by the same algorithm with the same bounds.",
+      "evidence": [
+        "proof.md",
+        "heralded.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "\\frac{1000000000000000000000000000000000000000000000000000000000000000^2*2189251513709577192973000802960123783290116879858557832979634351*858746507556703404750738054330397864679429*5319114725318138222421821}{4329632813347406305223297584667745034303743116654997715999733453*3695463493041522429397493437973995985916922777904245876619237883*8333333333333333333333333333333333333333333333333333333333333333*454542699741213689614002339379761334779789213398706674505003*165001}",
+        "error_model": "Heralded malformed-copy model with fraction epsilon(n). Parameters: N >= 2 is the modulus, s in Z/NZ the secret, n = ceil(log2 N), Q the total number of source copies the algorithm acquires on an execution branch, and epsilon(n) the tolerated malformed fraction. Each acquired copy consists of an (n+1)-qubit register of the ideal copy's shape together with one classical herald bit f delivered with it. Copies are delivered one at a time in acquisition order j = 1, ..., Q. Before copy j is delivered, an adversary that knows N, s, the full description of the algorithm and every measurement outcome the algorithm obtained before copy j is delivered, and that may hold, process and measure an arbitrary private quantum system, decides adaptively whether copy j is malformed. A well-formed copy has f = 0 and its register is a fresh copy of rho_s, in tensor product with every other system (earlier copies, the adversary's system and the algorithm's registers). A malformed copy has f = 1 and its register is in an arbitrary state chosen by the adversary, possibly entangled with the adversary's private system and with other malformed copies. On every execution branch at most floor(epsilon(n) Q) of the Q acquired copies are malformed. The herald is always correct, so malformation is detectable (an erasure-type error); its timing, its number within the promise and the malformed register contents are adversarial. In the clean problem no herald is supplied and every copy is well-formed. No source control, purification access or preparation inverse is supplied."
       }
     }
   ],
