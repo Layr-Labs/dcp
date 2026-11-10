@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PSG49-F7: polynomial-space retained-base sieve, sample coefficient 49/100 with charged work coefficient 7401/9800",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, n=ceil(log2 N), the SINGLE PSG49-F7 algorithm of proof.md Section 2, namely family-source.md Sections 1-8 and 11 with fixed q=49/100, f=2599/7401, u(R)=max(1,floor(2599R/7401)), alpha=7/16, the first feasible integer profile and BOTH recomputed literal Qcap and Wcap (the source finite exhaustive branch for n<256), recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 from fresh independent mixed coset states. On EVERY execution branch its total sequential charged work obeys T(n)=O(2^((7401/9800)*sqrt(n log2 n)+(3/4)*sqrt(n)*(log2 n)^(-7/16))), with exact growth index 1/2; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 3-6. All four bounds and the clean fraction-0 guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +22,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "7401/9800",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "3/4",
+              "nPower": "1/2",
+              "logPower": "-7/16"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, n=ceil(log2 N), the SINGLE PSG49-F7 algorithm of proof.md Section 2, namely family-source.md Sections 1-8 and 11 with fixed q=49/100, f=2599/7401, u(R)=max(1,floor(2599R/7401)), alpha=7/16, the first feasible integer profile and BOTH recomputed literal Qcap and Wcap (the source finite exhaustive branch for n<256), recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 from fresh independent mixed coset states. On EVERY execution branch its peak allocated classical memory obeys S_C(n)=O(n^2) bits, with exact growth index 0; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 3-6. All four bounds and the clean fraction-0 guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +62,14 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, n=ceil(log2 N), the SINGLE PSG49-F7 algorithm of proof.md Section 2, namely family-source.md Sections 1-8 and 11 with fixed q=49/100, f=2599/7401, u(R)=max(1,floor(2599R/7401)), alpha=7/16, the first feasible integer profile and BOTH recomputed literal Qcap and Wcap (the source finite exhaustive branch for n<256), recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 from fresh independent mixed coset states. On EVERY execution branch its peak allocated quantum memory obeys S_Q(n)=O(n) qubits, with exact growth index 0; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 3-6. All four bounds and the clean fraction-0 guarantee hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,44 +80,51 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, n=ceil(log2 N), the SINGLE PSG49-F7 algorithm of proof.md Section 2, namely family-source.md Sections 1-8 and 11 with fixed q=49/100, f=2599/7401, u(R)=max(1,floor(2599R/7401)), alpha=7/16, the first feasible integer profile and BOTH recomputed literal Qcap and Wcap (the source finite exhaustive branch for n<256), recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 from fresh independent mixed coset states. On EVERY execution branch its ALL acquired source copies obeys Q(n)=O(2^((49/100)*sqrt(n log2 n)+(3/8)*sqrt(n)*(log2 n)^(-7/16))), with exact growth index 1/2; n>=2 defines the positive envelope and n=1 is covered by the finite branch. All constants are absolute. All acquisitions, discarded copies, retries, wrong-label branches, aborts, addressing, circuit generation, exact Clifford+T gates, precision and preprocessing are charged as proved in proof.md Sections 3-6. All four bounds and the clean fraction-0 guarantee hold jointly for this same configuration.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "family-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "49/100",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            },
+            {
+              "coefficient": "3/8",
+              "nPower": "1/2",
+              "logPower": "-7/16"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every s in Z/NZ, n=ceil(log2 N), the SINGLE PSG49-F7 algorithm of proof.md Section 2, namely family-source.md Sections 1-8 and 11 with fixed q=49/100, f=2599/7401, u(R)=max(1,floor(2599R/7401)), alpha=7/16, the first feasible integer profile and BOTH recomputed literal Qcap and Wcap (the source finite exhaustive branch for n<256), recovers the ENTIRE secret with unconditional probability at least 1-2^-8>2/3 from fresh independent mixed coset states. For this SAME configuration the guaranteed malformed-copy fraction is exactly epsilon(n)=0, under the exact clean error model in proof.md Section 7 and the structured error_model. Every acquired sample must be independent ideal rho_s; no behavior is promised for malformed copies. The unconditional success >=1-2^-8 and all four every-branch resource bounds hold jointly. This is not an impossibility claim about positive tolerance.",
+      "evidence": [
+        "proof.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
