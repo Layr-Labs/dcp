@@ -1,15 +1,23 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC-PERM-INCREMENTAL: counted comparator and stride-cursor generation",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). The single IFC-PERM-INCREMENTAL algorithm is completely specified in proof.md, virtual.md, virtual2.md, distance_decoder.md, bucket_level.md, window_merge.md, perm_fw.md, verified_extract.md and typed_dispatch.md. It uses the finite exhaustive branch for n<2^40; otherwise r=ceil(sqrt n), z=ceil(log2 r), c=29/4, D=ceil(7r/12+c z+64), ell=dl=H0=D, cb=floor(sqrt n)-40ceil(log2 n), kappa=20, Lam=cb-24 and the uniquely specified table/tree parameters, w=2^ceil(log2 n), RHO=2+8/r, C_ell=2^8 K2^H dl, b0=floor(ell/2)-4-bit block recovery, exact supplier caps Rc_i=ceil(Rc_(i+1)D_(i+1)/Yd_i), source cap Qcap=20rC_0+K and the EW=4r row-tagged counted bank with exact renumbering, fresh-row clearing, streamed word helpers, fixed eight-field RAW owner bindings and borrowed GROUP descriptor views and explicit counted zero-ancilla initialization/release resets and a banked current-frame interpreter with fixed-field call/return operations and structural gate emission with full counted physical slot resolution and work-conserving AVL/FIFO key buckets and exact cyclic-window merges with fresh-digit short-fiber bounds and exact permutation-seed FW with canonical seed erasure and incremental sorting-network emission, borrowed GROUP views, amortized label updates, globally capped verified extraction and typed inline current-frame dispatch, OWN=2^24r, ROWS=2^24V, WROW=2^16n and HQ=2^20U, where V=2^(cb+2), U=rV, with persistent head/virgin/NEXT in a separately counted RAW region. From independent ideal coset copies it recovers the entire shift with unconditional probability at least1-2^-8. Its total sequential charged work is O(n^(51/4)(log2 n)^4 2^((7/6)sqrt n)), including classical bit arithmetic, uniform circuit and address generation, every gate, measurement, source copy, discarded attempt, initialization and cleanup. This exact envelope has growth index1/2. The guarantee holds on every branch, including erroneous-label, failure, abort and overflow branches, and jointly with all other claims for this one configuration. All hidden constants are absolute and independent of N, s and outcomes.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "distance_decoder.md",
+        "bucket_level.md",
+        "window_merge.md",
+        "perm_fw.md",
+        "typed_dispatch.md",
+        "verified_extract.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +29,32 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "7/6",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "51/4",
+          "logPower": "4"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). The single IFC-PERM-INCREMENTAL algorithm is completely specified in proof.md, virtual.md, virtual2.md, distance_decoder.md, bucket_level.md, window_merge.md, perm_fw.md, verified_extract.md and typed_dispatch.md. It uses the finite exhaustive branch for n<2^40; otherwise r=ceil(sqrt n), z=ceil(log2 r), c=29/4, D=ceil(7r/12+c z+64), ell=dl=H0=D, cb=floor(sqrt n)-40ceil(log2 n), kappa=20, Lam=cb-24 and the uniquely specified table/tree parameters, w=2^ceil(log2 n), RHO=2+8/r, C_ell=2^8 K2^H dl, b0=floor(ell/2)-4-bit block recovery, exact supplier caps Rc_i=ceil(Rc_(i+1)D_(i+1)/Yd_i), source cap Qcap=20rC_0+K and the EW=4r row-tagged counted bank with exact renumbering, fresh-row clearing, streamed word helpers, fixed eight-field RAW owner bindings and borrowed GROUP descriptor views and explicit counted zero-ancilla initialization/release resets and a banked current-frame interpreter with fixed-field call/return operations and structural gate emission with full counted physical slot resolution and work-conserving AVL/FIFO key buckets and exact cyclic-window merges with fresh-digit short-fiber bounds and exact permutation-seed FW with canonical seed erasure and incremental sorting-network emission, borrowed GROUP views, amortized label updates, globally capped verified extraction and typed inline current-frame dispatch, OWN=2^24r, ROWS=2^24V, WROW=2^16n and HQ=2^20U, where V=2^(cb+2), U=rV, with persistent head/virgin/NEXT in a separately counted RAW region. From independent ideal coset copies it recovers the entire shift with unconditional probability at least1-2^-8. Its peak ordinary classical space is O(n) bits, including inputs, output, controller, staging and all ordinary records. The exact envelope n has growth index0; all basis-state bank records are instead counted as quantum space. The guarantee holds on every branch, including erroneous-label, failure, abort and overflow branches, and jointly with all other claims for this one configuration. All hidden constants are absolute and independent of N, s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "distance_decoder.md",
+        "bucket_level.md",
+        "window_merge.md",
+        "perm_fw.md",
+        "typed_dispatch.md",
+        "verified_extract.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +65,97 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). The single IFC-PERM-INCREMENTAL algorithm is completely specified in proof.md, virtual.md, virtual2.md, distance_decoder.md, bucket_level.md, window_merge.md, perm_fw.md, verified_extract.md and typed_dispatch.md. It uses the finite exhaustive branch for n<2^40; otherwise r=ceil(sqrt n), z=ceil(log2 r), c=29/4, D=ceil(7r/12+c z+64), ell=dl=H0=D, cb=floor(sqrt n)-40ceil(log2 n), kappa=20, Lam=cb-24 and the uniquely specified table/tree parameters, w=2^ceil(log2 n), RHO=2+8/r, C_ell=2^8 K2^H dl, b0=floor(ell/2)-4-bit block recovery, exact supplier caps Rc_i=ceil(Rc_(i+1)D_(i+1)/Yd_i), source cap Qcap=20rC_0+K and the EW=4r row-tagged counted bank with exact renumbering, fresh-row clearing, streamed word helpers, fixed eight-field RAW owner bindings and borrowed GROUP descriptor views and explicit counted zero-ancilla initialization/release resets and a banked current-frame interpreter with fixed-field call/return operations and structural gate emission with full counted physical slot resolution and work-conserving AVL/FIFO key buckets and exact cyclic-window merges with fresh-digit short-fiber bounds and exact permutation-seed FW with canonical seed erasure and incremental sorting-network emission, borrowed GROUP views, amortized label updates, globally capped verified extraction and typed inline current-frame dispatch, OWN=2^24r, ROWS=2^24V, WROW=2^16n and HQ=2^20U, where V=2^(cb+2), U=rV, with persistent head/virgin/NEXT in a separately counted RAW region. From independent ideal coset copies it recovers the entire shift with unconditional probability at least1-2^-8. Its peak allocated quantum space is O(n^(-77/2) 2^(sqrt n)) qubits, counting the whole fixed prefix, tags, epoch words, descriptors, free and unused slots, padding, growing FW scratch and acquisition register. The negative polynomial factor is proved explicitly, not omitted. This exact envelope has growth index1/2. The guarantee holds on every branch, including erroneous-label, failure, abort and overflow branches, and jointly with all other claims for this one configuration. All hidden constants are absolute and independent of N, s and outcomes.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "distance_decoder.md",
+        "bucket_level.md",
+        "window_merge.md",
+        "perm_fw.md",
+        "typed_dispatch.md",
+        "verified_extract.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "-77/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). The single IFC-PERM-INCREMENTAL algorithm is completely specified in proof.md, virtual.md, virtual2.md, distance_decoder.md, bucket_level.md, window_merge.md, perm_fw.md, verified_extract.md and typed_dispatch.md. It uses the finite exhaustive branch for n<2^40; otherwise r=ceil(sqrt n), z=ceil(log2 r), c=29/4, D=ceil(7r/12+c z+64), ell=dl=H0=D, cb=floor(sqrt n)-40ceil(log2 n), kappa=20, Lam=cb-24 and the uniquely specified table/tree parameters, w=2^ceil(log2 n), RHO=2+8/r, C_ell=2^8 K2^H dl, b0=floor(ell/2)-4-bit block recovery, exact supplier caps Rc_i=ceil(Rc_(i+1)D_(i+1)/Yd_i), source cap Qcap=20rC_0+K and the EW=4r row-tagged counted bank with exact renumbering, fresh-row clearing, streamed word helpers, fixed eight-field RAW owner bindings and borrowed GROUP descriptor views and explicit counted zero-ancilla initialization/release resets and a banked current-frame interpreter with fixed-field call/return operations and structural gate emission with full counted physical slot resolution and work-conserving AVL/FIFO key buckets and exact cyclic-window merges with fresh-digit short-fiber bounds and exact permutation-seed FW with canonical seed erasure and incremental sorting-network emission, borrowed GROUP views, amortized label updates, globally capped verified extraction and typed inline current-frame dispatch, OWN=2^24r, ROWS=2^24V, WROW=2^16n and HQ=2^20U, where V=2^(cb+2), U=rV, with persistent head/virgin/NEXT in a separately counted RAW region. From independent ideal coset copies it recovers the entire shift with unconditional probability at least1-2^-8. Its total fresh source copies on the main branch is at most20rC_0+K, and on the finite branch at mostN(n+10), hence uniformly O(n^(35/4)2^((7/6)sqrt n)). This counts every failed and discarded acquisition, independently of peak storage. This exact envelope has growth index1/2. The guarantee holds on every branch, including erroneous-label, failure, abort and overflow branches, and jointly with all other claims for this one configuration. All hidden constants are absolute and independent of N, s and outcomes.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "distance_decoder.md",
+        "bucket_level.md",
+        "window_merge.md",
+        "perm_fw.md",
+        "typed_dispatch.md",
+        "verified_extract.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "7/6",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "35/4",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). The single IFC-PERM-INCREMENTAL algorithm is completely specified in proof.md, virtual.md, virtual2.md, distance_decoder.md, bucket_level.md, window_merge.md, perm_fw.md, verified_extract.md and typed_dispatch.md. It uses the finite exhaustive branch for n<2^40; otherwise r=ceil(sqrt n), z=ceil(log2 r), c=29/4, D=ceil(7r/12+c z+64), ell=dl=H0=D, cb=floor(sqrt n)-40ceil(log2 n), kappa=20, Lam=cb-24 and the uniquely specified table/tree parameters, w=2^ceil(log2 n), RHO=2+8/r, C_ell=2^8 K2^H dl, b0=floor(ell/2)-4-bit block recovery, exact supplier caps Rc_i=ceil(Rc_(i+1)D_(i+1)/Yd_i), source cap Qcap=20rC_0+K and the EW=4r row-tagged counted bank with exact renumbering, fresh-row clearing, streamed word helpers, fixed eight-field RAW owner bindings and borrowed GROUP descriptor views and explicit counted zero-ancilla initialization/release resets and a banked current-frame interpreter with fixed-field call/return operations and structural gate emission with full counted physical slot resolution and work-conserving AVL/FIFO key buckets and exact cyclic-window merges with fresh-digit short-fiber bounds and exact permutation-seed FW with canonical seed erasure and incremental sorting-network emission, borrowed GROUP views, amortized label updates, globally capped verified extraction and typed inline current-frame dispatch, OWN=2^24r, ROWS=2^24V, WROW=2^16n and HQ=2^20U, where V=2^(cb+2), U=rV, with persistent head/virgin/NEXT in a separately counted RAW region. From independent ideal coset copies it recovers the entire shift with unconditional probability at least1-2^-8. Its guaranteed malformed-copy fraction is epsilon(n)=0 under exactly the independent ideal-copy error_model in the fifth structured object. No positive tolerance or impossibility of robustness is asserted. The guarantee holds on every branch, including erroneous-label, failure, abort and overflow branches, and jointly with all other claims for this one configuration. All hidden constants are absolute and independent of N, s and outcomes.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "distance_decoder.md",
+        "bucket_level.md",
+        "window_merge.md",
+        "perm_fw.md",
+        "typed_dispatch.md",
+        "verified_extract.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
