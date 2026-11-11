@@ -1,0 +1,486 @@
+# SPTS1: sampled-pivot tournament search at exact one-third tolerance
+
+This file specifies a complete uniform algorithm. The inherited constructions
+are supplied in full in sources/RQ-SPLIT-proof.md. The independent Opus review is
+included in review/opus-review.md; its five wording clarifications are incorporated
+here. Finite diagnostics and reviews supplement, but do not replace, the argument.
+The joint all-modulus guarantees are:
+
+    T=O(2^(n/2)n log^3(n+2)), S_C=O(n^2), S_Q=O(n),
+    Q=3*2^40(n+32) exactly, epsilon=1/3,
+    full-secret success >=11/16>2/3, on every N>=2 and secret s.
+
+All resource bounds are on every branch in the exact adaptive malformed-copy
+model in sources/error-model.txt. The growth indices remain (1,0,0,0). This does
+not retain FNS1's smaller exact copy multiplier, improve time index 1/2, or claim
+a practical crossover. Constants are deliberately large.
+
+## 1. Inherited front end and endpoint, supplied in full
+
+The complete primary proof is sources/RQ-SPLIT-proof.md, from submission
+38d66dc0-bcf7-452a-ab86-edfc175c0db1 at commit
+192aca46e40deca146adf850db00f74544ac04bd, SHA-256
+2952a6f52b94dfa9d0e03471b9e7611f185db198dbc9274639dbc03ce7d1ca80.
+No hosted judgment is a premise. That file provides all inherited circuits and
+statistical arguments needed here, so no external fetch is needed to check them.
+
+Use its Sections 1-6 for the acquisition, late split, fixed tables, packed
+classical words and comparison arithmetic, without changing acquisition or
+the split. Apply the same per-record comparison routines to indexed sketches;
+do not build the old full-shadow coherent cache on every query. In particular,
+put n=ceil(log2 N) and
+
+    k_shadow=3*2^22(n+32), Q=2^18 k_shadow,
+    m_ret=Q-k_shadow, r_ret=m_ret/3,
+    Delta=ceil(sqrt(16 k_shadow)), R_ret=r_ret+Delta,
+    g_ret=m_ret-R_ret.
+
+Exactly Q raw copies are acquired. Extract each label by the specified fixed
+Clifford+T instrument, keep its one-qubit row, and release position/scratch.
+After ALL Q deliveries, choose the bounded uniform k_shadow-subset, measure only
+those rows in fresh X/Y bases, and store their labels, basis bits and signs.
+The remaining m_ret rows are not operands of any coarse-search operation.
+The supplier receives all actual acquisition feedback allowed by the model.
+
+The inherited source/score argument supplies the following facts.
+
+* The source-subset sampler's abort probability is <=2^-256.
+* The hidden count event E_count has failure probability <=1/64; on it the
+  retained malformed count is <=R_ret and at least g_ret clean rows remain.
+* Clean-label coupling fails with probability <=2^-62. The simultaneous cubic
+  witness sign event fails with probability <=2^-80.
+* On the joint source event, the IMPLEMENTED full-shadow mean of every needed
+  true-oriented, non-antipodal member comparison exceeds 1/64, and reverse
+  means are below -1/64. This holds for the fresh/exact phase-role choices used
+  by the comparison circuit. Define E_score to be that property of the actual
+  classical shadow records. It is record-measurable. The joint source event
+  implies E_score; one does not condition sampling on hidden compensators.
+* Every implemented per-record member score has absolute value <=12/5<3.
+  Its numerator has denominator Zden=10*2^42. The fresh/exact role discrepancy
+  is at most epsilon_role=51*2^-26 pointwise, including malformed records.
+
+For odd N classes are singletons. For even N they are antipodal pairs, with
+canonical representatives 0,...,N/2-1. Write M_cls for the number of classes,
+c_star for the true class, and Dpad=2^n. Invalid padded representatives are
+always unmarked. A canonical comparison of two distinct classes puts the
+smaller representative first and computes
+
+    F(first,second)=max_(t in first) min_(u in second) mean Gtilde(t,u).
+
+FIRST wins at threshold tau iff F>=tau; SECOND wins otherwise. Each comparison
+uses at most four member means. Never assume that reversing max/min negates F.
+The fresh-role candidate cache and exact-grid known-pivot cache are precisely
+those in the inherited Section 6. On E_score the true class wins every full
+comparison for |tau|<=1/256.
+
+For n<64 keep the ORIGINAL bounded RQ-SPLIT coarse phase (Section 7), on these
+same records, and then its endpoint (Section 8). Its success is >=11/16 and its
+finite input-length range is absorbed by absolute constants. No second bank is
+acquired. The new main coarse phase for n>=64 is specified below.
+
+## 2. Fixed parameters and stored history
+
+Let Cblock=128. Choose K as the largest nonnegative integer with
+
+    (64 n 3^K)^2 <= Dpad.
+
+For n>=64, K>=1, K<=n and
+
+    3^K <= sqrt(Dpad)/(64n) < 3^(K+1).
+
+Set A_j=3^j for 0<=j<=K, Hmax=Cblock*K,
+
+    a_sk=ceil(log2(2^24(Hmax+1))), ell=2^17 a_sk,
+    r_idx=ceil(log2(2^24 Hmax ell)),
+    root=ceil(sqrt(Dpad)), Budget=2^28 root.
+
+All ceilings use integer arithmetic. A_j is generated by repeated multiply by
+three. For each j precompute Bcap_j as the least power of two with
+Bcap_j A_j>=16 root. No cardinalities or unknown probabilities are computed.
+
+Store at most Hmax accepted CLASSICAL pivots. Each gets:
+1. its representative;
+2. a new ell-entry iid uniform list I of indices in 1,...,k_shadow, WITH
+   replacement, drawn after the pivot is selected;
+3. its exact-grid phase cache only for those indexed records, with duplicates;
+4. a new uniform 16-bit integer J and threshold tau=-1/256+J/2^23.
+
+Generate every index by capped rejection from ceil(log2 k_shadow) fair bits,
+with at most r_idx trials. If generation fails, stop the coarse phase and go to
+the final champion step. The pivot representative has already been saved, even
+if its constraint is incomplete. It is eligible for the final tournament.
+The chance of any such failure over Hmax ell indices is <=2^-24. An uncapped
+sampling coupling defines independent ideal tapes for the analysis; it agrees
+with the actual bounded sampler until its first failed cap. No source deliveries
+or corruption promises are altered by that coupling.
+
+Let S_r be the contender set after r complete constraints: valid classes, unequal
+to every accepted pivot, that win each sampled comparison against its stored
+pivot using that constraint's list, exact cache and threshold. The sets are
+nested. The full-shadow predicate is NOT used for acceptance during this search.
+
+## 3. Two facts about a fresh sampled comparison
+
+### 3.1 True-class survival before it is visited
+
+Condition on any fixed shadow records in E_score, any past history, and a newly
+selected wrong pivot. Its new list is independent of that selection. Each member
+score is in [-3,3]. The distance from a true-oriented full mean to any allowed
+threshold is at least 1/64-1/256=3/256. Thus Hoeffding gives, for each required
+member mean, failure probability at most
+
+    exp(-ell*(3/256)^2/18)=exp(-ell/131072)<=2^(-a_sk).
+
+At most two member means are needed: if the true class is first, use its actual
+secret member against each pivot member; if it is second, use that member in
+the inner minimum against each false first member. We retain the conservative
+factor four in the following bound. Consequently
+the probability that some newly stored constraint removes the true class BEFORE
+it is selected is at most
+
+    4 Hmax 2^(-a_sk) <= 2^-22.                              (1)
+
+This is a sequential conditional bound followed by a union bound over at most
+Hmax selected pivots. It is not a union bound over all 2^n possible pivots, and
+does not assume that a previously exposed sketch is independent of a new pivot.
+
+### 3.2 Distribution-free contraction
+
+Fix any record string, whether or not E_score holds, and any current set S.
+For a uniformly selected pivot p in S, its new list and threshold are fresh.
+For any unordered pair, couple the two hypothetical pivot roles using the SAME
+fresh list and threshold. The per-record role discrepancy remains bounded by
+epsilon_role after an average with multiplicity, and max/min preserve that
+bound. The inherited threshold-grid counting therefore gives
+
+    Pr(x wins against p)+Pr(p wins against x) <=1+nu,
+    nu=128 epsilon_role+2^-16=59/2^19<1/1024.
+
+The coupling is legitimate because the list/threshold law is independent of
+the selected pivot. Pair-counting yields
+
+    E[|S_after| | S, past] <=(1+nu)(|S|-1)/2 <=rho |S|,
+    rho=3/4.                                               (2)
+
+There is no fixed-tournament assumption for the contextual fresh/exact roles.
+The pivot is always removed. An ideal chain of exact uniform accepted pivots,
+with independent new lists/thresholds, has nonincreasing cardinality and
+E|S_r|<=Dpad rho^r. Extend it analytically by the empty set after exhaustion.
+
+## 4. Cheap preparations at block boundaries
+
+Write P_j=S_(Cblock*j), and P_0 for the valid class set. These prefixes are
+immutable once created. Later constraints do not redefine an earlier P_j.
+Let R0=2|0^n><0^n|-I, V0=H^n, and define the known unitary
+
+    V_j=V_(j-1) R0 V_(j-1)^dagger O_(P_j) V_(j-1).          (3)
+
+The actual operator is generated recursively from the frozen classical history;
+it is not a stored state or a source-preparation inverse. Every O_(P_j) is an
+exact phase oracle with clean scratch. All recursive calls reuse one work pool.
+
+Set e_j=1/(4096 j^2). Let B_j be the bad-size event
+
+    |P_j|>1+e_j Dpad/A_(j-1)^2.
+
+From (2), Markov gives
+
+    Pr(B_j)<=4096 j^2 9^(j-1) rho^(128j).
+
+Put z=9rho^128. Since rho^4<1/2, z<2^-28, and
+
+    sum_j Pr(B_j)
+      <=(4096/9) z(1+z)/(1-z)^3 <2^-18.                   (4)
+
+This is a statement about the ideal uniform-pivot chain for any fixed records.
+Section 6 couples the actual search to that chain until its first bad-size
+event. Empty sets cause no bad-size event.
+
+On EVERY history, V_j|0> has an equal real amplitude alpha_j on every basis
+element of P_j, by nestedness. The amplitude can be negative or zero on a bad-size
+history; positivity and the lower bound below require the good-size conditions.
+Nestedness and one two-reflection step give
+
+    alpha_j=alpha_(j-1)(3-4 |P_j| alpha_(j-1)^2),
+    alpha_0=1/sqrt(Dpad).
+
+Induction proves
+
+    (1023/1024) A_j/sqrt(Dpad) <=alpha_j<=A_j/sqrt(Dpad).   (5)
+
+Indeed, the relative loss factor is bounded by
+(4/3)(e_j+A_(j-1)^2/Dpad). The sum through K is at most
+
+    (4/3)*(2/4096)+(A_K^2-1)/(6Dpad)
+      <=1/1536+1/(24576n^2)<=17/24576<1/1024.
+
+Use sum 1/j^2<=2 and sum 9^(j-1)=(9^K-1)/8. Each factor is positive and the
+product is at least one minus the sum of losses. Global signs introduced by
+implementing a negative reflection cancel between a preparation and its actual
+adjoint; they do not affect any acceptance distribution.
+
+At an intermediate count Cblock*j<=r<Cblock*(j+1), the current S_r is a subset
+of P_j. Hence V_j has amplitude alpha_j on every current contender as well.
+The rest of the prepared state may be nonuniform. No claim that it is a new
+uniform raw-source state is made.
+
+## 5. The implemented contender sampler and the global cutoff
+
+Start with no pivots and remaining Budget tokens. Until Hmax pivots have been
+accepted, use j=floor(r/Cblock) and V_j to seek the next marked contender.
+Reset B to 1 at the start of EVERY new pivot search, including after a stage
+change; do not carry the previous search's B forward. At each dyadic B make up
+to sixteen attempts; after sixteen
+failures replace B by min(2B,Bcap_j). At Bcap_j continue sixteen-attempt blocks
+until acceptance or budget exhaustion. Failure does not change S_r.
+
+BEFORE EACH attempt debit B A_j tokens. If they do not fit, stop the coarse
+phase before preparing query work. Every attempt has one of two equiprobable
+branches:
+
+* prepare V_j|0> and measure it;
+* choose a uniform integer t in [0,B), prepare V_j|0>, apply t iterations of
+  V_j R0 V_j^dagger O_(S_r), and measure.
+
+Evaluate the SAME sketched contender predicate classically on the measured
+representative. Accept only a verified mark. Measure/reset/release all coarse
+query work after each attempt; the retained endpoint bank is never touched.
+On acceptance, first store the representative, then create its fresh constraint
+as in Section 2. On Hmax accepted pivots or an index-generation abort, stop.
+No cardinality oracle or additional raw copy is used.
+
+The controller does not detect that S_r is empty. In that case it accepts no
+further pivot and continues spending tokens until the next debit is refused.
+The coarse phase always ends through Hmax accepted pivots, index-generation
+abort or debit refusal. On E_score and the pre-visit survival event, exhaustion
+of S_r means the true class was already visited. A subsequent debit refusal is
+therefore not a correctness failure: the final full-shadow tournament retains it.
+
+The token budget is a deterministic structural debit, not an expected-resource
+promise. Each attempt costs at most C U(n) B A_j actual work for one absolute
+constant C and U(n)=n log^3(n+2), as proved in Section 8. The debit is checked
+before the attempt, so there is no interruption inside an unknown quantum state.
+At least one token is consumed per attempt; every branch terminates. Cache
+preparation on acceptance and final classical processing have separate bounded
+polynomial costs, regardless of remaining tokens.
+
+## 6. Sampling law and expected charged hitting time
+
+Fix a current nonempty set of h contenders and a good-size history. Its marked
+weight in V_j|0> is p=h alpha_j^2. The usual two-reflection calculation applies
+to this known preparation and its inverse, even though the unmarked component
+is not uniform. Conditional on acceptance, every contender has probability 1/h
+for every fixed clock and for the direct branch. Thus the accepted pivot is
+uniform, including conditional on previous failures and the successful clock.
+The structural equal-amplitude statement holds even on bad-size histories;
+conditional acceptance is uniform whenever its probability is positive. The
+good-size conditions supply the positive lower bound and expected-cost bound,
+not uniformity itself. This does not condition a prefix on reaching a future
+step or on future survival.
+
+For p>=1/2, the direct half succeeds with probability at least 1/4. For
+0<p<=1/2 and B>=4/sqrt(p), the average random-clock success is at least 1/4,
+by the finite sum of sin^2((2t+1)arcsin(sqrt(p))). The mixed success is at least
+1/8. Equation (5) ensures Bcap_j>=4/sqrt(p) whenever h>=1. Its definition also
+gives Bcap_j<64sqrt(Dpad)/A_j.
+
+Sixteen attempts at a qualifying scale all fail with probability at most
+eta=(7/8)^16<1/4. Let B0 be the first qualifying dyadic scale; for p<=1/2,
+B0<8/sqrt(p). The charged sum of B below B0 is bounded by 16B0; at and above
+B0 its expectation is at most
+
+    16B0 sum_(l>=0)(2eta)^l <=32B0.
+
+Keeping B at its cap only reduces this upper bound relative to continuing to
+double. The p>=1/2 case starts at B0=1. A safe uniform bound is therefore
+512/sqrt(p) for the expected sum of B before the next accepted pivot.
+Multiplying by A_j and using (5), the expected TOKEN cost is at most
+
+    1024 sqrt(Dpad)/sqrt(h).                               (6)
+
+This bound is for an uncapped analytical sampler. The actual token-limited
+sampler agrees with it until it refuses an attempt. Its output remains bounded
+on all other histories, even if p=0 and no pivot can ever be accepted.
+
+For the ideal chain in Section 3, the expected number of accepted pivots in
+each dyadic size band [2^a,2^(a+1)) is at most sixteen. To see this, after four
+accepted steps the conditional expected size is at most rho^4 times its
+starting size. Markov bounds the probability of remaining in that band by
+2rho^4=81/128<3/4. Cardinality never increases. Repeating four-step blocks gives
+the bound sixteen. Thus
+
+    E sum_(nonempty steps) 1/sqrt(|S_r|)
+       <=16 sum_(a>=0)2^(-a/2)<64.                        (7)
+
+Analyze costs only until exhaustion, Hmax accepted pivots, or the first bad-size
+event, whichever comes first. On each preceding history (6) applies. Acceptance
+is uniform even conditional on its clock/failure history, so this process can be
+coupled to the ideal uniform-pivot chain. Equations (6)-(7), without conditioning
+on a future good event, bound its expected total token charge by
+2^16 sqrt(Dpad). Markov with Budget>=2^28 sqrt(Dpad) gives failure probability
+at most 2^-12 for exhaustion of the actual budget before that analytical stop.
+An attempted debit that does not fit is included as a complete debit in the
+analytical hitting cost. No claim about actual expected work on bad-size paths
+is needed; the actual budget still bounds them deterministically.
+
+The accepted-pivot cap contributes at most
+
+    Pr(|S_Hmax|>=1)<=Dpad rho^(128K)<2^-64.                 (8)
+
+For completeness K>=floor(n/8)>=n/9 for n>=64: 3^floor(n/8)<=2^(n/4) and
+64n<=2^(n/4). The latter follows in each residue class modulo four from the
+bases n=64,...,67 and doubling when n increases by four. Since rho^4<1/2,
+Dpad rho^(128K)<=2^(n-32K)<=2^(-23n/9)<2^-64.
+
+On E_score, unless (1) fails, the true class remains a contender until it is
+selected. Hence, before it is visited, the contender set cannot be empty.
+Combining (1), (4), (8), the index-sampling cap and the token budget gives a
+uniform bound on failure to VISIT the true class:
+
+    delta_coarse <=2^-22+2^-18+2^-64+2^-24+2^-12 <2^-11.    (9)
+
+All bounds on the ideal chain are unconditional over its new tapes for fixed
+records. The coupling stops at the first bad-size or sampler-cap discrepancy.
+One must not condition the contraction or cost argument on eventual survival.
+
+## 7. Full-record champion and the exact-one-third endpoint
+
+The last pivot need not be the true class. A small sketch drawn after visiting
+the true class can mistakenly allow false contenders. Therefore retain ALL
+visited representatives and finish with a classical single-elimination tournament
+using the FULL k_shadow measured record bank at threshold zero. Use the same
+canonical comparison, evaluated classically: the new challenger has the fresh
+window-derived phase words and the current champion has exact-grid phase words,
+irrespective of their canonical order. Recompute needed full-bank caches using
+ordinary charged arithmetic, without touching retained quantum rows.
+If no representative was accepted, use class zero.
+
+On E_score, the true class wins every full comparison regardless of which side
+is fresh. If it occurs anywhere in the visited list, it is the champion, even
+when the comparison relation on other classes contains cycles. This is why the
+proof bounds visiting time, not persistence of the last pivot. No retained row
+is measured or read by this tournament; "full records" means the shadow bank.
+
+Feed the resulting class to the unchanged RQ-SPLIT Section 8 endpoint, including
+its capped work-gradient preparation and integer phase corrections. For odd N
+the class is already the secret. For even N the untouched bank resolves the
+antipodal pair. The endpoint proof uses an unconditioned binomial extension and
+subtracts bad-event probabilities; it does not require that its bank be iid
+after conditioning on the coarse answer. Our coarse algorithm acts only on
+classical shadows and independent initialized work, so the same argument applies.
+
+The total exceptional-event loss is at most
+
+    2^-256 + 1/64 + 2^-62 + 2^-80 + delta_coarse
+       + 2^-80 + 2^-115 + 2^-76 <3/128.
+
+Let G_source be the joint source subset/count/label/sign event. It implies
+E_score, and its failure is bounded by the first four source terms above.
+For every fixed record string in E_score, fresh coarse work has failure at
+most delta_coarse, even though those records may be correlated with the retained
+bank. Therefore Pr(coarse failure and G_source)<=delta_coarse. This subset and
+conditioning argument does not condition the binomial endpoint law on source
+count or search success; the private source events are not counted twice.
+The inherited endpoint lower bound 91/128 before these losses therefore
+gives success >11/16>2/3. The finite n<64 fallback has the same guarantee.
+This includes every source, seed, search, budget and endpoint failure.
+
+## 8. Explicit history oracle, generator and branchwise resources
+
+For a constraint list of r accepted pivots, compute one win-and-inequality flag
+per pivot. For that constraint, scan its ell indexed records in stored order.
+Compute the candidate's fresh r_phi=26-bit phase word using the packed source
+word and controlled p-bit additions. Read the known pivot's stored exact word
+classically. For even N obtain the second member's word by the inherited parity
+addition. Accumulate at most four member scores using the q=14 fixed interpolator,
+with common denominator Zden=10*2^42. Use width bitlength(ell)+50, which cannot
+overflow because each numerator is bounded by 24*2^42. Compare each signed sum
+exactly to tau*ell*Zden, an integer since tau has denominator 2^23.
+
+For clarity, first compute the matrix M_ab of candidate-member versus
+pivot-member means, using candidate fresh words and pivot exact words. If the
+candidate is canonical first, FIRST wins iff some row has all entries >=tau.
+If the pivot is canonical first, its matrix is the negative transpose of M;
+recompute its max/min Boolean expression on that matrix and complement the
+answer for the candidate. Do not merely negate a class-level max/min value.
+Use the n-bit canonical-order flag and exclude equality to the pivot.
+Copy its result to the stored constraint flag, then reverse all per-constraint
+scores, phase caches and arithmetic. At the end phase-flip the AND of all flags
+and class validity, uncompute the AND, and reverse the flag evaluations in
+reverse constraint order. This is a clean exact phase oracle for S_r.
+
+Only O(r) one-bit history/AND wires remain between constraints. A single set of
+four O(log ell)-bit accumulators and O(log n)-bit phase arithmetic scratch is
+reused. The exact full-shadow comparator uses the same construction with
+k_shadow terms and threshold zero; in the champion step it is evaluated
+classically, one comparison at a time. The old full k_shadow-word quantum cache
+is unnecessary for the sampled oracle.
+
+One constraint costs O(ell n log^2(n+2)) charged work, including lookup, address
+bits, synthesis-free exact gate words, classical constant generation and inverse
+passes. Put U(n)=n log^3(n+2); ell=O(log(n+2)), so that cost is O(U(n)). The
+constraint count in stage j is at most Cblock(j+1). Thus S_r costs O((j+1)U(n)),
+and the frozen block predicate P_j costs O(j U(n)). The recurrence from (3) is
+
+    C(V_j)<=3 C(V_(j-1))+C0 (j+1)U(n).
+
+Since sum_(j>=1)(j+1)/3^j is finite, C(V_j)<=C1 3^j U(n) uniformly in all histories.
+The inverse has the same bound. Consequently an attempt with dyadic clock B
+has actual cost <=C2 B A_j U(n), including its measurement, reset, fair coins,
+classical same-predicate verification and controller bookkeeping.
+
+Compile V_j or its adjoint using an explicit classical stack of (level, direction,
+position) frames. Each frame has O(log(n+2)) bits and depth <=K<=n. Emit the
+reverse word rather than reversing stored states or storing an exponential
+circuit. Earlier prefix cutoffs Cblock*j are part of the frames; later history
+entries do not mutate them. All calls reuse the same clean quantum pool.
+Precompute A_j and dyadic cap exponents from n with polynomial bit work.
+A token debit B A_j is a shift of A_j, so its comparison/subtraction costs O(n)
+bit operations per attempt, including its O(log n) address charge. That fits
+the attempted-work bound U(n) B A_j. No n-bit decrement is paid per primitive
+gate; internal instruction addresses use the usual O(log n) accounting.
+
+Classical storage: source labels and packed shadow words O(n^2); <=Hmax n-bit
+pivots O(n^2); Hmax ell indices of O(log k_shadow) bits O(n log^2(n+2))=O(n^2);
+exact pivot words O(n log(n+2)); thresholds, bounded counters and the recursion
+stack O(n log(n+2)); all A_j together O(n^2); fixed cosine tables and reused
+arithmetic. All are allocated and charged. Thus S_C=O(n^2).
+
+Quantum storage: the untouched retained rows plus n search wires, O(Hmax)
+flags/AND scratch and reused arithmetic, alongside the inherited source and
+endpoint pools. Every coefficient in Q,k_shadow,Hmax is fixed, so S_Q=O(n).
+No recursive call retains another candidate state. Every original is acquired
+once before coarse search: Q=3*2^40(n+32) on every branch, including aborts.
+
+All search attempts together cost O(U(n) Budget)=O(2^(n/2)n log^3(n+2)) by the
+deterministic token cap, not an expected-work substitution. Acquisition, initial
+bank splitting, packed words, at most Hmax exact sampled pivot caches, endpoint
+work, the full-shadow champion tournament and all initialization have explicit
+polynomial bounds. For example conservative full-grid classical phase generation
+and champion comparison bounds are O(n^4 log^2(n+2)); these are absorbed by the
+declared exponential-time envelope. The fixed-index rejection loops are capped.
+Cache construction occurs at most Hmax times and does not depend on how many
+unsuccessful quantum attempts occur.
+
+All constants are absolute and independent of N,s,adversary,records and outcomes.
+For n>=2 replace log(n+2) by log2 n within constants; the finite prefix has bounded
+cost. log2(T envelope)=n/2+log2 n+3 log2 log2 n yields growth index 1. The memory
+and copy representatives n^2,n,n have index 0. No practical gate-count advantage
+or source-constant advantage is claimed.
+
+## 9. Provenance and audit obligations
+
+RQ-SPLIT supplies the exact model, acquisition/split, cubic comparison, canonical
+classes, role-error grid bound, original mixed sampler framework and untouched
+endpoint. FNS1 supplies the late private-sketch context and charged nested-search
+accounting. The new proposal adds the blockwise recursive preparation, fresh
+per-pivot sketches, visited-pivot champion and explicit token-limited hitting-time
+argument. General amplitude amplification and nested search are established
+frameworks, not new inventions here.
+
+Before any submission, independently audit the coupling and hitting-time proof,
+the preservation of the endpoint law, the clean history oracle and stack bounds,
+the exact parameters and the inherited source interface. The diagnostics currently
+check finite abstract tournaments and nested operator words; they are not a full
+production DCP execution or formal proof-assistant certificate. A fresh peer
+comparison and actual admission/package checks are separate gates.
