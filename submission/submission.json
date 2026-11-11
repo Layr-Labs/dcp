@@ -1,15 +1,16 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "F-SPQ70Q118: F-LIMIT's recycling instrument in a capped chunked pool with fewer levels, S_Q = O(2^((7/10) sqrt n)), Q = O(2^((59/50) sqrt n)) and T = S_C = O(2^((131/100) sqrt n))",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single F-SPQ70Q118 algorithm and configuration specified in full in proof.md and virtual.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), ell = ceil(107r/200) recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, every level run on chunks of exactly D_i qubits with D_ell = 2^12 n K 2^H dl and D_i = min(2^cb, ceil(16385 ell D_(i+1)/(8192(ell-1)))), cb = floor(7 floor(sqrt n)/10) - 40 ceil(log2 n), fixed yield thresholds, fixed run caps and per-level buffers, a binary linear-merge collimation tree of height H = ceil(16r/25) with uncapped classical tables and leaf tables from dl = ceil(133r/200) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier, chunk-yield, run-cap and pool aborts, failed and retried merges and discarded copies, its total charged sequential work is T(N,s) = O(2^((131/100) sqrt n)), with an absolute constant. The stronger main-branch bound is T = O(n^(13/2) 2^((11751/10000) sqrt n) + n^(9/2) 2^((261/200) sqrt n)) (proof.md Section 14), and 11751/10000 < 131/100 and 261/200 < 131/100. The uniform bit-length envelope 2^((131/100) sqrt n) has growth index exactly 1/2. The inner coefficient 131/100 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +22,25 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "131/100",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single F-SPQ70Q118 algorithm and configuration specified in full in proof.md and virtual.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), ell = ceil(107r/200) recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, every level run on chunks of exactly D_i qubits with D_ell = 2^12 n K 2^H dl and D_i = min(2^cb, ceil(16385 ell D_(i+1)/(8192(ell-1)))), cb = floor(7 floor(sqrt n)/10) - 40 ceil(log2 n), fixed yield thresholds, fixed run caps and per-level buffers, a binary linear-merge collimation tree of height H = ceil(16r/25) with uncapped classical tables and leaf tables from dl = ceil(133r/200) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier, chunk-yield, run-cap and pool aborts, failed and retried merges and discarded copies, its peak classical memory is S_C(N,s) = O(2^((131/100) sqrt n)) bits, with an absolute constant, including the chunk, buffer and label lists of every pool level, sort scratch, the uncapped depth-first merge tables and merge scratch, and the decoder records. The stronger main-branch bound is S_C = O(n 2^((261/200) sqrt n)). The uniform bit-length envelope 2^((131/100) sqrt n) has growth index exactly 1/2. The inner coefficient 131/100 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,20 +52,81 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "131/100",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "1",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single F-SPQ70Q118 algorithm and configuration specified in full in proof.md and virtual.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), ell = ceil(107r/200) recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, every level run on chunks of exactly D_i qubits with D_ell = 2^12 n K 2^H dl and D_i = min(2^cb, ceil(16385 ell D_(i+1)/(8192(ell-1)))), cb = floor(7 floor(sqrt n)/10) - 40 ceil(log2 n), fixed yield thresholds, fixed run caps and per-level buffers, a binary linear-merge collimation tree of height H = ceil(16r/25) with uncapped classical tables and leaf tables from dl = ceil(133r/200) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier, chunk-yield, run-cap and pool aborts, failed and retried merges and discarded copies, its peak quantum memory is S_Q(N,s) = O(2^((7/10) sqrt n)) qubits, with an absolute constant and no polynomial factor, including all qubits held by the chunked pool (chunks in process, buffers and the final pool, at most 4 r 2^cb <= 4 r n^-40 2^((7/10) sqrt n) qubits), the FW ancillas and repeat-until-success registers, the index registers of the depth-first tree and all other ancillas (O(n) beyond the pool). The uniform bit-length envelope 2^((7/10) sqrt n) has growth index exactly 1/2. The inner coefficient 7/10 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "7/10",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single F-SPQ70Q118 algorithm and configuration specified in full in proof.md and virtual.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), ell = ceil(107r/200) recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW whose Kraus operators are proportional to the projectors onto the odd-pair cells {x_a != x_b} (weight 2^-54), the matching cells that pair the u minority positions with majority positions and keep the rest constant (weight (2^27 - u)^2 (w - 2u)!/(2^54 (w - u)!)) and {0^w, 1^w} (weight 1), realized by Hadamard tickets and uniform registers prepared by at most 3r repeat-until-success tries on fresh ancillas, every level run on chunks of exactly D_i qubits with D_ell = 2^12 n K 2^H dl and D_i = min(2^cb, ceil(16385 ell D_(i+1)/(8192(ell-1)))), cb = floor(7 floor(sqrt n)/10) - 40 ceil(log2 n), fixed yield thresholds, fixed run caps and per-level buffers, a binary linear-merge collimation tree of height H = ceil(16r/25) with uncapped classical tables and leaf tables from dl = ceil(133r/200) pooled qubits, the free-frequency odd-part decoder and the controlled-shift 2-adic part) outputs the entire s with unconditional probability at least 1 - 2^-7 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier, chunk-yield, run-cap and pool aborts, failed and retried merges and discarded copies, the total number Q(N,s) of fresh DCP source copies acquired, including every discarded copy and every failed or aborted attempt, is O(2^((59/50) sqrt n)), with an absolute constant. The stronger main-branch bound is Q <= Qcap = 4 n C_0 + K = O(n^(7/2) 2^((11751/10000) sqrt n)), with C_0 defined in proof.md and K in virtual.md (11.0); the finite branch uses at most N(n+10) copies. The uniform bit-length envelope 2^((59/50) sqrt n) has growth index exactly 1/2. The inner coefficient 59/50 is an explicit rational, not an unknown big-O constant. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "59/50",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same F-SPQ70Q118 algorithm and configuration of proof.md and virtual.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-7 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "evidence": [
+        "proof.md",
+        "virtual.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
