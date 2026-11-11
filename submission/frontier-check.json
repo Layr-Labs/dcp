@@ -1,0 +1,12 @@
+{
+  "kind": "declared supported envelope comparison, not mathematical certification",
+  "public_submission_count": 1349,
+  "accepted_with_structured_bounds": 1213,
+  "same_error_model_count": 855,
+  "dominating_or_equivalent": [],
+  "strictly_dominated_rows": [
+    "d8ed8bbe-4d69-4611-b83e-09be4cff3825",
+    "f22bcee1-44ba-4cd1-b9ae-3d5c7e71dd8a",
+    "f78d741a-5047-4626-965a-a5ca708913fc"
+  ]
+}
