@@ -1,15 +1,20 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SPTS-JM-BANK-STREAM: native measured-record search with linear classical space",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM-BANK-STREAM physical implementation in proof.md executes the complete selected SPTS-JM algorithm, using the complete bank source for polynomial phases and the explicit native classical coarse controller for all repeated search attempts. Large logical record arrays remain measured computational-basis quantum cells; current fixed-number n-bit words, persistent gate descriptors and 8-bit-per-level preparation return frames occupy only O(n) physical classical bits. The native fixed-grammar generator emits exactly V_j and its actual adjoint at immutable history prefixes; its measured record reads never depend on a superposed candidate. The full CQ invariant includes unread original systems and arbitrary good/bad/reference entanglement, so output law is exactly the complete virtual program and full-secret success is strictly greater than11/16 under the exact fixed original joint-good-marginal model with at most floor(Q/3) bad positions. All finite n<64 and n=1 branches are unchanged. ALL FIVE guarantees hold JOINTLY on EVERY branch, including failed work, original pre-attempt token guards, full paired allocation/address charges, actual compiler bit work, every read/write and source SWAP, mode transfers, initialization and complete output-first cleanup. No QRAM, quantum-addressed classical bank, source inverse/control, supplied purification or arbitrary rotation primitive is used. Actual charged sequential time is O(2^((1/2)n)n(log2n)^3), exact growth index1. A complete native constraint costs O(nL^3), constant-bit recursion frames give the same C(V_j)<=3C(V_(j-1))+C(j+1)nL^3 recurrence, and native clock/token/verification work fits O(B A_j nL^3) per admitted attempt. The generic descriptor interpreter runs only polynomial-total phases; its overhead is explicitly paid and absorbed.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "bank-interpreter-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "bank-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +26,29 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "3"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM-BANK-STREAM physical implementation in proof.md executes the complete selected SPTS-JM algorithm, using the complete bank source for polynomial phases and the explicit native classical coarse controller for all repeated search attempts. Large logical record arrays remain measured computational-basis quantum cells; current fixed-number n-bit words, persistent gate descriptors and 8-bit-per-level preparation return frames occupy only O(n) physical classical bits. The native fixed-grammar generator emits exactly V_j and its actual adjoint at immutable history prefixes; its measured record reads never depend on a superposed candidate. The full CQ invariant includes unread original systems and arbitrary good/bad/reference entanglement, so output law is exactly the complete virtual program and full-secret success is strictly greater than11/16 under the exact fixed original joint-good-marginal model with at most floor(Q/3) bad positions. All finite n<64 and n=1 branches are unchanged. ALL FIVE guarantees hold JOINTLY on EVERY branch, including failed work, original pre-attempt token guards, full paired allocation/address charges, actual compiler bit work, every read/write and source SWAP, mode transfers, initialization and complete output-first cleanup. No QRAM, quantum-addressed classical bank, source inverse/control, supplied purification or arbitrary rotation primitive is used. ENTIRE physical classical allocation is O(n) bits, exact growth index0, including all active n-bit words, source/generic staging, persistent microstep descriptors, exact constant-size return frames, all inactive fields, input/output and padding. All large histories/tables/labels/stack data outside this native compressed stack remain counted basis-bank quantum storage.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "bank-interpreter-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "bank-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,72 +59,81 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM-BANK-STREAM physical implementation in proof.md executes the complete selected SPTS-JM algorithm, using the complete bank source for polynomial phases and the explicit native classical coarse controller for all repeated search attempts. Large logical record arrays remain measured computational-basis quantum cells; current fixed-number n-bit words, persistent gate descriptors and 8-bit-per-level preparation return frames occupy only O(n) physical classical bits. The native fixed-grammar generator emits exactly V_j and its actual adjoint at immutable history prefixes; its measured record reads never depend on a superposed candidate. The full CQ invariant includes unread original systems and arbitrary good/bad/reference entanglement, so output law is exactly the complete virtual program and full-secret success is strictly greater than11/16 under the exact fixed original joint-good-marginal model with at most floor(Q/3) bad positions. All finite n<64 and n=1 branches are unchanged. ALL FIVE guarantees hold JOINTLY on EVERY branch, including failed work, original pre-attempt token guards, full paired allocation/address charges, actual compiler bit work, every read/write and source SWAP, mode transfers, initialization and complete output-first cleanup. No QRAM, quantum-addressed classical bank, source inverse/control, supplied purification or arbitrary rotation primitive is used. ENTIRE physical quantum allocation is O(n^2) qubits, exact growth index0, including the whole paired prefix with every basis-bank cell, mapped genuine coherent slot, unused pairing/padding, source temporary register, query/flag/helper/endpoint work and cleanup.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "bank-interpreter-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "bank-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM-BANK-STREAM physical implementation in proof.md executes the complete selected SPTS-JM algorithm, using the complete bank source for polynomial phases and the explicit native classical coarse controller for all repeated search attempts. Large logical record arrays remain measured computational-basis quantum cells; current fixed-number n-bit words, persistent gate descriptors and 8-bit-per-level preparation return frames occupy only O(n) physical classical bits. The native fixed-grammar generator emits exactly V_j and its actual adjoint at immutable history prefixes; its measured record reads never depend on a superposed candidate. The full CQ invariant includes unread original systems and arbitrary good/bad/reference entanglement, so output law is exactly the complete virtual program and full-secret success is strictly greater than11/16 under the exact fixed original joint-good-marginal model with at most floor(Q/3) bad positions. All finite n<64 and n=1 branches are unchanged. ALL FIVE guarantees hold JOINTLY on EVERY branch, including failed work, original pre-attempt token guards, full paired allocation/address charges, actual compiler bit work, every read/write and source SWAP, mode transfers, initialization and complete output-first cleanup. No QRAM, quantum-addressed classical bank, source inverse/control, supplied purification or arbitrary rotation primitive is used. The original acquisition count is EXACTLY3*2^40(n+32)=O(n), exact growth index0, on every branch. The source schedule, confidence and all finite parameters are unchanged; basis-bank initialization, native record reads and mode transfers acquire no originals.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "bank-interpreter-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "bank-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM-BANK-STREAM physical implementation in proof.md executes the complete selected SPTS-JM algorithm, using the complete bank source for polynomial phases and the explicit native classical coarse controller for all repeated search attempts. Large logical record arrays remain measured computational-basis quantum cells; current fixed-number n-bit words, persistent gate descriptors and 8-bit-per-level preparation return frames occupy only O(n) physical classical bits. The native fixed-grammar generator emits exactly V_j and its actual adjoint at immutable history prefixes; its measured record reads never depend on a superposed candidate. The full CQ invariant includes unread original systems and arbitrary good/bad/reference entanglement, so output law is exactly the complete virtual program and full-secret success is strictly greater than11/16 under the exact fixed original joint-good-marginal model with at most floor(Q/3) bad positions. All finite n<64 and n=1 branches are unchanged. ALL FIVE guarantees hold JOINTLY on EVERY branch, including failed work, original pre-attempt token guards, full paired allocation/address charges, actual compiler bit work, every read/write and source SWAP, mode transfers, initialization and complete output-first cleanup. No QRAM, quantum-addressed classical bank, source inverse/control, supplied purification or arbitrary rotation primitive is used. Guaranteed malformed fraction is epsilon(n)=1/3 under EXACTLY the structured fixed-set joint-marginal error model. Original bank and reference may be arbitrarily entangled subject to the exact good product marginal; passive fixed-order release and arbitrary conditional unread states are included. Full output-channel equality proves the complete one-third guarantee, including the clean case, without a conditional fresh-good assumption.",
+      "evidence": [
+        "proof.md",
+        "bank-interpreter-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "bank-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
