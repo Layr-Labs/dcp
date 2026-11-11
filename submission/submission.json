@@ -1,15 +1,21 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "WFP2-BANK: square-log weighted Fourier search with linear classical storage",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP2-BANK physical implementation in proof.md executes the complete current WFP2 logical algorithm selected by profile-source.md and its four included complete mathematical helpers. Its measured basis-bank/active-word/native-controller construction is proved for the exact original fixed joint-good-marginal input, including arbitrary malformed/good/reference correlations and passive unread source systems. The full CQ invariant and actual gate-word equality preserve V output law exactly, so whole-secret success is STRICTLY greater than2/3, including clean inputs and the same noisy-input finite branch. All large virtual classical arrays, frequency/angle records, metadata and long scratch occupy counted basis-state quantum cells. A constant number of active n-bit words and 8-bit-per-level preparation return frames remain physically classical. Repeated attempts and the NEW flagged Fourier base use native persistent known-address descriptors; coefficient/frequency rows are read at CLASSICAL loop indices, never at a measured or coherent query address. Slow polynomial scanning interpretation is confined to polynomial-total large-branch phases and the fixed public finite prefix, whose absolute-constant absorption is proved separately. EVERY cost is counted on EVERY branch, including all source calls/SWAPs, actual bit/gate generation, full addresses, padding/inactive fields, failed attempts/guards, initialization/mode transfer and complete output-first cleanup. No QRAM, free word operation, source inverse/control, supplied purification, instruction oracle or arbitrary rotation primitive is used. ALL FIVE guarantees concern this SAME implementation. Actual charged time is O(2^((1/2)n)n(log2n)^2), exact growth index1. Native sampled constraints and the FULL flagged Fourier base/inverse each cost O(nL^3), including all measured-array reads and address/descriptor work. The constant-size frame generator gives the same charged three-call recurrence. Native clock/token/verification work fits C B A_j nL^3 per pre-debited attempt, so the original hard square-log token budget O(2^(n/2)/L) proves EVERY-BRANCH time. All generic phases have polynomial TOTAL work on the large branch; generic finite-prefix overhead is bounded by a fixed absolute constant.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "native-bank-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +27,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP2-BANK physical implementation in proof.md executes the complete current WFP2 logical algorithm selected by profile-source.md and its four included complete mathematical helpers. Its measured basis-bank/active-word/native-controller construction is proved for the exact original fixed joint-good-marginal input, including arbitrary malformed/good/reference correlations and passive unread source systems. The full CQ invariant and actual gate-word equality preserve V output law exactly, so whole-secret success is STRICTLY greater than2/3, including clean inputs and the same noisy-input finite branch. All large virtual classical arrays, frequency/angle records, metadata and long scratch occupy counted basis-state quantum cells. A constant number of active n-bit words and 8-bit-per-level preparation return frames remain physically classical. Repeated attempts and the NEW flagged Fourier base use native persistent known-address descriptors; coefficient/frequency rows are read at CLASSICAL loop indices, never at a measured or coherent query address. Slow polynomial scanning interpretation is confined to polynomial-total large-branch phases and the fixed public finite prefix, whose absolute-constant absorption is proved separately. EVERY cost is counted on EVERY branch, including all source calls/SWAPs, actual bit/gate generation, full addresses, padding/inactive fields, failed attempts/guards, initialization/mode transfer and complete output-first cleanup. No QRAM, free word operation, source inverse/control, supplied purification, instruction oracle or arbitrary rotation primitive is used. ALL FIVE guarantees concern this SAME implementation. ENTIRE peak physical classical allocation is O(n) bits, exact growth index0, including input/output, all active n-bit Budget/B/t/A_j/candidate/pivot/frequency words, coefficient and address fields, persistent microstep descriptors, constant-size padded return frames and every inactive field. No n-by-n cache/history, physical classical virtual stack or unbounded transcript is retained. All other virtual records are measured basis-bank data.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "native-bank-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,72 +61,84 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP2-BANK physical implementation in proof.md executes the complete current WFP2 logical algorithm selected by profile-source.md and its four included complete mathematical helpers. Its measured basis-bank/active-word/native-controller construction is proved for the exact original fixed joint-good-marginal input, including arbitrary malformed/good/reference correlations and passive unread source systems. The full CQ invariant and actual gate-word equality preserve V output law exactly, so whole-secret success is STRICTLY greater than2/3, including clean inputs and the same noisy-input finite branch. All large virtual classical arrays, frequency/angle records, metadata and long scratch occupy counted basis-state quantum cells. A constant number of active n-bit words and 8-bit-per-level preparation return frames remain physically classical. Repeated attempts and the NEW flagged Fourier base use native persistent known-address descriptors; coefficient/frequency rows are read at CLASSICAL loop indices, never at a measured or coherent query address. Slow polynomial scanning interpretation is confined to polynomial-total large-branch phases and the fixed public finite prefix, whose absolute-constant absorption is proved separately. EVERY cost is counted on EVERY branch, including all source calls/SWAPs, actual bit/gate generation, full addresses, padding/inactive fields, failed attempts/guards, initialization/mode transfer and complete output-first cleanup. No QRAM, free word operation, source inverse/control, supplied purification, instruction oracle or arbitrary rotation primitive is used. ALL FIVE guarantees concern this SAME implementation. ENTIRE peak accessible quantum allocation is O(n^2) qubits, exact growth index0, including the WHOLE dense paired prefix for all B(n)=O(n^2) virtual classical bits and H(n)=O(n) genuine slots with ALL unused pairings/padding, current raw source temporary wires and all helper/catalyst/query/endpoint roles. Its full allocation determines every address fee. The smaller coherent subset is not substituted as the quantum bound.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "native-bank-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP2-BANK physical implementation in proof.md executes the complete current WFP2 logical algorithm selected by profile-source.md and its four included complete mathematical helpers. Its measured basis-bank/active-word/native-controller construction is proved for the exact original fixed joint-good-marginal input, including arbitrary malformed/good/reference correlations and passive unread source systems. The full CQ invariant and actual gate-word equality preserve V output law exactly, so whole-secret success is STRICTLY greater than2/3, including clean inputs and the same noisy-input finite branch. All large virtual classical arrays, frequency/angle records, metadata and long scratch occupy counted basis-state quantum cells. A constant number of active n-bit words and 8-bit-per-level preparation return frames remain physically classical. Repeated attempts and the NEW flagged Fourier base use native persistent known-address descriptors; coefficient/frequency rows are read at CLASSICAL loop indices, never at a measured or coherent query address. Slow polynomial scanning interpretation is confined to polynomial-total large-branch phases and the fixed public finite prefix, whose absolute-constant absorption is proved separately. EVERY cost is counted on EVERY branch, including all source calls/SWAPs, actual bit/gate generation, full addresses, padding/inactive fields, failed attempts/guards, initialization/mode transfer and complete output-first cleanup. No QRAM, free word operation, source inverse/control, supplied purification, instruction oracle or arbitrary rotation primitive is used. ALL FIVE guarantees concern this SAME implementation. Original acquisition count remains EXACTLY3*2^40(n+32)=O(n), exact growth index0, on EVERY branch. The original logical schedule is simulated one-for-one: each raw arbitrary register is moved by reference-safe SWAPs into mapped coherent slots, with no additional original sample. Bank zeros, READ/WRITE, ordinary gradient calls and reset/cleanup create no originals.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "profile-source.md",
+        "native-bank-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP2-BANK physical implementation in proof.md executes the complete current WFP2 logical algorithm selected by profile-source.md and its four included complete mathematical helpers. Its measured basis-bank/active-word/native-controller construction is proved for the exact original fixed joint-good-marginal input, including arbitrary malformed/good/reference correlations and passive unread source systems. The full CQ invariant and actual gate-word equality preserve V output law exactly, so whole-secret success is STRICTLY greater than2/3, including clean inputs and the same noisy-input finite branch. All large virtual classical arrays, frequency/angle records, metadata and long scratch occupy counted basis-state quantum cells. A constant number of active n-bit words and 8-bit-per-level preparation return frames remain physically classical. Repeated attempts and the NEW flagged Fourier base use native persistent known-address descriptors; coefficient/frequency rows are read at CLASSICAL loop indices, never at a measured or coherent query address. Slow polynomial scanning interpretation is confined to polynomial-total large-branch phases and the fixed public finite prefix, whose absolute-constant absorption is proved separately. EVERY cost is counted on EVERY branch, including all source calls/SWAPs, actual bit/gate generation, full addresses, padding/inactive fields, failed attempts/guards, initialization/mode transfer and complete output-first cleanup. No QRAM, free word operation, source inverse/control, supplied purification, instruction oracle or arbitrary rotation primitive is used. ALL FIVE guarantees concern this SAME implementation. Guaranteed malformed fraction is EXACTLY epsilon(n)=1/3 under the literal structured fixed-set joint-marginal context. The full invariant includes the unread fixed original bank and reference; extra READs only copy existing classical records and do not assume a fresh-good conditional law. Output-channel equality transfers the complete WFP2 success theorem with ZERO additional statistical loss, jointly with all four actual physical resource bounds, for each fixed-B component and allowed mixture.",
+      "evidence": [
+        "proof.md",
+        "profile-source.md",
+        "native-bank-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
