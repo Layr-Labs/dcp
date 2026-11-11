@@ -1,15 +1,21 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "GPS-STRICT-RETRY-BANK: geometric retry weights and revised literal cutoffs",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-STRICT-RETRY-BANK physical algorithm in proof.md recovers the ENTIRE s with unconditional probability at least1-2^-8 under the exact canonical independent-ideal-copy model. It uses the unchanged GPS profile, tree/search/signed/decoder instruments but CHANGES literal Qcap and Wcap, recomputes ALL dependent extraction h_e/t_V/fallback Cf/counters/layouts, and gives a NEW pre-batch geometric-retry and uncapped/capped success proof. Quantitative return p>=67/128 yields kappa128/67 and weighted decay64/67; the root expected weight is below64*2^R instead of2m2^R. Qcap=1024(ceil(2*(128/67)^m*q0*H0)+2n), Wcap=1024*64*2^R*H0 on n>=256. For n<256 the original clean exhaustive branch is retained. The complete native ATTEMPT is used only for n>=2^4096; below that threshold the generic bit interpreter executes the NEW logical cap/extraction program. No old parent output-law equality, post-input fixed-residue success bound, expected-only runtime, source purification/control/inverse, extra QRAM, free word arithmetic, instruction oracle or arbitrary phase primitive is assumed. Every source fee/move, original, bit/gate generation, address, padding/inactive allocation, failed attempt, refused-guard children, initialization, private erasure and entire output-first cleanup is counted on EVERY branch. ALL FIVE guarantees hold jointly for THIS SAME modified actual configuration. Charged sequential time is O(n^2(log2n)^2 2^((176777/250000)sqrt(n log2n))), exact growth index1/2. The complete native cost O(R^2 L w_i) and NEW literal weighted cap give O(nR^2 L2^R); all generic work is bounded by n^20(Qcap+q0+1), absorbed by the proved for-every-fixed-A cap/product gap. Actual source/extraction/cutoff losses retain total below2^-8. The exact inner coefficient comes from the unchanged proved profile, not an unknown inner big-O.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "native-source.md",
+        "controller-source.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +27,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "176777/250000",
+              "nPower": "1/2",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-STRICT-RETRY-BANK physical algorithm in proof.md recovers the ENTIRE s with unconditional probability at least1-2^-8 under the exact canonical independent-ideal-copy model. It uses the unchanged GPS profile, tree/search/signed/decoder instruments but CHANGES literal Qcap and Wcap, recomputes ALL dependent extraction h_e/t_V/fallback Cf/counters/layouts, and gives a NEW pre-batch geometric-retry and uncapped/capped success proof. Quantitative return p>=67/128 yields kappa128/67 and weighted decay64/67; the root expected weight is below64*2^R instead of2m2^R. Qcap=1024(ceil(2*(128/67)^m*q0*H0)+2n), Wcap=1024*64*2^R*H0 on n>=256. For n<256 the original clean exhaustive branch is retained. The complete native ATTEMPT is used only for n>=2^4096; below that threshold the generic bit interpreter executes the NEW logical cap/extraction program. No old parent output-law equality, post-input fixed-residue success bound, expected-only runtime, source purification/control/inverse, extra QRAM, free word arithmetic, instruction oracle or arbitrary phase primitive is assumed. Every source fee/move, original, bit/gate generation, address, padding/inactive allocation, failed attempt, refused-guard children, initialization, private erasure and entire output-first cleanup is counted on EVERY branch. ALL FIVE guarantees hold jointly for THIS SAME modified actual configuration. ENTIRE peak physical classical allocation is O(n) bits, exact growth index0, including input/output, bounded generic staging, all native active words/row/current clocks and inactive fields. Labels, matrix, histories, full rational/word preprocessing, frames, metadata and every long array are in the counted basis bank; no uncounted classical duplicate survives.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "native-source.md",
+        "controller-source.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +61,85 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-STRICT-RETRY-BANK physical algorithm in proof.md recovers the ENTIRE s with unconditional probability at least1-2^-8 under the exact canonical independent-ideal-copy model. It uses the unchanged GPS profile, tree/search/signed/decoder instruments but CHANGES literal Qcap and Wcap, recomputes ALL dependent extraction h_e/t_V/fallback Cf/counters/layouts, and gives a NEW pre-batch geometric-retry and uncapped/capped success proof. Quantitative return p>=67/128 yields kappa128/67 and weighted decay64/67; the root expected weight is below64*2^R instead of2m2^R. Qcap=1024(ceil(2*(128/67)^m*q0*H0)+2n), Wcap=1024*64*2^R*H0 on n>=256. For n<256 the original clean exhaustive branch is retained. The complete native ATTEMPT is used only for n>=2^4096; below that threshold the generic bit interpreter executes the NEW logical cap/extraction program. No old parent output-law equality, post-input fixed-residue success bound, expected-only runtime, source purification/control/inverse, extra QRAM, free word arithmetic, instruction oracle or arbitrary phase primitive is assumed. Every source fee/move, original, bit/gate generation, address, padding/inactive allocation, failed attempt, refused-guard children, initialization, private erasure and entire output-first cleanup is counted on EVERY branch. ALL FIVE guarantees hold jointly for THIS SAME modified actual configuration. ENTIRE peak accessible quantum allocation is O(n^2) qubits, exact growth index0: full dense paired basis bank including padded/inactive cells, current residue matrix and row storage, all genuine retained siblings, shared search/carry/extraction/compact input roles and current n+1 raw original wires. The genuinely coherent subset is only O(n) and is NOT substituted for the physical allocation.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "native-source.md",
+        "controller-source.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-STRICT-RETRY-BANK physical algorithm in proof.md recovers the ENTIRE s with unconditional probability at least1-2^-8 under the exact canonical independent-ideal-copy model. It uses the unchanged GPS profile, tree/search/signed/decoder instruments but CHANGES literal Qcap and Wcap, recomputes ALL dependent extraction h_e/t_V/fallback Cf/counters/layouts, and gives a NEW pre-batch geometric-retry and uncapped/capped success proof. Quantitative return p>=67/128 yields kappa128/67 and weighted decay64/67; the root expected weight is below64*2^R instead of2m2^R. Qcap=1024(ceil(2*(128/67)^m*q0*H0)+2n), Wcap=1024*64*2^R*H0 on n>=256. For n<256 the original clean exhaustive branch is retained. The complete native ATTEMPT is used only for n>=2^4096; below that threshold the generic bit interpreter executes the NEW logical cap/extraction program. No old parent output-law equality, post-input fixed-residue success bound, expected-only runtime, source purification/control/inverse, extra QRAM, free word arithmetic, instruction oracle or arbitrary phase primitive is assumed. Every source fee/move, original, bit/gate generation, address, padding/inactive allocation, failed attempt, refused-guard children, initialization, private erasure and entire output-first cleanup is counted on EVERY branch. ALL FIVE guarantees hold jointly for THIS SAME modified actual configuration. All original acquisitions, including discarded copies and failed/aborted subtrees, obey the NEW Qcap and original finite rules, with Q=O(2^((176777/250000)sqrt(n log2n))) and exact growth index1/2. There is one physical original per logical request. Cap reduction recomputes the actual EXTRACT parameters, rather than dropping calls or errors in accounting; bank reads/zeros/SWAPs are not originals.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "native-source.md",
+        "controller-source.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "176777/250000",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-STRICT-RETRY-BANK physical algorithm in proof.md recovers the ENTIRE s with unconditional probability at least1-2^-8 under the exact canonical independent-ideal-copy model. It uses the unchanged GPS profile, tree/search/signed/decoder instruments but CHANGES literal Qcap and Wcap, recomputes ALL dependent extraction h_e/t_V/fallback Cf/counters/layouts, and gives a NEW pre-batch geometric-retry and uncapped/capped success proof. Quantitative return p>=67/128 yields kappa128/67 and weighted decay64/67; the root expected weight is below64*2^R instead of2m2^R. Qcap=1024(ceil(2*(128/67)^m*q0*H0)+2n), Wcap=1024*64*2^R*H0 on n>=256. For n<256 the original clean exhaustive branch is retained. The complete native ATTEMPT is used only for n>=2^4096; below that threshold the generic bit interpreter executes the NEW logical cap/extraction program. No old parent output-law equality, post-input fixed-residue success bound, expected-only runtime, source purification/control/inverse, extra QRAM, free word arithmetic, instruction oracle or arbitrary phase primitive is assumed. Every source fee/move, original, bit/gate generation, address, padding/inactive allocation, failed attempt, refused-guard children, initialization, private erasure and entire output-first cleanup is counted on EVERY branch. ALL FIVE guarantees hold jointly for THIS SAME modified actual configuration. The guaranteed fractional tolerance is EXACTLY epsilon(n)=0 under the literal structured canonical independent-ideal-copy promise. The NEW logical capped/extraction program and its full physical implementation have whole-secret success at least1-2^-8 for every N,s jointly with all four actual bounds. No behavior for malformed copies, positive robustness or maximal tolerance is claimed.",
+      "evidence": [
+        "proof.md",
+        "native-source.md",
+        "controller-source.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
