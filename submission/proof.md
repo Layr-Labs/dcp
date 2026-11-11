@@ -1,104 +1,155 @@
-# Exhaustive shift testing
+# RPF-8C: eight-list measurement with a public nominal count and short reflections
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 0. One algorithm, promise and joint theorem
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+Material immediate source is the eight-list public-nominal-count construction. Its complete source/score/join/PGM/unknown-witness/native methods are supplied and re-established here; exact platform IDs/hashes and history are in the dependency declaration/public note. NEW: a fixed160-extra-subset slack and explicit constant capacities replace growing margins; the public NOMINAL count uses fixed sufficient decoder accuracy, with a second-moment heavy-column tail bound. The stronger split/shorter reflection schedule and complete nominal-column engine are re-established here. Sections4-5 prove INPUT-weighted column/error bounds from an explicit second moment. Section9 charges the new literal loops/allocations. No source verdict or finite diagnostic is a premise.
 
-## Correctness
+For N>=2 write n=ceil(log2N), u=n+2, Q=3*2^40(n+32), q=Q/2, n0=2^12. ONE program below has unconditional full-secret success>=2/3 and simultaneous bounds
+ T=O(2^(199n/500)n^(13/2)), S_C=O(n²), S_Q=O(2^(n/8)n^4),
+ EXACT original acquisitions Q=3*2^40(n+32)=O(n).
+Time/quantum indices are1; classical/sample indices0. Every branch is capped, including failure/unused originals, and all bit operations, gates, addresses, generation, initialization and memory count.
 
-On a component with offset x, controlled subtraction produces
+The literal malformed fraction is1/32: an adversary fixes B, |B|<=floor(Q/32), possibly depending onN,s. The joint state, with arbitrary inaccessible reference, has reduced state rho_s tensor(Q-|B|) on all other positions; bad systems may be arbitrarily entangled/correlated subject to that marginal. Mixtures over fixed B follow by linearity. No source control, preparation inverse or purification is available.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Acquire EXACTLY Q originals on every branch. Preprocess/split/score as1–2. If n<n0 run8. Otherwise m=8ceil((n+160)/8), r=m/8, L=2^r, Pcap=2^160*L, K=2^176, Kk=nextpow2(m+1), H=L^4*Kk*K. Run6–7 with the preimage word3–5. nextpow2 is computed by integer bit lengths. These are fixed choices for all five claims, not separately optimized configurations.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+All constructions are supplied in this file and native.md. Material source9fd0fa0e-7410-422f-a82d-67022c0c7cfc (published balanced sample program) receives credit for joint-source.md2 full-reference extraction/coupling and sources/RQ-SPLIT-proof.md3 finite eigenlabel probing. Its other engine, old output law/resource bounds and verdict are not premises. Standard credits: Bacon–Childs–vanDam2005, arXiv:quant-ph/0501044 (PGM/preimages); Marriott–Watrous2005, arXiv:cs/0506068 (binary in-place witness tests); Kitaev1995, arXiv:quant-ph/9511026 (eigenphase probes). No external native oracle is assumed.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+## 1. Source and unconditional reference comparison
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+Let omega=e^(2pi i/N), chi_k=N^-1/2 sum_(x<N)omega^(-kx)|x>, phi_k=(|0>+omega^(ks)|1>)/sqrt2. Orthogonality gives exactly
+ rho_s=(1/N)sum_k |phi_k><phi_k| tensor|chi_k><chi_k|.
+Known ADD1 has eigenvalueomega^k onchi_k; extend ADDa by identity on padding x>=N. Privately uniformly translate position byj in[0,N), forgetj. The factor (1/N)sum_j omega^(j(k-l)) kills distinct valid k,l coherences, also against a reference. A bad padding/zero-mode coherence need not vanish; no separation of those modes is used. Each GOOD position has valid support globally by positivity of its marginal.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Each uniform range draw uses d=ceil(log2(2^40Q)) trials of ceil(log2range) fair bits, taking the first in range; conditional success is exactly uniform. A whole Q-draw procedure aborts with probability<=2^-40. Keep an abort flag but nevertheless acquire all Q originals. On success use the native2 nondemolition ADD eigenlabel instrument, t=n+4, reporting W modN with per-eigenstate error<=delta=2^-100n; measure probes and discard position, retaining phase qubit/W. Known translations act only on position, so every fixed probe transcript acts by a scalar onchi_k and never changesphi_k.
 
-## Implementing the controlled subtraction
+The exact twirl gives an analysis-only classical refinement of all good k. Their JOINT marginal is IID uniform, because the original good marginal is the stated product. Given all good k, the good phase subsystem is a PURE product; positivity forces it to factor from all bad/reference systems. The remaining state may depend onk. Define a comparison OUTPUT by replacing only GOOD reported W with its hiddenk, keeping every bad channel and reference unchanged. Couple actual/ideal outcomes using the same hidden k/probe transcripts: they differ only on a good report error. Full-reference trace distance<=Qdelta<2^-40. This is unconditional; do not condition uniform labels on successful extraction/bad reports. Later channels contract this distance. Work always refers to the physical capped instrument.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+## 2. Private split and exact score soundness
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+After ALL Q acquisitions, uniformly Fisher–Yates permute phase/W pairs using the same range capd; total abort<=2^-40. Conditional success gives exactly uniform permutation independent of input. First q records form a verification bank, second q an unknown witness bankD. Forb=|B|, putp=b/Q<=1/32. Bad countX in either half has meanqp and varianceq*p*(1-p)*q/(Q-1)<=q/32. Thus Var(X/q)<=1/(32q). Set eta=2^-20. By Chebyshev/union, either half exceeding p+eta has probability<=2/(32q*eta²)=1/(24(n+32))<1/1024 for n>=n0. This stronger event implies the old33/1024 bound used below. It concerns ONLY B/private permutation; no conditioning of good labels or bad reports is used. In the finite-prefix fallback use the original bound: varianceX<=Q/4 and a deviationQ/2048 give failure<=2^20/Q<1/1024. The actual source/permutation schedule is unchanged.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Measure verification phases in independent fair X/Y axes beta=0,pi/2, outcomesZ=+/-1. Retain(W,beta_flag,Z). Define score(a)=q^-1 sum Zcos(2pi*aW/N-beta). A good term has mean1/2 for a=s,0 otherwise: averagebeta gives(1/2)cos(2pi*(a-s)W/N), then uniformW gives character orthogonality. Good marginal terms are independent, without conditioning on bad data. Hoeffding for[-1,1] gives good-sum deviationq/16 probability<=2exp(-q/512); union over all N candidates is<2^-40. Bound every bad contribution by its count, regardless of correlations. On these events
+ score(s)>=(1-33/1024)/2-1/16-33/1024=797/2048,
+ score(a) for a!=s <=1/16+33/1024=97/1024.
+Native2 gives an EXACT rational cosine polynomial with error<1/128 and common positive denominatorD. The Boolean marker a<N AND4sum Z*C>=qD therefore accepts EXACTLY s. It is computed with reserved clean scratch, untouched by earlier stages. Thus clean-verifier soundness holds for EVERY witness/reference state, not merely honest decoder outputs. The measured score records stay immutable.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+## 3. Eight-group bounded oracle and weighted input-mass caps
 
-## Joint costs and indices
+For selected W set f(b)=sum W_j b_j modN and c_y=|f^-1(y)|. Here m=8ceil((n+160)/8), r=m/8 andL=2^r. Eight r-variable groups give eight complete length-L lists with UNREDUCED integer sums and original subset IDs. Search tupleX=(h1,h2,h3,g,k,j) has four r-bit hashes, k in[0,Kk), j in[0,K), henceH=L^4*Kk*K, a power of two. T=y+kN, h4=(T-h1-h2-h3)modL, U=(T-h1-h2-h3-h4)/L. U is an INTEGER, possibly negative on no-solution branches.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+Form four pair listsSi with low-r residuehi, each capped atPcap=2^160*L. Keep full sums/IDs and quotientvi=(Si-hi)/L. Join pairs1,2 on(v1+v2)modL=g, capacityPcap; pairs3,4 on(v3+v4)modL=(U-g)modL, samecapacity. Keep full u12=v1+v2 andu34=v3+v4. The root join tests EXACT integeru12+u34=U, capacityK=2^176; sort its fullb outputs canonically. Native's padded duplicate join supplies every node, with ALL histories/flags retained for literal reversal. Any overflow rejects the WHOLE tuple; also rejectk>m orj outsidecount. Quantumrankj usesaFULL K-slot scan. SignedU never selects an array address.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Every survivingb determines uniquelyh1,h2,h3, g=its(v1+v2)modL, k=(sum W_jb_j-y)/N and canonicalrankj. Its h4 follows fromT and the firstthreehashes and matchesitsactual fourthpairresidue. Conversely root equality andallresidueconstraints force the full unreduced sum equalT, hence f(b)=y. Distinct subsetIDs remain distinct when sumscoincide; no multiplicity of representations is introduced. This is an exact bounded Boolean marked oracle. InverseF(b) computes these samehashes/carry, recomputesthe boundedcanonicallist andFULLSCANSforb/rank; absent0. All words/flags havefixed public maxima evenforbadinputs.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+The following bounds concern UNIFORM INPUT(W,b) mass, never a uniform or independently conditioned target/hash. Fixb, withW IID uniformZ_N andN>=L². At a pairnode, anydifferentpaira hasintegerdifferenceD with a coefficient+/-1. Conditionallotherlabels; Pr[D=0modL]<=ceil(N/L)/N<=2/L. Expectedsize ofb'sactualbucket<=2L+1<=3L, soeachfirstpaircaploses<=3*2^-160 byMarkov.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+At a four-group intermediatenode letD1,D2 be alternate-minus-b integerdifferences inits two disjoint childpairs. Membership inb'sactualbucket is EXACTLY
+ D1=0modL, D2=0modL, D1+D2=0modL².       (*)
+Indeed the firsttwoconditions fixchildresidues, andquotientdifferenceis(D1+D2)/L. Ifbothchildrenunchanged, contribution1. Ifonlyonechanges, itsnonzero +/-1-coefficient difference vanishesmodL² withprobability<=2/L²; the2(L²-1) suchalternates contribute<4. Ifbothchange, chooseone +/-1 variableX inchild1 andY inchild2; afterconditioningothers D1=sigmaX+c,D2=tauY+d withindependentX,Y uniform[0,N). Atmostceil(N/L) choicesX makeD1=0modL; foreach, atmostceil(N/L²) choicesY makeD2=-D1modL², automaticallygivingD2=0modL. Probability<=4/L³, sinceN>=L². Thereare<(L²)^2 alternatives, contributing<4L. Expectedintermediatesize<=4L+5<=9L; childcaps canonlyremoveentries. Markov overfourpairnodes andtwointermediatenodes thereforeloses<=30*2^-160 ofINPUTmass, including b'sW-dependenthashes without any conditionalindependence assumption.
 
-## Fractional error tolerance
+Forfull targets putM0=2^m,mu=M0/N. The actual constant-slack choice gives2^160<=mu<2^168, since160<=m-n<=167 and2^(n-1)<N<=2^n. For distinct b,bprime the +/-1 modularN collision argument yields
+ E[(1/N)sum_y(c_y/mu-1)²]=(1-1/N)/mu<=1/mu.
+This secondmoment is independent of the caps. Let v=K/mu-1>=1 (K=2^176>=2mu). For d=c_y/mu-1 and c_y>K, (1+d)1_heavy<=d²(v^-2+v^-1). The INPUT-weighted heavy mass therefore has expectation<=2/(mu*v)<=4/K=2^-174. This is stronger than an unjustified uniform-target bound and does not use a thirdmoment. Exclude those entire heavy columns ONLY in analysis.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+On nonheavy c_y<=K, no final root cap can overflow and the surviving cprime_y<=K. If Dprime is the survivor set after excluding heavy targets and all nonroot overflow branches, ell=1-|Dprime|/M0 obeys
+ Eell<=30*2^-160+4/K=30*2^-160+2^-174<2^-155.
+The physical heavy-column word remains bounded and may behave arbitrarily. Every node uses the supplied finite native sort/scan construction, not an external dissection/hash/QRAM oracle.
+
+## 4. Actual public-nominal-count positive preimage column
+
+Put M0=2^m, mu=M0/N. These are PUBLIC rationals/integers, independent of W,y,s. Main-range rounding gives2^160<=mu<2^168. Let cprime_y be the physical surviving marked count for nonheavy targets c_y<=K. In analysis only set cprime_y=0 on heavy columns, as in3; those entire columns are charged as lost input. The physical oracle/unitary always keeps its public caps and may behave arbitrarily on heavy inputs. No global quantumcount estimator, countcopy or countuncompute is executed. Exact bucket counts inside the bounded join remain ordinary explicit Boolean words.
+
+Generate finitepi P_pi/D_pi as native2 with precision b=2log2H+40. Compute PUBLIC
+ j=floor-sqrt(floor(P_pi²*H*N/(16D_pi²*M0))).
+Its distance from(pi/4)sqrt(H/mu) is<2: finitepi scaling contributes<1/16, and floor-sqrt of a floored nonnegative rational equals floor of its real square root. All integers haveO(n)bits, and j generation/storage/full fees are counted. The ACTUAL loop executes EXACTLY these j iterations, not an old sqrtH loop with inactive controls. j=O(sqrt(H/mu)); both it and its inverse loop are fixed by the public input.
+
+Start X uniformly on its power-of-two H domain and apply exact
+ G=(2|u_H><u_H|-I)(I-2P_mark)
+exactly j times. Every G genuinely invokes the bounded mark word; no fastpower is assumed. Native uses the positive diffusion scalar exactly. A fixed|1> helper supplies any minus compensation, then is cleared; no y-dependent phase is dropped. For physical count c, its two-dimensional angle is theta=asin(sqrt(c/H)) and marked amplitude sin((2j+1)theta). c0 has no marked component.
+
+Let tau=2^-40. Call a target REGULAR if |c_y/mu-1|<=tau and d_y=c_y-cprime_y<=tau*mu. Then 0<cprime_y and |cprime_y/mu-1|<=2tau. Put z0=sqrt(mu/H), z=sqrt(cprime_y/H). Main-range mu<2^168,K=2^176 andH>=L^4K imply z0<=2^-4/L²<=tau/32, sinceL>=2^24 atn>=n0. Also z<=2z0<=1/4. Write j=pi/(4z0)+eta, |eta|<2. From z<=asinz<=z+z³, |sqrt(1+d)-1|<=|d| for|d|<=1/2, andpi<4,
+ |(2j+1)asinz-pi/2| <=4tau+7z<=4tau+14z0<16tau<pi/2.
+Thus the marked amplitude is POSITIVE and the full Grover state differs from the normalized marked state by at most16tau in norm. This estimate uses only relative closeness to the public mu, not a measured or coherently estimated count.
+
+Keep X unchanged while computing its canonical solver output g(X), copy b into fresh B and the SINGLE tag NOT(validtuple), and reverse g. Only then compute the SAME canonical F(B), XOR it intoX, and reverse F temporaries withB unchanged. On marked branches, X/tag/allhelpers are0; distinct marked tuples correspond uniquely to surviving b. On unmarked branches tag1 remains, even if dummyb accidentally erases an index. The all-zero-count case already has no marked tuple and receives no second tag XOR. Literal reversal defines the inverse on all dirty inputs.
+
+Therefore this actual finite U_y has its clean column within16tau of |muprime_y>|0_aux> on REGULAR columns, where muprime_y is the uniform surviving b state. All nonregular/heavy columns have a bounded unitary extension; comparison distance is at most2. Zero-count intended columns have no success overlap. No whole-unitary approximation, unknown-source inverse, intermediate measurement or postselection is used.
+
+## 5. Input-weighted nominal-count error and PGM completeness
+
+For each fixed W the full counts obeysum_y c_y=M0. Any pair of distinct subsets b,bprime has a coefficient+/-1 in f(b)-f(bprime); conditional on all other IID uniform labels its moduloN collision probability is exactly1/N, also for composite/oddN. Hence
+ E_W[(1/N)sum_y(c_y/mu-1)²]=(1-1/N)/mu<=1/mu.
+This is a joint second-moment identity. It does NOT assume a uniform target independent of the input or condition labels on bad reports.
+
+Let beta(W)=sum_y(c_y/M0)1_(nonregular y), the actual INPUT-weighted mass of bad columns. For d=c_y/mu-1 and |d|>tau, (1+d)1_bad<=d²(tau^-2+tau^-1). On the remaining count-regular columns, c_y<=mu(1+tau); the number with d_y>tau*mu is at most M0*ell/(tau*mu). Thus
+ E beta <=2/(mu*tau²)+2Eell/tau
+ <=2^-79+2^-114<2^-78,
+since3 gives Eell<2^-155 andmu>=2^160,tau=2^-40. Heavy columns are nonregular under the analysis definition cprime0. These inequalities explicitly charge lost INPUT, rather than a uniform-y measure.
+
+The good selected phase input is M0^-1/2 sum_b omega^(s f(b))|b>. Compute f(b) into read-only Y, apply U_y^dag toB/fresh0work, and coherently require B/allpreimageauxiliaries0. W,Y are excluded from that PGM-zero test. The intended surviving frequency vector is M0^-1/2 sum_y sqrt(cprime_y)omega^(sy)|y>. The zero-auxiliary vector error has squared block weights c_y/M0; distinctY blocks are orthogonal. Section4 bounds its norm by16tau+2sqrt(beta), so its mean is<=16tau+2sqrt(Ebeta). This uses the adjoint of a single prepared column in eachY block, not a whole-unitary operator-norm claim.
+
+For full counts, Cauchy and the same secondmoment give expected L1 distance ofc_y/M0 from1/N at most sqrt(N/M0)<=2^-80. Its ideal correct-frequency amplitude alpha=sum_y sqrt(c_y)/sqrt(N*M0)>=1-L1/2, so mean failure<=2^-80. Removing input fractionell changes the frequency vector by<=sqrt(ell), since(sqrt c-sqrt cprime)²<=c-cprime. Retain the conservative allowance4sqrt(Eell).
+
+Native2 known-ADD readout, with t=n+4 anddelta=2^-100n, identifies the true frequency with per-eigenstate error<=delta; negate its decoded label as specified there. Retain Y through acceptance. Orthogonal frequency eigenstates make the classical readout law a mixture, so no dimensionN error multiplier occurs. Comparing squared overlaps of norm-at-most-one frequency vectors changes success by at most twice their norm distance. Therefore the complete decoder mean failure is at most
+ 2^-80+4sqrt(Eell)+32tau+4sqrt(Ebeta)+delta
+ <2^-80+2^-75+2^-35+2^-37+2^-100<2^-34<2^-20.  (5.1)
+Use Eell<2^-155,Ebeta<2^-78,tau=2^-40 anddelta=2^-100n. These are fixed adequate accuracy margins for the constant success target; no vanishing-error assumption is needed. Bad columns are handled by their weighted norm mass and the physical word remains finite; no artificial target rejection is executed.
+
+## 6. Actual verifier and unconditional good-label event
+
+Coherently choose an ordered m-subset of witnessD by Fisher–Yates range draws, d_sel=ceil(log2(4m)) trials each. Keep ALL fair raw coins. Validity>=3/4; conditional validity gives EXACT uniform ordered subsets. Copy classical labels to a quantum buffer; quantum-selected phase/label swaps use full q-position scans. All coin/buffer/scan work is polynomial. Raw coins remain orthogonal through acceptance, making the clean acceptance effect a positive average over subsets.
+
+In the main range m<=2n and q=3*2^39(n+32), so m/q<2^-38<2^-30. On the stronger split event each successive all-good draw has probability>=1-p-eta-m/q>=R, R=31/32-2^-20-2^-30=1040186367/2^30. To justify the subtraction, p/(1-x)<=p+x whenever0<=x<=1-p; usex=i/q for previous all-good draws. Sampler-valid all-good weightw>=R^m/2. Define B as the normalized all-good valid DECODER-ONLY effect requiring true candidates andPGM-zero flag, with0<=B<=I. It does not consult score data. On the score-uniqueness event, the physical marker equals that true-candidate predicate for EVERY witness, so the actual acceptance effect A>=wB. No such inequality is used off that event.
+
+V is the coherent selector/routing, decoder4–5 and exact score marker2, with dedicated untouched score scratch. AcceptC only on selector-valid/PGM-zero/candidate<N/score. All V operations are known finite Clifford+T words; there are NO internal measurements. For clean ancillary inputs on the score event, every accepted vector has candidate=s for arbitrary D/reference.
+
+Given ALL good hidden labels, selected good phases are pure products factoring from the rest; B ignores unselected/bad phases. Its mean completeness is(5.1) over the UNCONDITIONAL IID good-label marginal, irrespective of bad reports. Markov gives an event, failure<=1/1024, on which Tr(rho B)>=1-1/1024. Do not obtain it by conditioning labels on score/bad reports/prior survival. Intersect it with split/score events by union bound; source-label distance is charged once.
+
+## 7. Randomized subspace reflections, unknown witness and exact safety
+
+D is ALL original witness phase wires; A is every other mutable V wire, initially0. P=I_D tensor|0_A><0_A|, excluding immutable read-only data. Qv=V^dag C V; Av=P Qv P onRangeP. On the score event Av>=p0B, p0=2^(-ceil(23m/500)-1), using R^500>2^-23. The exact finite integer inequality is1040186367^500*2^23>2^15000, computable by fixed repeated squaring/multiplication with no real-number oracle. Therefore R^m>=2^(-23m/500)>=2^(-ceil(23m/500)); this supports the ACTUAL shorter rotation cap below. The decoder-only B from Section6 hasTr rho B>=1-1/1024 except the already bounded unconditional good-label event.
+
+For E=1_(Av<c p0), EBE<=cE. Hence
+ ||E rho^(1/2)||_HS <=||E B^(1/2)rho^(1/2)||_HS+||(I-B^(1/2))rho^(1/2)||_HS <=sqrt(c)+sqrt(epsilon)
+wheneverTr rho B>=1-epsilon, since(1-sqrt b)^2<=1-b. At c=epsilon=1/1024, initial spectral mass below a=p0/1024 is<=1/256. This bound does not assume A and B commute.
+
+First make ONE binary Qv test: apply V, measure ONLY C; accept/output candidate, or on failure apply literalV^dag, leaving state inQv-perp. Put U=(I-2P)(I-2Qv), each factor an EXACT subspace phase reflection. I-2P computes all-zero(A) in a separate clean AND-tree apparatus, phases its single flag withZ and reverses the entire Boolean computation, returning apparatus0 on ANY A. I-2Qv is V, Z on C, literalV^dag. No source preparation inverse or reflection about the unknown D state occurs.
+
+Choose J=2^(ceil((ceil(23m/500)+11)/2)+4), so J>=16/sqrt(a) andJ=O(2^(23m/1000)). For at most16 trials choose fresh UNIFORM CLASSICAL j in[0,J) by log2J fair bits, apply U^j, then make the same binary Qv test and stop on acceptance. On failure literalV^dag returns toQv-perp. Charge all j<=J-1 words; discard only classical trial coins, never reset D/A or measure P. At timeout output0. The program acquires no additional originals.
+
+In a Jordan blocklambda=sin^2theta for P,Qv, starting inQv-perp, acceptance afterj rotations is sin^2(2jtheta). Forlambda in[a,1-a], sin(2theta)=2sqrt(lambda(1-lambda))>=sqrt(2a). Geometric summation gives
+ r_lambda=(1/J)sum_(j=0)^(J-1)sin^2(2jtheta)>=1/2-1/(2J|sin(2theta)|)>2/5.
+On every failed Qv test, that block is AGAIN its unique Qv-perp direction. Thus independent classical choices j renew the same success rate; sixteen trials fail<= (3/5)^16<1/1024. This is exact Jordan-block renewal, not a conditional freshness assertion for the original witness. Cross-block/reference coherences do not affect trace probabilities because each map preserves the blocks. Forlambda>1-a the INITIAL Qv failure is< a; forlambda<a bound by its initialmass1/256. Total failure on score/good-label events is<=1/256+1/1024+a<.01. Degenerate lambda0/1 obey the limiting statements directly.
+
+Safety is exact for dirty A: S=RangeP+Range(QvP) is invariant under P,Qv, their complements AND both reflections. Every reachable Qv-accept state lies inRange(QvP), and after V lies inRange(CVP), where the clean-input exact score marker forces the ENTIRE true candidate for every D/reference state. Globally dirty false-accept states elsewhere need not be sound. No fine-grained work measurement is used.
+
+Union the unchanged source-label distance, two bounded range aborts, split, score and good-label failures with this conditional failure. Unconditional whole-secret success remains>2/3 for every N,s and the same literal fixed-joint fraction1/32. Fixed trial/rotation caps count every failure branch.
+
+## 8. Finite fallback, same acquisitions/noise
+
+For n<n0 use the SAMEQ/split/score; discard unused witnesses with full charge. On its events the score marker has exactly one solution inH0=2^n. Do16 independent trials: uniform classicalj in[0,J), J=2^(ceil(n/2)+2); initialize a fresh uniform candidate register, perform j exactGrover words for the marker, measure/check the candidate classically and return firstpassing. No new source copy is acquired.
+
+For theta=asin(1/sqrtH0), mean trialsuccess is
+ (1/J)sum_j sin²((2j+1)theta)=1/2-sin(4Jtheta)/(4Jsin2theta)>=1/2-1/(16sqrt2)>2/5,
+usingJ>=4sqrtH0, sin2theta>=sqrt(2/H0). Failure<=(3/5)^16<1/1024, independently across fresh trial coins/search initializations on fixed score data. Same source/split/score union gives success>=2/3. WorkO(2^(n/2)poly(n)), spacepolynomial, exactQ. The finite setn<n0 has a finite maximum ratio to the declared envelopes, absorbed into an outside constant independent ofN,s,outcomes. No faster exponential rate is asserted on that finite prefix.
+
+## 9. Joint whole ledger with explicit constant accuracy/caps
+
+Main-range parameters are ACTUALLY m=8ceil((n+160)/8),Pcap=2^160*L,K=2^176; noformer polynomial-slack arrays are allocated. Thus n+160<=m<=n+167, m<=2n, L<=2^21*2^(n/8), andN>=L² since2r=m/4<=n/2<=n-1 atn>=n0. AlsoL>=2^176, soK<=L. All sums/signedquotients/caps/totals/addresses haveO(n)bits, including the public160/176-bit constant factors.
+
+The8raw lists and7fixed padded duplicate joins have WHOLEnetworklengthS=O(2^160L+2^176)=O(L). Both explicit large constants are charged physical capacities; this equality does not remove them from allocation/work. All childarrays/history are retained until literal reversal. Native3 sorting/scans useO(Sn²)recordoperations with conservativeO(n²)gates/savedbits peroperation, henceO(Ln^4)gates/qubits for the WHOLEtree. Native4 full-address streaming generation costs amortizedO(n²)per elementarygate, setupincluded, so one markoracle TOTAL O(Ln^6). Exact rootbucket counts, signedarithmetic and FULLKrank scans are included; the 2^176root array is physically present and covered byS.
+
+H=L^4*Kk*K and2^160<=mu<2^168 giveH/mu<=2^16L^4*Kk=O(L^4n). The ACTUALpublicj isO(sqrt(H/mu))=O(L²sqrt n). Finitepi/publicjroot construction is charged polynomialwork/space. No quantumglobalcount probes or sqrtH inactiveword cap exists. Wholecolumn/inverse work isO(L³n^(13/2)); output/indexcleanup addsconstantmany oraclewords. Source/selector/score/knownADDreadout/zero-phase/init/reset work fit; every failed or nominally parallel operation counts sequentially.
+
+PeakO(Ln^4)qubits includes all7nodes' paddedrecords, ALLsavedcomparator/scan/Boolean histories, constantmany mark/output/inverse regions, everyoriginal/probe/coin/arithmeticfield and separateall-zero phaseapparatuslinear inmutableVqubits. Each markcompute-phase-uncompute clears history onEVERYX/W/y basisstate, so it is actuallyreusedbetweenjiterations. There is no globalcount workspace. ThereforeSQ=O(2^(n/8)n^4). Immutableclassicalsource/scoreQ O(n)-bitrecords, inputs/outputs, generatedpublicconstants/j/counters/offsets and streamedgenerator fitO(n²), with no exponentialclassicalarray/circuit. Malloc countsALLclassicalbits/qubits, log2(Malloc+2)=O(n); every genuinelyindexed classicaloperation and quantumgate pays itsFULLglobalfee. Quantum-selected reads are explicit scans/sorts.
+
+The actual Section7 dyadicp0/J executeO(2^(23m/1000))wholeverifier/inverse/zero-phase words onEVERYbranch. Hence
+ T=O(2^(199m/500)n^(13/2))=O(2^(199n/500)n^(13/2)),
+since3/8+23/1000=199/500 andm-n<=167 is a FIXEDconstant, notlogarithmicslack. Classicalgeneration/fulladdresses/publicsetup, allsourceacquisitions, initialization, allfailedbranches andunusedreservations are charged. EXACTQ originals are acquiredevenonabort/fallback. Onn<n0 the mainarrays are notallocated or executed: the samefiniteprefix fallback8 givesALLN with finite uniformoutsideconstants. No restarts changeQ. These areONEprogram's jointfourresources/fraction1/32. Constants are large and explicitly accounted; no practical-speed or optimality claim is made.
+
+## 10. Scope, credit and provenance
+
+Eight-list/PGM circuits and all quantified native lemmas are complete in this archive; tests/verdicts are not premises. The standard tools credited in0, comparison networks/prefix scans/schoolbook arithmetic and two-projector decomposition are not claimed invented. Related Helm–MayPQCrypto2020 subset-sum tradeoffs supply no assumedpreimage oracle. Earlier published source9fd0fa0e joint/RQ methods are rederived here, not substituted by its acceptance. The actual earlier submission documents its own local operational failures/compaction; no hosted judgment is asserted here. This changed reflection configuration requires its OWN fresh whole-proof review; no parent verdict is reused.
+
+Randomized Grover-length/rotation credit: Boyer, Brassard, Høyer and Tapp, arXiv:quant-ph/9605034; amplitude amplification/estimation credit Brassard, Høyer, Mosca and Tapp, arXiv:quant-ph/0005055. The exact unknown-witness/spectral-tail/reachable-safety application is proved here, not imported as an uncosted oracle.
