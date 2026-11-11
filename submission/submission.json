@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "SPTS-JM: sampled-pivot search with exact one-third joint-marginal tolerance",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM physical program selected by proof.md executes the exact included SPTS1/RQ-SPLIT gates, integer parameters and hard caps under the FIXED original joint-state good-marginal model of proof.md Section1. All Q=3*2^40(n+32) sources are acquired sequentially and compressed, then the private late split, sampled-pivot selector (bounded RQ finite fallback at n<64), final full-record champion and untouched even-N endpoint are executed. At most floor(Q/3) positions are bad; their arbitrary joint extension may entangle with good systems, whose original reduced state is exactly the ideal product. Unconditional entire-secret success is STRICTLY greater than11/16. Full-reference extraction coupling, hypergeometric counts, good-first score proof and unconditional endpoint binomial law are supplied here, without assuming conditionally fresh good states or conditioning on all labels/coarse success. All resources hold JOINTLY on EVERY branch, including discarded work, errors, aborts, all allocated padding, full addresses, generator bit work, source fees, initialization and complete cleanup. No QRAM, source inverse/control, supplied purification or arbitrary rotation primitive is used. Charged sequential time is O(2^((1/2)n)n(log2n)^3) for n>=2, with n=1 explicitly finite. Exact time growth index1; the coefficient1/2 multiplies n, not sqrt(n). Hard token debits, not expected work, bound every coarse branch.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "3"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM physical program selected by proof.md executes the exact included SPTS1/RQ-SPLIT gates, integer parameters and hard caps under the FIXED original joint-state good-marginal model of proof.md Section1. All Q=3*2^40(n+32) sources are acquired sequentially and compressed, then the private late split, sampled-pivot selector (bounded RQ finite fallback at n<64), final full-record champion and untouched even-N endpoint are executed. At most floor(Q/3) positions are bad; their arbitrary joint extension may entangle with good systems, whose original reduced state is exactly the ideal product. Unconditional entire-secret success is STRICTLY greater than11/16. Full-reference extraction coupling, hypergeometric counts, good-first score proof and unconditional endpoint binomial law are supplied here, without assuming conditionally fresh good states or conditioning on all labels/coarse success. All resources hold JOINTLY on EVERY branch, including discarded work, errors, aborts, all allocated padding, full addresses, generator bit work, source fees, initialization and complete cleanup. No QRAM, source inverse/control, supplied purification or arbitrary rotation primitive is used. Peak allocated CLASSICAL space is O(n^2) bits, exact growth index0, including all labels, phase words, shuffle array, pivot/sketch histories, recursion frames, constants and instruction descriptors.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +59,15 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM physical program selected by proof.md executes the exact included SPTS1/RQ-SPLIT gates, integer parameters and hard caps under the FIXED original joint-state good-marginal model of proof.md Section1. All Q=3*2^40(n+32) sources are acquired sequentially and compressed, then the private late split, sampled-pivot selector (bounded RQ finite fallback at n<64), final full-record champion and untouched even-N endpoint are executed. At most floor(Q/3) positions are bad; their arbitrary joint extension may entangle with good systems, whose original reduced state is exactly the ideal product. Unconditional entire-secret success is STRICTLY greater than11/16. Full-reference extraction coupling, hypergeometric counts, good-first score proof and unconditional endpoint binomial law are supplied here, without assuming conditionally fresh good states or conditioning on all labels/coarse success. All resources hold JOINTLY on EVERY branch, including discarded work, errors, aborts, all allocated padding, full addresses, generator bit work, source fees, initialization and complete cleanup. No QRAM, source inverse/control, supplied purification or arbitrary rotation primitive is used. ENTIRE peak accessible QUANTUM allocation is O(n) qubits, exact growth index0, including all acquired retained rows, one current position/probe workspace, one candidate/helper pool, every flag/scratch and ordinary endpoint gradient. Unread passive source-held state is excluded by the explicit rule.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +78,47 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM physical program selected by proof.md executes the exact included SPTS1/RQ-SPLIT gates, integer parameters and hard caps under the FIXED original joint-state good-marginal model of proof.md Section1. All Q=3*2^40(n+32) sources are acquired sequentially and compressed, then the private late split, sampled-pivot selector (bounded RQ finite fallback at n<64), final full-record champion and untouched even-N endpoint are executed. At most floor(Q/3) positions are bad; their arbitrary joint extension may entangle with good systems, whose original reduced state is exactly the ideal product. Unconditional entire-secret success is STRICTLY greater than11/16. Full-reference extraction coupling, hypergeometric counts, good-first score proof and unconditional endpoint binomial law are supplied here, without assuming conditionally fresh good states or conditioning on all labels/coarse success. All resources hold JOINTLY on EVERY branch, including discarded work, errors, aborts, all allocated padding, full addresses, generator bit work, source fees, initialization and complete cleanup. No QRAM, source inverse/control, supplied purification or arbitrary rotation primitive is used. Total original source acquisitions are EXACTLY3*2^40(n+32)=O(n), exact growth index0, on every branch including later failures. There is no extra bank or source call inside known preparations/inverses.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ, n=ceil(log2N), the ONE SPTS-JM physical program selected by proof.md executes the exact included SPTS1/RQ-SPLIT gates, integer parameters and hard caps under the FIXED original joint-state good-marginal model of proof.md Section1. All Q=3*2^40(n+32) sources are acquired sequentially and compressed, then the private late split, sampled-pivot selector (bounded RQ finite fallback at n<64), final full-record champion and untouched even-N endpoint are executed. At most floor(Q/3) positions are bad; their arbitrary joint extension may entangle with good systems, whose original reduced state is exactly the ideal product. Unconditional entire-secret success is STRICTLY greater than11/16. Full-reference extraction coupling, hypergeometric counts, good-first score proof and unconditional endpoint binomial law are supplied here, without assuming conditionally fresh good states or conditioning on all labels/coarse success. All resources hold JOINTLY on EVERY branch, including discarded work, errors, aborts, all allocated padding, full addresses, generator bit work, source fees, initialization and complete cleanup. No QRAM, source inverse/control, supplied purification or arbitrary rotation primitive is used. The guaranteed malformed fraction is epsilon(n)=1/3 under the exact fixed-set joint-marginal model. For each fixed B of at most floor(epsilon(n)Q) positions, possibly depending on N,s, the full joint input may be arbitrary provided its reduced state on G is rho_s tensor |G|; bad slots may entangle with G and an inaccessible reference. Convex mixtures are included. The original bank is fixed before passive fixed-order delivery, with no replacement or feedback action. Conditional unread good states need not remain ideal after earlier outcomes. All four bounds and full-secret success apply to this SAME implementation and source promise, including the clean case. The fraction is a global count guarantee, not independent per-copy corruption.",
+      "evidence": [
+        "proof.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
