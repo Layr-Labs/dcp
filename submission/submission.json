@@ -1,15 +1,19 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "GPS-BLOCK-BANK2: dyadic typed descriptors and persistent bit-field fetch",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-BLOCK-BANK2 physical implementation in proof.md executes the complete GPS-BLOCK logical program of gps-source.md with identical output channel, private-sign/extraction erasure, low-residue routing, four literal hard cutoffs, original acquisition schedule and full finite n<256 branch. Under the exact canonical independent-ideal-copy promise it recovers the ENTIRE s with unconditional probability at least1-2^-8. Every generated bit/gate/measurement, field fetch, full address, source move, initialization, padding/inactive cell, failed attempt and complete output-first cleanup is counted on EVERY branch. The direct interpreter stages only bounded address fields and maps already-classical data to measured basis cells, never a coherent quantum query address. No QRAM, free word arithmetic, source inverse/control, purification, instruction oracle or arbitrary phase primitive is used. ALL FIVE guarantees hold JOINTLY for this SAME actual implementation. Charged sequential time is O(n^(5/2)(log2n)^(5/2) 2^((176777/250000)sqrt(n log2n))), exact growth index1/2. The dyadic reference-controller CORE ledger, re-established term by term from the complete source templates and literal caps before physical addressing, is O(n^(5/2)(log2n)^(1/2)2^R); each expanded primitive incurs at most O((log n)^2) full physical work including descriptor fetch, gate generation and addressing. The unchanged source proves the exact rational R-envelope; public layout/init/release polynomial work is separately paid and absorbed. This is a worst-case-branch bound, not an expected runtime. This NEW implementation uses dyadic padded descriptor/record strides, typed finite field locators, persistent read/staging pointers and borrow termination. Its reference CORE ledger is re-established term by term; no automatic compiler or old flat-pointer translation is assumed.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +25,28 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "176777/250000",
+              "nPower": "1/2",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "5/2",
+          "logPower": "5/2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-BLOCK-BANK2 physical implementation in proof.md executes the complete GPS-BLOCK logical program of gps-source.md with identical output channel, private-sign/extraction erasure, low-residue routing, four literal hard cutoffs, original acquisition schedule and full finite n<256 branch. Under the exact canonical independent-ideal-copy promise it recovers the ENTIRE s with unconditional probability at least1-2^-8. Every generated bit/gate/measurement, field fetch, full address, source move, initialization, padding/inactive cell, failed attempt and complete output-first cleanup is counted on EVERY branch. The direct interpreter stages only bounded address fields and maps already-classical data to measured basis cells, never a coherent quantum query address. No QRAM, free word arithmetic, source inverse/control, purification, instruction oracle or arbitrary phase primitive is used. ALL FIVE guarantees hold JOINTLY for this SAME actual implementation. ENTIRE peak physical classical allocation is O(n) bits, exact growth index0, including input/output, bounded kernel address/operand fields and O(log^2 n) staging. All other virtual labels, records, private/erased fields, long arithmetic, frames, counters, handles and generated descriptors live in the counted basis bank. No uncounted classical copy or execution transcript survives. This NEW implementation uses dyadic padded descriptor/record strides, typed finite field locators, persistent read/staging pointers and borrow termination. Its reference CORE ledger is re-established term by term; no automatic compiler or old flat-pointer translation is assumed.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +57,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-BLOCK-BANK2 physical implementation in proof.md executes the complete GPS-BLOCK logical program of gps-source.md with identical output channel, private-sign/extraction erasure, low-residue routing, four literal hard cutoffs, original acquisition schedule and full finite n<256 branch. Under the exact canonical independent-ideal-copy promise it recovers the ENTIRE s with unconditional probability at least1-2^-8. Every generated bit/gate/measurement, field fetch, full address, source move, initialization, padding/inactive cell, failed attempt and complete output-first cleanup is counted on EVERY branch. The direct interpreter stages only bounded address fields and maps already-classical data to measured basis cells, never a coherent quantum query address. No QRAM, free word arithmetic, source inverse/control, purification, instruction oracle or arbitrary phase primitive is used. ALL FIVE guarantees hold JOINTLY for this SAME actual implementation. ENTIRE peak accessible quantum allocation is O(n^2) qubits, exact growth index0: the FULL dense paired prefix for all basis data and genuine slots, inactive/padded/unused cells, every shared arithmetic/search/extraction/helper role and current n+1 raw source wires. Only the genuinely coherent portion is O(n); this smaller virtual portion is NOT the declared physical allocation. This NEW implementation uses dyadic padded descriptor/record strides, typed finite field locators, persistent read/staging pointers and borrow termination. Its reference CORE ledger is re-established term by term; no automatic compiler or old flat-pointer translation is assumed.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-BLOCK-BANK2 physical implementation in proof.md executes the complete GPS-BLOCK logical program of gps-source.md with identical output channel, private-sign/extraction erasure, low-residue routing, four literal hard cutoffs, original acquisition schedule and full finite n<256 branch. Under the exact canonical independent-ideal-copy promise it recovers the ENTIRE s with unconditional probability at least1-2^-8. Every generated bit/gate/measurement, field fetch, full address, source move, initialization, padding/inactive cell, failed attempt and complete output-first cleanup is counted on EVERY branch. The direct interpreter stages only bounded address fields and maps already-classical data to measured basis cells, never a coherent quantum query address. No QRAM, free word arithmetic, source inverse/control, purification, instruction oracle or arbitrary phase primitive is used. ALL FIVE guarantees hold JOINTLY for this SAME actual implementation. Total original source acquisitions obey the unchanged literal Qcap and finite-branch rules and are O(2^((176777/250000)sqrt(n log2n))), exact growth index1/2. There is exactly one physical original per logical request; every rejected/discarded source and failed/aborted subtree is counted. Extra measured-bank reads, source SWAPs, zero ancillas and cleanup create no original copies. This NEW implementation uses dyadic padded descriptor/record strides, typed finite field locators, persistent read/staging pointers and borrow termination. Its reference CORE ledger is re-established term by term; no automatic compiler or old flat-pointer translation is assumed.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "176777/250000",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE GPS-BLOCK-BANK2 physical implementation in proof.md executes the complete GPS-BLOCK logical program of gps-source.md with identical output channel, private-sign/extraction erasure, low-residue routing, four literal hard cutoffs, original acquisition schedule and full finite n<256 branch. Under the exact canonical independent-ideal-copy promise it recovers the ENTIRE s with unconditional probability at least1-2^-8. Every generated bit/gate/measurement, field fetch, full address, source move, initialization, padding/inactive cell, failed attempt and complete output-first cleanup is counted on EVERY branch. The direct interpreter stages only bounded address fields and maps already-classical data to measured basis cells, never a coherent quantum query address. No QRAM, free word arithmetic, source inverse/control, purification, instruction oracle or arbitrary phase primitive is used. ALL FIVE guarantees hold JOINTLY for this SAME actual implementation. The guaranteed fractional malformed tolerance is EXACTLY epsilon(n)=0 under the literal structured canonical independent-ideal-copy model. For every N,s with clean independent ideal copies the entire output law, full-secret success at least1-2^-8 and all four actual resource bounds transfer together. No behavior for malformed copies, positive robustness or maximal tolerance is asserted. This NEW implementation uses dyadic padded descriptor/record strides, typed finite field locators, persistent read/staging pointers and borrow termination. Its reference CORE ledger is re-established term by term; no automatic compiler or old flat-pointer translation is assumed.",
+      "evidence": [
+        "proof.md",
+        "previous-bank-source.md",
+        "gps-source.md",
+        "bank-interpreter-source.md",
+        "stream-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
