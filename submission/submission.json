@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "GPS-LOGSOURCE-FAST: inverse-log copies, linear quantum memory, 3/4 work coefficient",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, the one algorithm GPS-LOGSOURCE-FAST in proof.md, with n=ceil(log2 N), L=log2 n, finite branch n<2^16384 and otherwise v=ceil(sqrt n), ell=ceil(log2 n), z=ceil(log2 ell), b=ceil(3*v*ell*(ell+4*z+32)/2), m=ceil((n-1)/b), top-down trimmed widths and recomputed q0,G,K,H0,Qcap and both cutoffs recovers the entire secret with unconditional probability at least 1-2^-8 from independent ideal copies. On every execution branch, including failed attempts, discarded copies, incorrect labels, both abort cutoffs, initialization and cleanup, its total charged sequential work is T=O(2^((3/4)*sqrt(n)*(log2 n)^2+sqrt(n)*(log2 n)^(9/8))). All constants are absolute and independent of N,s and outcomes; expressions with log2 n are used for n>=2 with the n=1 finite instance absorbed by an outside constant. The exact growth index of this full supported envelope is 1/2. These bounds and the fifth clean-input tolerance hold jointly for this same configuration.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,18 +21,23 @@
           "coefficient": "1",
           "exponent": [
             {
+              "coefficient": "3/4",
+              "nPower": "1/2",
+              "logPower": "2"
+            },
+            {
               "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "nPower": "1/2",
+              "logPower": "9/8"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, the one algorithm GPS-LOGSOURCE-FAST in proof.md, with n=ceil(log2 N), L=log2 n, finite branch n<2^16384 and otherwise v=ceil(sqrt n), ell=ceil(log2 n), z=ceil(log2 ell), b=ceil(3*v*ell*(ell+4*z+32)/2), m=ceil((n-1)/b), top-down trimmed widths and recomputed q0,G,K,H0,Qcap and both cutoffs recovers the entire secret with unconditional probability at least 1-2^-8 from independent ideal copies. On every execution branch, including failed attempts, discarded copies, incorrect labels, both abort cutoffs, initialization and cleanup, its peak allocated classical memory is S_C=O(n^2) bits. All constants are absolute and independent of N,s and outcomes; expressions with log2 n are used for n>=2 with the n=1 finite instance absorbed by an outside constant. The exact growth index of this full supported envelope is 0. These bounds and the fifth clean-input tolerance hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +60,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, the one algorithm GPS-LOGSOURCE-FAST in proof.md, with n=ceil(log2 N), L=log2 n, finite branch n<2^16384 and otherwise v=ceil(sqrt n), ell=ceil(log2 n), z=ceil(log2 ell), b=ceil(3*v*ell*(ell+4*z+32)/2), m=ceil((n-1)/b), top-down trimmed widths and recomputed q0,G,K,H0,Qcap and both cutoffs recovers the entire secret with unconditional probability at least 1-2^-8 from independent ideal copies. On every execution branch, including failed attempts, discarded copies, incorrect labels, both abort cutoffs, initialization and cleanup, its peak allocated quantum memory is S_Q=O(n) qubits. All constants are absolute and independent of N,s and outcomes; expressions with log2 n are used for n>=2 with the n=1 finite instance absorbed by an outside constant. The exact growth index of this full supported envelope is 0. These bounds and the fifth clean-input tolerance hold jointly for this same configuration.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,42 +77,47 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every fixed s in Z/NZ, the one algorithm GPS-LOGSOURCE-FAST in proof.md, with n=ceil(log2 N), L=log2 n, finite branch n<2^16384 and otherwise v=ceil(sqrt n), ell=ceil(log2 n), z=ceil(log2 ell), b=ceil(3*v*ell*(ell+4*z+32)/2), m=ceil((n-1)/b), top-down trimmed widths and recomputed q0,G,K,H0,Qcap and both cutoffs recovers the entire secret with unconditional probability at least 1-2^-8 from independent ideal copies. On every execution branch, including failed attempts, discarded copies, incorrect labels, both abort cutoffs, initialization and cleanup, its all acquired original source copies is Q=O(2^(sqrt(n)/(3 log2 n)-3*sqrt(n)/(log2 n)^2)). All constants are absolute and independent of N,s and outcomes; expressions with log2 n are used for n>=2 with the n=1 finite instance absorbed by an outside constant. The exact growth index of this full supported envelope is 1/2. These bounds and the fifth clean-input tolerance hold jointly for this same configuration.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/3",
+              "nPower": "1/2",
+              "logPower": "-1"
+            },
+            {
+              "coefficient": "-3",
+              "nPower": "1/2",
+              "logPower": "-2"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same one algorithm GPS-LOGSOURCE-FAST in proof.md, with n=ceil(log2 N), L=log2 n, finite branch n<2^16384 and otherwise v=ceil(sqrt n), ell=ceil(log2 n), z=ceil(log2 ell), b=ceil(3*v*ell*(ell+4*z+32)/2), m=ceil((n-1)/b), top-down trimmed widths and recomputed q0,G,K,H0,Qcap and both cutoffs, the guaranteed malformed-sample fraction is epsilon(n)=0. All Q acquired source copies must be independent ideal coset states; no behavior is promised for malformed copies. For every N>=2 and fixed s under this promise, full-secret recovery succeeds with unconditional probability at least 1-2^-8 jointly with the four stated branchwise resource bounds. This is a clean-input guarantee, not a proof that positive tolerance is impossible.",
       "evidence": [
         "proof.md"
       ],
