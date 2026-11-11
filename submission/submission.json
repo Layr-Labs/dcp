@@ -1,15 +1,20 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "WFP3: graded-confidence recursive filters and a block truncated QFT",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP3 physical algorithm in proof.md recovers the ENTIRE s with unconditional success STRICTLY greater than2/3 under the exact fixed original joint-good-marginal model. It acquires exactly the original Q=3*2^40(n+32) registers, with the unchanged full-reference extraction and private split, and touches no retained endpoint row in coarse processing. For n<2^4096 it executes the complete original SPTS-JM noisy-input algorithm. For n>=2^4096 it uses the exact public parameters, label-only collision filter, random integer anchor and constant-term guard, flagged sparse cubic-score starting unitary, ordinary initialized exact-gradient catalyst and truncated pointwise-flat Fourier word, weighted dyadic-class pivots with stopped mass-band hitting proof and hard pre-attempt token cutoff. ALL visited dyadic classes are classically expanded to original integer classes, followed by the original full-shadow champion and original untouched-bank endpoint. The full arbitrary-reference source law, bad/good correlations, all finite branches, sampler/gradient/label/count failures and all additional base events are included without a conditional-fresh-good premise or a per-query approximation hybrid. No QRAM, source inverse/control, supplied purification, free word arithmetic, instruction oracle or arbitrary rotation primitive is used. The actual stored finite Clifford+T words and their actual adjoints are generated and charged, with full combined-memory address fees. ALL FIVE objects hold JOINTLY on EVERY branch for this SAME implementation, including failed/discarded work, original source fees, fixed padding, initialization and complete output-first cleanup. Charged sequential time is O(2^((1/2)n)n(log2n)^(3/2)), exact growth index1. The actual base costs O(nL^2); constraint i costs O((1+log2(i+1))nL^2). The charged three-call recurrence has a convergent weighted overhead sum and costs O(3^j nL^2), and deterministic token Budget is O(2^(n/2)L^(-1/2)) because m=Theta(L) and the proved actual true-class base mass is at least1/D, D=ceil(2^80*2^(n+32)/m). All polynomial source/filter/streamed coefficient angle enumeration, all accepted-pivot caches, classical integer expansion/champion and endpoint/setup/cleanup work are separately charged and absorbed. This is not an expected hitting-work bound or reuse of an old uniform-pivot theorem. The current public configuration uses m=2^100 L, per-constraint ell_i=2^17(32+2ceil(log2(i+1))), recomputed dependent caps and the controlled register-addition block QFT. Complete current proof and exact immediate WFP2 source are included; the graded recursive cost is bounded by a convergent geometric sum, and all survival tails are summed.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +26,29 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "1",
+          "logPower": "3/2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP3 physical algorithm in proof.md recovers the ENTIRE s with unconditional success STRICTLY greater than2/3 under the exact fixed original joint-good-marginal model. It acquires exactly the original Q=3*2^40(n+32) registers, with the unchanged full-reference extraction and private split, and touches no retained endpoint row in coarse processing. For n<2^4096 it executes the complete original SPTS-JM noisy-input algorithm. For n>=2^4096 it uses the exact public parameters, label-only collision filter, random integer anchor and constant-term guard, flagged sparse cubic-score starting unitary, ordinary initialized exact-gradient catalyst and truncated pointwise-flat Fourier word, weighted dyadic-class pivots with stopped mass-band hitting proof and hard pre-attempt token cutoff. ALL visited dyadic classes are classically expanded to original integer classes, followed by the original full-shadow champion and original untouched-bank endpoint. The full arbitrary-reference source law, bad/good correlations, all finite branches, sampler/gradient/label/count failures and all additional base events are included without a conditional-fresh-good premise or a per-query approximation hybrid. No QRAM, source inverse/control, supplied purification, free word arithmetic, instruction oracle or arbitrary rotation primitive is used. The actual stored finite Clifford+T words and their actual adjoints are generated and charged, with full combined-memory address fees. ALL FIVE objects hold JOINTLY on EVERY branch for this SAME implementation, including failed/discarded work, original source fees, fixed padding, initialization and complete output-first cleanup. ENTIRE peak physical classical allocation is O(n^2) bits, exact growth index0, including original label/shadow/N-prefix bank, new dyadic prefixes, m labels/frequency records and finite angle words, all pivot/sketch histories and caches, source and streamed trigonometric/arithmetic scratch, exact effective-dimension/cap tables, generator frames/descriptors, active words, inactive padding and output. No G^2 angle table or exponential circuit is stored. The current public configuration uses m=2^100 L, per-constraint ell_i=2^17(32+2ceil(log2(i+1))), recomputed dependent caps and the controlled register-addition block QFT. Complete current proof and exact immediate WFP2 source are included; the graded recursive cost is bounded by a convergent geometric sum, and all survival tails are summed.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +65,18 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP3 physical algorithm in proof.md recovers the ENTIRE s with unconditional success STRICTLY greater than2/3 under the exact fixed original joint-good-marginal model. It acquires exactly the original Q=3*2^40(n+32) registers, with the unchanged full-reference extraction and private split, and touches no retained endpoint row in coarse processing. For n<2^4096 it executes the complete original SPTS-JM noisy-input algorithm. For n>=2^4096 it uses the exact public parameters, label-only collision filter, random integer anchor and constant-term guard, flagged sparse cubic-score starting unitary, ordinary initialized exact-gradient catalyst and truncated pointwise-flat Fourier word, weighted dyadic-class pivots with stopped mass-band hitting proof and hard pre-attempt token cutoff. ALL visited dyadic classes are classically expanded to original integer classes, followed by the original full-shadow champion and original untouched-bank endpoint. The full arbitrary-reference source law, bad/good correlations, all finite branches, sampler/gradient/label/count failures and all additional base events are included without a conditional-fresh-good premise or a per-query approximation hybrid. No QRAM, source inverse/control, supplied purification, free word arithmetic, instruction oracle or arbitrary rotation primitive is used. The actual stored finite Clifford+T words and their actual adjoints are generated and charged, with full combined-memory address fees. ALL FIVE objects hold JOINTLY on EVERY branch for this SAME implementation, including failed/discarded work, original source fees, fixed padding, initialization and complete output-first cleanup. ENTIRE peak accessible quantum allocation is O(n) qubits, exact growth index0, including all retained original row qubits, current raw/extraction workspace, q=n+32 frequency query wires, good/failure flag and branch/index fields, reusable O(n) equality/adder/oracle/diffusion helpers and g=O(log n) ordinary Fourier catalyst. Recursive calls reuse a single query/helper pool and the endpoint reuses it after release. All padding/inactive helpers and reference-safe reset are counted; unread passive source-held originals are excluded only under the explicit challenge rule. The current public configuration uses m=2^100 L, per-constraint ell_i=2^17(32+2ceil(log2(i+1))), recomputed dependent caps and the controlled register-addition block QFT. Complete current proof and exact immediate WFP2 source are included; the graded recursive cost is bounded by a convergent geometric sum, and all survival tails are summed.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +87,53 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP3 physical algorithm in proof.md recovers the ENTIRE s with unconditional success STRICTLY greater than2/3 under the exact fixed original joint-good-marginal model. It acquires exactly the original Q=3*2^40(n+32) registers, with the unchanged full-reference extraction and private split, and touches no retained endpoint row in coarse processing. For n<2^4096 it executes the complete original SPTS-JM noisy-input algorithm. For n>=2^4096 it uses the exact public parameters, label-only collision filter, random integer anchor and constant-term guard, flagged sparse cubic-score starting unitary, ordinary initialized exact-gradient catalyst and truncated pointwise-flat Fourier word, weighted dyadic-class pivots with stopped mass-band hitting proof and hard pre-attempt token cutoff. ALL visited dyadic classes are classically expanded to original integer classes, followed by the original full-shadow champion and original untouched-bank endpoint. The full arbitrary-reference source law, bad/good correlations, all finite branches, sampler/gradient/label/count failures and all additional base events are included without a conditional-fresh-good premise or a per-query approximation hybrid. No QRAM, source inverse/control, supplied purification, free word arithmetic, instruction oracle or arbitrary rotation primitive is used. The actual stored finite Clifford+T words and their actual adjoints are generated and charged, with full combined-memory address fees. ALL FIVE objects hold JOINTLY on EVERY branch for this SAME implementation, including failed/discarded work, original source fees, fixed padding, initialization and complete output-first cleanup. Total original acquisitions are EXACTLY3*2^40(n+32)=O(n), exact growth index0, on EVERY branch including an additional coefficient/filter/gradient abort. All acquisitions precede new coarse decisions. The extra ordinary gradient uses only initialized work and known translations, never an original DCP source; no source call occurs in any known preparation or adjoint. The current public configuration uses m=2^100 L, per-constraint ell_i=2^17(32+2ceil(log2(i+1))), recomputed dependent caps and the controlled register-addition block QFT. Complete current proof and exact immediate WFP2 source are included; the graded recursive cost is bounded by a convergent geometric sum, and all survival tails are summed.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "profile-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s modulo N, n=ceil(log2N), the ONE WFP3 physical algorithm in proof.md recovers the ENTIRE s with unconditional success STRICTLY greater than2/3 under the exact fixed original joint-good-marginal model. It acquires exactly the original Q=3*2^40(n+32) registers, with the unchanged full-reference extraction and private split, and touches no retained endpoint row in coarse processing. For n<2^4096 it executes the complete original SPTS-JM noisy-input algorithm. For n>=2^4096 it uses the exact public parameters, label-only collision filter, random integer anchor and constant-term guard, flagged sparse cubic-score starting unitary, ordinary initialized exact-gradient catalyst and truncated pointwise-flat Fourier word, weighted dyadic-class pivots with stopped mass-band hitting proof and hard pre-attempt token cutoff. ALL visited dyadic classes are classically expanded to original integer classes, followed by the original full-shadow champion and original untouched-bank endpoint. The full arbitrary-reference source law, bad/good correlations, all finite branches, sampler/gradient/label/count failures and all additional base events are included without a conditional-fresh-good premise or a per-query approximation hybrid. No QRAM, source inverse/control, supplied purification, free word arithmetic, instruction oracle or arbitrary rotation primitive is used. The actual stored finite Clifford+T words and their actual adjoints are generated and charged, with full combined-memory address fees. ALL FIVE objects hold JOINTLY on EVERY branch for this SAME implementation, including failed/discarded work, original source fees, fixed padding, initialization and complete output-first cleanup. Guaranteed malformed fraction is EXACTLY epsilon(n)=1/3 under the literal structured fixed-set joint-marginal context. For every allowed fixed B and arbitrary joint extension/reference, including mixtures and the clean case, whole-secret success is strictly greater than2/3 jointly with all four actual resource objects. Private base count/generic-label/axis/anchor events are bounded unconditionally; record-conditioned weighted coarse failure is subtracted from the original unconditional retained-label endpoint law. No conditioning on label correctness, coarse success or favourable errors changes the claimed source. The current public configuration uses m=2^100 L, per-constraint ell_i=2^17(32+2ceil(log2(i+1))), recomputed dependent caps and the controlled register-addition block QFT. Complete current proof and exact immediate WFP2 source are included; the graded recursive cost is bounded by a convergent geometric sum, and all survival tails are summed.",
+      "evidence": [
+        "proof.md",
+        "profile-source.md",
+        "joint-source.md",
+        "spts-source.md",
+        "sources/RQ-SPLIT-proof.md",
+        "pc-controlled-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/3",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
