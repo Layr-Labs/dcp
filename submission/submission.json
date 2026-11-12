@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC-BANK-D: seven-input dissection merges above saturated four-input merges and a capped pool, S_Q = O(2^((457/800) sqrt n)) with S_C = O(n), T = O(n^127 2^((1453/1000) sqrt n))",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single physical IFC-BANK-D algorithm and configuration specified in full in proof.md, which executes without change the reference algorithm P (IFC-LIMIT-D) whose complete specification and proof are given in virtual.md, virtual2.md and virtual3.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), r0 = floor(sqrt n), kappa = ceil(log2 r) + 4, a cap cb = floor(457 r0/800) - 40 ceil(log2 n) and Lam = cb - kappa - 4, and ell = Lam recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW of kshitij-hash's F-LIMIT (Kraus operators proportional to the projectors onto the odd-pair cells, the matching cells and {0^w, 1^w}, realized by Hadamard tickets and repeat-until-success uniform registers), each level run on chunks of D_i = 2^cb qubits demanded through per-level buffers with fixed yield and run caps, the last level streamed to the tree by at most Rc_ell = ceil(C_ell/(2^cb - dl)) final requests of 2^cb qubits into a leaf buffer, then a collimation tree with leaf tables from dl = Lam - 1 pooled qubits, one binary linear merge level up to table exponent Lam and, above it, up to JI = ceil(11 Lam/20) levels of four-input merges MERGE4I with streamed, unstored pair fibers of exponent l_j = min(Lam + 1 + 2j, 2 Lam) (saturated, r_j = 0, for j >= ceil((Lam - 1)/2)) and, above them, up to J7 = ceil(9r/100) levels of fibered seven-input dissection merges MERGE7, level k with fiber width w_k = max(0, 3 Lam - 2 JI - floor(14(k+1)/5)) (each measuring w_k-bit fibers of its triple and four-tuple sums and listing its measured class by a seven-list dissection over 2^(2 Lam - w_k) guesses of a three-list residue, with class lists of at most 2^(Lam+1) + 1 rows), all stored tables of at most 2^Lam rows, then the free-frequency odd-part decoder and the controlled-shift 2-adic part), with every classical record of P except constant-many O(n)-bit staged words held in counted basis-state qubits that carry lazy generation tags of (n+2)^20 bits with exact renumbering, and with P's qubits held in a fixed counted array of quantum slots managed by an indexed free list, outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges, four-input and seven-input merges, discarded copies, tag renumbering, initialization and final cleanup, its total charged sequential work is T(N,s) = O(n^127 2^((1453/1000) sqrt n)) with an absolute constant, including all bank, tag, descriptor and slot operations, every source move, and the one-time preparation and output-first cleanup of the counted physical prefix (proof.md Sections 9-10: T <= c n^120 (T_P + Qcap + HQ + 1) + c n^100 DRAW for n >= n1 (the absolute threshold of proof.md Section 6), where T_P = O(n^(13/2) 2^((1453/1000) sqrt n)) is P's charged time and Qcap, HQ and DRAW are the source cap, slot count and RAW span defined in proof.md). The coefficient 1453/1000 is an explicit rational. The uniform bit-length envelope B_T(n) = n^127 2^((1453/1000) sqrt n) has growth index exactly 1/2. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "1453/1000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "127",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single physical IFC-BANK-D algorithm and configuration specified in full in proof.md, which executes without change the reference algorithm P (IFC-LIMIT-D) whose complete specification and proof are given in virtual.md, virtual2.md and virtual3.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), r0 = floor(sqrt n), kappa = ceil(log2 r) + 4, a cap cb = floor(457 r0/800) - 40 ceil(log2 n) and Lam = cb - kappa - 4, and ell = Lam recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW of kshitij-hash's F-LIMIT (Kraus operators proportional to the projectors onto the odd-pair cells, the matching cells and {0^w, 1^w}, realized by Hadamard tickets and repeat-until-success uniform registers), each level run on chunks of D_i = 2^cb qubits demanded through per-level buffers with fixed yield and run caps, the last level streamed to the tree by at most Rc_ell = ceil(C_ell/(2^cb - dl)) final requests of 2^cb qubits into a leaf buffer, then a collimation tree with leaf tables from dl = Lam - 1 pooled qubits, one binary linear merge level up to table exponent Lam and, above it, up to JI = ceil(11 Lam/20) levels of four-input merges MERGE4I with streamed, unstored pair fibers of exponent l_j = min(Lam + 1 + 2j, 2 Lam) (saturated, r_j = 0, for j >= ceil((Lam - 1)/2)) and, above them, up to J7 = ceil(9r/100) levels of fibered seven-input dissection merges MERGE7, level k with fiber width w_k = max(0, 3 Lam - 2 JI - floor(14(k+1)/5)) (each measuring w_k-bit fibers of its triple and four-tuple sums and listing its measured class by a seven-list dissection over 2^(2 Lam - w_k) guesses of a three-list residue, with class lists of at most 2^(Lam+1) + 1 rows), all stored tables of at most 2^Lam rows, then the free-frequency odd-part decoder and the controlled-shift 2-adic part), with every classical record of P except constant-many O(n)-bit staged words held in counted basis-state qubits that carry lazy generation tags of (n+2)^20 bits with exact renumbering, and with P's qubits held in a fixed counted array of quantum slots managed by an indexed free list, outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges, four-input and seven-input merges, discarded copies, tag renumbering, initialization and final cleanup, its peak ordinary classical workspace is S_C(N,s) = O(n) bits with an absolute constant: the input and output, constant-many O(n)-bit staged words (addresses, indices, operands), O(1) staged bits, O(log n)-bit counters of bit-serial loops and the finite control. Every pool list and buffer, label table, sort, merge and four-input-merge scratch array (sort orders, runs, heaps, buffers and lists), decoder and label-extraction record, parameter profile, loop counter, recursion frame, quantum-slot descriptor and free-list field of the algorithm is held in the counted basis-state qubits, and epoch values are processed bit-serially, never staged. The envelope B_C(n) = n has growth index exactly 0. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +53,79 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single physical IFC-BANK-D algorithm and configuration specified in full in proof.md, which executes without change the reference algorithm P (IFC-LIMIT-D) whose complete specification and proof are given in virtual.md, virtual2.md and virtual3.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), r0 = floor(sqrt n), kappa = ceil(log2 r) + 4, a cap cb = floor(457 r0/800) - 40 ceil(log2 n) and Lam = cb - kappa - 4, and ell = Lam recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW of kshitij-hash's F-LIMIT (Kraus operators proportional to the projectors onto the odd-pair cells, the matching cells and {0^w, 1^w}, realized by Hadamard tickets and repeat-until-success uniform registers), each level run on chunks of D_i = 2^cb qubits demanded through per-level buffers with fixed yield and run caps, the last level streamed to the tree by at most Rc_ell = ceil(C_ell/(2^cb - dl)) final requests of 2^cb qubits into a leaf buffer, then a collimation tree with leaf tables from dl = Lam - 1 pooled qubits, one binary linear merge level up to table exponent Lam and, above it, up to JI = ceil(11 Lam/20) levels of four-input merges MERGE4I with streamed, unstored pair fibers of exponent l_j = min(Lam + 1 + 2j, 2 Lam) (saturated, r_j = 0, for j >= ceil((Lam - 1)/2)) and, above them, up to J7 = ceil(9r/100) levels of fibered seven-input dissection merges MERGE7, level k with fiber width w_k = max(0, 3 Lam - 2 JI - floor(14(k+1)/5)) (each measuring w_k-bit fibers of its triple and four-tuple sums and listing its measured class by a seven-list dissection over 2^(2 Lam - w_k) guesses of a three-list residue, with class lists of at most 2^(Lam+1) + 1 rows), all stored tables of at most 2^Lam rows, then the free-frequency odd-part decoder and the controlled-shift 2-adic part), with every classical record of P except constant-many O(n)-bit staged words held in counted basis-state qubits that carry lazy generation tags of (n+2)^20 bits with exact renumbering, and with P's qubits held in a fixed counted array of quantum slots managed by an indexed free list, outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges, four-input and seven-input merges, discarded copies, tag renumbering, initialization and final cleanup, its peak quantum workspace is S_Q(N,s) = O(2^((457/800) sqrt n)) qubits with an absolute constant and no polynomial factor (proof.md (8.2): S_Q <= 2^84 2^((457/800) sqrt n) for n >= 2^40). This counts the whole physical prefix of 2h wires, h the least power of two >= max(DRAW, HQ + 2), where U = r 2^(cb+2), HQ = 2^20 n^2 U quantum slots, LSPAN = 2^56 n^8 U logical bits, EW = (n+2)^20 tag bits per logical bit and DRAW = LSPAN (EW+1) + (2^16 n^2 + 8) EW + 2^16 n^2 + 2^20 n^4 basis wires (values, tags, epochs, flags and scratch), together with one (n+1)-qubit acquisition register; P holds at most 4 r 2^cb pool qubits and no array of more than 2^(cb+1) rows, and 2^cb <= n^-40 2^((457/800) sqrt n). Every free, unused, padding and metadata wire is counted, and the span is the same on every branch. The coefficient 457/800 is an explicit rational. The envelope B_Q(n) = 2^((457/800) sqrt n) has growth index exactly 1/2. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "457/800",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the single physical IFC-BANK-D algorithm and configuration specified in full in proof.md, which executes without change the reference algorithm P (IFC-LIMIT-D) whose complete specification and proof are given in virtual.md, virtual2.md and virtual3.md (finite exhaustive branch for n < 2^40; otherwise r = ceil(sqrt n), r0 = floor(sqrt n), kappa = ceil(log2 r) + 4, a cap cb = floor(457 r0/800) - 40 ceil(log2 n) and Lam = cb - kappa - 4, and ell = Lam recycling levels applying to equal-key groups of w = 2^28 qubits the exact instrument FW of kshitij-hash's F-LIMIT (Kraus operators proportional to the projectors onto the odd-pair cells, the matching cells and {0^w, 1^w}, realized by Hadamard tickets and repeat-until-success uniform registers), each level run on chunks of D_i = 2^cb qubits demanded through per-level buffers with fixed yield and run caps, the last level streamed to the tree by at most Rc_ell = ceil(C_ell/(2^cb - dl)) final requests of 2^cb qubits into a leaf buffer, then a collimation tree with leaf tables from dl = Lam - 1 pooled qubits, one binary linear merge level up to table exponent Lam and, above it, up to JI = ceil(11 Lam/20) levels of four-input merges MERGE4I with streamed, unstored pair fibers of exponent l_j = min(Lam + 1 + 2j, 2 Lam) (saturated, r_j = 0, for j >= ceil((Lam - 1)/2)) and, above them, up to J7 = ceil(9r/100) levels of fibered seven-input dissection merges MERGE7, level k with fiber width w_k = max(0, 3 Lam - 2 JI - floor(14(k+1)/5)) (each measuring w_k-bit fibers of its triple and four-tuple sums and listing its measured class by a seven-list dissection over 2^(2 Lam - w_k) guesses of a three-list residue, with class lists of at most 2^(Lam+1) + 1 rows), all stored tables of at most 2^Lam rows, then the free-frequency odd-part decoder and the controlled-shift 2-adic part), with every classical record of P except constant-many O(n)-bit staged words held in counted basis-state qubits that carry lazy generation tags of (n+2)^20 bits with exact renumbering, and with P's qubits held in a fixed counted array of quantum slots managed by an indexed free list, outputs the entire s with unconditional probability at least 1 - 2^-8 > 2/3 from independent ideal coset copies, and on EVERY execution branch, including wrong extracted labels, FW-stage (repeat-until-success included), supplier and pool aborts, failed and retried merges, four-input and seven-input merges, discarded copies, tag renumbering, initialization and final cleanup, the total number Q(N,s) of fresh DCP source copies acquired, including every rejected or discarded copy and every failed or aborted attempt, is Q(N,s) = O(n^(7/2) 2^((1453/1000) sqrt n)) with an absolute constant. There is exactly one acquisition per request of P, and P makes at most Qcap = 4 n C_0 + K requests, with C_0 and K defined in virtual.md and virtual2.md; the finite branch uses at most N(n+10) copies. Bank, tag and slot bookkeeping and the SWAPs of acquired qubits into slots acquire no copies. The coefficient 1453/1000 is an explicit rational. The uniform bit-length envelope B_samples(n) = n^(7/2) 2^((1453/1000) sqrt n) has growth index exactly 1/2. This holds jointly with the other three resource bounds and the tolerance claim for the same execution.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1453/1000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "7/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For the same IFC-BANK-D algorithm and configuration of proof.md, the proved fractional error tolerance is epsilon(n) = 0: all Q acquired source copies are independent ideal coset states. Under this promise, for every N >= 2 and s, full-secret recovery succeeds with probability at least 1 - 2^-8 > 2/3 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
