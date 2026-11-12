@@ -1,15 +1,22 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC-TUNED80-DIRECT-LE-CURRENT: consistent exact83/160 space coefficient and joint n13/2 time",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONEcase-definedcurrentprogramreturnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDsource model. Finite n<2^80 uses the fully supplied exhaustive routine; MAIN uses exactTUNED80 logicalP/schedule/caps/e450387650376724963817/297512384593920000000 and current BLOCK/SHORT/direct-capture/lazy/productive compiler. Its actualNB independentBL=NP(ceil(sqrt n))blocks/row clear ALLBLvaluesBEFOREtagpublication; WM=NP(2^16r)compilerfields and FS=NP((16+3*2^20)*WM)fullyincludeallunusedcaptures/padding. LONGPnumericwork stays bit-expanded. AdditionalL_LE=2^16(n+1)known-addressquantumprocessor executes COMPLETELEgather/SAMEsourcecontrolledtranslations,X-Ytests,table/ties/unwrap/rounding/reset and exactlegal-data/reference returnedchannel; originalslotdescriptors/aliases remainstable. NativeLEcostO(n\u00b3)percopy includes every address/gate/classicalstep and6(n5)ordinarydirectionbits; genericnonLEwork is compiled separately. Bothprocessor andfullprefix initialize/disposeafteroutput; allfailed/capped/abortedpaths and all-blockrenumbering arepaid. AlleightcurrentmathfilesareevidenceforALL5claims; no sourceverdict/historicalcomparison is a premise. Currentjointworst-caseT=O(n^(13/2)2^(e sqrt n)),growthindex1/2,nPower13/2,logPower0,exponentcoefficient e,nPower1/2,logPower0. GenericNONLEC_rest=O(n\u00b3C0+n4exp(Hdl)),currentordinarycostO(n C_rest),nativeLEO(n\u00b3Qcap),gather/movesO(n\u00b2Qcap),fullprefix/processor/maintenanceallpaid. C0=O(n5/2expE),Qcap=O(n7/2expE)giveexactn13/2 polynomial withoutslack. All8currentmathfilesfullysupplyproof;nohistoricalcomparisonorparentverdictpremise.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "le-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +28,31 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "450387650376724963817/297512384593920000000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "13/2",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONEcase-definedcurrentprogramreturnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDsource model. Finite n<2^80 uses the fully supplied exhaustive routine; MAIN uses exactTUNED80 logicalP/schedule/caps/e450387650376724963817/297512384593920000000 and current BLOCK/SHORT/direct-capture/lazy/productive compiler. Its actualNB independentBL=NP(ceil(sqrt n))blocks/row clear ALLBLvaluesBEFOREtagpublication; WM=NP(2^16r)compilerfields and FS=NP((16+3*2^20)*WM)fullyincludeallunusedcaptures/padding. LONGPnumericwork stays bit-expanded. AdditionalL_LE=2^16(n+1)known-addressquantumprocessor executes COMPLETELEgather/SAMEsourcecontrolledtranslations,X-Ytests,table/ties/unwrap/rounding/reset and exactlegal-data/reference returnedchannel; originalslotdescriptors/aliases remainstable. NativeLEcostO(n\u00b3)percopy includes every address/gate/classicalstep and6(n5)ordinarydirectionbits; genericnonLEwork is compiled separately. Bothprocessor andfullprefix initialize/disposeafteroutput; allfailed/capped/abortedpaths and all-blockrenumbering arepaid. AlleightcurrentmathfilesareevidenceforALL5claims; no sourceverdict/historicalcomparison is a premise. Current ordinary classical space SC=O(n),exact growthindex0,nPower1,logPower0,emptyexponent. Only constant-many LONGn-bit/SHORTWM-bit/bitstaging words are ordinary memory; all growing P records,captures,frames,blockvalues/tags,descriptors/epochs/lists are counted allocated bank qubits. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Alleight current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "le-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +63,94 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONEcase-definedcurrentprogramreturnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDsource model. Finite n<2^80 uses the fully supplied exhaustive routine; MAIN uses exactTUNED80 logicalP/schedule/caps/e450387650376724963817/297512384593920000000 and current BLOCK/SHORT/direct-capture/lazy/productive compiler. Its actualNB independentBL=NP(ceil(sqrt n))blocks/row clear ALLBLvaluesBEFOREtagpublication; WM=NP(2^16r)compilerfields and FS=NP((16+3*2^20)*WM)fullyincludeallunusedcaptures/padding. LONGPnumericwork stays bit-expanded. AdditionalL_LE=2^16(n+1)known-addressquantumprocessor executes COMPLETELEgather/SAMEsourcecontrolledtranslations,X-Ytests,table/ties/unwrap/rounding/reset and exactlegal-data/reference returnedchannel; originalslotdescriptors/aliases remainstable. NativeLEcostO(n\u00b3)percopy includes every address/gate/classicalstep and6(n5)ordinarydirectionbits; genericnonLEwork is compiled separately. Bothprocessor andfullprefix initialize/disposeafteroutput; allfailed/capped/abortedpaths and all-blockrenumbering arepaid. AlleightcurrentmathfilesareevidenceforALL5claims; no sourceverdict/historicalcomparison is a premise. Current quantum space SQ=O(n^(-77/2)2^((83/160)sqrt n)),exact growthindex1/2,nPower-77/2,logPower0,exponent coefficient83/160,nPower1/2,logPower0. Actual DRAW=LROWS*RS+(3HQ+2)*WM+(OWN+8)*NP(EW)+OWN+OWN*8WM+2^20n^4+8r*FS. Entire prefix0..2h-1,h=NP(max(DRAW,HQ+2)),and additionalL_LEprocessor/acquisitionn+1qubits are counted, including unused NBblocks,values,tags,stridepadding,RAWfields/captures/scratch and free/unvisitedslots. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Alleight current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "le-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "83/160",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "-77/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N), ONEcase-definedcurrentprogramreturnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDsource model. Finite n<2^80 uses the fully supplied exhaustive routine; MAIN uses exactTUNED80 logicalP/schedule/caps/e450387650376724963817/297512384593920000000 and current BLOCK/SHORT/direct-capture/lazy/productive compiler. Its actualNB independentBL=NP(ceil(sqrt n))blocks/row clear ALLBLvaluesBEFOREtagpublication; WM=NP(2^16r)compilerfields and FS=NP((16+3*2^20)*WM)fullyincludeallunusedcaptures/padding. LONGPnumericwork stays bit-expanded. AdditionalL_LE=2^16(n+1)known-addressquantumprocessor executes COMPLETELEgather/SAMEsourcecontrolledtranslations,X-Ytests,table/ties/unwrap/rounding/reset and exactlegal-data/reference returnedchannel; originalslotdescriptors/aliases remainstable. NativeLEcostO(n\u00b3)percopy includes every address/gate/classicalstep and6(n5)ordinarydirectionbits; genericnonLEwork is compiled separately. Bothprocessor andfullprefix initialize/disposeafteroutput; allfailed/capped/abortedpaths and all-blockrenumbering arepaid. AlleightcurrentmathfilesareevidenceforALL5claims; no sourceverdict/historicalcomparison is a premise. Current source sample count Q=O(n^(7/2)2^(e sqrt n)),exact growthindex1/2,nPower7/2,logPower0,exponentcoefficient e,nPower1/2,logPower0. Source sequence equals logicalP on everybranch and mainQ<=Qcap=4nC0+K; every rejectedcopy,failedmerge,pool/supplier/terminalabort and recycledinput is included. Bankzeros/slotreset/SWAP/renumbering are paidwork/storage ratherthan extra sourcecopies. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Alleight current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "le-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "450387650376724963817/297512384593920000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "7/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N), ONEcase-definedcurrentprogramreturnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDsource model. Finite n<2^80 uses the fully supplied exhaustive routine; MAIN uses exactTUNED80 logicalP/schedule/caps/e450387650376724963817/297512384593920000000 and current BLOCK/SHORT/direct-capture/lazy/productive compiler. Its actualNB independentBL=NP(ceil(sqrt n))blocks/row clear ALLBLvaluesBEFOREtagpublication; WM=NP(2^16r)compilerfields and FS=NP((16+3*2^20)*WM)fullyincludeallunusedcaptures/padding. LONGPnumericwork stays bit-expanded. AdditionalL_LE=2^16(n+1)known-addressquantumprocessor executes COMPLETELEgather/SAMEsourcecontrolledtranslations,X-Ytests,table/ties/unwrap/rounding/reset and exactlegal-data/reference returnedchannel; originalslotdescriptors/aliases remainstable. NativeLEcostO(n\u00b3)percopy includes every address/gate/classicalstep and6(n5)ordinarydirectionbits; genericnonLEwork is compiled separately. Bothprocessor andfullprefix initialize/disposeafteroutput; allfailed/capped/abortedpaths and all-blockrenumbering arepaid. AlleightcurrentmathfilesareevidenceforALL5claims; no sourceverdict/historicalcomparison is a premise. Current fractional malformed-copy tolerance expression is exactly0 under the stated independent ideal coset-source model. No positive malformed-source guarantee is asserted. Full logical FW/MERGE4I/MERGE7/extraction/capped-pool/decoder proof, correct logical held-out-bit sigma-fields and decoded arbitrary-reference implementation establish entire-secret unconditional success>=2/3, jointly with all four currentresource bounds. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Alleight current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "le-native.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
