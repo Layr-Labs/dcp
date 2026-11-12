@@ -1,104 +1,225 @@
-# Exhaustive shift testing
+# CYCLIC-FIXED128: larger fixed fourth-root boost and counted high-part storage
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. Complete algorithm and joint claims
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+This construction doubles the actual boost of this session's complete
+fixed64 configuration. Its material public source IDs and immutable file
+identities are supplied in the dependency declaration and public note.
+The full cyclic_base.md is copied byte for byte; it originates in
+cyclic source e9fc2eca-9d1c-469b-a629-a43e0f7ce928, commit
+45d9985c85813b2f3d30c62c717faba3621eb57a, via the complete fixed32
+source d4e19ee1-d817-4281-ac3a-13d5aa2965d3. The fixed128 configuration
+below replaces every older fixed16/32/64 schedule and resource conclusion.
+All source identities, circuits, collective extraction, collision and
+freshness proof, top-bit law, all-modulus backward decoder, literal parity
+caps and finite n<64 branch are retained in full. No validity verdict is
+a mathematical premise.
 
-## Correctness
+For each collimation width B compute exactly, before source acquisition,
 
-On a component with offset x, controlled subtraction produces
+    mu=ceil(sqrt(2B))+1, kappa=2,
+    x=s=min(mu-1,128 floor(sqrt(mu))), q=x+3,
+    C(z)=z(z+1)/2-s(s-1)/2+x(z+1)+2,
+    m=min{z>=s+1:C(z)>=B}.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+The integer roots use counted integer arithmetic. Retain the generic
+boosted vector lengths, residue capacities, root-first greedy allocation,
+leaf tables, cyclic-window instrument and failed-input disposal of the
+source at these actual x,s. Recompute every actual decoder and collective
+extractor size, mode, precision and confidence parameter. Compute literally
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+    A_star=max_(1<=B<=n) q(B)2^m(B),
+    Q_star=8 A_star(G_odd+2a2)+2a2, Qcap=1024 Q_star.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+For every N>=2 and every s in Z/NZ, n=ceil(log2 N), this ONE configuration
+recovers the entire s with unconditional probability at least 1-2^-8 from
+independent ideal copies. On every execution branch jointly,
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+    T=O(n^3 2^(a sqrt n)),
+    S_C=O(2^(a sqrt n-152 n^(1/4))), S_Q=O(n),
+    Q=O(2^(a sqrt n-152 n^(1/4))).
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+The exact rational a=u_333/v_333, and its proof a>sqrt2, are supplied in
+cyclic_base.md Section 0. All constants are absolute, independent of N,s
+and outcomes. The representative envelopes are positive for every n>=1;
+all success and resource guarantees cover every N. Their exact growth
+indices are 1/2,1/2,0,1/2. Fractional malformed-copy tolerance is zero,
+under independent ideal copies; no maximum possible tolerance is asserted.
+All failed, rejected, discarded and cutoff-abandoned acquisitions count.
 
-## Implementing the controlled subtraction
+## 2. Uniform capacity, retries and unconditional full recovery
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Always 2<=x=s<=mu-1. Capacity holds at z=mu since x=s and
+x mu-x^2/2>=0. Thus m exists, s+1<=m<=mu. Explicitly use
+lambda_i=3+x+min(i,m-s) below the root and lambda_m=1;
+bmax_i=x+i on growing levels, x+m-s+1 on capped levels, and
+2+2x+2(m-s)+1 at the root. Summing gives C(m), while every merge
+satisfies bmax_i+lambda_(i+1)-2lambda_i=-2. All selected windows
+remain below the retained top bit. Injective cyclic rank maps and the
+source's low-prefix conditioning preserve independent untouched high
+source bits. The supplied collision argument gives fresh non-root failure
+<2^-q under whole-child averaging; root failure is <=1/4. This is not
+a bound for every fixed full non-root high-label table.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+We have m2^-q<=1/2. If mu<16 use m<=15,q>=5. If mu>=16 and
+x=mu-1, then q=mu+2>=log2(mu)+1. Otherwise x=128 floor(sqrt(mu));
+floor(sqrt(mu))>=sqrt(mu)/2, so q>=64sqrt(mu)+3>=log2(mu)+1,
+using log2(mu)<=sqrt(mu). Since -ln(1-p)<=2p for p<=1/32,
+the retry product is <=(4/3)e<4. Fresh-whole-attempt reach-probability
+accounting gives expected tree acquisitions <=8 A_star; no independence
+of attempt cost and success is required.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+The actual logarithmic root size is O(sqrt n), so the source-aligned
+backward decoder retains its O(n) expected-root budget. Its actual size
+controls every grid, mode and precision choice. Q_star is an uncapped
+ideal expectation bound, and Markov adds <=2^-10 cutoff error. The
+unchanged collective-label coupling, seed/backward/parity error ledger,
+literal parity caps and finite exhaustive branch keep total failure below
+2^-8. These are unconditional first-error and cutoff comparisons.
+Incorrect extracted labels or previous decoding mistakes still obey every
+fixed width and literal resource cap. Neither the resource guarantees
+nor recovery probability condition on perfect extraction or avoiding cutoff.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+## 3. Fixed128 depth bounds and maxima over actual widths
 
-## Joint costs and indices
+For analysis put R=sqrt(2B), Y_B=sqrt R. We have R+1<=mu<=R+2.
+For R>=65536 the min with mu-1 is inactive: 128sqrt(mu)<=mu-1
+for mu>=65536. Thus
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+    128Y_B-128 < x <=128Y_B+128, q<=256Y_B.       (1)
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+The upper bound on x holds below this threshold too. Completion of the
+square bounds m by the maximum of s+1 and
+ceil(sqrt(R^2+s^2+(x+1/2)^2)-x-1/2), dropping a negative constant.
+With s=x, concavity bounds the square-root candidate plus x by
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+    R+x^2/R+x/(2R)+1/(8R)+1.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+For R>=65536, x<=128sqrt(R+2), so the excess is less than16400:
+x^2/R<=16384+32768/R<=16384.5, x/(2R)<1, and1/(8R)+1<2.
+The lower constraint plus x is bounded by
+2x+1<=256sqrt(R+2)+1<=R+4. At65536 its excess is below3;
+thereafter its derivative minus1 is128/sqrt(R+2)-1<0.
+Thus m+x<=R+16400 there. For R<65536 use
+m+x<=2mu-1<131075 and m<=mu<65538. The common explicit
+C0=1048576 yields, uniformly for every B>=1,
 
-## Fractional error tolerance
+    m+x<=R+C0,
+    m<=R-128sqrt R+C0+128.                         (2)
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+For the second inequality below the threshold,
+R-128sqrt R=(sqrt R-64)^2-4096>=-4096 and m<65538;
+above it use (1) and the first bound. The finite prefix is explicit.
+
+Let R*=sqrt(2n), Y=sqrt R*. The function f(R)=R-128sqrt R
+increases on R>=4096 and is bounded on the finite smaller interval.
+Combining the uniform bounds with the EXACT maximum over all B<=n,
+absorbing finite smaller widths into one absolute constant, gives
+
+    A_star=O(Y 2^(R*-128Y)),
+    Qcap=O(n^(5/4)2^(R*-128Y)).                    (3)
+
+No monotonicity of a rounded integer schedule is assumed. The exact
+maximum and fixed-width cap are computed with counted polynomial setup.
+
+## 4. Deterministic every-branch charge
+
+Each acquisition pays at most one merge per level because failed inputs
+are discarded. The deterministic source charge is
+O(n(m+1)2^kappa 2^x/q), including aborted partial trees. The function
+2^v/(v+3) increases for v>=2. Using the uniform upper bound
+x<=128Y+128 and m=O(sqrt n), all widths have common per-copy charge
+
+    O(n^(5/4)2^(128Y)).
+
+Multiply by the ACTUAL cutoff (3) for the SAME fixed128 configuration:
+tree core work is O(n^(5/2)2^R*). Source transforms and collective
+extraction cost O(n^2) per copy, hence O(n^(13/4)2^(R*-128Y)),
+which is smaller. Seed scoring O(n^2 A_star), feedback and polynomial
+setup are also smaller. All source cost, initialization, circuit
+generation, explicit lookups, measurements, resets/disposal, failed
+attempts, wrong-label work and cutoff-abandoned work are counted.
+Address length is O(sqrt n), so charged sequential work is
+
+    O(n^3 2^R*)=O(n^3 2^(a sqrt n)).                 (4)
+
+The physical quantum stack and active scratch use O(n) qubits because
+m and all index lengths are O(sqrt n), as in the full source.
+
+## 5. Classical high-part storage, including all plateau levels
+
+A level-i label has fixed stored high-part width
+w_i=B+1+i+ceil(log2 q)-p_i, where p_i is the sum of previously used
+windows. Greedy allocation only reduces remaining windows. Each
+remaining bmax is O(sqrt n), while m and log q are O(sqrt n).
+Consequently w_i=O(sqrt n(m-i+1)). This also covers the row-index,
+rank, ordering, residue and lookup scratch fields when allocated;
+small fixed widths are harmless. There are only constantly many
+resident tables and merge scratch blocks per level in a depth-first
+execution, including failed attempts.
+
+On the last s levels, lambda_i=lambda_max=3+m because x=s.
+Their total high-part storage is
+O(sqrt n s^2 2^lambda_max). On growing levels, put d=m-s-i>=1;
+the row count is 2^(lambda_max-d) and remaining-height factor is
+O(s+d+1). Summing the geometric tail gives
+O(sqrt n(s+1)2^lambda_max), which is smaller since s>=2.
+Common residues, extractor records, seed scores, feedback and rational
+setup use polynomial scratch, separately included. Since
+s<=128sqrt(R*+2)=O(n^(1/4)), (2) proves
+
+    S_C=O(n 2^(R*-128Y))+poly(n).                     (5)
+
+The positive exponential absorbs polynomial scratch. Field widths and
+allocations are fixed even on wrong-label branches, and allocation,
+reset and release were counted in (4). No table or advice is preloaded.
+
+## 6. Exact coefficient conversion and improvement
+
+The exact integer inequality 128^4*2>152^4 proves
+128*2^(1/4)>152. Put gamma=128*2^(1/4)-152>0. Equations(3)--(5)
+first give Q=O(n^(5/4)2^(sqrt(2n)-128(2n)^(1/4))) and
+S_C=O(n2^(sqrt(2n)-128(2n)^(1/4))). Divide these by
+2^(a sqrt n-152n^(1/4)), with the SAME exact Pell rational a.
+Their ratios are at most n^p2^(-gamma n^(1/4)), p=5/4 or1.
+This tends to zero without using any positive Pell slack.
+
+For an explicit finite bound, let u=n^(1/4). Since ln u<=sqrt u
+for u>=1 (its maximum ratio is2/e<1) and ln2>2/3,
+4p log2u<=6p sqrt u. For u>=(12p/gamma)^2 this is at most
+gamma u/2, so the ratio is <=2^(-gamma u/2)<=1. If a rational
+threshold is desired, use the POSITIVE lower bound
+ g=(2*128^4-152^4)/(32*128^3)=3076096/(32*128^3)<gamma,
+from difference of fourth powers and both bases less than256.
+Then n>=(12p/g)^8 suffices; the remaining finite prefix contributes
+an absolute constant. Polynomial auxiliary memory is absorbed as well
+by the positive leading exponential. No finite-size advantage is asserted.
+
+Therefore the exact joint structured envelopes are
+ T=O(n^3 2^(a sqrt n)), S_C=O(2^(a sqrt n-152n^(1/4))),
+ S_Q=O(n), Q=O(2^(a sqrt n-152n^(1/4))).
+The three exponential logarithms are a sqrt n+o(sqrt n), so their
+exact indices are1/2; the linear quantum index is0. T is first proved
+with sqrt(2n), including ALL work; only sqrt2<=a converts its coefficient.
+
+Compared with the complete fixed64 configuration, the actual boost and
+plateau multiplier doubles64 to128. Time and linear quantum space remain
+the same, while the negative classical/sample coefficient increases76
+to152 and both displayed polynomial prefactors are removed by the
+explicit fourth-root margin above. This is a stronger proved guarantee,
+not tight complexity, practical speed, smaller time index or global
+frontier leadership. The clean independent-copy model is unchanged.
+
+## 7. Material provenance
+
+This uses the complete fixed64 configuration developed immediately before
+it, including its deterministic charge, maxima, cutoff and high-part
+plateau/geometric storage proof. That construction builds on the complete
+fixed32 source d4e19ee1-d817-4281-ac3a-13d5aa2965d3. The unchanged
+cyclic base and its direct background credits remain supplied. Fixed32's
+high-part framework credits CYCLIC-LOG1f1debc0-0a4b-409c-bcc4-1eb8c5c9d470;
+its graph links to that source and the cyclic base are pending proposals,
+not certified ancestry. Current dependencies and public notes identify
+all actual material submissions and publication statuses. New quantitative
+constants, doubled ACTUAL boost and prefactor absorption are proved here.
+Prior verdicts and finite diagnostics are not theorem premises.
