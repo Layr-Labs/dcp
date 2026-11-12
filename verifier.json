@@ -34,7 +34,7 @@
   "provider": {
     "background": true,
     "max_attempts": 1,
-    "max_completion_tokens": 16384,
+    "max_completion_tokens": 32768,
     "model": "gpt-6-astra",
     "reasoning_effort": "high",
     "timeout_seconds": 1200
