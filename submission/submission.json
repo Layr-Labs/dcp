@@ -1,15 +1,21 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC-SIG-HALF-BLOCK-SHORT-CURRENT: consistent current blocked/typed compiler and joint n7 time proof",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONE current algorithm unconditionally outputs the ENTIREsecret s with probability>=2/3 under the explicitly declared independent ideal coset-source model. On MAINn>=2^48 the fully supplied SIG-HALF logical program has sigma1/2,alpha3037/5000,beta1923/12500,e279522669811793/181587148800000. Its actual physical bank uses EW=ceil(sqrt n),BL=NP(EW),NB=NP(ceil(WROW/BL)),VS=NP(BL+EW)=2BL,RS=NB*VS,WM=NP(2^16r),WROW=2^16n,ROWS=2^24*2^cb,OWN=2^16r,HQ=2^22r2^cb. EACH logical row has NB independently tagged BL-bit blocks; on every miss ALLBLvalues are actually cleared BEFORE publishing ALL EWtag bits, includingzero payloads. Actual RAW link/control fields and banked descriptors encode WM-bit SHORT identities; bindings have8WMbits; actualFRAMECAP8r,FS=NP((16+3*2^20)*WM) includesall unused captures/padding. LONG source P numeric fields,arithmetic/by-valuecopies and original bit expansion remain distinct. Source P fieldlocations/highlogicalzeros, injectiveSHORT identity/no-overflow and full decoded arbitrary-reference CQ law are explicitly proved. Every SHORT role/capture is fully overwritten before read. Current direct capture, virtualzero/canonicalalias, bind-before-individual-publication, unique lifetime lists, productive own-work event charging and whole-FWLEVEL no-group macro are completely specified and proved. Exact renumbering visits ALL blocks and preserves paused control, references and decoded values. For n<2^48 the fully supplied finite exhaustive source routine is executed, with its finite-resource/success proof; MAIN layout is not assumed at that branch. Current worst-case time T=O(n^7 2^(e sqrt n)),exact growthindex1/2,with nPower7,logPower0 andexponent coefficient e,nPower1/2,logPower0. Current literal cost T<=O(n C_P+n^2Qcap+sqrt n DRAW+poly(n))+T_renumber; C_P=O(n6exp(e sqrt n)),Qcap=O(n7/2exp(e sqrt n)),eachPbit/SHORTmetadata/wireevent costsO(n), source movesO(n\u00b2)percopy. No n^(3/2)per-event charge is used to infer n7. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Allseven current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +27,30 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "279522669811793/181587148800000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "7",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONE current algorithm unconditionally outputs the ENTIREsecret s with probability>=2/3 under the explicitly declared independent ideal coset-source model. On MAINn>=2^48 the fully supplied SIG-HALF logical program has sigma1/2,alpha3037/5000,beta1923/12500,e279522669811793/181587148800000. Its actual physical bank uses EW=ceil(sqrt n),BL=NP(EW),NB=NP(ceil(WROW/BL)),VS=NP(BL+EW)=2BL,RS=NB*VS,WM=NP(2^16r),WROW=2^16n,ROWS=2^24*2^cb,OWN=2^16r,HQ=2^22r2^cb. EACH logical row has NB independently tagged BL-bit blocks; on every miss ALLBLvalues are actually cleared BEFORE publishing ALL EWtag bits, includingzero payloads. Actual RAW link/control fields and banked descriptors encode WM-bit SHORT identities; bindings have8WMbits; actualFRAMECAP8r,FS=NP((16+3*2^20)*WM) includesall unused captures/padding. LONG source P numeric fields,arithmetic/by-valuecopies and original bit expansion remain distinct. Source P fieldlocations/highlogicalzeros, injectiveSHORT identity/no-overflow and full decoded arbitrary-reference CQ law are explicitly proved. Every SHORT role/capture is fully overwritten before read. Current direct capture, virtualzero/canonicalalias, bind-before-individual-publication, unique lifetime lists, productive own-work event charging and whole-FWLEVEL no-group macro are completely specified and proved. Exact renumbering visits ALL blocks and preserves paused control, references and decoded values. For n<2^48 the fully supplied finite exhaustive source routine is executed, with its finite-resource/success proof; MAIN layout is not assumed at that branch. Current ordinary classical space SC=O(n),exact growthindex0,nPower1,logPower0,emptyexponent. Only constant-many LONGn-bit/SHORTWM-bit/bitstaging words are ordinary memory; all growing P records,captures,frames,blockvalues/tags,descriptors/epochs/lists are counted allocated bank qubits. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Allseven current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +61,91 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For everyN>=2,n=ceil(log2N), ONE current algorithm unconditionally outputs the ENTIREsecret s with probability>=2/3 under the explicitly declared independent ideal coset-source model. On MAINn>=2^48 the fully supplied SIG-HALF logical program has sigma1/2,alpha3037/5000,beta1923/12500,e279522669811793/181587148800000. Its actual physical bank uses EW=ceil(sqrt n),BL=NP(EW),NB=NP(ceil(WROW/BL)),VS=NP(BL+EW)=2BL,RS=NB*VS,WM=NP(2^16r),WROW=2^16n,ROWS=2^24*2^cb,OWN=2^16r,HQ=2^22r2^cb. EACH logical row has NB independently tagged BL-bit blocks; on every miss ALLBLvalues are actually cleared BEFORE publishing ALL EWtag bits, includingzero payloads. Actual RAW link/control fields and banked descriptors encode WM-bit SHORT identities; bindings have8WMbits; actualFRAMECAP8r,FS=NP((16+3*2^20)*WM) includesall unused captures/padding. LONG source P numeric fields,arithmetic/by-valuecopies and original bit expansion remain distinct. Source P fieldlocations/highlogicalzeros, injectiveSHORT identity/no-overflow and full decoded arbitrary-reference CQ law are explicitly proved. Every SHORT role/capture is fully overwritten before read. Current direct capture, virtualzero/canonicalalias, bind-before-individual-publication, unique lifetime lists, productive own-work event charging and whole-FWLEVEL no-group macro are completely specified and proved. Exact renumbering visits ALL blocks and preserves paused control, references and decoded values. For n<2^48 the fully supplied finite exhaustive source routine is executed, with its finite-resource/success proof; MAIN layout is not assumed at that branch. Current quantum space SQ=O(n^(-77/2)2^(sqrt n/2)),exact growthindex1/2,nPower-77/2,logPower0,exponent coefficient1/2,nPower1/2,logPower0. Actual DRAW=LROWS*RS+(3HQ+2)*WM+(OWN+8)*NP(EW)+OWN+OWN*8WM+2^20n^4+8r*FS. Entire prefix0..2h-1,h=NP(max(DRAW,HQ+2)),and acquisitionn+1qubits are counted, including unused NBblocks,values,tags,stridepadding,RAWfields/captures/scratch and free/unvisitedslots. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Allseven current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "-77/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N), ONE current algorithm unconditionally outputs the ENTIREsecret s with probability>=2/3 under the explicitly declared independent ideal coset-source model. On MAINn>=2^48 the fully supplied SIG-HALF logical program has sigma1/2,alpha3037/5000,beta1923/12500,e279522669811793/181587148800000. Its actual physical bank uses EW=ceil(sqrt n),BL=NP(EW),NB=NP(ceil(WROW/BL)),VS=NP(BL+EW)=2BL,RS=NB*VS,WM=NP(2^16r),WROW=2^16n,ROWS=2^24*2^cb,OWN=2^16r,HQ=2^22r2^cb. EACH logical row has NB independently tagged BL-bit blocks; on every miss ALLBLvalues are actually cleared BEFORE publishing ALL EWtag bits, includingzero payloads. Actual RAW link/control fields and banked descriptors encode WM-bit SHORT identities; bindings have8WMbits; actualFRAMECAP8r,FS=NP((16+3*2^20)*WM) includesall unused captures/padding. LONG source P numeric fields,arithmetic/by-valuecopies and original bit expansion remain distinct. Source P fieldlocations/highlogicalzeros, injectiveSHORT identity/no-overflow and full decoded arbitrary-reference CQ law are explicitly proved. Every SHORT role/capture is fully overwritten before read. Current direct capture, virtualzero/canonicalalias, bind-before-individual-publication, unique lifetime lists, productive own-work event charging and whole-FWLEVEL no-group macro are completely specified and proved. Exact renumbering visits ALL blocks and preserves paused control, references and decoded values. For n<2^48 the fully supplied finite exhaustive source routine is executed, with its finite-resource/success proof; MAIN layout is not assumed at that branch. Current source sample count Q=O(n^(7/2)2^(e sqrt n)),exact growthindex1/2,nPower7/2,logPower0,exponentcoefficient e,nPower1/2,logPower0. Source sequence equals logicalP on everybranch and mainQ<=Qcap=4nC0+K; every rejectedcopy,failedmerge,pool/supplier/terminalabort and recycledinput is included. Bankzeros/slotreset/SWAP/renumbering are paidwork/storage ratherthan extra sourcecopies. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Allseven current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "279522669811793/181587148800000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "7/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N), ONE current algorithm unconditionally outputs the ENTIREsecret s with probability>=2/3 under the explicitly declared independent ideal coset-source model. On MAINn>=2^48 the fully supplied SIG-HALF logical program has sigma1/2,alpha3037/5000,beta1923/12500,e279522669811793/181587148800000. Its actual physical bank uses EW=ceil(sqrt n),BL=NP(EW),NB=NP(ceil(WROW/BL)),VS=NP(BL+EW)=2BL,RS=NB*VS,WM=NP(2^16r),WROW=2^16n,ROWS=2^24*2^cb,OWN=2^16r,HQ=2^22r2^cb. EACH logical row has NB independently tagged BL-bit blocks; on every miss ALLBLvalues are actually cleared BEFORE publishing ALL EWtag bits, includingzero payloads. Actual RAW link/control fields and banked descriptors encode WM-bit SHORT identities; bindings have8WMbits; actualFRAMECAP8r,FS=NP((16+3*2^20)*WM) includesall unused captures/padding. LONG source P numeric fields,arithmetic/by-valuecopies and original bit expansion remain distinct. Source P fieldlocations/highlogicalzeros, injectiveSHORT identity/no-overflow and full decoded arbitrary-reference CQ law are explicitly proved. Every SHORT role/capture is fully overwritten before read. Current direct capture, virtualzero/canonicalalias, bind-before-individual-publication, unique lifetime lists, productive own-work event charging and whole-FWLEVEL no-group macro are completely specified and proved. Exact renumbering visits ALL blocks and preserves paused control, references and decoded values. For n<2^48 the fully supplied finite exhaustive source routine is executed, with its finite-resource/success proof; MAIN layout is not assumed at that branch. Current fractional malformed-copy tolerance expression is exactly0 under the stated independent ideal coset-source model. No positive malformed-source guarantee is asserted. Full logical FW/MERGE4I/MERGE7/extraction/capped-pool/decoder proof, correct logical held-out-bit sigma-fields and decoded arbitrary-reference implementation establish entire-secret unconditional success>=2/3, jointly with all four currentresource bounds. All initialization,address/gate generation,full physicalfee,failed/recycled/aborted paths,output-first reset/disposal and repeated exact maintenance are charged for this ONE current program. Allseven current mathematical files supply every obligation; no historical source guarantee or prior verdict is a premise.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
