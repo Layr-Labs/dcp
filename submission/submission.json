@@ -1,15 +1,22 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "IFC-SIG-HALF-LOGCUT88: retain exact logarithmic schedule slack in joint work and source caps",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For everyN>=2,n=ceil(log2N),ONEcurrentglobal-LE/FW/BLOCK/SHORT/direct/lazy/productiveprogram returnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDcosetmodel. Finite n<2^48usescompleteexhaustivetester; MAINretainsALLactualSIG-HALF parameters/caps/processor/wires/cutoff. Theliteral -40Lg schedule gives PP,2^(H+dl)<=2^e n^-88expE viafull global-native8 exactrational/roundingproof. ALLsource/reject/cap/failure/abort/padding/init/outputdisposal/generation/addressfees/renumbercountonEVERYbranch. All8mathinALL5claimssupplyONEjointproof; nohistoricalcomparison/sourceverdictpremise. JointT=O(n^-82 2^(e sqrt n)),e279522669811793/181587148800000,exactgrowthindex1/2,nPower-82,logPower0,exponentcoefficient e,nPower1/2,logPower0. Nativeledgern7/2C0+n5/2Qcap+n5exp(Hdl) andfullprefix/maintenance/setupareproved.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "global-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +28,31 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "279522669811793/181587148800000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "-82",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For everyN>=2,n=ceil(log2N),ONEcurrentglobal-LE/FW/BLOCK/SHORT/direct/lazy/productiveprogram returnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDcosetmodel. Finite n<2^48usescompleteexhaustivetester; MAINretainsALLactualSIG-HALF parameters/caps/processor/wires/cutoff. Theliteral -40Lg schedule gives PP,2^(H+dl)<=2^e n^-88expE viafull global-native8 exactrational/roundingproof. ALLsource/reject/cap/failure/abort/padding/init/outputdisposal/generation/addressfees/renumbercountonEVERYbranch. All8mathinALL5claimssupplyONEjointproof; nohistoricalcomparison/sourceverdictpremise. JointSC=O(n),exactgrowthindex0,nPower1,logPower0,emptyexponent. ALLfixed-manyrow/LONG/SHORT/stagewords/directions/counters/loopstatefitOn; physicalcontinuationsandarrayscountinSQ. No hostdirectory orquantumaddressing.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "global-native.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +63,94 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For everyN>=2,n=ceil(log2N),ONEcurrentglobal-LE/FW/BLOCK/SHORT/direct/lazy/productiveprogram returnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDcosetmodel. Finite n<2^48usescompleteexhaustivetester; MAINretainsALLactualSIG-HALF parameters/caps/processor/wires/cutoff. Theliteral -40Lg schedule gives PP,2^(H+dl)<=2^e n^-88expE viafull global-native8 exactrational/roundingproof. ALLsource/reject/cap/failure/abort/padding/init/outputdisposal/generation/addressfees/renumbercountonEVERYbranch. All8mathinALL5claimssupplyONEjointproof; nohistoricalcomparison/sourceverdictpremise. JointSQ=O(n^(-77/2)2^(sqrt n/2)),exactgrowthindex1/2,nPower-77/2,logPower0,exponentcoefficient1/2,nPower1/2,logPower0. ENTIREprefix/processor/acquisition countsALLpaddedheap/probes/reduction/helpers/row/tag/frame/arraybits; no percall padding scan.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "global-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "-77/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N),ONEcurrentglobal-LE/FW/BLOCK/SHORT/direct/lazy/productiveprogram returnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDcosetmodel. Finite n<2^48usescompleteexhaustivetester; MAINretainsALLactualSIG-HALF parameters/caps/processor/wires/cutoff. Theliteral -40Lg schedule gives PP,2^(H+dl)<=2^e n^-88expE viafull global-native8 exactrational/roundingproof. ALLsource/reject/cap/failure/abort/padding/init/outputdisposal/generation/addressfees/renumbercountonEVERYbranch. All8mathinALL5claimssupplyONEjointproof; nohistoricalcomparison/sourceverdictpremise. JointQ=O(n^(-169/2)2^(e sqrt n)),e279522669811793/181587148800000,exactgrowthindex1/2,nPower-169/2,logPower0,exponentcoefficient e,nPower1/2,logPower0. SAMEactualrequestsequence/Qcap4nC0+K; C0=O(n^-171/2expE) andK polynomial. ALLacquired/rejected/discardedcopiesandfailedmerges/supplier/globalaborts count.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "global-native.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "279522669811793/181587148800000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "-169/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For everyN>=2,n=ceil(log2N),ONEcurrentglobal-LE/FW/BLOCK/SHORT/direct/lazy/productiveprogram returnsENTIREsecret withunconditionalsuccess>=2/3 underthestatedcleanIIDcosetmodel. Finite n<2^48usescompleteexhaustivetester; MAINretainsALLactualSIG-HALF parameters/caps/processor/wires/cutoff. Theliteral -40Lg schedule gives PP,2^(H+dl)<=2^e n^-88expE viafull global-native8 exactrational/roundingproof. ALLsource/reject/cap/failure/abort/padding/init/outputdisposal/generation/addressfees/renumbercountonEVERYbranch. All8mathinALL5claimssupplyONEjointproof; nohistoricalcomparison/sourceverdictpremise. Jointfractionalmalformed-copyguaranteeexpressionexactly0 underexplicitindependentidealcosetmodel. Completecurrentinstrument/coupling/capped-sieve/decoderproof givesENTIRE-secretunconditionalsuccess>=2/3 jointlywithallresources. No positivecorruption/robustnessimpossibilityclaim.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "virtual2.md",
+        "virtual3.md",
+        "word-native.md",
+        "lazy-native.md",
+        "event-native.md",
+        "global-native.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
