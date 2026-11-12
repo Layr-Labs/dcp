@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "R3: dyadic phase-class ranking with polynomial source copies",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every secret s in Z/NZ, the ONE R3 program of proof.md Sections 2-4, using the exact dyadic class-ranking instrument in class-ranking.md, with n=ceil(log2 N), returns the entire s with unconditional probability at least 1-2^-8. On EVERY execution branch, jointly with all other stated resource bounds and the zero malformed-fraction guarantee, it has worst-case total charged work T=O(2^(n/9) n^24), with absolute outside constants independent of N,s,outcomes. The finite exhaustive n<256 branch is included. Its exact representative growth index is 1.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "class-ranking.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,95 +23,103 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/9",
               "nPower": "1",
               "logPower": "0"
             }
           ],
+          "nPower": "24",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every secret s in Z/NZ, the ONE R3 program of proof.md Sections 2-4, using the exact dyadic class-ranking instrument in class-ranking.md, with n=ceil(log2 N), returns the entire s with unconditional probability at least 1-2^-8. On EVERY execution branch, jointly with all other stated resource bounds and the zero malformed-fraction guarantee, it has peak ordinary classical bits S_C=O(n^2), with absolute outside constants independent of N,s,outcomes. The finite exhaustive n<256 branch is included. Its exact representative growth index is 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "class-ranking.md",
+        "family-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every secret s in Z/NZ, the ONE R3 program of proof.md Sections 2-4, using the exact dyadic class-ranking instrument in class-ranking.md, with n=ceil(log2 N), returns the entire s with unconditional probability at least 1-2^-8. On EVERY execution branch, jointly with all other stated resource bounds and the zero malformed-fraction guarantee, it has peak physical accessible qubits S_Q=O(2^(n/9) n^5), including the entire dense helper prefix, unused cells, basis records, canonical tables, rank/inverse scratch, Cartesian metadata and source staging, with absolute outside constants independent of N,s,outcomes. The finite exhaustive n<256 branch is included. Its exact representative growth index is 1.",
+      "score": {
+        "numerator": "1",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "class-ranking.md",
+        "family-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "1/9",
+              "nPower": "1",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "5",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every secret s in Z/NZ, the ONE R3 program of proof.md Sections 2-4, using the exact dyadic class-ranking instrument in class-ranking.md, with n=ceil(log2 N), returns the entire s with unconditional probability at least 1-2^-8. On EVERY execution branch, jointly with all other stated resource bounds and the zero malformed-fraction guarantee, it has total original source copies Q=O(n^4), including every rejected label, failed combination and parity repeat, with absolute outside constants independent of N,s,outcomes. The finite exhaustive n<256 branch is included. Its exact representative growth index is 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "class-ranking.md",
+        "family-source.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "4",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
+      "statement": "For the same ONE R3 configuration of proof.md Sections 2-4 and class-ranking.md, the proved malformed-sample fraction is epsilon(n)=0: every original acquired copy is an independent ideal coset state. For every N>=2 and every s, unconditional full-secret recovery succeeds with probability at least 1-2^-8 jointly with all four branchwise resource bounds. No positive tolerance or impossibility of positive tolerance is asserted.",
       "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
-      "evidence": [
-        "proof.md"
+        "proof.md",
+        "class-ranking.md",
+        "family-source.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
