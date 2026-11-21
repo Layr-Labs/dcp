@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Robust coherent reuse: linear samples with one-quarter malformed tolerance",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and s in Z/NZ, let n=ceil(log2 N). Algorithm RCR-1/4 in proof.md uses q=128(n+1) source registers and threshold r=q/4. Under the fixed-batch marginal replacement model in proof.md Section 2, with at most floor(q/4) malformed positions and the remaining joint marginal exactly rho_s tensor-powered over all good positions, it recovers the full s with unconditional probability >49/64>2/3. All four resource bounds hold jointly on every execution branch for this same algorithm and configuration, with constants independent of N, s and the allowed joint state. Total charged work is T(N,s)=O(N n^2 log2(n+2)), including sample acquisition, all attempts, exact Clifford+T circuit generation, classical bit operations and indexed accesses. A supported uniform asymptotic envelope for n>=2 is B_T(n)=2^n n^2 log2 n, whose growth index is exactly 1; the operational bound covers n=1.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -26,13 +26,13 @@
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "2",
+          "logPower": "1"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and s in Z/NZ, let n=ceil(log2 N). Algorithm RCR-1/4 in proof.md uses q=128(n+1) source registers and threshold r=q/4. Under the fixed-batch marginal replacement model in proof.md Section 2, with at most floor(q/4) malformed positions and the remaining joint marginal exactly rho_s tensor-powered over all good positions, it recovers the full s with unconditional probability >49/64>2/3. All four resource bounds hold jointly on every execution branch for this same algorithm and configuration, with constants independent of N, s and the allowed joint state. Peak allocated classical memory is S_C(N,s)=O(n) bits, including input, counters, gate generation and all saved classical information. The envelope B_C(n)=n has growth index exactly 0.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -49,72 +49,66 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s in Z/NZ, let n=ceil(log2 N). Algorithm RCR-1/4 in proof.md uses q=128(n+1) source registers and threshold r=q/4. Under the fixed-batch marginal replacement model in proof.md Section 2, with at most floor(q/4) malformed positions and the remaining joint marginal exactly rho_s tensor-powered over all good positions, it recovers the full s with unconditional probability >49/64>2/3. All four resource bounds hold jointly on every execution branch for this same algorithm and configuration, with constants independent of N, s and the allowed joint state. Peak allocated quantum memory is S_Q(N,s)=O(n^2) qubits, including all retained source registers, reversible arithmetic, counting scratch and flags. The envelope B_Q(n)=n^2 has growth index exactly 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ, let n=ceil(log2 N). Algorithm RCR-1/4 in proof.md uses q=128(n+1) source registers and threshold r=q/4. Under the fixed-batch marginal replacement model in proof.md Section 2, with at most floor(q/4) malformed positions and the remaining joint marginal exactly rho_s tensor-powered over all good positions, it recovers the full s with unconditional probability >49/64>2/3. All four resource bounds hold jointly on every execution branch for this same algorithm and configuration, with constants independent of N, s and the allowed joint state. The total number Q(N,s) of acquired source copies on every branch is exactly q=128(n+1), including every malformed copy, and no further copies are acquired for failed candidate tests. Thus Q(N,s)=O(n), with envelope B_samples(n)=n and growth index exactly 0.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N>=2 and s in Z/NZ, let n=ceil(log2 N). Algorithm RCR-1/4 in proof.md uses q=128(n+1) source registers and threshold r=q/4. Under the fixed-batch marginal replacement model in proof.md Section 2, with at most floor(q/4) malformed positions and the remaining joint marginal exactly rho_s tensor-powered over all good positions, it recovers the full s with unconditional probability >49/64>2/3. All four resource bounds hold jointly on every execution branch for this same algorithm and configuration, with constants independent of N, s and the allowed joint state. The guaranteed malformed-sample fraction is epsilon(n)=1/4 under the fixed-batch marginal replacement model explicitly defined in proof.md Section 2 and the structured error_model. The full-secret success and all four resource bounds above hold uniformly under this promise for every N>=2, s, permitted state omega and permitted subset B. This is a fraction of the actual acquired copies, not a per-copy probability; it includes clean inputs and makes no claim of optimal tolerance.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/4",
+        "error_model": "Fixed-batch marginal replacement model: before measurements the Q acquired (n+1)-qubit registers have a fixed joint state omega. There exists an unknown fixed subset B of at most floor(epsilon(n)*Q) positions whose complementary joint marginal is exactly the tensor product of ideal rho_s states. The state on B and its correlations with other registers are arbitrary subject to that marginal, may depend on N and s, and may include invalid residue basis states. No source adaptation to measurement feedback is allowed. All registers, including B, count toward Q."
       }
     }
   ],
