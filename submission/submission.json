@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "PCROOT-1: polynomial odd-cell compilation in the integer-root banked sieve",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). PCROOT-1 in proof.md, virtual.md and odd_partition.md uses the finite exhaustive tester for n<2^512, and otherwise k equal to the least odd integer at least ceil(n^(1/3)), z0=min{j:3j^2>=n}, z=z0+16*ceil(log2 n), ell=m=dl=z, the stated exact backward C_i recurrence and source cap, and the bounded polynomial token compiler and measured-basis bank. Its total sequential work T is O(2^((57735027/50000000)*sqrt(n))), with supported representative envelope B(n)=2^((57735027/50000000)*sqrt(n)) and exact growth index 1/2. This holds on every execution branch jointly with the other resource bounds and unconditional recovery of the entire secret with probability at least 1-2^(-7), for independent ideal source copies. All outside constants are absolute and independent of N,s and outcomes.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "odd_partition.md",
+        "improvement.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +24,27 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "57735027/50000000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). PCROOT-1 in proof.md, virtual.md and odd_partition.md uses the finite exhaustive tester for n<2^512, and otherwise k equal to the least odd integer at least ceil(n^(1/3)), z0=min{j:3j^2>=n}, z=z0+16*ceil(log2 n), ell=m=dl=z, the stated exact backward C_i recurrence and source cap, and the bounded polynomial token compiler and measured-basis bank. Its peak ordinary classical storage S_C in bits is O(n), with supported representative envelope B(n)=n and exact growth index 0. This holds on every execution branch jointly with the other resource bounds and unconditional recovery of the entire secret with probability at least 1-2^(-7), for independent ideal source copies. All outside constants are absolute and independent of N,s and outcomes.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "odd_partition.md",
+        "improvement.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,67 +55,82 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). PCROOT-1 in proof.md, virtual.md and odd_partition.md uses the finite exhaustive tester for n<2^512, and otherwise k equal to the least odd integer at least ceil(n^(1/3)), z0=min{j:3j^2>=n}, z=z0+16*ceil(log2 n), ell=m=dl=z, the stated exact backward C_i recurrence and source cap, and the bounded polynomial token compiler and measured-basis bank. Its peak allocated quantum storage S_Q in qubits is O(2^((57735027/50000000)*sqrt(n))), with supported representative envelope B(n)=2^((57735027/50000000)*sqrt(n)) and exact growth index 1/2. This holds on every execution branch jointly with the other resource bounds and unconditional recovery of the entire secret with probability at least 1-2^(-7), for independent ideal source copies. All outside constants are absolute and independent of N,s and outcomes.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "virtual.md",
+        "odd_partition.md",
+        "improvement.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "57735027/50000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). PCROOT-1 in proof.md, virtual.md and odd_partition.md uses the finite exhaustive tester for n<2^512, and otherwise k equal to the least odd integer at least ceil(n^(1/3)), z0=min{j:3j^2>=n}, z=z0+16*ceil(log2 n), ell=m=dl=z, the stated exact backward C_i recurrence and source cap, and the bounded polynomial token compiler and measured-basis bank. Its all acquired source copies Q is O(2^((57735027/50000000)*sqrt(n))), with supported representative envelope B(n)=2^((57735027/50000000)*sqrt(n)) and exact growth index 1/2. The count includes every rejected acquisition, failed attempt, discarded copy and partial batch; the physical implementation makes exactly one source acquisition for each guarded virtual request. This holds on every execution branch jointly with the other resource bounds and unconditional recovery of the entire secret with probability at least 1-2^(-7), for independent ideal source copies. All outside constants are absolute and independent of N,s and outcomes.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "odd_partition.md",
+        "improvement.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "57735027/50000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and every s in Z/NZ, let n=ceil(log2 N). PCROOT-1 in proof.md, virtual.md and odd_partition.md uses the finite exhaustive tester for n<2^512, and otherwise k equal to the least odd integer at least ceil(n^(1/3)), z0=min{j:3j^2>=n}, z=z0+16*ceil(log2 n), ell=m=dl=z, the stated exact backward C_i recurrence and source cap, and the bounded polynomial token compiler and measured-basis bank. Its guaranteed malformed-sample fraction is epsilon(n)=0 for all n>=1 under the exact clean independent-copy model. Under this promise, all four resource guarantees hold jointly on every branch and unconditional full-secret recovery succeeds with probability at least 1-2^(-7). No positive tolerance or impossibility of positive tolerance is asserted.",
+      "evidence": [
+        "proof.md",
+        "virtual.md",
+        "odd_partition.md",
+        "improvement.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
