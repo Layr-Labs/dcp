@@ -1,104 +1,175 @@
-# Exhaustive shift testing
+# Root-exponential streaming spectral channels with linear quantum storage
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. Single program and joint estimates
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+For all $N\ge2$ and $s\in\mathbb Z/N\mathbb Z$, let $n=\lceil\log_2N\rceil$.
+The algorithm below recovers the entire secret with probability at
+least $1-2^{-7}$ under the adaptive spectral channel model in
+channel-mixer.md, including the independent ideal case. It tolerates
+malformed fraction one under that model. In particular a supplier
+can keep quantum memory, correlate its copy preparations through
+that memory, and use the earlier observed label-probe outcomes as
+feedback, subject to each chosen channel satisfying the uniform
+spectral gap on every input memory state.
 
-## Correctness
-
-On a component with offset x, controlled subtraction produces
-
+Use the CS1-LBQ virtual tree, phase decoder and storage policy in
+cs-source.md with the source-interface changes below. Its use of
+classical collimation tables allows root-exponential work with
+linear quantum storage. The resource envelopes for our complete
+configuration on every execution branch are
 $$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
+ T,Q=O(2^{a\sqrt n}),\quad
+ S_C=O(2^{a\sqrt n-9 n^{1/4}}),\quad S_Q=O(n).
 $$
+Here $a=u_{333}/v_{333}$, with $(u_0,v_0)=(10,7)$ and recurrence
+$(u,v)\mapsto (3u+4v,2u+3v)$. The exact rational value appears in
+cs-source.md Section 0 and in the structured declarations. It
+satisfies $a>\sqrt2$ by the positive Pell norm. These are
+work, ordinary classical bits, entire allocated qubits and
+acquired-copy bounds for the same program.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+## 2. Source substitutions and guards
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
-
+For $n\ge64$ take the CS1-LBQ setup, tree, phase-vector merges,
+branching over odd and dyadic parts, and full decoder exactly as
+in cs-source.md Sections 6–13. Determine $C=Q_{\rm cap}$ by
+its Section 11; this is the cap on logical source requests.
+For $n<64$ set $C=N\cdot256(n+16)$ and use Section 4 below.
+In either branch define
 $$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
+ \delta=2^{-10},\quad L=\lceil\log_2 C\rceil,\quad
+ w=64\delta^{-1}(n+L+32),\quad A=wC.
 $$
+The current logical acquisition count never exceeds $C$.
+Replace each original raw acquisition, its immediate public
+unit or known controlled shift, and its LE operation by
+one call to the complete streaming mixer of channel-mixer.md
+Sections 2–4, with these values of $\delta,L,w,A$. The
+original unit or shift is applied separately to each
+raw input of the new mixer. It returns one reported label
+and a negative-phase row. The original caller's X gates,
+label checks, table creation, rejection and reuse run as before.
+The original high-confidence LE, its fallback counter, and
+any algorithmic actions internal to that estimator are
+replaced entirely by this definite raw interface. No extra
+raw acquisition follows a failed logical request guard.
+Exactly $w$ raw copies are acquired in each reached call,
+including its internally erased rows. Thus $Q\le A$ on
+every branch.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+The physical mixer uses the fixed-width native readout
+in readout.md, with its accuracy cap set to $A$. It starts
+one position register at a time, applies the public
+known transform, probes it, and traces it out. Stores of
+probe directions and labels are part of ordinary memory.
+The first retained phase row is the accumulator. After
+finishing all raw arrivals for the current block, independently
+erase or include each later row with probability $1/2$.
+For each included row, use CNOT and measured parity to
+combine it with a fair sign, updating the report accordingly.
+The retained support relation and uniform-in-memory
+channel spectral gap are precisely the premise of the
+carried mixer proof. It accounts for adaptive probes,
+hidden latent labels, conditional private quantum memory,
+signed-erasure characters, and the block-by-block joint
+coupling to fresh uniform labels. It includes errors of
+at most $2^{-10}$ for all raw readouts and $2^{-32}$ for
+all imperfectly mixed labels across the actual program.
 
-## Implementing the controlled subtraction
+## 3. Success and main-branch cost
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+With the comparison interface, each logical request yields
+a uniform latent label with its correct ideal row, already
+in the effective secret coordinates of the original
+transform. It is conditionally independent of the preceding
+logical history. The original CS1-LBQ logical algorithm's
+ideal source-cap event is bounded by $2^{-10}$ and its
+odd decoder error by $2^{-20}$, with exact remaining
+dyadic recovery conditional on success, by cs-source.md
+Sections 8–12. The old label-extractor error and
+fallback counter are absent in this run. The new coupling
+errors add $2^{-10}+2^{-32}$. Thus total failure is below
+$2^{-7}$.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+Section 13 of cs-source.md proves the capped logical bound
+$C=O(n^{3/2}2^{\sqrt{2n}})$ and all remaining logical work
+at most a fixed polynomial in $n$ times $2^{\sqrt{2n}}$.
+The uniform readout and public transforms
+use polynomial work per read copy in our interface.
+Since $\log C=O(\sqrt n)$, $w=O(n)$, so raw acquisitions
+and charged processing add at most another fixed
+polynomial times $2^{\sqrt{2n}}$. The same grade
+includes preparation of the parameter cap, gate
+generation, basis operations, cleanup, and addressing
+at the enlarged actual memory width $O(\sqrt n)$.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+A suspended tree call retains the CS1-LBQ stage's original
+$O(n)$ quantum workspace. The mixer adds $w=O(n)$ row wires,
+one current position register, and a reused $O(n)$
+readout/transform workspace. There is never a simultaneous
+array of full raw positions. Keep the $w$ measured label
+words and current LE unwrapping values in $O(n^2)$ extra
+ordinary bits. All arithmetic uses fixed-width guarded
+loops even after any wrong report. The CS1-LBQ virtual
+stack and its tables need
+$O(n^2 2^{\sqrt{2n}-8(2n)^{1/4}})$ ordinary bits by its
+Section 13. Adding the polynomial mixer space keeps
+this bound, since the exponential factor grows without
+bound. The same source proves its inclusion in
+$O(2^{a\sqrt n-9n^{1/4}})$, using
+$8\cdot2^{1/4}>9$. For work and samples, the fixed gap
+$a-\sqrt2>0$ multiplied by $\sqrt n$ absorbs every
+fixed logarithmic polynomial exponent. In particular
+for any fixed $r$ we have
+$n^r2^{\sqrt{2n}}=O(2^{a\sqrt n})$.
+The algorithm uses exact integers, independent of the
+asymptotic threshold at which this comparison holds.
+The capped physical ledgers hold on every outcome,
+and finitely many smaller $n$ change only absolute
+outside constants.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+## 4. Finite branch
 
-## Joint costs and indices
+For $1\le n<64$, use $H=256(n+16)$ logical calls per
+candidate, with identity public transform and streaming
+mixer exactly as above. Each returned phase row is
+flipped by X. Choose a fair basis bit $\beta$, measure
+in X for $\beta=0$ or Y for $\beta=1$, and let $Z$
+be its signed result. Use the rational table of readout.md
+with score $Z\,\mathrm{tab}_\beta((kt\bmod N)/N)$ for
+trial candidate $t$. Clamp the table to $[-1,1]$ before
+multiplying. Choose the first candidate whose mean
+exceeds $1/4$ or zero if none. Execute the full $NH$
+schedule. The ideal exact expectation is one half
+at the true candidate and zero elsewhere by averaging
+$\frac12\cos(2\pi k(s-t)/N)$ over uniform labels.
+The table error is smaller than $1/625$, and threshold
+failure requires an ideal deviation at least $1/5$.
+One Hoeffding bound per candidate gives union failure
+$N\exp(-H/50)<2^{-12}$. The raw extraction and mixer
+coupling terms keep failure below $2^{-7}$. Every
+resource use is finite and bounded explicitly on
+this fixed finite branch, loading only one label array
+at a time.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+## 5. Indices and provenance
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Both $2^{a\sqrt n}$ and $2^{a\sqrt n-9n^{1/4}}$ have
+double logarithm $(1/2)\log_2n+O(1)$ as $n$ grows.
+Their growth indices are $1/2$, while the linear
+qubit bound has index zero. All acquisitions count
+toward the proved fraction in exactly the channel model
+of the fifth claim.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
-
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
-
-## Fractional error tolerance
-
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+CS1-LBQ supplies the exact root schedule, phase merges
+and decoder, classical table storage, branchwise bounds and
+the fixed rational exponent. Its proof is reproduced
+unchanged as cs-source.md. The published streaming
+spectral channel result from this session supplies the
+complete source model, mixer and raw readout, with the
+declared coefficients and quantum conditioning proof.
+Its relevant source sections are reproduced as
+channel-mixer.md and readout.md. The new integration
+changes the operating root regime and classical-table
+resource bounds and retains linear quantum storage
+under the same adaptive quantum-memory source promise.
