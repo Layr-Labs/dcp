@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Collimation with globally diverse correlated coset preparations",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the globally diverse source algorithm in proof.md uses the PCROOT-1 bank and logical collimation with the stated full raw buffer, bounded shuffle, signed-erasure mixer and finite branch. Its total sequential charged work T is O(2^((288675134594813/250000000000000) sqrt(n))) with exactly this representative and exact growth index 1/2. This guarantee holds on every execution branch jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base-bank.md",
+        "virtual.md",
+        "odd_partition.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +24,27 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "288675134594813/250000000000000",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the globally diverse source algorithm in proof.md uses the PCROOT-1 bank and logical collimation with the stated full raw buffer, bounded shuffle, signed-erasure mixer and finite branch. Its peak ordinary classical workspace S_C in bits is O(n) with exactly this representative and exact growth index 0. This guarantee holds on every execution branch jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base-bank.md",
+        "virtual.md",
+        "odd_partition.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,72 +55,87 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the globally diverse source algorithm in proof.md uses the PCROOT-1 bank and logical collimation with the stated full raw buffer, bounded shuffle, signed-erasure mixer and finite branch. Its peak allocated quantum workspace S_Q in qubits is O(2^((288675134594813/250000000000000) sqrt(n))) with exactly this representative and exact growth index 1/2. This guarantee holds on every execution branch jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base-bank.md",
+        "virtual.md",
+        "odd_partition.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "288675134594813/250000000000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the globally diverse source algorithm in proof.md uses the PCROOT-1 bank and logical collimation with the stated full raw buffer, bounded shuffle, signed-erasure mixer and finite branch. Its total number Q of acquired raw copies, including every discarded copy is O(2^((288675134594813/250000000000000) sqrt(n))) with exactly this representative and exact growth index 1/2. This guarantee holds on every execution branch jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md",
+        "base-bank.md",
+        "virtual.md",
+        "odd_partition.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "288675134594813/250000000000000",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the globally diverse source algorithm in proof.md uses the PCROOT-1 bank and logical collimation with the stated full raw buffer, bounded shuffle, signed-erasure mixer and finite branch. It tolerates a fraction epsilon(n) = 1 for every n >= 1 in the precise globally diverse correlated source model in error_model. In particular all acquired registers may be malformed and jointly entangled within the same coset support when the specified diagonal spectral spread condition with gap delta = 2^(-d) holds. The exact raw acquisition count is Q = wC with the public C and w of proof.md Sections 1 and 7. The algorithm recovers the complete secret with probability at least 1-2^(-7) jointly with all four branchwise resource bounds, for every allowed state including the independent ideal source.",
+      "evidence": [
+        "proof.md",
+        "base-bank.md",
+        "virtual.md",
+        "odd_partition.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1",
+        "error_model": "Globally diverse correlated coset-preparation model, valid for every N >= 2 and s in Z/NZ. Let omega = exp(2 pi i/N), chi_k = N^(-1/2) sum_y omega^(ky)|y>, phi_k(s) = (|0> + omega^(-ks)|1>)/sqrt(2), and V_s the span of the orthonormal v_k = phi_k(s) tensor chi_k. Every delivery has the usual (n+1)-qubit shape with n = ceil(log2 N). Let d = ceil(ceil(sqrt(n))/max(1,ceil(log2 n))) and delta = 2^(-d). The Q raw registers are acquired before any solver measurement or private random bits. At most floor(epsilon(n) Q) may be malformed. Clean registers are independent ideal rho_s, in tensor product with all other registers and external systems. Condition on the supplier classical specification, which may be sampled privately with arbitrary classical correlations. Allow either of two types, with no herald, or any classical mixture of allowed specifications. (A) Product spectral preparations: the input is a product across registers conditional on the specification. Each malformed copy can be any density matrix on V_s whose diagonal law p(k) in the v_k basis satisfies |sum_k p(k) omega^(j k)| <= 1-delta for every nonzero j modulo N. The chosen marginals need not coincide and may have coherences within V_s. (B) Correlated spectrally diverse preparations: the m malformed registers have an arbitrary joint density operator supported on V_s^(tensor m), possibly entangled together and with an external reference. If m >= Q/2, its product-basis diagonal is supported on tuples (k_i) at malformed positions for which (1/m) sum_i Re(omega^(j k_i)) <= 1-delta simultaneously for every nonzero j modulo N. If m < Q/2 there is no spectral-spread restriction on that joint diagonal. The supplier may know N, s and the algorithm, but cannot access any delivered system, future randomness, or solver workspace. Only the raw registers are supplied; positions, type, spectra and labels are hidden. The guarantee applies to every allowed source at the stated acquired-copy fraction, including the clean problem."
       }
     }
   ],
