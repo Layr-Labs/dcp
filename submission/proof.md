@@ -1,104 +1,249 @@
-# Exhaustive shift testing
+# Four-level streaming private banks with terminal-block decoding
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+For every N>=2 put n=ceil(log2 N), L=log2 n. Use the terminal-block solver specified in terminal-block.md, which modifies
+the original BASE13 solver in base13.md. The choice of overrides is
+fixed for the entire execution and for all solver banks. It recovers
+the entire shift with probability at least 2/3 on ideal input.
+The new deterministic padding maximum is P=2^39 n^5 on every
+branch. Each bank keeps consuming padding after its solver stops
+until it receives P copies. Enforce both solver caps, guarded record
+sizes and output range on malformed transcripts, returning 0 on abort.
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+Let z be the smallest positive integer with z^10>=n, computed by
+binary search with exact integer comparisons. Use J=64z solver banks
+of size P and one verification bank of size
+V=8192(n+8). Acquire exactly Q=JP+V copies, even if a controller
+fails or the permutation sampler aborts. The malformed-position set
+is fixed before private coins, and the good systems have exactly the
+ideal product marginal. The tolerated fraction is
+epsilon=L/(8796093022208 n^5), with epsilon(1)=0. In particular
+epsilon P=L/16 and epsilon<=1/64 on every length.
 
-## Correctness
+The algorithm and the precise proof use the streaming assignment
+and the shared classical verification reserve described below.
+At each source request the next stream position is assigned using
+the bounded weighted-count draw. On sampler abort all subsequent
+copies are acquired and discarded and the algorithm outputs 0.
+Complete all remaining solver work, then select the first candidate
+whose approximate verification score is at least 1/4, or output 0
+if there is none. Process all verification records using the native
+readout below and the final grid score approximation. The shared
+reserve is reserved exclusively for that computation, and solver
+controllers never learn its data before their outputs are fixed.
 
-On a component with offset x, controlled subtraction produces
+For fixed bad positions, the clean-bank mean and variance proof
+applies with Q=JP+V and Q>=2P. For all i<P, Q-i >= (63/64) Q, so x_i=m/(Q-i)<= (64/63)epsilon
+<=1/63. The inequality ln(1-x)>=-x/(1-x) therefore gives
+ln q >= -(64/62)epsilon P >= -(16/15)epsilon P = -L/15.
+Since ln 2>=2/3 by the tangent-line lower bound for the integral
+of 1/x on [1,2], q>=n^(-1/10). Thus Jq>=64 and the probability
+all clean-bank solvers miss is at most 3/128. The separate unconditional failure bounds
+for assignment sampling, excessive reserve contamination,
+simultaneous good-score deviations and joint good label-readout
+errors are each at most 1/256. Their union with the clean-bank
+failure still has probability below 1/8. No event is evaluated
+under an assumption that the verifier and solver banks are
+independent; the independence used is only for local operations
+within the good reduced marginal at fixed assignment.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+At most J complete times the terminal-block clean solver work bound are paid, with
+O(log(n+2)) physical address length throughout because all actual
+storage is polynomial. The assignment tree, V readouts, all J
+score evaluations, padding acquisition and cleanup are polynomial
+and are absorbed in O(2^(n/9) n^(283/30) L). Work for n=1 is finite
+and the envelope is interpreted asymptotically. Each suspended
+controller owns O(n^2) classical bits and O(n) qubits by the
+base proof, including its own paused scratch and counters.
+The combined classical space is O(J n^2+nV+J log Q)=O(n^(21/10))
+and the quantum space is O(Jn+n)=O(n^(11/10)). Store the current
+source register and reserve readout scratch once and charge
+them explicitly. Address-index additions are ordinary bit
+arithmetic, memory access is classical and no coherent bank
+lookup is used. The exact Q expression is O(n^(51/10)). The time
+growth index is 1 from the positive linear exponent n/9.
+The other three indices are zero since they are polynomial.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+# Private bank amplification for fixed malformed positions
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+For the specified streaming assignment, analyze an equivalent
+uniform partition of the stream positions into fixed-size banks.
+Each solver acts locally with independent private coins. Its
+classical output is retained for the shared reserve test.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+Suppose a fixed bad set has size m. The probability q that a
+particular solver bank is completely clean is
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+    q = product_{i=0}^{P-1} (1 - m/(Q-i)).
 
-## Implementing the controlled subtraction
+Two distinct banks' clean events have joint probability at
+most q^2: conditional on the first bank being clean, the
+m bad positions in the remaining Q-P locations are uniform,
+so a second P-tuple is no likelier to be clean. Conditional
+on the permutation, the entire set of clean banks has its
+ideal product marginal. The complete run of all solvers
+uses a tensor product of bank-local instruments with
+independent private coins. Operations on other banks cannot
+change the marginal output distribution of the clean banks,
+even if malformed systems are entangled with them. Thus if
+each clean solver succeeds with fixed probability r>=2/3,
+the Z count of clean banks that succeed satisfies
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+    E Z >= (2/3) J q,    Var Z <= E Z.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+For the second bound, for each pair condition on both clean
+and the permutation. The successful output events are
+independent with the same ideal success probabilities,
+which do not depend on the permutation. Combine with the
+nonpositive covariance of clean bank indicators. Consequently
+Pr[Z=0]<=3/(2 J q).
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+For the selected schedule, the preceding hypergeometric bound
+q>=n^(-1/10) and the nonpositive pair covariances show a clean
+successful candidate exists with failure at most 3/128.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+The verification count X for any reserve of V copies obeys
+E[(1+z)^X] <= (1+epsilon z)^V for z>=0: expand over subsets
+of slots and use (m)_l/(Q)_l <= epsilon^l for each term.
+At z=7, Pr[X>V/8] <= exp(-V/8) because
+7/64-3 ln(2)/8 <= -1/8. Candidate tests use one shared
+reserve and bound errors simultaneously over all candidate values.
 
-## Joint costs and indices
+## Streaming the bank assignment with a shared classical reserve
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+Set Q=JP+V and allocate remaining-count leaves for J solver bins of
+size P and one verification bin of size V. Before each acquisition
+draw a rank uniformly from [0,R), where R is the total remaining
+count. Descend a binary tree of count sums to find its bin, subtract
+one from that leaf and its ancestors, and send the next register
+there. A category assignment has probability P!^J V!/Q! by
+multiplying the successive remaining counts divided by R. Thus the
+assignment is exactly the image of a uniform permutation. For each nontrivial range draw, reject out-of-range binary strings
+of ceil(log2 R) bits, stopping after ceil(log2(256Q)) tries.
+The chance of failing that draw is at most 1/(256Q). Complete
+success has failure at most 1/256 by union bound and preserves
+the stated uniform law because the individual failure probabilities
+depend only on the public ranges. The count tree is unchanged,
+and the state of the count tree needs O(J log Q) classical bits.
+The actual indexed arithmetic and O(log J) tree levels are charged.
+The fixed-position promise is essential because assignments are
+interleaved with local operations.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+For a resumable solver, keep J independent copies of its state
+waiting at acquisition boundaries. When its bin receives a copy,
+run until its next source request or termination; extra copies
+after termination are discarded. Initialize each solver up to its
+first request and finish pending computation after the final copy.
+For each fixed successful assignment the total action on all
+banks is the tensor product of their capped local instruments,
+because they act on disjoint systems and make no cross-bank
+decisions. Interleaving therefore leaves the clean-bank product
+marginal and all success probabilities unchanged. Its solver
+storage is O(J S_C) classical bits and O(J S_Q+n) qubits, including
+saved controllers and one source temporary. Address widths rise
+to reflect total memory. No JP-register sample array is required.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+For the single shared verification bin, consider ideal measurement
+of the Fourier label W in [0,N), followed by a private fair choice
+of X or Y axis beta=0 or pi/2 and a row-qubit sign Z. Discard the
+register immediately. Store (W,beta,Z); malformed padding may
+be mapped to an arbitrary fixed record. The reported score for
+candidate a is the average of
+Z cos(2pi aW/N-beta), each term bounded by 1 in absolute value.
+For every good position the mean is 1/2 when a=s, and 0
+otherwise, from averaging the two axes and applying orthogonality
+of cyclic characters. Their joint marginal is independent across
+good positions even though neither bad measurements nor solver
+outputs need be independent. If at most V/8 positions are bad,
+the true total expected-good contribution divided by V is at
+least 7/16; bad terms lower it by at most 1/8. A false score has
+zero expected-good contribution and bad terms raise it by at
+most 1/8. Hoeffding for unconditioned good scores shows that all
+V-normalized good contributions differ from their means by
+at most 1/32 except with probability 2N exp(-V/2048).
+Thus the exact scores satisfy true >=9/32 and false <=5/32.
+A uniform arithmetic approximation error <=1/64 preserves
+separation at threshold 1/4. With V>=8192(n+8), the failure
+probability is <1/256. The bad-count tail applies to this
+single bin with V in place of P. Its label records cost O(nV)
+bits, verification needs only a reusable source-size quantum
+register and the label-readout workspace, and testing J
+candidates uses JV polynomial-width score evaluations.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+The next section implements this scoring measurement on the
+good reduced marginal, with a joint comparison error of at most
+1/256. Every malformed transcript is mapped to a bounded score.
 
-## Fractional error tolerance
+## Counted native readout for the shared verification reserve
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+The shared verifier only uses the joint marginal of the good reserve
+records, and all bad record scores are bounded. Its proof therefore does
+not need a full-reference comparison of good Fourier labels with an
+unchanged bad/reference state. More precisely, fix the successful private
+assignment. Each reserve copy is processed by its own local circuit, whose
+coins are not derived from the solver outcomes. The reduced state on the
+good reserve copies is the ideal product by assumption; operations on the
+other systems preserve this marginal. Inside the proof of that marginal
+alone we may sample independent uniform hidden labels k and condition
+on the Fourier eigenstate and its matching row phase. This resolves the
+native readout requirement without adding a dephasing circuit on the
+actual inputs or conditioning a good outcome on any bad output.
+
+Use A_j = ADD(2^j mod N) on the position register for 0<=j<=n+3,
+acting as identity on binary padding. On the Fourier eigenstate with
+phase k/N, its eigenvalue is exp(2 pi i 2^j k/N). Prepare a probe
+in |+>, apply controlled A_j, and measure the probe in X or Y.
+The expectations are respectively the cosine and sine of the indicated
+angle, with Fourier signs chosen so that the row phase is +2 pi k s/N.
+This convention uses Fourier ket proportional to sum_x exp(-2 pi i k x/N)|x>.
+Neither test changes the eigenstate, and the row is untouched until its
+final private X/Y measurement. Fixed shifts use ordinary modular
+addition and comparison with O(n) Boolean gates and O(n) temporary
+bits for a ripple-carry construction. To implement the bijection with
+padding and an extra control, evaluate it into a fresh register,
+swap registers, then XOR its explicitly inverse controlled subtraction
+into the old register. Uncompute scratch in both evaluations. The
+result is exact over Clifford+T using Toffoli and the X/Y bases.
+
+Use R=2^16 ceil(log2(4096 V(n+4))) repetitions per axis per j,
+with the empirical mean of each axis. Hoeffding and a union bound
+over all good probes imply that every mean differs from its value
+by at most 1/32 with failure <=1/256. The estimate does not require
+any condition on the malformed outputs. Finite fixed rational
+sine/cosine samples at angles 2 pi l/128 within 1/1024 of their
+values suffice for rounding. Take a nearest point to the empirical
+vector among those fixed samples. If both means are accurate, the
+chosen exact circle point has chordal distance from the true point
+at most 2 sqrt(2)/32 + pi/128 + 2 sqrt(2)/1024 <1/4.
+An angular distance of at least 1/16 turns has chord at least
+2 sin(pi/16)>=1/4 by the chord bound on sine. Thus this gives a
+dyadic estimate z_j within 1/16 turns of 2^j k/N on the circle.
+
+Starting with z_(n+3), descend j. Given the refined estimate at
+j+1, form its two inverse doubling images on the circle, a half
+turn apart. Choose the image nearer z_j. The correct lift is within
+1/32 turns of the true value at j; its distance to z_j is <=3/32,
+while the other image's distance is >=13/32. This induction halves
+the error at every descent. The estimate at j=0 therefore has
+circular error <=2^(-n-3)/16. Multiply by N and choose the nearest
+integer modulo N, which returns k because N<=2^n. This also gives
+a full deterministic decoding rule on every possible malformed
+probe transcript by fixed tie breaks. The row probe is measured
+independently of the reported label, so on the good marginal its
+sign law coincides with the ideal record law whenever all good
+labels were decoded correctly under the hidden-label coupling.
+
+Generate shifts by repeated doubling with modular reduction. Keep
+the O(n) dyadic z_j as constant-width words, their running refined
+estimate in O(n) bits, and the repeat counters in O(log(Vn)) bits.
+There is no need to store any eigenvector or prepare an inverse
+source. For V=8192(n+8), the readout performs O(n log(n+2))
+probes per copy and uses O(n) working bits and qubits before its
+stored verification records. Its arithmetic and gate emission
+cost O(n^2 log(n+2)) per copy before the address-width charge.
+Nearest-point comparison uses integer comparisons with the
+fixed rational table. The candidate score itself needs only a
+constant angular accuracy: compute aW modulo N by schoolbook
+arithmetic, and round the fractional turn on a fixed grid of
+at least 1024 points, with cosine values precomputed to within
+1/1024. This gives less than 1/64 worst-case term error on every
+report. Each candidate costs O(V n^2) unaddressed operations.
