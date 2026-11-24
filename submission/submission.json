@@ -1,15 +1,18 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Streaming private banks with coherent terminal-block decoding",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N>=2 and every s modulo N, with n=ceil(log2 N), the streaming private-bank algorithm specified in proof.md with the terminal-block BASE13 variant specified in terminal-block.md and base13.md has total sequential work O(2^(n/10) n^(63/10) (log2 n)^2), exact growth index 1, on every branch jointly with all other bounds and unconditional full-secret recovery probability at least 7/8 under the declared fixed-position malformed model.",
       "score": {
         "numerator": "1",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base13.md",
+        "terminal-block.md",
+        "coherent-search.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +24,27 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/10",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
-          "logPower": "0"
+          "nPower": "63/10",
+          "logPower": "2"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and every s modulo N, with n=ceil(log2 N), the streaming private-bank algorithm specified in proof.md with the terminal-block BASE13 variant specified in terminal-block.md and base13.md has peak classical bits O(n^(21/10)), exact growth index 0, on every branch jointly with all other bounds and unconditional full-secret recovery probability at least 7/8 under the declared fixed-position malformed model.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base13.md",
+        "terminal-block.md",
+        "coherent-search.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -49,19 +55,22 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
+          "nPower": "21/10",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and every s modulo N, with n=ceil(log2 N), the streaming private-bank algorithm specified in proof.md with the terminal-block BASE13 variant specified in terminal-block.md and base13.md has peak allocated qubits O(n^(11/10)), exact growth index 0, on every branch jointly with all other bounds and unconditional full-secret recovery probability at least 7/8 under the declared fixed-position malformed model.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base13.md",
+        "terminal-block.md",
+        "coherent-search.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,19 +81,22 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
+          "nPower": "11/10",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N>=2 and every s modulo N, with n=ceil(log2 N), the streaming private-bank algorithm specified in proof.md with the terminal-block BASE13 variant specified in terminal-block.md and base13.md has all source acquisitions O(n^(51/10)), exact growth index 0, on every branch jointly with all other bounds and unconditional full-secret recovery probability at least 7/8 under the declared fixed-position malformed model.",
       "score": {
-        "numerator": "1",
+        "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base13.md",
+        "terminal-block.md",
+        "coherent-search.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -94,27 +106,24 @@
         "notation": "big-o",
         "bound": {
           "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
-          "nPower": "1",
+          "exponent": [],
+          "nPower": "51/10",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N>=2 and s, the same streaming private-bank algorithm recovers the entire s with unconditional probability at least 7/8 jointly with the other bounds when epsilon(n)=L/(8796093022208*n^5), L=log2 n and n=ceil(log2 N). Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied. The joint state and positions are chosen before private coins by the fixed-position model.",
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "base13.md",
+        "terminal-block.md",
+        "coherent-search.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "L/(8796093022208*n^5)",
+        "error_model": "Among the Q acquired copies, an adversary fixes a set B of at most floor(epsilon(n) Q) malformed positions, possibly depending on N and s. The joint state is arbitrary subject to its reduced state on all other positions being exactly rho_s^{tensor (Q-|B|)}. Malformed systems may be correlated or entangled with each other and with other systems subject to that marginal promise. No source control, purification access, or preparation inverse is supplied."
       }
     }
   ],
