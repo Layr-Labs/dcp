@@ -1,104 +1,46 @@
-# Exhaustive shift testing
+# Direct angular score with a private probe for each copy
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+Let N>=2, n=ceil(log2 N), K=2^34 n and B=65536. Acquire exactly K source copies. The tolerated fraction is 341/1024, with fixed malformed positions chosen before any private coins and an ideal product marginal on all other positions. Every branch returns one residue modulo N. Use the native Fourier-label instrument in BASE13 Section 3 with its precision cap set to K, followed by X on the row to give the positive phase convention. For an ideal copy, its hidden Fourier label k is uniform modulo N and the row phase is exp(2 pi i k s/N). The label instrument touches only the position system before the row operations. The Section 3 coupling compares the full clean label transcript to this ideal report with discrepancy probability at most 2^-14 over at most K clean-copy calls. On any bad or padded transcript, use the instrument's deterministic rounding convention to report an integer in [0,N), using 0 if the convention reports an invalid result. Every row measurement has sign Z in {-1,1}.
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+After each copy's label readout and fixed row X gate, use an independent uniform b in {0,...,B-1} from sixteen fair bits. Put beta=2 pi b/B. Measure the row sign in the beta equatorial axis, with an exactly executable approximation obtained as follows. A rotation diag(1,exp(-i beta)) before X measurement has the desired ideal law, with conditional mean cos(2 pi k s/N-beta). Generate a Clifford+T circuit whose induced sign observable differs from the target observable by at most 2^-19 in operator norm. One uniform fixed-cost implementation enumerates all words in H,T and the inverses and all finite rational certification precisions, in increasing total description length. For certification, accept once the maximum absolute entry difference of the two 2-by-2 sign observables has a certified upper bound below 2^-20. This implies operator-norm difference below 2^-19. Every tested matrix is computed with convergent rational intervals, and the target trigonometric constants have convergent Taylor interval enclosures. Test only finitely many words and precisions at each length and increase the bound until a word is accepted. Projective single-qubit universality of H and T ensures termination for each of the 65536 fixed targets. Thus all generation work, the table, and the lengths of the words have absolute finite bounds independent of N and of input outcomes. The controller generates and pays for these circuits once and executes the selected word followed by the ordinary X readout. This uses no data-dependent synthesis and no advice. A reference for the finite single-qubit gate approximation principle is Dawson and Nielsen, *The Solovay-Kitaev algorithm*, arXiv:quant-ph/0505030.
 
-## Correctness
+Store each record (k,b,Z), discarding both source registers. Given a candidate a in [0,N), define its term to be
 
-On a component with offset x, controlled subtraction produces
+    Z * sign_+(cos(2 pi (ka mod N)/N - beta)),
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+where sign_+(x) returns +1 when x>=0, and -1 otherwise. This is an exact discrete function of three integers. Take u=(B*(ka mod N)-b*N) modulo BN in [0,BN), then test 4u<= BN or 4u>=3BN for the positive sign, including both endpoints. Cross products here take O(n) bits, and the multiplications other than ka are by a fixed word or a fixed-length b. No numerical cosine is evaluated by the scorer. Use normalized average of the K terms and mark iff it is at least 1739/8192.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+## Clean means and simultaneous concentration
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+For fixed angles x=2 pi k s/N and y=2 pi k a/N, the continuously averaged ideal term is
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+    (1/(2 pi)) integral_0^(2 pi) cos(x-beta) sign_+(cos(y-beta)) d beta
+      = (2/pi) cos(x-y).
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Indeed shift beta by y, expand the cosine addition identity, and use the zero sine integral by reflection. The remaining integral of |cos| is 4. On the public grid, compare the equally spaced left-endpoint sum to this integral using B equal half-open cells. Away from the two possible jump locations the integrand is 1-Lipschitz. A jump exactly at a grid endpoint can affect the adjoining cell starting at that endpoint when the tie sign disagrees with the right limit; if it is a right endpoint it does not affect the preceding cell. Thus at most two cells incur an extra worst-case discrepancy of 2/B each. The total discrepancy is at most (2 pi+4)/B. Native measurement synthesis changes the expectation by at most 2^-19, so the combined discrepancy is less than 1/6250 using pi<314160/100000. Taking the uniform Fourier-label average, the correct candidate has mean at least 2/pi-1/6250 > 6364/10000. For an incorrect candidate, the complex geometric sum of exp(2 pi i k(s-a)/N) is zero, so its mean is at most 1/5000. For the rational bounds on pi one may use Machin's identity and the first ten terms of the alternating arctangent series for each of 1/5 and 1/239, with the next terms bounding the two remainders. These averages concern the ideal-label experiment with the actual synthesized row circuits.
 
-## Implementing the controlled subtraction
+Fix the malformed set and consider the reduced marginal of the clean systems only. Each local record instrument uses independent private bits and acts only on its own copy. Clean records are independent with the ideal-label law after coupling; no conditioning on malformed records is involved. Hoeffding gives failure probability at most 2 exp(-K/(2*32768^2)) for the clean score sum of any fixed candidate to differ from its ideal expectation by more than K/32768, because the clean count is at most K and each contribution ranges in [-1,1]. Add the unconditional label coupling discrepancy 2^-14 once for the entire clean record list.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+For each malformed record, condition on the full preceding physical transcript and its own completed label readout. The conditional row state is some qubit density matrix even when that row is entangled with other systems. Its ideal sign expectation at axis beta has the form v_x cos(beta)+v_y sin(beta)=r cos(x-beta), with 0<=r<=1 by the Bloch disk bound. The b choice is private, uniform and sampled after the label readout, so this conditional state and the value y=2 pi k a/N do not depend on b. The same continuous integral and grid comparison give absolute conditional expected score at most 2/pi+1/6250 < 6368/10000, using pi>314159/100000. Synthesis error and arbitrary readout labels are included. Averaging over the label subtranscript preserves both endpoints of the bound when conditioning just on the preceding record transcript.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The sum of the malformed contributions minus the sum of their conditional means is a martingale sum. Use all record indices, setting the increment to zero on clean positions. Conditioned on the preceding transcript, each nonzero increment is centered and lies in an interval of length two. The exponential-moment form of Hoeffding for each conditional increment gives the same bound 2 exp(-K/(2*32768^2)) for exceeding K/32768 in absolute value as for the clean sum. To see this, each increment has conditional moment at most exp(lambda^2/2), so iteration over at most K increments and Markov at lambda=1/32768 give the claim. This uses the actual physical transcript, not the ideal coupling. The two bounds can therefore be combined by union without conditioning one on the other. Union over all valid candidates and both sums gives probability at most 2^(n+2) exp(-8n) < 1/128 for n>=1.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Write f=m/K<=341/1024 for the actual malformed fraction. On these concentration events and the clean label coupling, the normalized correct score is at least
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+    (1-341/1024)*(6364/10000) - (341/1024)*(6368/10000) - 2/32768 > 1739/8192.
 
-## Joint costs and indices
+Every incorrect normalized score is at most
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+    (1-341/1024)*(1/5000) + (341/1024)*(6368/10000) + 2/32768 < 1739/8192.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+Both inequalities are exact rational comparisons. The first expression decreases as f increases and the second increases as f increases. Hence the endpoint bounds apply, and precisely one valid candidate is marked. The bounds apply even if earlier outcomes affect the conditional state of a malformed row by entanglement. The analysis uses only the fixed-position premise, the good product marginal, and independence of each new private angle.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## Counted search
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Use an n-qubit uniform candidate register over A=2^n, with padding (a>=N) never marked. Compute ka modulo N using the exact linear-space reversible multiplication and reciprocal reduction in fast-score-arithmetic.md. The sign test uses exact integer comparisons. With the stored sign, update a signed O(log(n+2))-bit sum, then reverse the per-record scratch calculation. After all K terms apply the exact threshold 8192 sum >=1739 K under the valid-index flag. Apply the sign flip, then reverse the full evaluation including the padding flag. Each modular multiplication costs O(n^(5/4)) indexed work and uses O(n) qubits. The other fixed-width O(n)-bit operations use ripple logic with address and loop cursor charges. Each has O(n polylog(n+2)) work, which is absorbed into O(n^(5/4)). Scan records through classical addresses and reuse the arithmetic space. A classical postmeasurement mark check can instead perform ordinary schoolbook arithmetic.
 
-## Fractional error tolerance
+An oracle and its emitted inverse cost O(K n^(5/4)) total sequential work. Classical postmeasurement verification using schoolbook arithmetic costs polynomial work per trial. There are O(n) doubling scales and 128 trials per scale, so all such checks together are polynomial and not a per-Grover-iteration expense. The classical preprocessing, indexed gates, loop arithmetic, and stored circuit descriptions are charged in the arithmetic proof.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+For the search use a fixed sequence of scales M=1,2,4,... ending at the first power of two with M^2>=16A. At each scale run 128 independent trials, selecting uniform j in [0,M), applying j Grover iterations from the uniform start, and measuring and checking the output. Stop on the first verified mark, or output 0 at the fixed end. One Grover step uses the exact phase oracle and H^n followed by an all-zero sign flip and H^n, with a reusable linear Toffoli chain. For marked fraction p, p>=1/2 succeeds at scale 1 with probability at least 1/2 per trial. For 0<p<1/2 let sin^2(theta)=p. At a scale M, averaging sin^2((2j+1)theta) over uniform j gives 1/2-sin(4M theta)/(4M sin(2theta)), by the finite geometric sum. Since p>=1/A and sin(2theta)>=sqrt(2/A), the first scale M>=2/sin(2theta) is included. At that scale each trial has success probability at least 3/8, so the failure probability is at most (5/8)^128<2^-32. Summing the doubling scales gives O(sqrt(A)) iterations even on an all-failure branch. For p=0 the same cap still applies. No trial calls the source or its inverse.
+
+The bad-event budget 1/128+2^-14+2^-32 is below 1/8. All guarantees are simultaneous. The stored records and controller scratch fit O(n^2) classical bits. The one source copy and native label circuit, candidate register, modular arithmetic and diffusion use O(n) qubits, reused. Native readout on K copies has polynomial work; the charged oracle work times O(2^(n/2)) trials and iterations gives O(2^(n/2) n^(9/4)) sequential work, with log(n+2) at finite short lengths. K=2^34 n is the exact acquisition budget on every branch. The work growth index is 1, and the other indices are zero. Fraction 341/1024 is a supported constant and has no independent time score.
