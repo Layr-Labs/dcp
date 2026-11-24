@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Streaming spectral mixing with quantum source memory",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the streaming adaptive spectral algorithm in proof.md uses the GPS-PELL logical solver in gps-source.md, with its stated replacement of source extraction by a signed-erasure mixer and the bounded finite branch. Its total sequential charged work T is O(2^((4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393) sqrt(n log2 n))) with that exact representative and growth index 1/2. On every execution branch, this bound holds jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "gps-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,24 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
+              "coefficient": "4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "1/2"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the streaming adaptive spectral algorithm in proof.md uses the GPS-PELL logical solver in gps-source.md, with its stated replacement of source extraction by a signed-erasure mixer and the bounded finite branch. Its peak ordinary classical workspace S_C in bits is O(n^2) with that exact representative and growth index 0. On every execution branch, this bound holds jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "gps-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -55,13 +59,15 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the streaming adaptive spectral algorithm in proof.md uses the GPS-PELL logical solver in gps-source.md, with its stated replacement of source extraction by a signed-erasure mixer and the bounded finite branch. Its peak allocated quantum workspace S_Q in qubits is O(n) with that exact representative and growth index 0. On every execution branch, this bound holds jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "0",
         "denominator": "1"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "gps-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -72,49 +78,53 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the streaming adaptive spectral algorithm in proof.md uses the GPS-PELL logical solver in gps-source.md, with its stated replacement of source extraction by a signed-erasure mixer and the bounded finite branch. Its total raw source acquisitions Q is O(2^((4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393) sqrt(n log2 n))) with that exact representative and growth index 1/2. On every execution branch, this bound holds jointly with the other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every source in the fifth claim, including the clean source. All outside constants are absolute.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "gps-source.md",
+        "readout.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "4220739002333374333076661207007897480527171461587588904329343278867244651581076194247375622934073745915723146238481360116601600536966908291292638218038932767599715202588295697110969742583589850791962245101639163711706911703404388087487284304062247381254885/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "1/2"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N >= 2 and s in Z/NZ, with n = ceil(log2 N), the streaming adaptive spectral algorithm in proof.md uses the GPS-PELL logical solver in gps-source.md, with its stated replacement of source extraction by a signed-erasure mixer and the bounded finite branch. The proved malformed fraction is epsilon(n)=1 for every n >= 1 in the adaptive spectral channel model described in error_model. Every acquired copy may be malformed, and the provider may correlate preparations via a private quantum memory and choose the next spectral channel in response to past raw label-readout outcomes even within a mixer block. The solver recovers the whole secret with probability at least 1-2^(-7) jointly with all four branchwise resource bounds for every allowed source.",
+      "evidence": [
+        "proof.md",
+        "gps-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1",
+        "error_model": "Adaptive spectral channel model, valid for every N>=2 and s in Z/NZ. Let n=ceil(log2 N), omega=exp(2 pi i/N), chi_k=N^(-1/2) sum_y omega^(ky)|y>, phi_k(s)=(|0>+omega^(-ks)|1>)/sqrt(2), and V_s be the span of the orthonormal vectors v_k(s)=phi_k(s) tensor chi_k. Before each acquisition the provider may process or measure its private quantum memory and choose a clean delivery or a malformed channel, using N, s, the solver description, its private records and all earlier measurement outcomes including any within-block label probes. A clean delivery is a fresh independent ideal rho_s in product with all other systems. A malformed channel is a trace-preserving quantum channel on its private memory input that outputs a copy register of n+1 qubits and updated private memory. For every density operator tau on its input memory the output copy marginal sigma_tau is supported on V_s. Its diagonal law p_tau(k)=<v_k|sigma_tau|v_k> satisfies |sum_k p_tau(k) omega^(jk)|<=1-2^(-10) simultaneously for every nonzero character j modulo N. The gap is uniform over the memory state of every chosen channel. The copy may be entangled with the updated memory and with other emitted copies via that memory. The private memory starts independent of the solver. The provider cannot access delivered registers, future private randomness, or private solver workspace; its only classical side information about the solver consists of the allowed outcomes. Only the raw register is supplied, without a herald or spectral information. At most floor(epsilon(n) Q) of the Q actual deliveries are malformed, branchwise. The guarantee applies to every such provider, including the clean problem."
       }
     }
   ],

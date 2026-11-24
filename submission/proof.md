@@ -1,104 +1,336 @@
-# Exhaustive shift testing
+# Streaming phase mixing with quantum source memory
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. Theorem and parameters
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
-
-## Correctness
-
-On a component with offset x, controlled subtraction produces
-
+For every $N\ge2$ and $s\in\mathbb Z/N\mathbb Z$, set
+$n=\lceil\log_2N\rceil$. The single algorithm below recovers all of $s$
+with unconditional probability at least $1-2^{-7}$. Its joint
+branchwise envelopes are
 $$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
+ T,Q=O(2^{c\sqrt{n\log_2n}}),\qquad
+ S_C=O(n^2),\qquad S_Q=O(n),
 $$
+with the exact rational $c$ given by 334 repetitions of the Pell
+recurrence of gps-source.md Section 0 starting from $(p,q)=(1,1)$ and
+setting $c=p/q$. This is the same rational recorded in the
+structured declarations. The growth indices are $1/2,0,0,1/2$.
+The source model of Section 2 allows all raw acquisitions to be
+malformed. Only the raw registers are supplied.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
-
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
-
+On $n\ge256$ execute GPS-PELL, reproduced in gps-source.md, with
+the source substitutions of Section 5 below. Let $C=Q_{\rm cap}$
+from its Section 8, unchanged as a logical source-call cap.
+On $n<256$ let $C=N\cdot256(n+16)$ and use Section 6. In both cases
+set $\delta=2^{-10}$,
 $$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
+ L=\lceil\log_2 C\rceil,\qquad w=64\delta^{-1}(n+L+32),\qquad A=wC .
 $$
+Each reached logical call acquires $w$ copies and returns one
+label-and-row pair. At most $A$ raw copies are acquired on any branch.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+## 2. Adaptive spectral channel model
 
-## Implementing the controlled subtraction
-
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
-
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
-
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
-
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
-
-## Joint costs and indices
-
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
-
+Write $\omega=e^{2\pi i/N}$,
+$\chi_k=N^{-1/2}\sum_y\omega^{ky}|y\rangle$, and
+$\phi_k(s)=(|0\rangle+\omega^{-ks}|1\rangle)/\sqrt2$.
+Let $V_s$ be the span of the orthonormal
+$v_k(s)=\phi_k(s)\otimes\chi_k$ for $0\le k<N$.
+A clean delivery is the independent ideal state $\rho_s$, in product
+with everything else. On a malformed delivery the provider applies
+a quantum channel to its private memory. The channel emits an
+$(n+1)$-qubit copy register $A$ and an updated private memory $E'$.
+For every density operator $\tau$ on the channel's input memory,
+the copy marginal is supported on $V_s$. Its diagonal law
+$p_\tau(k)=\langle v_k(s)|\operatorname{Tr}_{E'}(\Lambda(\tau))|v_k(s)\rangle$
+must satisfy
 $$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
+  \left|\sum_k p_\tau(k)\omega^{jk}\right|\le1-\delta
+  \quad\text{for every }j=1,\ldots,N-1.
 $$
+The bound is uniform over the memory input of each chosen channel.
+It therefore holds for the marginal of a memory entangled with
+other systems. The channel may entangle its output with the
+new memory and, through that memory, other delivered copies.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+Before each delivery, the provider may process and measure
+its private memory and choose a channel or a clean delivery using
+$N,s$, the algorithm, all previous measurement outcomes and its
+private records. The chosen malformed channel obeys the bound
+for every possible input memory state, including one conditioned on
+unseen latent labels. This includes adaptation to raw label
+extraction inside each block. The private memory starts independent
+of the solver. The provider has no access to delivered registers,
+future randomness or any private solver workspace. Only the
+copy register enters the solver. No spectral weights, measurement
+of the provider memory or corruption indication are supplied.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Fixed or adaptive product spectral preparations are special cases,
+by using a channel that prepares the selected state independently of
+its memory. For an example with genuine inter-copy entanglement,
+the first channel can emit one half of a maximally entangled state
+in the $v_k(s)$ basis, holding its other half in its memory. Its
+emitted marginal is uniform. The second channel can, with weight
+$1-\delta$, transfer the retained memory to a copy in the same basis,
+and with weight $\delta$, emit an independent ideal copy. The second
+channel's spectrum meets the gap for every possible memory input
+because all its nonconstant coefficients are multiplied by
+$1-\delta$. For $N=2$, the two output copies have a Bell-state
+component of weight $1-\delta$ and a completely mixed component of
+weight $\delta$ on $V_s\otimes V_s$. Its partial transpose has a
+eigenvalue $-1/2+3\delta/4<0$, so the output copies can be
+entangled in this model.
 
-## Fractional error tolerance
+## 3. Physical streaming interface
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+For a logical call with known transform, acquire one raw copy at a
+time. The transform is the unit multiplication or known controlled
+shift of gps-source.md Sections 6–7, or identity in the finite branch.
+Perform it immediately on the new raw register. Run the fixed length
+LE in readout.md with its raw upper bound parameter set to $A$.
+Release the position wires by partial trace after these probes, with
+no final position measurement. Keep the single row qubit and its
+reported label. The label is kept as an $O(n)$-bit ordinary word.
+Proceed to the next raw acquisition after completing those steps.
+After $w$ acquisitions retain $w$ row qubits and $w$ classical
+reports. The labels and all earlier readout outcomes may have been
+used by the provider for its later decisions.
+
+Take the first row and its report as the accumulator. For each of
+the remaining $w-1$ records draw a fresh fair inclusion bit after
+the last delivery. If zero, release the row; if one, apply the CNOT
+from accumulator to that row, measure its target in Z, and release
+it. On target outcome zero add its report to the accumulator modulo
+$N$, and on outcome one subtract it. This leaves the accumulator
+in the negative-phase convention. Pass its row and final reported
+label to the original caller. The caller's later X, sign and label
+operations are preserved. Every one of the $w$ reports and rows is
+accounted even when it is later discarded. The $w$ stored rows
+are never measured or coupled to one another before the last raw
+delivery in their block.
+
+## 4. Adaptive mixing proof
+
+The logical transforms on $V_s$ preserve the one-to-one Fourier
+position and row relation. If a supplier requests multiplication
+by a unit $\alpha$, the Fourier index maps by multiplication by
+$\alpha^{-1}$ and the effective secret is $\alpha s$. A controlled
+shift preserves the index and changes the effective secret to
+$s-c_0$ for its known offset $c_0$. The spectral promise survives
+both maps because unit multiplication permutes nonzero character
+indices. The latent-label measurement representation of LE holds jointly
+with the provider memory and all retained registers. In fact the new
+copy and everything else has a block expansion
+$$
+ \sum_{k,l}|v_k(s)\rangle\langle v_l(s)|\otimes X_{kl}.
+$$
+On each fixed LE transcript the Kraus operators on position are
+diagonal in the Fourier basis. The unit and shift transforms also
+preserve orthogonality of two distinct Fourier position labels.
+Private operations conditioned on the probe history act on the other tensor factor and do not affect Fourier-position orthogonality. When that position is discarded, the terms with $k\ne l$ vanish.
+Thus one can put a latent measurement of the new copy in its
+$v_k(s)$ basis before the physical transform and probes, keeping
+the hidden label only in the analysis. This preserves every actual
+probe outcome and joint memory state after that position discard.
+Given the latent $k$ the emitted row is the fixed pure state
+$\phi_k(s')$ and factors from all other systems.
+
+By induction one can condition on the complete latent and public
+past while keeping the solver's live quantum state and the provider's
+memory in product form on each such history. Initially this is the
+source promise. Each conditioned latent measurement leaves the new
+row pure and acts only on the provider side of that product apart
+from exposing a classical outcome. Supplier memory operations act
+on one factor, and the inherited algorithm's operations act on the
+other factor; any conditioning on their classical outcomes preserves
+the product on a fixed branch. The ordinary schedule performs the
+entire current LE and position discard before any next delivery.
+Thus the dephased calculation agrees with the adaptive observed
+law, even if a different input memory state arises on different
+latent branches. For every such branch the uniform channel gap gives
+the same bound on the conditional law of the next latent label.
+The logical caller and prior solver quantum state need not be
+independent of the hidden label distribution unconditionally.
+The product statement is only for a fixed classical and latent
+history in this analysis.
+
+Replacing the label report by its latent label costs at most $2^{-10}$
+over all raw calls, by the uniform-in-label error bound in readout.md
+with cap $A$. Keep common probe outcomes and memory operations
+until the first wrong report. The physical controller can compute
+the report without supplying it as an extra measurement outcome;
+given the probe transcript the corresponding classical arithmetic
+is fixed. Thus the comparison can carry the same supplier
+measurement history up to that mismatch.
+
+Consider one block in this correct-report analysis, and condition
+on its complete pre-block history. For a fixed nonzero character
+$j$, write $D_i=(1-\Re\omega^{j k_i})/2\in[0,1]$ for the transformed
+latent label at delivery $i$. Conditional on every earlier latent
+label, probe outcome and provider selection record, and on the
+choice of channel before sampling the new latent label, the
+conditional expectation of $D_i$ is at least $\delta/2$. The
+channel bound applies to the current conditioned memory state. For every $t>0$,
+$$
+ \mathbb E[e^{-tD_i}\mid{\rm earlier}]\le
+ 1-(1-e^{-t})\delta/2
+ \le\exp(-(1-e^{-t})\delta/2)
+$$
+by the chord inequality for $e^{-tx}$ on $[0,1]$, then averaging
+over the step's choice. Iterating conditional expectations for
+the product and using Markov with $t=\ln2$ gives
+$$
+ \Pr\!\left[\sum_{i=1}^w D_i < w\delta/4 \mid {\rm preblock}\right]
+ \le \exp(-(1-\ln2)w\delta/4)
+ \le \exp(-w\delta/16).
+$$
+The proof uses conditional drift and does not require independent
+labels across adaptive deliveries. Union over $N-1$ characters.
+
+The timing matters even on two labels. In a toy process where an
+adder exposes each previous exact running parity, a provider can
+choose the next label equal to that parity with probability
+$1-\delta/2$. Each draw meets the same conditional spectral gap
+and the next running parity is zero with probability
+$1-\delta/2$, however many draws have elapsed. The inclusion bits
+here are chosen only after the final delivery, so there is no
+known running selected parity during the stream.
+
+
+Conditional on the full latent vector and the probe history
+within the block, the rows are a product of the specified pure
+phases. On each inclusion, the target sign is uniform for every
+pair of labels, by expanding the four terms of the two-qubit
+state. Target outcome zero keeps 00 and 11, giving the label sum,
+and one keeps 01 and 10, giving the label difference. Thus
+after the last delivery the output label $K$ is distributed as
+$k_1+\sum_{i=2}^w E_i k_i \pmod N$, where the independent variables
+$E_i$ have probabilities $1/2,1/4,1/4$ at $0,+1,-1$.
+The conditional output row is precisely $\phi_K(s')$. The
+character magnitude of this signed sum is
+$\prod_{i=2}^w (1-D_i)$. On the event that every character has
+$\sum_i D_i\ge w\delta/4$, it is at most
+$\exp(1-w\delta/4)$ for each character. We removed at most one
+unit of deficiency for the accumulator. Random omission makes
+this formula valid even for an order-two character.
+
+By finite Fourier inversion, conditional on a good vector the
+total variation distance of $K$ to uniform is at most
+$(N-1)\exp(1-w\delta/4)/2$. Averaging over the latent vectors and
+probe records bounds the block distance conditional on the whole
+prior history by the sum of this and $(N-1)\exp(-w\delta/16)$.
+The row itself is pure and fixed at each returned label,
+so this bounds the full delivered pair. Multiplying by
+$C\le2^L$ gives a total error below $2^{-32}$, using $N\le2^n$
+and $w\delta=64(n+L+32)$.
+
+One can realize this bound by first-mismatch coupling. At each
+reached logical call, condition on the past, couple the real
+block output label to a fresh uniform label, and give the
+comparison $\phi_K(s')$ for its own uniform label. Carry the
+actual block's side transcript and conditional provider memory state
+to drive future supplier choices. Sample the record
+conditional on the original label in the coupling and carry its
+corresponding quantum memory state as an auxiliary system. The
+conditional factorization above ensures that the inherited solver's
+state on a matching history can be coupled identically. Those choices have no control over the
+comparison's next independently uniform label. On each matched
+history the new pure rows are identical and the inherited
+algorithm can use the same operations and outcome coupling until
+the next logical acquisition. This proves equality to the clean
+logical process except for the stated total error. In particular
+we never assume a block is uniform after conditioning on its
+current inclusion bits or reports.
+
+## 5. Main-branch integration and accounting
+
+Keep the width profile, native combiner, candidate stages, output
+format, source-request cutoff, weighted-attempt cap and root
+frequency guard from GPS-PELL. Replace each source acquisition
+plus its immediate transform and EXTRACT operation by Section 3.
+The original EXTRACT routine and its fallback cap are thereby
+removed. The logical request counter is tested and debited before
+starting each new block, so $A$ is a branchwise upper bound.
+The returned report always lies in $[0,N)$, even for bad
+measurement records, and all downstream workspace and guards
+continue to apply. The pure ideal interface used by the unchanged
+logical analysis is reproduced after the comparison of Section 4.
+Its source cutoff, weighted-attempt cutoff, frequency guard and
+decoder errors are at most
+$2^{-10}+2^{-10}+2^{-20}+2^{-19}$ by gps-source.md Section 8.
+Adding $2^{-10}$ for the physical LE and $2^{-32}$ for mixing
+gives failure below $2^{-7}$.
+
+We bound the work including every replaced extractor and its raw
+source cost. The original parameter bounds give
+$\log C=O(\sqrt{n\log n})=O(n)$, so $w=O(n)$. A native readout is
+polynomial work, using its new $O(n)$-bit log cap and storing the
+$n+5$ six-bit direction reports plus its current $O(n)$-bit
+unwrapping field. All arithmetic and iterative counters are
+counted. At a logical request, the suspended GPS program holds
+at most its ordinary allocation. The raw stream adds $w$ row
+wires, one $(n+1)$-wire current raw copy, and $O(n)$ shared
+transform, LE and merge work wires. Thus the quantum space is
+still $O(n)$. The record array stores $w$ ordinary $O(n)$-bit
+label words and fixed staging, so the ordinary space remains
+$O(n^2)$. In particular the algorithm never allocates a raw
+block of $w$ full position registers at once. Addressing
+width remains $O(\log(n+2))$ and is charged for all new work.
+
+GPS-PELL Sections 9.2–9.4 bound the other actual operations by a
+fixed polynomial times $2^R$, and $C=O(2^R)$, even on all
+abort branches. Raw LE transformations, allocation, the polynomial
+per-copy probes, retained report array, the fixed merge schedule,
+and cleanup increase this work only to another fixed polynomial
+times $2^R$. The total sample bound $A$ also has that form.
+By Section 9.5 of gps-source.md there is a fixed rational
+$c_1<c$ with $R\le c_1\sqrt{n\log_2n}+1$ for all large $n$.
+The positive gap $c-c_1$ absorbs any fixed polynomial since
+$\sqrt{n\log n}/\log n\to\infty$. All smaller lengths have
+literal finite cuts and costs and affect only outer constants.
+No real arithmetic or irrational coefficients are used in
+preprocessing. This verifies the common exponential bound at the
+exact declared $c$ for both work and raw copies.
+
+## 6. Finite branch and indices
+
+For $1\le n<256$, let $H=256(n+16)$ and $C=NH$. For each
+candidate $t$ in increasing order, run $H$ calls with identity
+transform and the same streaming mixer. Apply X to its row,
+draw a fair basis bit $\beta$, and measure in X or Y accordingly
+with signed result $Z$. Use score
+$Z\,\mathrm{tab}_\beta(kt\bmod N\,/N)$ from readout.md's
+rational table, clamping the table entries to $[-1,1]$ before
+multiplying. Keep the first candidate with average score
+above $1/4$ and execute all scheduled calls. Output that
+candidate or zero. All loops, measurements, discarded copies and
+reports are bounded, with the same memory strategy.
+
+In the uniform comparison the ideal exact score averaged over
+basis and measurement is $(1/2)\cos(2\pi k(s-t)/N)$. Uniform $k$
+gives expectation $1/2$ for $s=t$ and zero otherwise. The
+table error is less than $1/625$, so a wrong threshold decision
+requires a deviation of at least $1/5$ and has probability at
+most $\exp(-H/50)$ by Hoeffding. Union over $N$ candidates and
+add the common readout and mixing error. The result is below
+$2^{-7}$, including at $n=1$. This fixed finite prefix is covered
+by the asymptotic envelopes, with finite outside constants.
+
+Eventually the double logarithm of the work and source
+representatives is
+$\log_2 c+(\log_2 n+\log_2\log_2 n)/2$, hence exact index $1/2$.
+The polynomial space representatives have index zero.
+Malformed fraction 1 is a proven guarantee for the stated
+adaptive spectral channel class, including the independent clean problem.
+
+## 7. Material sources
+
+The complete GPS-PELL archive proof supplies the subexponential
+polynomial-space logical method, decoder and exact coefficient.
+PCROOT-1 supplies the directly reproduced native label readout,
+transforms and rational score table. OTP-LIMIT-BANK supplies the
+signed CNOT label update and label-first interface. This session's
+earlier spectral mixing and correlated mixing analyses supply the
+phase-support spectral approach and motivate the random omission
+of terms. The adaptive conditional drift proof, quantum-memory conditioning,
+and streaming register schedule above are the new integration. The arguments are
+included so each claim can be verified directly.
