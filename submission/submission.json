@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Root-exponential collimation under paired common-mode phase drift",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), the single paired phase-drift algorithm in proof.md uses the CS1-LBQ logical tree and decoder with the stated physical odd-parity correction, raw source mixer and caps. Its total charged sequential work T is O(2^(a sqrt(n))), with the same representative and exact growth index 1/2, using a=u_333/v_333, from (u_0,v_0)=(10,7) and (u,v)->(3u+4v,2u+3v). This guarantee holds on every execution branch jointly with all other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -21,70 +23,26 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "0",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), the single paired phase-drift algorithm in proof.md uses the CS1-LBQ logical tree and decoder with the stated physical odd-parity correction, raw source mixer and caps. Its peak ordinary classical workspace S_C in bits is O(2^(a sqrt(n) - 9 n^(1/4))), with the same representative and exact growth index 1/2, using a=u_333/v_333, from (u_0,v_0)=(10,7) and (u,v)->(3u+4v,2u+3v). This guarantee holds on every execution branch jointly with all other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-bounds-v4",
@@ -96,25 +54,88 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            },
+            {
+              "coefficient": "-9",
+              "nPower": "1/4",
               "logPower": "0"
             }
           ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), the single paired phase-drift algorithm in proof.md uses the CS1-LBQ logical tree and decoder with the stated physical odd-parity correction, raw source mixer and caps. Its peak allocated quantum workspace S_Q in qubits is O(n), with the same representative and exact growth index 0, using a=u_333/v_333, from (u_0,v_0)=(10,7) and (u,v)->(3u+4v,2u+3v). This guarantee holds on every execution branch jointly with all other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md",
+        "cs-source.md",
+        "readout.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), the single paired phase-drift algorithm in proof.md uses the CS1-LBQ logical tree and decoder with the stated physical odd-parity correction, raw source mixer and caps. Its total raw source acquisitions Q is O(2^(a sqrt(n))), with the same representative and exact growth index 1/2, using a=u_333/v_333, from (u_0,v_0)=(10,7) and (u,v)->(3u+4v,2u+3v). This guarantee holds on every execution branch jointly with all other resource bounds and unconditional full-secret success probability at least 1-2^(-7) for every allowed source in the fifth claim, including the clean source. All outside constants are absolute.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
       "evidence": [
-        "proof.md"
+        "proof.md",
+        "cs-source.md",
+        "readout.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "8441478004666748666153322414015794961054342923175177808658686557734489303162152388494751245868147491831446292476962720233203201073933816582585276436077865535199430405176591394221939485167179701583924490203278327423413823406808776174974568608124494762509770/5969026340336944451114480739433819709407468170415945417713771714885974444504222882421291476798989652766383498455240579454394404150586732509003361709530480614304768144606668970442415970951831495263198155709406532002051594173677103082229495028847707209502393",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "0",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every integer N>=2 and s in Z/NZ, n=ceil(log2 N), the single paired phase-drift algorithm in proof.md uses the CS1-LBQ logical tree and decoder with the stated physical odd-parity correction, raw source mixer and caps. Its proved malformed fraction is epsilon(n)=1 for every n>=1 under the paired phase-drift channel model in error_model and proof.md Section 2. Every raw acquisition may be malformed and two consecutive paired deliveries may share an unknown nonzero row phase, with arbitrary adaptation between pairs and within-pair channel and memory feedback subject to the stated promises. Full-secret recovery has unconditional probability at least 1-2^(-7) jointly with all four declared every-branch resource bounds for every allowed source, including the clean case.",
+      "evidence": [
+        "proof.md",
+        "cs-source.md",
+        "readout.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1",
+        "error_model": "Paired phase-drift channel model, valid for every N>=2 and s in Z/NZ. Set n=ceil(log2 N), omega=exp(2 pi i/N), chi_k=N^(-1/2) sum_y omega^(ky)|y>, phi_(k,beta)(s)=(|0>+exp(i beta) omega^(-ks)|1>)/sqrt(2), and V_(s,beta) the span of the orthonormal v_(k,beta)(s)=phi_(k,beta)(s) tensor chi_k. The usual raw registers of n+1 qubits are delivered as consecutive pairs indexed (1,2),(3,4), and so on. The provider privately chooses a single classical phase beta before the first delivery of each pair and keeps it fixed within that pair. It can choose beta from prior observations and private memory records. A clean delivery is a fresh ideal rho_s in product with everything else; a pair with any clean delivery must have beta=0 modulo 2 pi. A malformed delivery comes from a trace-preserving quantum channel on the provider private memory, whose outputs are a raw copy register and updated private memory. For every input memory density operator its copy marginal is supported on V_(s,beta); it may be entangled with the memory and other copies via that memory. A malformed FIRST delivery of a pair has no additional spectral restriction. For a malformed SECOND delivery of a pair, its diagonal label law p(k) in the v_(k,beta)(s) basis must satisfy |sum_k p(k) omega^(jk)| <= 1-2^(-10) for every nonzero j modulo N and every possible input memory state of the selected channel. Before either delivery the provider may process or measure its private memory and choose clean delivery or a channel using N, s, the complete algorithm, all earlier measurement outcomes including the first copy probes of the same pair, and its private records, while retaining the already fixed pair phase. Its initial memory is independent of the solver. It cannot access delivered registers, future private randomness or private solver systems. Flags, beta values and label data are unavailable to the solver. At most floor(epsilon(n) Q) of the Q actual acquired copies are malformed on every branch. The guarantee covers all permitted providers and the independent ideal source."
       }
     }
   ],
