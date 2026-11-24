@@ -1,104 +1,186 @@
-# Exhaustive shift testing
+# Lower raw-source exponent with paired amplitude drift
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. Exact algorithm and simultaneous bounds
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
-
-## Correctness
-
-On a component with offset x, controlled subtraction produces
-
+For all $N\ge2$ and $s$ modulo $N$, put $n=\lceil\log_2 N\rceil$.
+The following PCROOT-1-based algorithm recovers the entire secret
+with probability at least $1-2^{-7}$ under the paired amplitude and phase-drift
+channel promise reproduced in pair-mixer.md Section 2. Its fraction
+of allowed malformed copies is 1 under that promise. It allows
+unknown phase and amplitude drift shared by each consecutive pair, quantum memory,
+and adaptive decisions; clean ideal copies are also covered. On
+every branch its simultaneous work, ordinary classical, allocated
+quantum, and acquired-copy envelopes are
 $$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
+ T=O(2^{(13/8)\sqrt n}),\qquad S_C=O(n),\qquad
+ S_Q=O(2^{(13/8)\sqrt n}),\qquad Q=O(2^{(57/64)\sqrt n}).
 $$
+The exact indices are $1/2,0,1/2,1/2$.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
-
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
-
+Use the complete PCROOT-1 tree, logical decoder, counted bank
+and polynomial odd-cell compiler in virtual.md, base-bank.md and
+odd_partition.md. For $n\ge2^{512}$ use the asymmetric exact schedule in schedule.md, which replaces
+virtual.md Section 8 and the schedule in base-bank.md Section 2.
+Its beginning parameter-only pass obtains the logical
+acquisition cap $C=4nC_0+K$. Write $r=\lceil\sqrt n\rceil$ in both branches. For $n<2^{512}$ use Section 4
+here with $H=256(n+16)$ and $C=NH$. In both cases set
 $$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
+ \delta=2^{-10-\lfloor r/256\rfloor},\quad L=\lceil\log_2 C\rceil,\quad
+ w=64\delta^{-1}(n+L+32),\quad
+ \eta=2^{-10-\lfloor r/512\rfloor},\quad P=4w/\eta,\quad A=2PC.
 $$
+Each reached logical acquisition debits the old cap up front.
+Replace the acquisition, the immediately subsequent source transform,
+and LE by the complete bounded pair phase-drift mixer in
+pair-mixer.md Sections 3–4 with these parameters. It performs
+$P$ physical pairs and hands back one reported label and one
+negative-phase row or aborts. The caller's subsequent X, label
+check or rejection, table operations and feedback are preserved.
+The raw acquisition count satisfies $Q\le A$ in every branch,
+including all rejected, erased and unused copies in reached calls.
+The raw fixed input transform inside each pair is Mult_alpha from
+virtual.md Section 11, Shift_c from its Section 12, or the
+identity in Section 4 here.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+A logical call begins with no prior raw pair partly consumed.
+The raw labels are extracted individually by readout.md with
+accuracy cap $A$. The mixer stores at most $w$ corrected rows whose
+shared phases and amplitude biases have canceled. It uses one ordinary label and scratch
+staging area at a time. Completed measured label words are stored
+in a separate counted basis-registered array of $O(wn)$ bits
+realized as allocated qubit wires. Z reads and X updates are
+classically indexed and paid. Neither the raw mixer nor its memory
+is an extra oracle. At its output, move the returned row into
+the logical current row slot by swap, and transfer the now
+classical report using the physical bank's original measured transfer.
+Clear and release the rest of the current raw scratch and basis
+slots. An abort releases all and outputs zero.
 
-## Implementing the controlled subtraction
+## 2. Source and ideal logical interface
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+The supported raw channels have the two coset position-row factors
+of the same unknown extra phase and common amplitude weight within each scheduled pair. In the
+conditional latent-label calculation, tracing Fourier positions
+turns the emitted row into a pure phase state at its label and
+fixed phase and weight. This holds with the full joint memory and observed
+probe history. On odd CNOT parity the two surviving row terms
+have identical amplitude and drift factors, giving the exact
+balanced difference-phase row. Given the weight, odd parity has
+probability $2p(1-p)$ for all labels and intermediate transcripts.
+The supplier fixes the weight before either label, so a success-
+weighted average preserves the second-copy characteristic bound.
+The uncapped comparison retains that conditional gap, and the
+real cap uses the lower bound $\eta$ on parity. The paired module details the
+stopped comparison and the bounded-execution failure estimate.
+Delayed private inclusion bits and the independent merge signs
+then give a Fourier contraction and a coupling to a fresh
+uniform label with the exact corresponding pure row. The proof
+carries the supplier history and memory without conditioning
+the clean comparison on favorable raw outcomes.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The new interface's total raw LE failure is at most $2^{-10}$,
+its pair-count cap error less than $2^{-32}$, and its logical
+mixing discrepancy less than $2^{-32}$. In the comparison the
+complete inherited PCROOT feeder and decoder therefore obtain
+their required uniform-input law at every logical request and
+original source transformation. From virtual.md Sections 7–13 the
+reproduced old ideal correctness terms besides physical LE are
+smaller than $2^{-8}-2^{-10}$. This includes the original
+identity and tree cutoffs, caps, truncation and complete decoding.
+The only physical source extraction error in the new program is
+the one just accounted. The sum is below $2^{-7}$.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+## 3. Fully charged branchwise bounds
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+With the public allocation exponent $u$ of the base algorithm,
+$C=O(n2^Y+K)$, $\log C=O(\sqrt n)$, and all base work and
+allocated quantum space are at most fixed polynomials times $2^u$.
+The $2P$ raw sources per logical call satisfy
+$P=O(n2^{3r/512})$, and the retained row limit is
+$w=O(n2^{r/256})$.
+Their processing, basis reads and writes, arithmetic, real
+controller, label-estimation probes, counted transfers and cleanup
+take fixed polynomial work per raw input. The wrapper needs
+$O(n)$ ordinary bits for a constant number of public and current
+raw words, the $O(n)$ small LE directions, and the block and loop counters. It never keeps an ordinary $w$ by $n$
+label list. The complete $O(wn)$ basis label reservation, retained
+rows, source scratch, extra physical addresses and preparation
+are included in the allocated qubits. This contributes at most
+$O(wn)$ qubits and has smaller leading exponent than the existing bank. Its address-width effect is at
+most a constant factor, since the ordinary bank addressing is
+bounded at $O(\sqrt n)$ and the new addresses are also $O(\sqrt n)$ bits. All
+are counted in the fixed-polynomial factor in the actual work.
+The original bank algorithms, including its distinct setup, live
+unknown rows and typed allocation, keep their own actual paid
+bounds while the interface is active.
 
-## Joint costs and indices
-
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
-
+The asymmetric parameter proof in schedule.md gives
 $$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
+ Y\le (7/8)\sqrt n+O(n^{1/3}),\qquad
+ u\le (51/32)\sqrt n+O(n^{1/3}).
 $$
+The raw source cap is polynomial times $2^{Y+3r/512}$.
+The physical work is the sum of the unchanged logical operations,
+which are polynomial times $2^u$, and preparation and operation of
+the extra basis bank and mixer, which are polynomial times
+$2^{Y+3r/512}$. This uses the original bank whose individual addresses
+are only $O(n)$ bits, with no full-bank scan on each source call.
+The physical quantum allocation is the original polynomial times
+$2^u$ plus $O(wn)$ simultaneous source scratch and retained slots.
+The work and quantum leading coefficient is at most $51/32$
+and the raw source coefficient is at most $7/8+3/512=451/512$.
+The positive gaps to $13/8$ and $57/64$ absorb the respective subleading
+terms and polynomial factors. Ordinary
+classical space remains linear for the original and source
+controller combined, on every branch. All explicit finite lengths
+remain covered.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## 4. Finite branch
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+For $1\le n<2^{512}$, set $H=256(n+16)$ and $C=NH$. Call the
+same bounded mixer with identity transform exactly $H$ times
+per candidate $t$ unless it aborts, in which case output zero.
+For each report $k$, flip the row by X, and use a genuinely
+fair X/Y basis bit. With signed measurement $Z$ and basis
+$\beta_0$, use the rational score
+$Z\,\mathrm{tab}_{\beta_0}((kt\bmod N)/N)$ from readout.md,
+clamping the table to $[-1,1]$. Return the first candidate
+above mean $1/4$, or zero if none exists, after running all
+scheduled observations on a nonabort branch.
 
-## Fractional error tolerance
+With exact uniform logical labels the ideal score mean is one
+half for $s=t$ and zero otherwise. The table perturbs the
+score by less than $1/625$. Thus an erroneous threshold
+decision needs an ideal mean deviation at least $1/5$ and the
+union error is at most $N\exp(-H/50)<2^{-12}$. Add the raw
+readout, mixer and pair-cap errors. The finite-case failure
+is below $2^{-7}$. Everything uses literal bounded operations
+with the same current staging and measured-basis list. Its
+fixed finite range can enlarge only absolute constants in the
+joint asymptotic estimates.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+## 5. Indices and material sources
+
+For each fixed positive $c$, the envelope $2^{c\sqrt n}$ has double logarithm
+$(1/2)\log_2 n+\log_2 c$ eventually, giving index $1/2$.
+Linear ordinary classical memory gives index zero. The
+fraction declaration refers to all actual raw acquisitions,
+including every paired rejection and aborted logical call.
+
+The complete PCROOT-1 algorithm, bank and polynomial odd-cell
+compiler are reproduced from its published archive, including
+the carried credit. The paired amplitude and phase-drift correction and
+bounded odd-first-success proof come from this session's paired
+phase algorithm. The published streaming spectral-channel
+work supplies its native readout, adaptive conditional Fourier
+mixing, and private quantum-memory conditioning. This candidate
+uses the faster PCROOT allocation and stores the phase mixer's
+measured label list in an explicitly addressed quantum basis bank
+to preserve linear ordinary classical space.
+
+The conditional gap and permitted lower weight decrease with input
+length, including when all copies are malformed. The replacement schedule reduces the input pool widths, increases
+the final tree depth and uses distinct exponents for the true source
+cap and the allocated bank.
+
+This implementation uses a shallower input pool and a broader final\ntree at the exact schedule in schedule.md. The adjusted allocation\nreduces the raw exponent while increasing the charged work and\nqubit exponents in the same paired amplitude and phase model.\n
