@@ -1,104 +1,57 @@
-# Exhaustive shift testing
+# Equatorial sign transcript with adaptive corruption and Grover decoding
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+Let n = ceil(log2 N), m = 2^21 n, M = 2^n and J = 2^16. Acquire exactly m copies. There are two permitted delivery processes:
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+1. A fixed set of at most floor(8m/25) corrupted positions is determined before acquisition. The clean registers have the joint marginal given by the tensor product of ideal mixed DCP states with shift s. The corrupted registers can have arbitrary states and correlations among themselves and with the supplier.
+2. At each delivery, the supplier chooses whether to supply a clean copy before the learner uses the fresh private randomness and measurements for that delivery. The supplier may depend on the full past classical transcript. For each clean choice the new register is the ideal mixed DCP state for the same shift, independent of the past and the supplier's memory conditional on that choice and the past. Corrupted deliveries may be generated arbitrarily and may be correlated with the supplier's memory. The supplier never accesses registers already delivered. The same budget of floor(8m/25) corruptions holds on every branch.
 
-## Correctness
+All delivered registers have the specified sizes. The algorithm requires neither a mode indicator nor the positions of clean copies. Independent clean inputs are included.
 
-On a component with offset x, controlled subtraction produces
+## Reading one record
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Use the Fourier convention in which the eigenvector of translation by one with eigenvalue exp(2 pi i k/N) has computational coefficient exp(-2 pi i k x/N). The ideal Fourier measurement on the residue register of a clean sample produces uniform k and leaves the first qubit in (|0> + exp(2 pi i ks/N)|1>)/sqrt(2). The unknown x contributes only a common phase, so this identity also holds for the mixed source. Draw a fresh uniform u in [0,J) by measuring sixteen Hadamard coin qubits; reuse one coin wire. Put alpha = 2 pi u/J. Apply diag(1,exp(-i alpha)) and measure in the X basis, giving sign Z in {-1,+1}. Ideally its conditional mean is cos(2 pi ks/N-alpha).
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+The implemented residue readout uses phase estimation of the permutation U which increments the first N residue basis states modulo N and fixes all other basis states. Use b=n+24 control qubits, initialized in a uniform superposition by Hadamards. Apply the controlled powers U^(2^j) and inverse binary Fourier transform on the controls. Measure the controls to obtain y and report the nearest integer to Ny/2^b modulo N, resolving ties by the smaller integer before reduction. The controlled translations are exact reversible constant-addition, comparison and conditional subtraction circuits, including the check for a residue outside the first N basis states. Their constants are computed by repeated modular doubling.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+Here is an error bound for this readout. Conditional on the ideal spectral label k, exact phase estimation gives probability at most 1/(4d^2) at outcome y, where d is the circular distance between y and 2^b k/N and d>0. This follows by summing the geometric series and using sin(pi d/2^b) >= 2d/2^b for d <= 2^(b-1). A wrong reported label requires d >= 2^b/(2N) >= 2^23. Each half-open unit interval of distances contains at most two outcomes, one on either side of the eigenangle. Thus the wrong-label probability is at most sum_{j>=2^23} 1/(2j^2) <= 1/(2*(2^23-1)). Replace each controlled rotation in the inverse transform by Clifford+T gates so the sum of operator-norm errors is at most 2^-18, including the synthesis of the basis rotation by an appropriate allocation of that budget. This increases the total variation error by at most 2^-18 by the product telescoping inequality and pure-state trace distance bound. The rotations admit uniform synthesis with polynomial overhead in log b by the constructive Solovay–Kitaev theorem for fixed-dimensional gates. Alternatively a controlled phase is a fixed number of single-qubit z rotations and CNOTs. Phases are computed from powers of two to O(log b) bits, using enough guard bits for the same norm budget. The uniform constructive recursion may be streamed, storing a polynomial in log b bits, which is O(n) asymptotically. See Dawson and Nielsen, https://arxiv.org/abs/quant-ph/0505030.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+On a clean input the implemented record distribution is within 2^-16 in total variation of the ideal (k,u,Z) distribution. In the exact phase estimation circuit the residue eigenstates remain orthogonal and can be traced out, allowing the measured label to be coupled to the ideal one using the tail bound, while basis measurement acts on the other qubit. Synthesis contributes the norm error above. Only one copy and its work registers are live at a time. Store all measured records classically, with no quantum-addressed transcript.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+## Bounded score and unique marked shift
 
-## Implementing the controlled subtraction
+For a trial t<N, multiply Z in each record by sign cos(2 pi kt/N-alpha), with the sign at zero defined to be +1. Let the average of these products be the score. Mark precisely t<N with score at least 27/125.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+First consider a continuous uniform alpha and ideal source and measurements. For arbitrary phases a and b, the average of cos(a-alpha) sign cos(b-alpha) is (2/pi) cos(a-b). In the substitution v=alpha-b the sine term vanishes by oddness, and the cosine term is multiplied by the average of |cos(v)|, which is 2/pi. With a=2 pi ks/N and b=2 pi kt/N, average over uniform k. The full cyclic character sum shows that the ideal mean is 2/pi at the true shift and zero for every false shift.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+The implemented clean mean differs from this value by less than 1/3000, uniformly in s and t. To see this, use the equally spaced J-cell partition of the circle. A cell containing neither cosine-sign discontinuity in its closure incurs pointwise quadrature error at most 2 pi/J by the Lipschitz bound for cosine. At most four cells have a discontinuity on their closure, each adding at most 2/J to the error bound. The total is less than 15/J. The bounded sign product incurs a further error at most 2*2^-16 from the total variation estimate. Their sum is at most 17/65536 < 1/3000.
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+A separate bound applies to corrupt records, even after arbitrary previous outcomes. Perform the residue readout before drawing the private u, and let the resulting conditional first-qubit density matrix have equatorial Bloch coordinates (A,B), with A^2+B^2<=1. Its ideal mean X outcome after rotation is A cos(alpha)+B sin(alpha). For the score of any candidate t, integrate this mean times sign cos(2 pi kt/N-alpha) over alpha. The same quadrature identity gives magnitude at most 2/pi since (A,B) has norm at most one. The uniform grid and bounded rotation-synthesis errors increase this by at most 1/3000, by the previous discretization argument. This did not assume a uniform k or an ideal relationship between phase and k. Average over the residue outcomes to obtain the same conditional bound before the delivery readout. Arbitrary entanglement with the supplier or other delivered registers still leaves a one-qubit density matrix after the residue measurement. This bound uses the freshness of the rotation coin and the lack of supplier access to the learner's registers.
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Write h for the number of clean deliveries, e=1/3000, eta=1/128 and c=2/pi. Fix t. Outside an event of probability at most 2 exp(-m eta^2/8), its clean score sum is within m eta/2 of h times the implemented clean mean in the relevant one-sided direction, and its corrupt score sum lies in the corresponding direction within m eta/2 of the range [-(m-h)(c+e),(m-h)(c+e)].
 
-## Joint costs and indices
+In the fixed-set model, the clean statement follows from the product marginal and Hoeffding, with length-two summands and h<=m. The corrupt statement follows by subtracting the conditional mean from each corrupt score, with zeros at clean positions. Each centered nonzero increment has a conditional length-two range and conditional mean zero. Iteration of the centered Hoeffding bound exp(lambda^2/2) over the m deliveries and a one-sided exponential Markov bound at m eta/2 gives exp(-m eta^2/8). The sum of the subtracted conditional means has the stated bound deterministically. This proof does not condition clean records on previous corrupt outcomes.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+In the adaptive model, the two bounds both follow from the centered-increment argument. For clean increments use the fixed implemented mean and zero at corrupt positions. For corrupt increments subtract the conditional mean on corrupt deliveries and use zero at clean positions. Condition first on the past and the current clean or corrupt choice. For each increment type the conditional moment bound is exp(lambda^2/2) on its active deliveries and 1 on the others. Averaging over the supplier choice preserves the common bound. The realized h can be random. The statement is about the sum of the actual increments on all deliveries and does not condition on h or on the final corruption set.
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+After a union bound over N shifts, using the lower bound direction for the true shift and upper bound for the others, the exception probability is at most 2^(n+1) exp(-16n) < 1/100 for n>=1. Since h/m >=17/25, on the good event
+```
+true score  >= (9/25)c - e - eta > 27/125
+false score <= (8/25)c + e + eta < 27/125.
+```
+The worst fraction is 8/25 in each inequality. The first inequality follows by combining the clean lower mean c-e and the corrupt lower mean -c-e, and the second by combining e and c+e. The slope of each bound in the corrupt fraction has the stated worst direction. The strict numerical comparisons already follow from 3.14159 < pi < 3.14160. Thus s is the unique marked word among all M words, including padded words t>=N which are never marked.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## Counted decoder
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+The marker applies an exact reversible phase flip. For each record in ordinary classical index order, hardwire its k, u and Z into the gates for that iteration. Compute r=kt mod N on the candidate wires by n controlled additions of precomputed residues of powers of two times k modulo N. Each addition uses O(n) reversible gates and O(n) scratch by a fixed ripple carry schedule and controlled modular reduction. Padded words are interpreted as n-bit integers in the arithmetic. Compute v=(Jr-Nu) mod JN by multiplying by fixed J with a shift and applying subtraction and conditional addition. Since J=2^16, the sign of the cosine is positive exactly when v lies in [0,JN/4] or [3JN/4,JN); both integer thresholds are exact. Add the product of this sign and Z to a signed running sum with enough bits to hold [-m,m]. Reverse the per-record work except for the sum. After processing all records, toggle the phase if 125 times the sum is at least 27m and the candidate is below N. Reverse the sum computation record by record. Addition, comparison and multi-controlled flips use Toffoli, CNOT and NOT with linear scratch; Toffoli itself is exact Clifford+T. There is no oracle access to the original sample and no coherent access to the transcript.
 
-## Fractional error tolerance
+Use the standard Grover iterate with the marker and exact reflection about the uniform n-qubit state. Choose the iteration count as the nearest integer to (pi/(4 theta))-1/2, where theta=arcsin(1/sqrt M), allowing an additive 1/16 error before rounding. The classical controller evaluates this number with O(n) bits of working precision by standard convergent series and integer arithmetic. For example, arcsin(x)/x converges geometrically for x<=1/sqrt(2), pi can be computed by the Machin formula, and O(n) terms at O(n) guarded precision suffice. Use the nonnegative rounded count. In the unique-marked case the resulting failure is at most sin^2(9 theta/8), since the count differs from the ideal real count by at most 9/16. For n>=2 this is less than 1/2. For n=1 use zero iterates, with success exactly 1/2. In all cases the count is O(2^(n/2)). Repeat from fresh uniform candidate registers eight times using the same measured transcript, and classically check the marker on each measured candidate. Output the first marked candidate, and output zero after eight failures. Conditioned on a good transcript the probability of success is at least 1-2^-8. Thus the unconditional success probability exceeds 0.98. No promise about the marker on bad transcripts is needed for resource bounds, because the number of repetitions and iteration count are independent of them.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+## Joint cost
+
+All peak allocated classical storage is O(n^2) bits. The m records have O(n) bits each. Modular doubling tables may have n entries of n bits and be regenerated per record. Work registers for fixed-precision evaluation, counters, addresses, position indices, and streamed gate synthesis fit O(n^2). No exponential gate list is saved.
+
+The peak quantum storage is O(n) qubits. In readout the source sample, b controls and controlled-addition scratch are linear. In decoding the candidate, residue, modular phase comparison, sum and ripple-carry scratch are linear. Release all readout qubits before decoding.
+
+With these allocation bounds each address costs O(log(n+2)) bits. One marker scans O(n) records. For each record, compute the n doubling constants by n passes of O(n) bit operations on n-bit registers. The ripple gate pattern for each constant add and comparison consists of indexed sequential sweeps of O(n) stages: the address for each successive stage can be obtained by incrementing, decrementing or adding a fixed register base to an O(log(n+2))-bit index. All constant bits used for control and inverse passes are read by indexed sweeps. Each controlled addition thus costs O(n log(n+2)) charged work, including generation and addresses. The per-record modulus, forward and inverse costs are O(n^2 log(n+2)). The sign computation and rest of the marker fit the same bound. A whole marker costs O(n^3 log(n+2)). Exact reflections, classical checks and repetition contribute no higher term. Transcript acquisition and the iteration-count calculation have fixed polynomial cost (including n+1 work per copy) and are executed only once. Their costs are absorbed by the Grover work envelope. The charged total on every branch is O(2^(n/2) n^3 log_2 n) for n>=2, with the single remaining bit length handled by the constant resource costs of the same procedure.
+
+Exactly m=2^21 n copies are acquired, including corrupted copies. All resource guarantees hold under either delivery process and for independent clean inputs, jointly with unconditional success greater than 0.98. The work exponent term n/2 dominates the other terms in the logarithm and gives growth index 1. The classical space, quantum space and sample envelopes are fixed positive powers of n and have index 0.
