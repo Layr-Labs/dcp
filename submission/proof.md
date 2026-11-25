@@ -1,104 +1,185 @@
-# Exhaustive shift testing
+# Far-pair offset collimation with spectrally steered collective sources
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
-
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
-
-## Correctness
-
-On a component with offset x, controlled subtraction produces
-
+For every \(N\ge2\) and \(s\in\mathbb Z/N\mathbb Z\), let \(n=\lceil\log_2 N\rceil\). The algorithm uses the collective spectral source model and outputs the entire shift with probability greater than \(0.98\). Its simultaneous bounds on every branch are
 $$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
+ T=O\!\left(2^{(9/8)\sqrt{n\log_2 n}+(7/8)\sqrt n+\sqrt n(\log_2 n)^{-1/4}}\right),\quad
+ S_C=O(n^2),\quad S_Q=O(n),\quad
+ Q=O\!\left(2^{(1/4)\sqrt{n\log_2 n}-(1/4)\sqrt n}\right).
 $$
+The four indices are \(1/2,0,0,1/2\). The guaranteed malformed fraction is one in the stated collective spectral model, including independent ideal copies.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+## Parameters and fallback
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
-
+Let \(L=\lceil\log_2(n+2)\rceil\), \(g=16+L\), \(r_0=n-1\), and \(R=r_0-g\). Set \(l=\lfloor\log_2 n\rfloor\), \(L_*=L+\lceil\log_2(L+1)\rceil+64\), and
 $$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
+ A=\lfloor\sqrt{nl}\rfloor-\lceil\sqrt n\rceil-16L-128,\qquad
+ D=\left\lfloor A/(2L_*)\right\rfloor.
 $$
-
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
-
-## Implementing the controlled subtraction
-
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
-
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
-
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
-
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
-
-## Joint costs and indices
-
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
-
+Integer square roots and bit lengths compute these parameters exactly. If \(R\le0\) or \(D\le0\), use the fallback specified below. Otherwise let
 $$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
+ B=\left\lfloor\frac{R-L_*D(D-1)/2}{D}\right\rfloor,\qquad
+ f=R-L_*D(D-1)/2-DB.
 $$
+If \(B<1\), use the fallback. For \(i=1,\dots,D\), set \(d_i=B+(i-1)L_*+[i\le f]\) and \(e=\lfloor\frac12\log_2 B\rfloor-8\), evaluated by integer bit length. Use bucket bits \(b_i=d_i+e\), and let \(m_i\) be the least even integer at least \(b_i+L+16\). Put \(M=\max_i m_i\), \(r_i=r_{i-1}-d_i\), and \(P_i=2^{\sum_{j\le i}b_j}\), with \(P_0=1\). Thus \(r_D=g\). Use the main algorithm only if the following public checks pass:
+$$
+ b_i\ge1,\quad b_i\ge\lceil3m_i/4\rceil+16,\quad
+ M\le4B,\quad M\le20(n+1),\quad g-e\ge0,\quad
+ 2^{g-e}\ge 2^{10}M,\quad(2^{28}M)^2\le2^{L_*}.
+$$
+Otherwise use the fallback. The analysis below proves that only finitely many bit lengths use it.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+## Allowed collective spectral source
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Each raw register has the usual \(n+1\) qubits. Fix \(s\), set \(\omega=\exp(2\pi i/N)\), define \(\phi(k)=(|0\rangle+\omega^{ks}|1\rangle)/\sqrt2\), and let \(\chi_k=N^{-1/2}\sum_{x<N}\omega^{-kx}|x\rangle\). Let \(\mathcal V_s\) be the span of the orthonormal vectors \(\phi(k)\otimes\chi_k\). A block has \(2K\) consecutive raw copies, for the public \(K\) below. A chosen supplier channel on private memory outputs the block and updated memory. For every input memory density operator, the raw marginal is supported in \(\mathcal V_s^{\otimes2K}\). For a virtual exact position Fourier measurement of all copies, let \(k_i\) be the labels. For every \(j=1,\ldots,K\), every positive-probability prefix \(k_1,\ldots,k_{2j-1}\) and every nonzero \(t\bmod N\), the selected channel satisfies
+$$
+ \left|\mathbb E[\omega^{t k_{2j}}\mid k_1,\ldots,k_{2j-1}]\right|\le1-2^{-10}.
+$$
+Odd labels have no constraint. Quantum coherences between label tuples, entanglement with private memory and arbitrary classical correlations within or between blocks are allowed.
 
-## Fractional error tolerance
+Before emitting a block, the supplier may further apply \(\sum_{h=0}^{2K}\Pi_h\otimes V_h\), where \(\Pi_h\) projects the block's branch bits onto total Hamming weight \(h\) and \(V_h\) are arbitrary memory isometries into the same output space. The action fixes all positions and is an isometry by orthogonality of \(\Pi_h\). The supplier may choose the block channels and isometries using earlier observations and its private memory. Once chosen, the supplier emits the block in order with no within-block changes to the raw preparation. It never accesses earlier emitted systems or future private solver randomness. The solver gets no extra flags. Up to all acquired registers may be malformed through the stated model. Independent ideal copies are the special uniform product preparation and identical isometries. The allowed coherent weight operation may not be a mixture of classical phase shifts. For example, the environmental overlaps between weights zero and one and between weights one and two can differ.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+## Mixing one block into a near-uniform phase label
+
+Let \(C\) be the cap on the number of logical source requests, specified in the budget section and fallback. Both branches use
+$$
+ K=2^{12}(n+\lceil\log_2 C\rceil+24),\qquad R_{\max}=2KC
+$$
+as public parameters and process each block sequentially with one phase accumulator. For each pair, perform the guarded position Fourier readout on both copies, and measure the parity of their branch bits with a CNOT. Discard even pairs. For an odd pair, the first branch after CNOT is a phase row at label \(\Delta_j=k_{2j-1}-k_{2j}\), using exact reports in the ideal comparison. Independently keep each odd pair with probability \(1/2\). Merge a kept row into the accumulator with a CNOT from the accumulator branch to the kept row and a measurement of the latter. Its two equally likely outcomes give phases with labels \(A+\Delta_j\) or \(A-\Delta_j\). Update \(A\) accordingly modulo \(N\). Start with \(A=0\) and \(|+\rangle\). Read and pay for all \(2K\) copies. The actual algorithm uses the rounded label reports for every arithmetic update. On the ideal exact reports the accumulator has phase \(\phi(A)\).
+
+To prove the claim even with coherent block noise, consider the virtual exact measured labels first. The support promise makes the unperturbed branch state for each label tuple the product of the corresponding pure phases, tensored with the conditional state of earlier registers and private memory. The weight-controlled isometry then acts on it. One can virtually project all disjoint pair parities before processing kept pairs, since the block preparation is fixed before emission and each pair projector commutes with operations on already projected pairs and the accumulator. Trace the even pairs in the computational branch basis. For each fixed word in these discarded pairs, all basis choices in retained odd pairs contribute the same total weight, since each odd pair has weight one. The private isometry thus factors out of their amplitudes. Tracing it preserves old reduced systems. Every parity pattern is equally likely independently of the labels and the input memory, and the odd pair states are then the clean product of their difference phases. This calculation holds with arbitrary memory entanglement by applying the isometries to a purification. In particular any previously retained phase of known ideal label is pure and factored from the supplier memory. Conditioning on classical history, the returned phase state is pure for the returned label and can be compared with a uniform label without changing these retained systems.
+
+Conditioned on the full latent label tuple, the output label is the sum of \(\Delta_j\) with independent coefficients taking values \(0,+1,-1\) with probabilities \(3/4,1/8,1/8\). Indeed odd selection is independent with probability \(1/2\), then a fair private keep bit and the uniform merge sign give this distribution, even for a merger into an arbitrary previously accumulated pure phase. For a nonzero Fourier character the factor for pair \(j\) is
+$$
+ f_j=(3+\operatorname{Re}\omega^{t\Delta_j})/4\in[1/2,1].
+$$
+Conditionally on the previous labels and the current odd-position label, its expected value is at most \(1-2^{-12}\) by the stated spectral gap. Since the factors are nonnegative, iterated conditional expectation gives \(\mathbb E\prod_j f_j\le(1-2^{-12})^K\). It does not require independent label pairs. Fourier inversion bounds total variation to uniform by
+$$
+ \frac{N-1}{2}(1-2^{-12})^K \le 2^{-25}/C.
+$$
+This estimate holds conditional on any prior solver classical history and for all possible input memory states, including when that memory has been steered by prior measurements. Fresh private coins implement the independent keep decisions, and the source cannot change the already chosen block preparation in response. Throughout the solver processes two raw positions at a time and retains only the accumulator and the current pair, besides its previous recursive state.
+
+## Fallback
+
+Use cap \(C=(n+16)J\), where \(J=2^7N(n+16)\). For each target \(2^j\bmod N\) with \(0\le j<n+16\), request up to \(J\) mixer blocks and keep the first row with the exact target report. If any target fails, output zero. In the uniform ideal comparison target failure is at most \((n+16)e^{-2^7(n+16)}\). The mixer coupling over \(C\) requests loses at most \(2^{-25}\), before accounting for physical label extraction below. The standard final phase readout then gives the same success guarantee. Every loop, raw sample and synthesized operation has a uniform finite bound at each length in this fallback, with no work or memory assumed free. Its uniformly finite resource maxima over those finite lengths can be absorbed into the eventual envelopes.
+
+## Row interface
+
+Write \(\phi(a)=(|0\rangle+\exp(2\pi i as/N)|1\rangle)/\sqrt2\). All row labels for phases are understood modulo \(N\). A successful level \(i\) generator for a specified target \(a\) returns an exactly uniform residual \(x\) in \([0,2^{r_i})\) and a row \(\phi(a+P_i x)\) in the uncapped ideal comparison. In the main ideal comparison level zero requests one mixer row, replaced by an independent uniform label \(k\), and retains the row if \(x=(k-a)\bmod N<2^{n-1}\). This succeeds with probability \(2^{n-1}/N\ge1/2\). At the raw position readout modular increment has eigenvectors with coefficients \(N^{-1/2}\exp(-2\pi i kx/N)\). The inner product on the second branch at offset \(x+s\) differs by \(\exp(2\pi i ks/N)\). In the spectral model conditioning on the latent label is what yields the product phase before the collective weight operation.
+
+At level \(i>0\), each attempt uses \(m=m_i\) independent child rows at level \(i-1\), one at the target \(a\) and all others at zero. Denote the designated bit by \(z_*\). Set \(b=b_i\), \(Q_b=2^b\), and \(H=2^{r_{i-1}-b}=2^{r_i-e}\). Each child residual is \(l_j+Q_b h_j\). The \(l_j\)'s are independent uniform residues modulo \(Q_b\), the \(h_j\)'s are independent uniform integers in \([0,H)\), and the lists are independent.
+
+Measure the Hamming weight \(w\) of the row word \(z\) and its modular low sum \(u=\sum_j l_j z_j\bmod Q_b\). Keep weights within \(K=\lfloor\sqrt m/4\rfloor\) of \(m/2\). Classify the words of the measured fiber according to \(z_*=0\) or \(1\). In each class put them in increasing word order, and match by rank up to the shorter class size. For implementation these lists are replaced by the verified bounded lists below. Reject matched pairs whose Hamming distance is at most \(\lfloor m/8\rfloor\). A diagonal rank measurement distinguishes each retained pair with a positive tag, all other words having tag zero. If positive, uncompute all row wires other than the designated bit with controlled flips based on the two known endpoints. The surviving state is \(\phi(a+P_i d)\), where
+$$
+ d=c+\sum_j(z_{1,j}-z_{0,j})h_j,\qquad
+ c=Q_b^{-1}\sum_j(z_{1,j}-z_{0,j})l_j.
+$$
+The equality of buckets makes \(c\) integral and \(|c|\le m\). The equal Hamming weights give \(t\) positive and \(t\) negative coefficients. The distance check gives \(t>m/16\), and \(t\le m/2\). All pair choices and measured tag probabilities use only the low labels and independent search coins, since the measurements are diagonal and the initial magnitudes are all equal. Thus the higher digits retain their independent uniform distribution conditional on the chosen pair.
+
+## A cap on listing with a constant success lower bound
+
+First analyze the ideal complete lists before the distance check. Condition on the designated low label. For a retained weight \(w\), the two classes consist of nonzero ordinary binary words of weights \(w,w-1\) on \(m-1\) bits. Their sizes \(S_0,S_1\) both exceed \(2^{m-1}/(16v)\), where \(v=\lceil\sqrt m\rceil\). For details, the binomial law of \(m-1\) fair bits gives weight within \(\sqrt m\) of its mean with probability at least \(3/4\) by Chebyshev. There are at most \(4\sqrt m\) such values, so its central binomial masses are at least \(3/(16\sqrt m)\). At up to \(K\) steps from a nearest central maximum, the product of the adjacent binomial ratios is at least \(1-2K(K+1)/m\ge3/4\) by bounding each ratio at step \(j\) below by \(1-4j/m\). The lower bound \(1/(16v)\) follows, as does \(2K+1\ge v/8\).
+
+For any fixed retained weight and bucket, write \(C_0,C_1\) for the class occupancies and \(\mu_j=S_j/Q_b\). Distinct ordinary nonzero binary words have a two-column minor of determinant plus or minus one. Consequently their low sums are independent uniforms, given the designated label. Each occupancy has variance at most its mean. Its mean is at least \(2^{L+11}/v\ge32\) by the checks on \(M\). Chebyshev gives probability at least \(3/4\) that both counts are at least half their respective means. Hence \(\mathbb E\min(C_0,C_1)\ge(3/8)\min(\mu_0,\mu_1)\). Each matched pair contributes two phase words out of \(2^m\). Summing over buckets and retained weights gives a probability at least \(3/1024\) of observing a valid pair from the complete-list procedure.
+
+The expected mass of complete matched words that fail the distance check is at most \(2^{3m/4-b}\le2^{-16}\). Indeed for any word in designated class zero, the number of nearby words is at most \(2^{3m/4}\). To bound it, use
+\(\sum_{j\le m/8}\binom mj\le2^{m/8}(3/2)^m\le2^{3m/4}\). A given distinct pair is in the same bucket with probability \(1/Q_b\), by conditioning on all low labels except one with a nonzero unit difference. The expected number of such pairs is bounded by summing over the at most \(2^{m-1}\) possible class-zero endpoints. Each selected pair costs only two words, and this calculation even counts close pairs the procedure would not have selected.
+
+Use a list cap \(U=2^{16}(1+2^{m-b})\) for the combined measured fiber. For a retained weight let \(C=C_0+C_1\). Since each \(\mu_j\le2^{m-b}\), the inequality \(C^2\le2C_0^2+2C_1^2\) and the above variance calculation give
+$$
+ 2^{-m}\sum_{w,u}\mathbb E C^2\le 2(1+2^{m-b}),
+$$
+where the sum includes only retained weights and all buckets. This follows by summing \(\mathbb E C_j^2\le(1+2^{m-b})\mu_j\), whose total mean over both classes and all measured labels is at most \(2^m\). The chance of measuring such a fiber of size exceeding \(U\) is at most \(2^{-m}\sum_{w,u}\mathbb E C^2/U\le2^{-15}\).
+
+The actual listing circuit performs at most \(U\) discovery slots. Each slot gets \(128\lceil\log_2(U+2)\rceil+512\) trials to find a new word of the measured bucket and weight. Trials use a fresh uniform selector word and a fair bit to choose between uniform guessing and a uniformly randomized Grover schedule of \(j\in[0,2^{\lceil m/2\rceil+2})\) iterations. Verify each result on measurement and only accept a match absent from the saved list. If a slot finds none, end listing. The stored list, even on error, consists of distinct true members. If any match remains, each trial succeeds with probability at least \(1/8\). For a fraction of marks above \(1/2\), the no-iteration branch alone suffices. Otherwise write \(\sin^2\theta\) for the fraction of marks. The average of \(\sin^2((2j+1)\theta)\) is at least \(1/2-1/(2J|\sin 2\theta|)\) by the geometric sum, with \(J=2^{\lceil m/2\rceil+2}\), and \(\sin 2\theta\ge\sqrt{2/2^m}\). This gives the stated conservative bound including the mixture probability. On a fiber of size at most \(U\), conditioning on earlier slot outputs and union bounding gives probability below \(2^{-16}\) of stopping with any match still missing. This algorithm has a worst-case finite schedule even on heavy fibers. Its queries use fresh work registers independent of the held row state.
+
+Build the two class lists by sorting the verified words, then emit one reversible equality test per usable word to write the known pair tag into a fresh register by XOR. The measured positive tag identifies the two words classically. These gates are classically addressed and every emitted test is charged. If the complete list and verified list agree, pair selection after the distance check agrees. Even when they differ, any returned pair obeys the bucket, weight, and distance constraints. Subtracting the three losses from the complete-list success lower bound gives probability greater than \(1/512\) of measuring a retained pair.
+
+## Uniform output over a wider high interval
+
+For a selected pair let \(Y=\sum_{j=1}^t(U_j-V_j)\) with \(U_j,V_j\) independent uniforms on \([0,H)\), so \(d=c+Y\), and let \(\sigma^2=t(H^2-1)/6\). The signed sum is symmetric and unimodal. A centered symmetric unimodal mass on integers is a nonnegative linear combination of indicators of centered integer intervals. The convolution of two such indicators has symmetric masses nonincreasing away from their combined center, by counting interval intersections. The difference of two uniforms is symmetric and triangular, so iterative convolution gives the claim for \(Y\).
+
+An individual uniform has variance \((H^2-1)/12\) and centered fourth moment \((H^2-1)(3H^2-7)/240\), at most three times its variance squared, by the elementary sums of powers of integers. Expanding the fourth moment for the independent centered summands gives \(\mathbb E Y^4\le3\sigma^4\). Paley–Zygmund on \(Y^2\) gives \(\Pr(|Y|\ge\sigma/2)\ge3/16\), and Chebyshev gives \(\Pr(|Y|>4\sigma)\le1/16\). The annulus between these radii contains at least \(1/8\) mass and at most \(8\sigma+1\le9\sigma\) integers, since \(\sigma\ge1\). By unimodality every integer with \(|y|\le\sigma/2\) has probability at least \(1/(72\sigma)\). Also
+$$
+ H\sqrt m/12<\sigma\le H\sqrt m,
+$$
+using \(H\ge2\), \(m/16<t\le m/2\), and \((H^2-1)/6\ge H^2/8\). For every \(d\in[0,2^{r_i})\), the required argument satisfies
+$$
+ |d-c|\le 2^e H+m
+ \le H\sqrt m/256 + H/1024
+ < \sigma/2 .
+$$
+The bounds use \(2^e\le\sqrt B/256\), \(m\ge B\) if \(e\ge0\), and the following direct extension when \(e<0\): since \(m\ge B+e+L+16\), \(e\ge-8\) and \(L\ge1\), we still have \(m\ge B\). The input guard gives \(H\ge2^{10}M\).
+
+Write \(p_d\) for the exact probability of this value given the pair and low data. Keep \(d\) inside the prescribed interval with probability \(1/(128v H p_d)\), otherwise reject. This probability is at most one by \(p_d\ge1/(72H\sqrt m)\). For each conditional pair law the result is exactly uniform on the interval given success. The probability of this final acceptance, conditioned on a retained pair, is \(2^e/(128v)>2^{-18}\), since \(2^e>\sqrt B/512\) and \(v\le2\sqrt m\le4\sqrt B\). Pairing and thinning together succeed with probability greater than \(2^{-27}\). Use the uniformly valid lower bound \(p_*=2^{-28}\) on the success of each fresh transition attempt.
+
+The conditional probabilities are rational and computable by counting bounded compositions. Replace each of the \(t\) negative uniforms by \(H-1\) minus an independent uniform; to get \(Y=d-c\), the new sum of \(2t\) nonnegative entries must be \(z=d-c+t(H-1)\). The numerator counting such words in \([0,H)\) is
+$$
+ \sum_{j=0}^{2t}(-1)^j\binom{2t}{j}\binom{z-jH+2t-1}{2t-1},
+$$
+where the second binomial is zero for \(z-jH<0\). Inclusion-exclusion gives this formula. The denominator is \(H^{2t}\). The terms, partial sums, and rational acceptance fraction can be generated and stored in \(O(nm)\) bits by elementary multiplication and exact division with polynomial work. Use a draw from the fraction's denominator range, with a bounded rejection implementation below.
+
+## Separate deterministic work and sample budgets
+
+In an ideal comparison with no global budgets, each call retries independently until success. By induction on the finite depth, every child call terminates almost surely with the specified uniform output. A fresh parent attempt then succeeds with probability at least \(p_*\), unaffected by past failed attempts, and its successful residual is uniform. The first accepted attempt preserves that law. Independence includes the contents of a returned row conditioned on its classical residual and supplies a product of correctly labeled phases for each parent. The actual coherent branch registers from earlier successful child calls are isolated during the later recursive calls.
+
+At the top, for each of the \(n+16\) targets \(2^j\bmod N\) for \(0\le j<n+16\), call the top generator until its residual is zero. In the ideal comparison this succeeds with probability \(2^{-g}\) per top call and yields the exact target phase. Let \(C_0=(n+16)2^g\). Set
+$$
+ A_i=\prod_{j=i+1}^D (2^{28} m_j)\quad(0\le i\le D),\qquad
+ w_i=2^{\lceil m_i/2\rceil}\quad(1\le i\le D).
+$$
+The expected total logical source requests in the uniform ideal comparison are at most \(2 C_0 A_0\). The expected number of level-\(i\) transition attempts is at most \(2^{28}C_0 A_i\). These expectations count failed attempts. The derivation iterates the geometric retry bound at each level. More explicitly the cost of an individual attempt may correlate with its own acceptance. The event of reaching an attempt depends only on previous attempts, so its future fresh cost has the same expectation, and summation over reached attempts yields a factor at most \(1/p_*\). Apply the same calculation at the outer zero-residual filter, then sum over all targets.
+
+Use two hard budgets computed exactly before drawing any samples:
+$$
+ C=2^{10}\cdot2 C_0 A_0,\qquad
+ W_{\max}=2^{10}\cdot 2^{28} C_0\sum_{i=1}^D A_i w_i .
+$$
+Charge each logical source request one unit against \(C\) before emitting its block of \(2K\) raw acquisitions. Charge each transition attempt \(w_i\) against \(W_{\max}\) at its start, before requesting its children. If a budget would be exceeded, abort and output zero. Any children already constructed on a later aborted branch have been charged. Markov's inequality in the ideal comparison gives total probability at most \(2^{-9}\) of crossing at least one budget. The hard caps therefore give a bounded actual algorithm that agrees with the ideal comparison apart from that loss, the at-most-\(2^{-25}\) accumulated mixer discrepancy, and the physical implementation errors below.
+
+A rational acceptance coin with denominator \(B_c\) is drawn using the least enclosing binary range, rerolling if the draw is outside \([0,B_c)\). Use at most \(\lceil\log_2 W_{\max}\rceil+20\) trials, aborting globally if exhausted. On each attempted draw the rejection probability is less than \(1/2\). Only one such coin is requested per transition attempt, and the cap counts at most \(W_{\max}\) attempts, so a coupling with unlimited rejection loses at most \(2^{-20}\). A Grover schedule draw uses exact fixed-length fair bits from \(H\) and \(Z\) measurement, with no rejection needed. Every aborted branch still pays for the coins and other work already performed.
+
+## Source precision and full-shift recovery
+
+Use modular increment on the valid residues, identity on padding. Binary phase estimation on a source position register uses \(n+h\) control bits with \(h=\lceil\log_2 R_{\max}\rceil+20\), controlled modular translations by the prescribed powers of two, an inverse binary Fourier transform and nearest-\(1/N\) rounding of the report. Up to synthesis error, its label is coupled to the ideal latent label with failure at most \(1/(2(2^{h-1}-1))\). Indeed on an eigenphase, the probability of a report at nonzero circular distance \(d\) in control-lattice units is at most \(1/(4d^2)\) by the geometric sum and the inequality \(\sin(\pi d/2^{n+h})\ge2d/2^{n+h}\) on the first half of the circle. Wrong rounding needs distance at least \(2^{h-1}\). Summing two lattice points per unit-distance shell proves the bound. This coupling changes only the reported label and leaves the conditional branch and supplier memory state intact. Controlled translation preserves each position eigenvector and tracing that position eliminates coherence between different eigenlabels. This applies sequentially on any old entangled systems. The virtual exact spectral reports therefore have the promised joint block law and the collective phase state used above. Approximate the Fourier gates with total operator-norm error, up to global phase, at most \(2^{-20}/R_{\max}\) per readout. Clifford+T synthesis is described in the work accounting. A hybrid over at most \(R_{\max}\) acquisitions gives discrepancy less than \(2^{-18}\) in the output distribution, even for the joint states including provider registers. The same adaptive supplier strategy is used conditioned on the prior classical history. Conditional on a complete latent label tuple, the subsequent exact parity and mixer proof still applies. One can treat skipped readouts after halt as identity to apply the hybrid to the fixed cap.
+
+When all targets are returned, the row product has amplitude proportional to \(\exp(2\pi i z s/N)\) on binary word \(z\) of \(n+16\) bits. Apply the inverse binary Fourier transform to that product, measure, and round to the nearest point of denominator \(N\). The same circular tail bound with \(h=16\), plus a total synthesis norm error at most \(2^{-13}\), gives failure less than \(2^{-10}\). Combining the probability bounds for budgets, coin exhaustion, logical label mixing, raw precision and final decoding leaves unconditional success greater than \(0.98\). The bounded target-filter fallback meets the same guarantee under the collective source model.
+
+## Resource accounting
+
+A modular addition by a controlled constant uses \(O(n)\) exact gates and temporary bits or wires. Compute the ripple sum, comparisons and conditional subtraction into scratch, and reverse the Boolean circuit after copying output. Extend the result by identity on invalid encodings. Evaluate into a fresh word, swap, and use the inverse addition to zero the old word. Classical generation streams addresses and constants. Weight and low sum predicates for a selector on \(m\le O(n)\) wires are implemented by a succession of modular additions and ripple increments with reused scratch, and tested against the measured values. Exclusion of verified words is a classically streamed equality circuit. Each equality flag for a word can be XORed into a single exclusion flag then uncomputed, since the list entries are distinct and a candidate can match at most one. All these gates and diffusion are implemented exactly with Toffoli, CNOT, Clifford gates, their inverses, and their fixed exact Clifford+T decompositions. All initialization, addressed bit access and gate costs are included. The complete bounded listing, matching, tagging, uncomputation and rational thinning at level \(i\) use at most \(O(w_i\,\mathrm{poly}(n))\) charged work beyond their already charged child calls. This follows from \(U=O(n)\), the polynomial number of capped trials, and \(O(w_i)\) iterations per trial. Sorting uses \(O(Um)\) bits and polynomial charged time. Exact label generation, all cap counters and loop bookkeeping, and release of intermediate registers cost polynomial work per counted action, plus one polynomial setup and finalization cost.
+
+Each synthesized controlled Fourier rotation can be decomposed into unconditional one-qubit axial rotations and exact CNOT gates via the parity formula \(xy=(x+y-(x\operatorname{xor}y))/2\) for bits. The constructive Solovay–Kitaev algorithm applied to the fixed inverse-closed single-qubit Clifford+T set emits words of length \(O(\log(1/\eta)^{3.97})\) for accuracy \(\eta\) in operator norm up to global phase. The controller compiles one rotation at a time with an evenly divided error budget, using rational phase approximations at guard precision within the error budget. Constant-size matrix arithmetic and bounded-depth recursive synthesis use \(O(\log(1/\eta)^2+\log(1/\eta)\log\log(1/\eta))\) bits of arithmetic and stack scratch, in addition to the word symbols, by retaining only local matrices along the logarithmic-depth recursion. The input dyadic angle and its approximation are uniform and the base library is fixed. The approximation orders and size bounds of this standard synthesis have polynomial classical work in \(\log(1/\eta)\). Here \(\log(1/\eta)=O(\log(R_{\max}n))=O(\sqrt{n\log n})\), as shown below. Since \(3.97<4\), the word length and working precision fit \(O(n^2)\) bits and cost polynomial work per physical readout. All controlled translations and exact reversible logic use bounded workspace as described above.
+
+Depth-first recursion keeps at most \(DM=O(n)\) child row qubits plus \(O(n)\) final rows and the current source and \(O(n)\) search/weight/sum/measurement scratch. The verified lists are classical, and only one exists at a time, after the relevant children have returned. Thus the quantum peak is \(O(n)\), including discarded register initialization and active recursion. Logical source generation holds one accumulator phase, two position and branch registers and their readout workspace, independently of the block length. Future raw registers held by the supplier are not allocated solver workspace. Classical label descriptors of \(O(n)\) bits each require \(O(n DM)=O(n^2)\) bits. The list has \(O(Um)\) bits and the rational arithmetic \(O(nm)\) bits, both \(O(n^2)\), including all explicit control counters. The budget estimates below fit \(O(n)\) bits each; storing all per-depth fields and counters is within the same classical allocation. Quantum-addressed memory access is unnecessary. The deterministic charged work is bounded by \(O((1+R_{\max}+W_{\max})\mathrm{poly}(n))\).
+
+## Envelopes and uniformity
+
+Let \(L_0=\log_2 n\), \(Z=\sqrt{nL_0}\) and \(S=\sqrt n\). We have \(L=L_0+O(1)\), \(L_*=L_0+O(\log L_0)\), and \(A=Z-S+o(S)\). In the last identity, replacing \(L_0\) by \(l\) in the first square root changes it by \(O(S/\sqrt{L_0})=o(S)\). The explicit \(8L+128\) reservation and integer rounding are also \(o(S)\). Consequently,
+$$
+ D=(Z-S+o(S))/(2L_*),\qquad B/Z\to7/4,\qquad d_D/Z\to9/4 .
+$$
+The latter limits follow by substituting \(R=n-O(\log n)\) into the definition of \(B,d_i\), including the rounded remainder. Uniformly \(e=O(\log n)\) and \(m_i=d_i+O(\log n)\). Thus the checks \(B>0\), \(M\le4B\), \(b_i\ge\lceil3m_i/4\rceil+16\), \(M\le20(n+1)\), and \(g-e\ge0\) eventually hold. For the high interval guard, \(2^{g-e}/M\) tends to infinity because \(2^g\ge2^{16}(n+2)\), \(2^e\le\sqrt B/256\), and \(M\sqrt B=O((n\log n)^{3/4})\). Also \(M\le 3\sqrt{nL}\) eventually. This gives
+\(\log_2(2^{28}M)\le 30+(L+\log_2 L)/2\le L_*/2\), so the last guard eventually holds. The exact public checks, rather than an asymptotic threshold, determine the branch.
+
+Throughout the main branch every factor \(2^{28}m_i\) is at most \(2^{L_*/2}\). The logical sample budget satisfies
+$$
+ \log_2 C\le D L_*/2+2L+O(1)
+ \le Z/4-S/4-2L+O(1).
+$$
+The reservation \(16L+128\) in \(A\) subtracts \(4L+32\) after division by four. We used \(l\le L_0\) and \(\lceil S\rceil\ge S\). Since \(\log_2 C=O(Z)\), \(K=O(n)\). Hence
+\(\log_2 R_{\max}=\log_2(2KC)\le Z/4-S/4+O(1)\).
+In the weighted budget,
+$$
+ \log_2(A_i w_i)\le (D-i)L_*/2 + (B+(i-1)L_*)/2 + O(L)
+                 = B/2+(D-1)L_*/2+O(L)
+$$
+uniformly in \(i\). The logarithm of the number of terms and the outer factors are \(O(L)\). Using the definition of \(B\), we obtain
+$$
+ \log_2 W_{\max}\le R/(2D)+(D-1)L_*/4+O(L)
+                  = (9/8)Z+(7/8)S+O(S\log(L_0+1)/\sqrt{L_0}).
+$$
+For the last equality, \(A=Z-S+O(S/\sqrt{L_0}+L)\) by the floor-log approximation and the reserved terms. Also \(nL_*/Z=Z+O(S\log(L_0+1)/\sqrt{L_0})\). Expanding the reciprocal with this explicit error gives \(R/(2D)=Z+S+O(S\log(L_0+1)/\sqrt{L_0})\). The quadratic-in-\(S/Z\) correction is \(O(S/\sqrt{L_0})\). The second term is \((Z-S)/8+O(S/\sqrt{L_0}+L)\). Because \(\log(L_0+1)/\sqrt{L_0}=o(L_0^{-1/4})\), the stated work term \(S L_0^{-1/4}\) absorbs these errors and every fixed polynomial work factor. The raw budget has smaller leading exponent than this work budget. This proves the stated work and acquisition envelopes. The finitely many fallback bit lengths have finite branchwise resource maxima, so enlarging the absolute constants covers them, including \(n=1\). The stretched exponentials have exact growth index \(1/2\), and the polynomial workspace envelopes have index zero.
+
+## Prior work
+
+The clean far-pair offset proof supplies the quantum recurrence and weighted schedule. The collective-weight predecessor supplies the sector projection with a shared memory isometry, and the existing private paired source mixer f9fef504-97ec-4625-95ee-bc7afc257bd9 supplies the Fourier mixing idea with random signed inclusions. Here the block source allows coherent total-weight coupling across all pairs and arbitrary conditional spectral steering under its gap promise. The clean Fourier row interface, designated offset, central equal-weight pairing and bounded-composition thinning start from Yukon submission 6f49290a-4e30-41fd-933e-9916667f3cc4. The proof here uses a distance threshold and a fourth-moment annulus estimate so that thinning leaves a much wider uniform interval with constant probability. Verified Grover listing and separate Markov budgets use the general approach of the dense collimation at e2d3ffa5-7cea-4cf3-a9f8-9b9d75a2f75a. This variant uses ordered bipartite pairs and an exact offset rather than cyclic neighbors and a signed-leaf decoder. The randomized iteration bound follows Boyer, Brassard, Høyer and Tapp, [Tight bounds on quantum searching](https://arxiv.org/abs/quant-ph/9605034). For uniform synthesis see Dawson and Nielsen, [The Solovay–Kitaev algorithm](https://arxiv.org/abs/quant-ph/0505030).
