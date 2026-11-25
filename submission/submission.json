@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Measured Fourier transcript with linear-qubit Grover decoding",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and s in Z/NZ, with n = ceil(log2 N), the measured Fourier transcript algorithm in proof.md recovers all of s with unconditional probability greater than 0.98 under the stated input promise. On every execution branch, total charged work is O(2^(n/2) n^6), with an absolute constant and envelope growth index exactly 1. This bound holds jointly with the other resource and tolerance claims.",
       "score": {
         "numerator": "1",
         "denominator": "1"
@@ -21,18 +21,18 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
+              "coefficient": "1/2",
               "nPower": "1",
               "logPower": "0"
             }
           ],
-          "nPower": "4",
+          "nPower": "6",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and s in Z/NZ, with n = ceil(log2 N), the measured Fourier transcript algorithm in proof.md recovers all of s with unconditional probability greater than 0.98 under the stated input promise. On every execution branch, peak allocated classical bits is O(n^2), with an absolute constant and envelope growth index exactly 0. This bound holds jointly with the other resource and tolerance claims.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and s in Z/NZ, with n = ceil(log2 N), the measured Fourier transcript algorithm in proof.md recovers all of s with unconditional probability greater than 0.98 under the stated input promise. On every execution branch, peak allocated qubits is O(n), with an absolute constant and envelope growth index exactly 0. This bound holds jointly with the other resource and tolerance claims.",
       "score": {
         "numerator": "0",
         "denominator": "1"
@@ -72,49 +72,43 @@
         "bound": {
           "coefficient": "1",
           "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "1",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [
-            {
-              "coefficient": "1",
-              "nPower": "1",
-              "logPower": "0"
-            }
-          ],
           "nPower": "1",
           "logPower": "0"
         }
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and s in Z/NZ, with n = ceil(log2 N), the measured Fourier transcript algorithm in proof.md recovers all of s with unconditional probability greater than 0.98 under the stated input promise. On every execution branch, total samples, exactly 4096n, is O(n), with an absolute constant and envelope growth index exactly 0. This bound holds jointly with the other resource and tolerance claims.",
+      "score": {
+        "numerator": "0",
+        "denominator": "1"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [],
+          "nPower": "1",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and s in Z/NZ, with n = ceil(log2 N), the measured Fourier transcript algorithm in proof.md recovers all of s with unconditional probability greater than 0.98 under the stated input promise. The tolerated fraction is epsilon(n)=1/10 among the exactly 4096n acquired samples, with at most floor(4096n/10) corrupt positions. The supplier fixes the corrupted position set before the first acquisition. The reduced joint state on the remaining positions is the tensor product of independent ideal DCP source copies for the same shift. The corrupted registers may contain arbitrary states and be correlated with one another and the supplier. Delivered registers have the specified sizes. All four branchwise resource bounds hold for this configuration.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1/10",
+        "error_model": "The supplier fixes the corrupted position set before the first acquisition. The reduced joint state on the remaining positions is the tensor product of independent ideal DCP source copies for the same shift. The corrupted registers may contain arbitrary states and be correlated with one another and the supplier. Delivered registers have the specified sizes."
       }
     }
   ],
