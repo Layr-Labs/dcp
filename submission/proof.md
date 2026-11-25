@@ -1,104 +1,89 @@
-# Exhaustive shift testing
+# Central-band collimation with polynomial memory
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+For every integer N>=2 and s in Z/NZ, start from independent clean copies of the mixed DCP source. Set n=ceil(log2 N). Write phi(k) for the balanced branch qubit (|0>+exp(2 pi i ks/N)|1>)/sqrt(2), with known label taken modulo N. The procedure below recovers the whole shift with probability greater than 0.98 and uses O(n^2) classical bits and O(n) qubits. Charging all operations, its time is O(2^((9/4) sqrt(n log2 n))) and its sample count is O(2^((9/8) sqrt(n log2 n))) as n tends to infinity. Each bound holds on every execution branch.
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+## Schedule and phase interface
 
-## Correctness
+Let L=ceil(log2(n+1)), b=ceil((9/8)sqrt(nL)), g=16+L and r_0=n-1. While r>g, take a transition with bucket width parameter b_j=min(b,r-g) bits and next residual bit length r'=r-b_j-2. Compute b by the least integer satisfying 64b^2>=81nL. Let D be the total number of transitions from r_0. Each next r is nonnegative and strictly smaller, and the final r_D is at most g. Every transition except possibly the last uses b_j=b, so D<=n/b+1 and D<=n. For each level j put P_j=2^(sum_{i=1}^j b_i), with P_0=1.
 
-On a component with offset x, controlled subtraction produces
+A successful row generator at level j and target a returns a known residual x, uniform on [0,2^r_j), with a retained qubit phi(a+P_j x). The target a can be zero, and its value influences only the quantum phase and the base filtering interval. Conditional on the individual residuals and a successful return, rows from independent calls are product states with the specified phases.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+First consider ideal spectral readout. Measure the eigenangle of the residue register for modular increment. The eigenvectors for eigenvalues exp(2 pi i k/N) have coefficients proportional to exp(-2 pi i kx/N). For an ideal coset with position x, the amplitudes left in the branch qubit have relative phase exp(2 pi i ks/N), and k is uniform. The common phase from x cancels from the density matrix, giving the same uniform classical-quantum interface for the mixed source. At level zero, keep the first report k for which x=(k-a) mod N lies in [0,2^(n-1)). Its retained phase is phi(a+x). The single-try acceptance probability is at least one half, and the residual distribution conditional on acceptance is the required uniform law.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+## One transition attempt
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+Suppose a transition uses residual input width 2^r, with bucket modulus Q_b=2^b_j and H=2^(r-b_j). Thus H>=2^g and the next width is H/4. Let m be the least even integer at least b_j+L+16. Put v=ceil(sqrt(m)) and K_w=floor(sqrt(m)/4), both computed by integer comparisons. Use m fresh child rows, one at target a and the other m-1 at target zero. Their residuals x_i decompose uniquely as l_i+Q_b h_i, where all l_i are independent uniform in [0,Q_b), all h_i are independent uniform in [0,H), and the two lists are independent. The qubit with target a is called the designated position, even when a=0.
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+On the m row wires, perform a joint diagonal measurement of the Hamming weight of the computational word z and the residue sum of the l_i with z_i=1 modulo Q_b. Keep exactly weights w satisfying |w-m/2|<=K_w. These functions are evaluated by reversible addition into separate work registers, followed by computational-basis measurement and clearing the measured work registers. No h_i or phase is used for this partition.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+For the measured bucket of weight-w words, list the words with designated bit zero and those with designated bit one, in lexicographic order within each class. Pair the two lists by equal rank as long as both have a word at that rank. Make a further diagonal measurement of this pair rank, giving an extra failure outcome for unpaired words. Given a successful pair, the remaining state is an equal-magnitude superposition of the two words. Label them z_0,z_1 by their designated bits. Uncompute every other row wire into zero using controlled bit flips based on the designated bit and the two classically known words. This leaves the phase qubit on the designated wire.
 
-## Implementing the controlled subtraction
+For e_i=(z_1)_i-(z_0)_i, the relative phase label of the resulting row is
+```
+a + P_(j-1) * sum_i e_i x_i = a + P_j d,
+d = c + sum_i e_i h_i,    c = (sum_i e_i l_i)/Q_b.
+```
+The bucket equality makes c an integer with |c|<=m. Equal Hamming weight gives exactly k positive and k negative coefficients e_i, with k>=1 because the designated bit differs. The pair choice and its probability of being observed depend only on the l_i. Indeed the measurements are diagonal in the word basis and all word magnitudes in the initial product of balanced rows are equal. Thus the h_i remain independent uniforms conditioned on a selected pair and the entire low-label data used to select it.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+## Probability of finding a pair
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+Condition on the designated low label. For each retained weight w, the ordinary subset words in the two classes are nonzero binary words on m-1 variables of weights w and w-1. The two class sizes are S_0(w)=binomial(m-1,w) and S_1(w)=binomial(m-1,w-1).
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+We first bound the smaller class size uniformly over these weights. A binomial random variable with m-1 fair bits has variance (m-1)/4, so the interval within sqrt(m) of its mean contains probability at least 3/4 by Chebyshev. This interval contains at most 4sqrt(m) integer weights for m>=16. The central binomial probability is maximal and hence at least 3/(16sqrt(m))>=1/(8v). A binomial coefficient in either class for a retained weight is within K_w steps of one of the two equal central maxima. At step i away from that maximum the ratio is (m/2-i)/(m/2+i), at least 1-4i/m. The product over i<=K_w is at least 1-2K_w(K_w+1)/m>=3/4, using K_w<=sqrt(m)/4 and m>=16. Thus
+```
+min(S_0(w), S_1(w)) >= 2^(m-1)/(16v).
+```
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+Within either class, two distinct ordinary subset sums are independent uniforms modulo Q_b. For two distinct nonzero binary incidence vectors, exchange them if necessary to choose a differing column (1,0) in their two-row matrix. The second row has a nonzero coordinate, giving another column with lower entry one. The determinant of these two columns is one. Conditioning on the other low labels therefore leaves the pair of sums uniform, since the square matrix is invertible modulo Q_b. The designated-bit shift in one class is a fixed additive translation.
 
-## Joint costs and indices
+In a fixed bucket the respective class count means are mu_i=S_i(w)/Q_b and variances are at most mu_i. Both means exceed 32, because m>=b_j+L+16 gives mu_i >= 2^(L+11)/v, and v<=m<=20(n+1). By Chebyshev each count is below half its own mean with probability at most 4/mu_i. Both counts meet their thresholds with probability at least 3/4, without requiring independence between classes. For each weight, the expected number of paired terms over all buckets is therefore at least (3/4) min(S_0(w),S_1(w)). The number of retained weights is 2K_w+1>=sqrt(m)/4>=v/8. All premeasurement word magnitudes are equal, so summing the estimate over disjoint retained weights gives probability at least 3/1024>1/512 that the weight, bucket and rank measurements select a valid pair.
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+## Exact correction of the high-part law
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+For fixed low labels and a selected pair, d is c plus the difference of two independent sums of k uniform integers in [0,H). Let p_d be its conditional point probability. For every desired residual d in [0,H/4), we show p_d>=1/(32vH).
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+Group the signed high labels into k independent differences of two individual uniforms. A single such difference has triangular symmetric probability mass (H-|y|)/H^2 at integers |y|<H. The sum Y of k-1 of the differences is symmetric and unimodal, including when k=1 and Y=0. For completeness, a finite symmetric distribution whose masses decrease away from zero is a nonnegative linear combination of indicators of centered integer intervals. The convolution of two such indicators counts interval intersection lengths and is symmetric and decreases away from zero. By bilinearity this proves closure under convolution. Its variance is at most m H^2/6, because a difference of two uniform integers has variance (H^2-1)/6. The interval |Y|<=vH has probability at least 5/6 by Chebyshev. By symmetric unimodality the average mass in the centered interval |Y|<=H/4 is at least the average in |Y|<=vH, so its probability is at least (5/6)(H/2+1)/(2vH+1)>=1/(8v). The parameter H>=2^g>=65536(n+1) is larger than 8m, since b<=2(n+1) and m<=b+L+17<=20(n+1). On that central event |d-c-Y|<=H/4+H/8+H/4=5H/8. Thus the last difference has conditional point probability at least 1/(4H), proving the stated lower bound.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Accept a desired d with independent probability 1/(32vH p_d); discard other d. Conditional on the low data and a pair, this retains each desired d with the same probability 1/(32vH). The probability of passing this step is exactly 1/(128v), and conditional on passing the residual is uniform in the required range. This is also true of the joint law averaged over low labels and pair selection. Including the earlier pairing step, each complete attempt at level j succeeds with probability at least 1/(65536v).
 
-## Fractional error tolerance
+The probabilities are computable exactly in polynomial work and O(nm) bits. To count p_d, convert the k negative high labels into positives by subtracting each from H-1, and count lists of 2k integers in [0,H) with sum z=d-c+k(H-1). The numerator A_d of p_d with denominator H^(2k) is
+```
+sum_{v=0}^{2k} (-1)^v binomial(2k,v) binomial(z-vH+2k-1,2k-1),
+```
+using zero for a term with z-vH negative. Inclusion-exclusion subtracts lists with at least one coordinate at least H from the unrestricted weak compositions. Multiplicative binomial formulas and ordinary exact arithmetic generate the terms sequentially. Each intermediate integer has O(nm) bits, because H has O(n) bits and the binomial factors and number of summands add at most polynomially many bits. Obtain the acceptance probability as a rational A/B in [0,1]. Draw a uniform integer in [0,B) and compare it with A. A bounded version of this draw is specified below.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+## Cutoffs and clean-law comparison
+
+Set M to the least even integer at least b+L+16, and set v_M=ceil(sqrt(M)), E=2^28 (b+L+1) v_M, V=2^16 (b+L+1), and J=2^(g+10)(n+1). A level-zero generator is allowed V raw tries. A level-j generator has E attempts. Each attempt requests m independent child rows, one carrying its own target and the others ordinary, and runs the transition. Return the first accepted row. If any child or the current generator exhausts its cap, abort globally and output zero. For each of n+16 targets a_j=2^j mod N, j=0,...,n+15, use up to J fresh top-level generator calls and retain the first returned row with residual exactly zero. Abort if none has zero residual.
+
+For probability analysis initially use ideal label extraction and exact unlimited rational coins. Designate separate source inputs and coins in all potential child calls, independently, even when they are not visited. Condition within each node on all its potential child calls succeeding. By induction their outputs are independent with the prescribed uniform residuals and appropriate labeled phases. Independent attempts with the uniform conditional law above give an identical output law at the first accepted attempt. This also proves the unconditional successful-return law for actually visited nodes: one can equivalently reveal the potential child results in their fixed order, and each attempted selection uses a fresh independent product conditional on those requested children succeeding. The first failure is bounded by summing potential local failures with all children of that node successful. Nodes have conditional failure probability at most exp(-2^12(b+L+1)) at nonzero levels by E/(65536v_M), and exp(-2^15(b+L+1)) at level zero by V/2. If all needed top calls succeed, the residual-zero filter fails for one target with probability at most (1-2^-g)^J<=exp(-2^10(n+1)).
+
+There are at most
+```
+S_0 = (n+16) J (D+1) (E M)^D
+```
+potential generator nodes and at most R=V S_0 raw acquisitions. This upper bound is allowed to count potential nodes from exhausted loops that would have stopped earlier. The number of rational coin requests is at most E S_0. For a uniform bound, E M<2^39(n+1)^3 from b+L+1<=3(n+1), v_M<=M<=20(n+1). Also J<=2^27(n+1)^2, n+16<=17(n+1), and D<=n. With D<=n/b+1 and nL<=b^2, the level-dependent logarithm is at most (n/b+1)(39+3L)<=42b+39+3L. The remaining logarithm is at most 32+4L, yielding log2 S_0<=72(b+L+1). Multiplying the largest local failure bound by S_0 and adding (n+16)exp(-2^10(n+1)) gives less than 1/100 for every n>=1.
+
+To implement each rational coin, generate independent uniform integers in the least enclosing binary range, keeping the first below B, then testing it against A. Per try the chance to be in range is greater than one half unless the two ranges coincide, in which case it is one. Use at most ceil(log2(E S_0))+20 tries, aborting if this cap is exhausted. Generate the bits by measuring fresh Hadamard coin qubits, reusing a single wire. A coupling with unlimited rejection makes the total probability of a cap abort at most 2^-20 by a union bound over all potential requests. Keep all algorithmic cutoff counters in binary.
+
+## Synthesized raw readout and final decode
+
+The actual raw readout uses binary phase estimation on the modular increment of the residue register. Controlled powers are exact controlled additions by the appropriate powers of two modulo N, fixing padded basis states, computed by modular doubling and reversible ripple arithmetic. Keep the branch qubit. Use n+h control bits with h=ceil(log2 R)+20. Measure after the inverse binary Fourier transform and output the nearest grid angle with denominator N, with ties taken to the smaller integer before modular reduction.
+
+In ideal phase estimation at eigenangle k/N the probability of a binary outcome at nonzero circular distance d from its exact numerical angle is at most 1/(4d^2) in units of the binary output lattice. This follows from the geometric series and sin(pi d/2^(n+h))>=2d/2^(n+h) for distances up to half the circumference. A rounding error needs d>=2^(h-1); at most two outcomes lie in any one distance interval of unit length. Thus error probability is at most 1/(2(2^(h-1)-1)). Before synthesis error, the phase register on the branch can be coupled to the one at a latent exact eigenlabel: all residue eigenvectors remain orthogonal and the pure branch phase is exact conditional on the latent label. Synthesize the binary inverse transform with summed rotation errors at most 1/(2^20 R). Use uniform constructive Solovay–Kitaev synthesis, decomposing controlled rotations into single-qubit rotations and CNOTs, with per-rotation norm error budget and rational phase approximations. The single-qubit constructive recursion is polynomial in the precision exponent, with O(log(1/error)^3.97) output gate symbols. Its finite-dimensional matrices can be represented with O(log(Rn)) precision bits and logarithmically many levels of local scratch, with guard bits for the stable fixed-dimensional calculations. The circuit holds and emits only one single-qubit rotation sequence at a time. See Dawson and Nielsen, https://arxiv.org/abs/quant-ph/0505030.
+
+The two errors together change the raw classical-quantum interface by less than 1/(2^18 R) in trace distance per acquisition. Telescoping the adaptive instruments over the deterministic cap gives total trace distance less than 2^-18, retaining any earlier algorithm registers in the comparison. Treat a stopped branch as a terminal flag with identity continuation.
+
+After collecting the zero-residual rows at all targets, their joint pure phase state in the ideal comparison has amplitude proportional to exp(2 pi i z s/N) at the n+16 bit word z. Apply the inverse binary Fourier transform with total norm error at most 1/1024, measure and round to the nearest grid point of denominator N. The same distance-tail estimate with h=16 yields error less than 1/512 after synthesis. The raw readout error, rational coin cap, ideal generator failure and final decoding error give total failure less than 0.02. This includes all small n, for which the same cap formulas apply even if D=0.
+
+## Streamed circuits and charged resources
+
+Implement the pair-rank measurement without a quantum-addressed table. In ordinary classical order enumerate all 2^m words to count how many members of each class lie in the measured bucket. In a second scan generate each usable word and its rank in its class by updating the two counters. For each such word, compare the m quantum wires with this known bit pattern by a multi-controlled gate, XOR the known positive rank into an initially zero work register, and reverse the comparison. A word can match at most one scan entry. The unpaired words leave rank zero. Measure the rank, and if positive re-enumerate to find the two endpoint words with that rank. Classical counters, residue sums and multi-controlled scratch require O(n+m) bits or qubits within the call, apart from the larger rational arithmetic classically. Each scan entry costs a polynomial of n, including gate synthesis for exact Toffoli, CNOT and NOT, preparation, and classical indexes. The global controller deploys this circuit incrementally and stores no list of the exponentially many gates or words.
+
+A depth-first recursion holds at most M child rows at each of D levels, plus at most n+16 completed output rows and one active scratch set. The tighter relation m<=b+L+17=O(b) and D<=n/b+1 with b<=2(n+1) gives O(n) live child qubits. Weight computation, low-modulus accumulation, phase extraction, comparison and pair-rank registers use O(n) qubits. Only one raw sample and its O(n) readout workspace are live at any time. Exact coin generation can use one qubit. The total quantum peak is O(n).
+
+Classical control holds O(n) live row descriptors, each with at most O(n) bits, including labels and gate addresses. Loop counters along the recursion, input parameters, and the polynomial-precision arithmetic for one thinning operation fit O(n^2) bits. In particular O(nm)<=O(n^2), and arithmetic scratch can be released before a recursive call. For the readout compiler, log R=O(sqrt(n log2 n)). The single-rotation word length O(log(Rn)^3.97) is O(n^2), since 3.97<4 and fixed log powers are dominated by a positive power of n. Store gate symbols only, as their active wire is fixed by the current rotation. A recursion stack stores at most O(log log(Rn)) levels of constant-size matrix and gate metadata with O(log(Rn)) bits per matrix entry. Fixed-dimension arithmetic on these entries can use schoolbook integer arithmetic with O(log(Rn)^2) scratch bits, reusing that scratch for local matrix evaluations. Any generator phases from the finite gate alphabet are fixed. These storage bounds fit O(n^2) including addressed space for live data. The cap value and gate address width are O(n) bits or smaller.
+
+As n grows, b=(9/8+o(1))sqrt(n log2 n), M=(1+o(1))b, v_M=O(sqrt(M)), and log2(E M)=(5/4+o(1))log2 n. The bound D<=n/b+1 implies log2 S_0<=(10/9+o(1))sqrt(n log2 n). The sample count is at most R, giving O(2^((9/8)sqrt(n log2 n))) since 10/9<9/8. At a nonbase node, each of at most E attempts costs O(2^m poly(n)) additional work beyond child generation. Here m<=b+L+17=(9/8+o(1))sqrt(n log2 n). Addresses and the bounded rational-rejection arithmetic add polynomial factors, and raw readout and final decoding have polynomial work per reached copy or rotation. Thus the logarithm of the total charged work is bounded by (9/8+10/9+o(1))sqrt(n log2 n). Since 9/8+10/9=161/72<9/4, this gives O(2^((9/4)sqrt(n log2 n))) work. Both stretched-exponential envelopes have growth index 1/2, while the two workspace bounds have index 0. The same configuration works on independent ideal copies and declares fraction zero.
+
+The sieve uses the established idea of measuring a coarse modular sum in a tensor product of phase states, as in work of Regev (https://arxiv.org/abs/quant-ph/0406151) and Kuperberg (https://arxiv.org/abs/1112.3333). Here a central band of balanced Hamming weights and the designated bit give a balanced high-part law with a freely chosen physical offset. Exact probability correction and explicit deterministic caps are used to propagate a uniform residual distribution across levels for arbitrary cyclic moduli.
