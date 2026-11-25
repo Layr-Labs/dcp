@@ -1,104 +1,182 @@
-# Exhaustive shift testing
+# Sharp acquisition threshold for full-shift decoding
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+For every integer \(N\ge2\) and fixed shift \(s\) modulo \(N\), use independent ideal coset copies. A public rational test determines exactly \(k\in\{n,n+1\}\) copies, where \(n=\lceil\log_2 N\rceil\). This single decoder recovers the full shift with unconditional probability greater than \(2/3\), using \(O(2^{n/2}n^2(\log_2 n)^{1/8})\) charged work, \(O(n^2)\) peak classical bits and \(O(n)\) peak qubits. Its copy choice is eventually minimal among all possible measurements with worst-secret success at least \(2/3\) along any convergent normalized modulus sequence away from the limiting threshold.
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+## Choosing the copy count before acquisition
 
-## Correctness
-
-On a component with offset x, controlled subtraction produces
-
+For each public modulus let \(n=\lceil\log_2N\rceil\), \(\ell=\max(1,\lfloor\log_2 n\rfloor)\) and \(b=\lfloor\ell^{1/128}\rfloor\), with all roots and logarithm floors computed by integer comparisons. Thus \(b\ge1\). Test whether \(n\) clean copies are sufficient as follows, with \(\mu_0=2^n/N\in[1,2)\). Put \(J=2\max(1,\lfloor\log_2\ell\rfloor)\). For \(1\le j\le J\), define
 $$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
+ \Gamma_j=j\,2^{2^{j-1}}(j^{\lceil j/2\rceil}+1) 2^{j-n}
+ +(j^{\lceil j/2\rceil}+1)(3/4)^n\sum_{d=1}^{j-1}2^{jd+d}
+ +\binom j2 2^{j-n}.
 $$
-
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
-
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
-
+Set \(\xi=\sum_{j=1}^J\Gamma_j+2^{J+1}/(J+1)!\). These are all rational numbers based only on the public length. The proof below establishes that, for \(n\) copies,
 $$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
+ \mathbb E_b E_z\sqrt{m_z}
+ \ge \mathbb E\sqrt{\operatorname{Pois}(\mu_0)}-\xi .
 $$
+Here the expectation with subscript on the left is over the random Fourier labels, as defined in the decoding section. The letter \(b\) without a subscript in the present section is the public precision guard, not a Fourier label.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
-
-## Implementing the controlled subtraction
-
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
-
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
-
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
-
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
-
-## Joint costs and indices
-
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
-
+For an exact rational lower estimate \(L_\mu\) of the Poisson square-root expectation at any rational \(\mu\in[1,2]\), set \(U=32(n+4)\) and \(h=\lceil\log_2(2^{20}b)\rceil\). Use
 $$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
+ E_\mu=\sum_{j=0}^U\frac{\mu^j}{j!}
+      +\frac{\mu^{U+1}}{(U+1)!}\frac{1}{1-2/(U+2)},\qquad
+ L_\mu=\frac{1}{E_\mu}\sum_{j=1}^U
+       \frac{\lfloor\sqrt{j\,2^{2h}}\rfloor}{2^h}\frac{\mu^j}{j!}.
 $$
+The tail of the exponential after \(U\) terms is bounded by its first omitted term times the geometric factor in \(E_\mu\). Each square root is rounded down. Thus \(L_\mu\) is a lower bound. Its difference to the exact Poisson expectation tends uniformly to zero as \(n\) tends to infinity, since \(U\) grows and \(2^{-h}\to0\), and on \([1,2]\) both the exponential and weighted square-root series converge uniformly. Exact integers and rationals suffice. If
+$$
+ \frac{\max(0,L_{\mu_0}-\xi)^2}{\mu_0}
+     \ \ge\ \frac23+\frac{1}{64b},
+$$
+acquire exactly \(k=n\) copies, otherwise acquire exactly \(k=n+1\). This count is fixed before acquisition and is the only use of the Poisson computation in the controller.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+### Finite moment bound behind the guard
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+Consider \(n\) independent uniform Fourier labels \(b_i\) and an independent uniform target \(z\). Put \(V=m_z\). In an ordered tuple of \(j\) distinct binary words, the conditions that all their subset sums equal \(z\) are a homogeneous linear system. Its ordinary \(n\) columns are binary \(j\)-vectors, and it has an additional column of minus ones for \(z\). Let \(d\) be the rank over the rationals. If the ordinary columns include an edge of the binary cube along every axis, their integer span includes every unit vector, so the system has probability \(N^{-j}\). More generally a nonsingular \(d\)-by-\(d\) minor has determinant of magnitude at most \(j^{\lceil j/2\rceil}\) by Hadamard. A matrix of this determinant has kernel size at most its absolute determinant modulo \(N\): its cokernel size is the lattice index of the image plus \(N\mathbb Z^d\), no greater than the index of the integer image alone. Conditioning on the other variables and applying this minor gives probability at most \(j^{\lceil j/2\rceil}/N^d\), without any field assumption.
 
-## Fractional error tolerance
+For a fixed axis the ordinary columns can omit all its edges only by staying in one of \(2^{2^{j-1}}\) sets of one endpoint from every pair of opposite vertices along that axis. Each such set allows at most \((2^{j-1})^n\) ordinary column sequences. Union over the axes for the full-rank exceptions. For a deficient rank \(d\) there are at most \(2^{jd}\) column spans generated by binary vectors (sign the extra column positively). Each span contains the all-ones vector. Project onto a set of \(d\) pivot coordinates giving an injective linear projection. An omitted coordinate is a linear form of the pivot coordinates. It cannot have one nonzero coefficient: the all-ones vector makes that coefficient one, which would duplicate a distinct selector row. Consequently it has two nonzero coefficients, and on each corresponding two-dimensional face of the projected binary cube at least one of the four values fails to be binary. If all were binary then both nonzero differences from the base point would have to be the same \(\pm1\), placing the opposite corner outside the binary range. Hence at most \((3/4)2^d\) binary columns can lie in the span. In deficient dimension one the duplicate-coordinate argument already forbids the tuple. This gives at most \(2^{jd}((3/4)2^d)^n\) candidates for each deficient rank.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+The comparison value for the falling factorial moment is \((2^n)_j/N^j\), where \((z)_j\) denotes a falling factorial. Combining the counts with the bounds on each probability and on its independent comparison, and using \(\mu_0\le2\), bounds the full-rank error by the first term of \(\Gamma_j\), and the deficient-rank error by the second. Also \(\mu_0^j-(2^n)_j/N^j\le\binom j2 2^{j-n}\) by the probability of a repeated word among independent uniform words. This gives \(\left|\mathbb E\binom Vj-\mu_0^j/j!\right|\le\Gamma_j\), even after omitting the helpful division by \(j!\) in the error. For \(J=O(\log\log n)\), the sum of the \(\Gamma_j\)'s tends to zero: \(2^J=O((\log n)^2)\), and every exponentially small factor \(2^{-n}\) or \((3/4)^n\) dominates its remaining coefficients. The factorial term in \(\xi\) also tends to zero.
+
+To pass to square roots, for integer \(v\ge0\) use
+$$
+ \sqrt v=\frac1{2\sqrt\pi}\int_0^\infty(1-e^{-vt})t^{-3/2}\,dt
+$$
+by integration by parts and the Gaussian integral. Write \(u=1-e^{-t}\) and use the alternating sum for the union of \(v\) independent \(u\)-probability events through the even degree \(J\). Bonferroni gives a lower bound on \(1-(1-u)^v\) with deficit at most \(\binom v{J+1} u^{J+1}\). Every coefficient of an integrated binomial moment, ignoring its sign, is at most one, since \(u^j\le u\). For the Poisson distribution the binomial moments are \(\mu_0^j/j!\). Comparing the integrated lower sum for \(V\) to the Poisson expectation therefore costs at most \(\xi\). This proves the guard, including arbitrary composite moduli and finite lengths.
+
+## Asymptotically optimal acquisition count
+
+For fixed Fourier labels and \(k\) ideal copies, the best possible average success for uniform \(s\) is \(P_b=(\sum_z\sqrt{m_z})^2/(ND)\) as in the ideal fiber decoder. To see this, on the span of normalized occupied fibers symmetrize any measurement under the phase translations \(|u_z\rangle\mapsto\omega^{zs}|u_z\rangle\). The symmetrized measurement is covariant with an effect \(M_0\) for \(s=0\). Its diagonal entries on the occupied fibers must equal \(1/N\), by completeness. Positivity gives off-diagonal entries of magnitude at most \(1/N\). Hence its overlap with the state for \(s=0\) is at most the displayed \(P_b\). The uniform-rank erasure and exact Fourier readout attain it for all \(s\). The raw source is already block diagonal in the position eigenlabels, so measuring these first loses no generality in the optimum over instruments. An algorithm with an adaptive upper bound of \(k\) acquisitions can be simulated on \(k\) copies by ignoring unused ones, so the optimal average success also upper bounds worst-secret success of such algorithms.
+
+For any sequence with \(k\to\infty\) and \(2^k/N\to\mu>0\) finite, let \(Z,W\) be independent uniform residues and consider \((m_Z,m_W)\). For each pair of fixed nonnegative integers \(p,q\) with \(p+q>0\), its mixed falling-factorial moment counts tuples of \(p\) distinct selectors for \(Z\) and \(q\) distinct selectors for \(W\). The two groups may share selectors. Use the same column-system bound with \(p+q\) rows, \(k\) ordinary binary columns, and one target column for each group present. The target columns are the negatives of the group indicator vectors, so their sum is minus ones. In the deficient span, duplicate coordinates on all columns would repeat a selector within a group, or would repeat a group indicator across different groups. Both are excluded. This is exactly the condition needed for the three-quarters binary-column bound. Full rank with an edge in each direction again gives the independent probability. For fixed \(p,q\) the error terms decay exponentially in \(k\), by the same counts with \(2^k/N\) bounded. Thus
+$$
+ \mathbb E (m_Z)_p(m_W)_q
+ = (2^k)_p(2^k)_q/N^{p+q}+o(1)\longrightarrow \mu^{p+q}.
+$$
+A zero group is the one-variable proof. These are the joint factorial moments of independent Poisson variables. For clarity these limits imply joint weak convergence: first moments give tightness on the nonnegative integer lattice. On any subsequential limit, each fixed factorial moment converges by uniform integrability from bounded higher moments (use powers of \(m_Z+m_W\), which expand as finite linear combinations of joint factorial moments). A law with the displayed moments has exponential generating identity \(\mathbb E[(1+x)^X(1+y)^Y]=\exp(\mu x+\mu y)\) for \(x,y\ge0\) by nonnegative binomial expansion. The identity on a neighborhood above one determines its probability generating function, which is analytic on every bounded polydisk by that exponential-moment equality. Thus it is the independent Poisson law, giving convergence of the full sequence. The expectation of \(\sqrt{m_Z m_W}\) also converges by uniform integrability, since \(2\sqrt{m_Z m_W}\le m_Z+m_W\) and their second moments are bounded.
+
+Consequently the limiting optimal success is
+$$
+ F(\mu)=\frac{(\mathbb E\sqrt{\operatorname{Pois}(\mu)})^2}{\mu}.
+$$
+This function is continuous and strictly increasing on \((0,\infty)\). For monotonicity, thin a Poisson variable of larger mean to one of smaller mean. The conditional mean after normalization by its own mean equals the normalized larger variable. Conditional Jensen of the square root is strict with positive probability when the two means differ. Continuity follows from the locally uniform defining series. At \(\mu=1\), Cauchy–Schwarz gives \(F(1)\le1-e^{-1}<2/3\). At \(\mu=2\), strict Hölder as in the second-moment bound gives \(F(2)>2/3\), since the positive-count support includes different values for which equality would require one size. Thus there is a unique threshold \(\mu_*\in(1,2)\). In fact \(247/200<\mu_*<309/250\). For an entirely rational bracket, use the same Poisson evaluator with \(U=64\) and \(h=30\). For an upper estimate use the finite exponential sum as the denominator lower bound, round each square root up by one dyadic unit, and add the numerator tail bound \(\mu\cdot(\mu^{64}/64!)/(1-2/65)\), using \(\sqrt j\le j\) for the omitted terms. At \(247/200\) this upper estimate squared divided by the mean is less than \(2/3\); at \(309/250\) the lower estimate squared divided by the mean exceeds \(2/3\). These strict rational inequalities establish the bracket without a numerical optimality assumption.
+
+If \(2^n/N\) tends to a value above \(\mu_*\), the public guard eventually uses \(n\) copies, since \(L_{\mu_0}\) approaches the exact expectation uniformly, \(\xi\to0\), and \(b\to\infty\). Fewer than \(n\) copies cannot eventually succeed in this regime: the \(n-1\) optimum converges to \(F(\mu/2)\le F(1)<2/3\). If \(2^n/N\) tends to a value below \(\mu_*\), the guard uses \(n+1\) eventually and \(n\) copies are insufficient by the same optimum. This establishes asymptotic sharpness along every convergent modulus ratio away from the threshold, while the stated resource bounds and success guarantee apply also at the threshold and for every finite input.
+
+## Phase rows and ideal fiber erasure
+
+Write (\omega=exp(2\pi i/N)) and use translation (U|x\rangle=|x+1\bmod N\rangle), extended by the identity on padding. A Fourier eigenvector with eigenvalue (\omega^b) has coefficients (\omega^{-bx}). Measuring the eigenvalue on the position register of a source copy gives a uniform (b\in\mathbb Z/N\mathbb Z) and leaves the row \((|0\rangle+\omega^{bs}|1\rangle)/\sqrt2\). Indeed the position inner products on the two arms differ by the factor (\omega^{bs}), for every offset (x). Use the bounded approximate implementation below in the actual algorithm.
+
+For the \(k\) independent labels \(b_i\), set \(D=2^k\), \(F(x)=\sum_i b_i x_i\bmod N\), and \(m_z=|\{x:F(x)=z\}|\). Computing the residue into a new register gives
+$$
+ \sum_{z:m_z>0}\omega^{sz}\sqrt{m_z/D}\,|z\rangle|u_z\rangle ,
+$$
+where \(|u_z\rangle\) is the uniform normalized superposition of the words in fiber \(z\). Ideally erase that fiber state, mapping it to the same zero word in each occupied fiber and keeping the target. The ideal probability of the target eigenvector \(N^{-1/2}\sum_{z<N}\omega^{sz}|z\rangle\) is
+$$
+ P_b=\frac{(\sum_z\sqrt{m_z})^2}{ND}.
+$$
+The gate implementation uses a Grover phase filter.
+The actual decoder applies phase estimation for \(U\) on the residue register. The desired eigenvalue is \(\omega^{-s}\), so rounding and negating return \(s\). Orthogonality of the residue eigenvectors ensures that all other components can only add to the probability of returning \(s\).
+
+## Success for the n+1-copy branch
+
+For each nonzero word \(x\), \(F(x)\) is uniform modulo \(N\), because some coefficient is 1. If two nonzero words are distinct, their two rows contain a pair of columns with determinant \(+1\) or \(-1\). If their supports intersect, take a common column and one in the symmetric difference. If they are disjoint, take one column from each. Conditioning on the other labels gives an invertible two-column map over \(\mathbb Z/N\mathbb Z\). Thus indicators \([F(x)=z]\) for different nonzero words are pairwise independent for every fixed \(z\), including for composite \(N\). The zero word contributes the deterministic term \([z=0]\).
+
+This section treats \(k=n+1\), hence \(2\le\mu=D/N<4\). For each fixed label vector use \(E_z\) for averaging over all \(N\) residues, and set \(M_2=E_z m_z^2\). Since \(E_z m_z=\mu\), Hölder's inequality gives
+$$
+ \mu=E_z[(\sqrt{m_z})^{2/3}(m_z^2)^{1/3}]
+       \le (E_z\sqrt{m_z})^{2/3}M_2^{1/3}.
+$$
+Therefore \(P_b\ge\mu^2/M_2\). For the expected second moment, the means are \((D-1)/N+[z=0]\). The mean-over-\(z\) square of their deviation from \(\mu\) is \((1-1/N)/N\). The variance at each \(z\) is \((D-1)(1-1/N)/N\) by pairwise independence. Adding these contributions yields \(\mathbb E M_2=\mu^2+\mu(1-1/N)\). Convexity of the reciprocal gives \(\mathbb E P_b\ge\mu/(\mu+1)\), which is at least \(3/4\) for \(\mu\ge3\).
+
+For \(2\le\mu\le3\), sharpen the second-moment bound using the final uniform label. Let \(c_z\) be the fiber counts for the first \(k-1\) labels alone, and \(\lambda=\mu/2\ge1\). Conditional on that prefix, choose \(z\) and the last label independently and uniformly. Then \(m_z=c_z+c_{z-b_k}\), a sum of two independent draws \(X,Y\) from the prefix's empirical histogram. Let \(a,b,c\) be the conditional probabilities that \(X\) is odd, positive even, or zero, respectively. The probability of a positive even sum is \(a^2+b^2+2bc\ge(a+b)^2/2\).
+
+Writing \(M'_2=E_z c_z^2\), Cauchy–Schwarz gives \(a+b\ge \lambda^2/M'_2\). The prefix second-moment calculation is identical to the calculation above with \(2^{k-1}\) words. Thus \(\mathbb E M'_2=\lambda^2+\lambda(1-1/N)\), and Jensen gives \(\mathbb E(a+b)\ge\lambda/(\lambda+1)\). A further Jensen inequality shows that the unconditional probability of a positive even \(m_z\) is at least \(\frac12(\lambda/(\lambda+1))^2\).
+
+For any nonnegative \(u\), set \(h(u)=\sqrt3\,u/2-u^2/(6\sqrt3)\). The difference \(\sqrt u-h(u)\) equals \(\frac{\sqrt3}{2}t(t-1)^2(t+2)\) with \(t=\sqrt{u/3}\). It is nonnegative and exceeds \(1/16\) on the positive even integers. At \(u=2\) and \(u=4\), the strict estimates are \(\sqrt2-7/(3\sqrt3)>1/16\) and \(2-10/(3\sqrt3)>1/16\). For \(u\ge4\), the factorization is increasing because \(t>1\) and all its positive factors increase. Combining the even-count probability with the exact second-moment bound gives
+$$
+ \mathbb E_b E_z\sqrt{m_z}
+ \ge \frac{8\mu-\mu^2}{6\sqrt3}+\frac1{32}\left(\frac{\lambda}{1+\lambda}\right)^2.
+$$
+For \(2\le\mu\le3\), division of the first term by \(\sqrt\mu\) gives \(\sqrt\mu(8-\mu)/(6\sqrt3)\). Its derivative has the sign of \(8-3\mu\), so its minimum on this interval is at an endpoint. The value at 2 is \(\sqrt{2/3}\), and the value at 3 is \(5/6\). Since \(P_b=(E_z\sqrt{m_z})^2/\mu\), Jensen on this square yields the uniform estimate
+$$
+ \mathbb E P_b\ \ge\ \left(\sqrt{2/3}+\frac{1}{128\sqrt3}\right)^2
+ > \frac23+\frac1{160}.
+$$
+For \(\mu\ge3\) the initial Hölder estimate gives success at least \(3/4\), so the same \(2/3+1/160\) lower bound here applies to every \(k=n+1\) case. For \(k=n\), the finite moment guard and Jensen on the square \((E_z\sqrt{m_z})^2\) give ideal success at least \(2/3+1/(64b)\).
+
+## A coherent Grover phase filter with vanishing error
+
+For the fixed Fourier labels, let \(|a_0\rangle=D^{-1/2}\sum_x|x\rangle\) be the uniform binary-word state. After computing \(z=F(x)\) coherently the branch word, on each occupied fiber \(z\), is its normalized uniform state \(|u_z\rangle\). Define known reflections \(R_0=2|a_0\rangle\langle a_0|-I\) and \(R_z=I-2\Pi_z\), with \(\Pi_z\) the projector on binary words having sum \(z\). Put \(G_z=R_0R_z\). These act on the known word register with \(z\) retained. They do not reflect about a supplied source state.
+
+When \(0<m_z<D\), set \(\sin\theta=\sqrt{m_z/D}\), and write \(|v_z\rangle\) for the normalized uniform complement. In this ordered basis \(G_z\) has matrix
+$$
+ \begin{pmatrix}\cos(2\theta)&\sin(2\theta)\\-\sin(2\theta)&\cos(2\theta)\end{pmatrix}.
+$$
+Its eigenvectors \((u_z\pm i v_z)/\sqrt2\) have eigenphases \(2\theta,2\pi-2\theta\). The phase function \(f(\alpha)=i\exp(-i\pi\alpha)\) for \(0<\alpha<1\), on their normalized phases \(\alpha\), sends \(|a_0\rangle\) exactly to \(|u_z\rangle\) with the same positive phase for every occupied \(z\). Indeed the two coefficients of \(|a_0\rangle\) before applying \(f\) are \(-i e^{i\theta}/\sqrt2\) and \(i e^{-i\theta}/\sqrt2\). After multiplication both equal \(1/\sqrt2\). At \(m_z=D\), the uniform word is already \(|u_z\rangle\) and has eigenvalue \(-1\), so \(f(1/2)=1\) gives the same result. Empty fibers do not occur in the ideal input state. These assertions are only about the indicated uniform fiber vectors and their rotation planes.
+
+Use coherent binary phase estimation of \(G_z\) with
+$$
+ q_G=\lceil k/2\rceil+48+2\lceil\log_2(b+1)\rceil,\qquad M_G=2^{q_G}.
+$$
+Apply the diagonal \(i\exp(-i\pi j/M_G)\) to its estimate register, then reverse the phase estimation unitary. Call this operation \(U\). Its exact physical inverse, using reversed compiled gate words when synthesis is used, acts as the eraser, followed by Hadamards on the word register to clear \(|a_0\rangle\). No register of this filter is measured for postselection. Its ideal diagonal is a common global factor and a product of fixed dyadic one-qubit phases.
+
+For a relevant eigenphase \(2\pi\alpha\), the squared error of \(U\) compared with the exact phase multiplier on that eigenvector and zero scratch is exactly the expectation of \(|f(j/M_G)-f(\alpha)|^2\) under phase estimation. Here \(f(0)\) is defined for the estimate by the same displayed exponential at zero. Every relevant eigenphase satisfies \(\min(\alpha,1-\alpha)\ge a=1/(4\sqrt D)\), since \(\theta\ge1/\sqrt D\) and \(\pi<4\), and the full-fiber eigenphase is \(1/2\). For circular distance \(d\) from \(j/M_G\) to \(\alpha\), the phase-estimation outcome law is bounded at \(d>0\) by \(1/(4M_G^2 d^2)\). Thus \(\mathbb E d^2\le1/(4M_G)\). Without crossing the cut at zero the squared phase error is at most \(\pi^2 d^2\). Crossing needs \(d\ge a\) and costs at most four. Summing the distance tail over unit bins in lattice units gives error squared at most
+$$
+ 4/M_G+4/(\lfloor M_G a\rfloor-1)<2^{-40}/b^2.
+$$
+The stated size of \(M_G\) gives \(M_G a\ge2^{46}(b+1)^2\), so the strict inequality follows uniformly. The distances here are the circular distances in phase fraction units, and at most two outcomes occur in each unit lattice bin as in the spectral readout below.
+
+Distinct eigenspaces and retained target labels remain orthogonal, so the same norm bound is uniform on superpositions of the occupied rotation planes, including reference systems. Since \(U\) approximately maps \(|a_0\rangle|0\rangle\) to \(|u_z\rangle|0\rangle\) with this error, unitarity gives the inverse approximation on \(|u_z\rangle|0\rangle\). After applying the inverse to the coherent source state and taking Hadamards on the word, the norm error in the ideal residue output with clean scratch is less than \(2^{-20}/b\). Any residual scratch can be discarded after that comparison. The output-event probability loss is at most twice the vector error.
+
+Controlled powers of \(G_z\) are repetitions of its known controlled circuit, totaling \(2(M_G-1)\) iterations for the entire forward and reverse estimation filter. All such calls are charged. The diffusion uses Hadamards surrounding a zero-state reflection and a control-dependent sign to give exactly \(2|a_0\rangle\langle a_0|-I\), including its global sign when controlled. The mark computes the subset sum and reverses it after applying its sign. Every controlled reflection can compute its Boolean predicate unconditionally and guard its final sign with exact gates. This implementation preserves the eigenphase used in the proof.
+
+## Uniform spectral readout and synthesis
+
+For raw labels and the final readout use binary phase estimation of padded modular increment with
+$$
+ d=n+\lceil\log_2((k+1)b)\rceil+20,\qquad M=2^d.
+$$
+Use controlled translation by the appropriate powers of two modulo \(N\), then the inverse binary Fourier transform, read \(y\), and round \(Ny/M\) to the nearest residue, with ties rounded upward. Translation acts by identity on padded residue basis states. On an eigenvector of angle \(a/N\), the outcome's probability is
+$$
+ \left|M^{-1}\sum_{t=0}^{M-1}e^{2\pi i t(a/N-y/M)}\right|^2.
+$$
+At nonzero circular lattice distance \(v\) from \(Ma/N\), this is at most \(1/(4v^2)\) by the geometric sum and \(\sin(\pi v/M)\ge2v/M\) for \(v\le M/2\). A wrong rounding requires \(v\ge M/(2N)\); there are at most two outcomes per half-open distance bin of unit length. Summing gives failure at most \(1/[2(\lfloor M/(2N)\rfloor-1)]<2^{-18}/((k+1)b)\). Marginalizing the retained position after its label readout makes the physical estimate equivalent to applying the approximate report to an exact latent eigenlabel. The same spectral bound applies to the correct final residue eigencomponent. These \(k+1\) calls cost total error at most \(2^{-18}/b\) before synthesis, by coupling all initial reports to the ideal hidden labels and bounding final rounding.
+
+Only a polynomial number of dyadic rotations in the label and filter estimation Fourier transforms and the filter diagonal require approximation. For example a bound \(A=20(k+5)(d+q_G+2)^2\) covers all one-qubit rotations after decomposing controlled phases into individual rotations and exact CNOT gates via \(xy=(x+y-(x\operatorname{xor}y))/2\). For each such rotation use Clifford+T synthesis to error at most \(2^{-20}/(bA)\) up to global phase. Compile unconditional one-qubit factors after the decomposition, so the allowed global phase errors are common to all coherent branches. Use the inverse-closed single-qubit generating set and constructive Solovay–Kitaev synthesis with rational angle approximations, including the necessary classical bit precision and gate generation. Sequentially synthesizing one word at a time uses polynomial time and space in \(O(\log(n+2))\) precision bits for these rotations. Using actual reversals of the compiled words preserves the inverse circuit. A hybrid costs at most \(2^{-19}/b\) in any final event probability, including adaptive label processing. All controlled walk gates are exact.
+
+The norm loss from the phase eraser is less than \(2^{-20}/b\), which costs at most \(2^{-19}/b\) in success probability. Together the implementation losses are less than \(2^{-17}/b\). The ideal margins \(1/160\) and \(1/(64b)\) therefore give unconditional success greater than \(2/3\) in the respective sample branches, with no assumption on the realized fiber sizes.
+
+## A reversible block circuit for the walk predicate
+
+The main cost inside a search iteration is evaluating \(F(x)\) on known labels. We compress the circuit by grouping selector variables. Put \(\ell=\max\{1,\lfloor(\log_2 n)/2\rfloor\}\), padding the final block with zero selector bits and zero labels. Let \(w=\lceil\log_2(2\ell+1)\rceil\). Per block the classical label bits in column \(j\) specify a mask \(S_j\) of \(\ell\) bits, recording exactly the labels in that block which contribute a 1 in column \(j\). These masks are independent of the quantum selector. In a one-time polynomial computation, transpose the measured labels into a sequential work tape of these masks in block and column order. Use \(\ell\) bits per mask and \(n\) masks per block, for \(O(n^2)\) bits. The controller can scan this tape in either direction in order with single-cell head advances.
+
+For one block, build all \(2^\ell\) population counts \(C[S]=\sum_{i\in S}x_i\) into zero quantum registers. The address of \(C[S]\) is a classical wire address computed from the mask \(S\). Generate the counts in increasing mask order, with \(C[0]=0\). For nonempty \(S\), copy \(C[S\setminus\{i\}]\) into \(C[S]\) and add the selected bit \(x_i\), where \(i\) is the least set bit of \(S\). Each step uses \(O(w)\) exact gates, including resetting the ripple arithmetic scratch. The count registers need \(O(2^\ell w)=O(n)\) qubits. One may use the next power of two above \(w\) as their stride so that the mask part of any wire address is just a binary field.
+
+The exact unreduced sum of the selected labels in a block is \(\sum_{j=0}^{n-1}2^j C[S_j]\). Compute this sum with a \(w\)-bit carry \(c\), starting at zero. In column \(j\), add the count \(C[S_j]\) to \(c\), swap the low bit into a fresh output bit, and shift the carry representation by one position toward its low end, putting the vacated zero at the high end. A cyclic relabeling or \(O(w)\) swaps implements this shift reversibly. The carry before any column is at most \(\ell\), so the addition into its \(w\)-bit register does not overflow. After the last column, the \(n\) output bits and the residual carry give the block sum. All reversible steps can be undone with the same mask schedule in reverse. Column processing costs \(O(nw)\) gates plus the \(O(2^\ell w)\) gates for constructing the counts.
+
+The block subtotal is less than \(\ell N\). To reduce it modulo \(N\), compare and conditionally subtract \(2^j N\) for \(j=w-1,\ldots,0\). For each of these \(w\) rounds keep its comparison bit and use a reversible subtraction controlled by that bit. This yields the exact remainder and is invertible given the comparison bits. Only \(O(n+w)\) scratch is live apart from the population count registers. Add that remainder to the accumulated residue with one in-place modular addition. Then undo reduction, column processing and the count construction, leaving only the accumulated residue. Process all blocks serially. In-place modular addition on valid residues, followed by identity on padded strings, is a permutation with a controlled inverse. Ripple comparison, addition and selection circuits compute it into scratch, swap and clear by the inverse. Each Boolean computation costs \(O(n)\) gates and workspace and reverses after its output is used. These circuits use exact NOT, CNOT and Toffoli. The quantum Horner-style accumulator never stores all block subtotals at once.
+
+The controller materializes the mask tape once. During each forward and reverse predicate evaluation it streams the mask fields in order from a sequential tape head, with a constant number of linear sweeps. These advances and reads take \(O(n^2)\) ordinary single-cell steps. Any nonsequential access pays for its full address, including any access during the one-time transpose. To emit the quantum circuit, store a constant number of \(O(\log(n+2))\)-bit wire address fields on sequential work tapes. Each mask is copied from its \(\ell\) sequential input bits into one such field and its count-register addresses are formed by concatenation with the appropriate position and base fields. Template index increments, offsets, comparisons and carries on these short fields cost \(O(\log(n+2))\) sequential bit steps per emitted gate. The addressed gate itself also pays \(O(\log(n+2))\). Fixed words such as \(N\) and its shifted versions can be scanned serially, without a new table entry for each round or retained circuit description. When reversing the arithmetic for a block, the mask-head direction is also reversed, with its head returned to the appropriate end before starting the next block. Returning over a block's masks even when no masks are used costs \(O(n\ell)\) local steps, already within the total tape scan bound.
+
+The \(O(1+k/\ell)\) blocks use \(O((1+k/\ell)(n+2^\ell)w)\) gates. Equality, controlled diffusion, the phase-estimation control and inversion add only \(O(n)\) or a constant factor to this gate bound. Including the serial tape work and all gate addressing, the charged cost of a search iteration is therefore
+$$
+ O\!\left(n^2+(1+k/\ell)(n+2^\ell)w\log_2(n+2)\right)
+ = O\!\left(n^2(1+\log_2\log_2(n+2))\right).
+$$
+Here \(k\le n+1\), \(2^\ell=O(\sqrt n)\), and \(\ell\) is of order \(\log_2 n\). The fixed finite small lengths are covered by the same asymptotic bound.
+
+## Joint resources and declared indices
+
+The public rational computations take polynomial bit time and \(O(n^2)\) bits. The logarithms and roots in their definitions are integer floor or ceiling operations. In the Poisson evaluation, the sums of rational terms can use the common denominator \(N^{U+1}(U+1)!2^h\), with one additional \(O(n)\)-bit scalar for the exponential-tail factor. It has \(O(n^2)\) bits, and the controller generates one term at a time. The exact bound \(\xi\) has polynomially many bits within \(O(n^2)\), since \(J=O(\log\log n)\), \(2^J=O((\log n)^2)\), and its denominators divide a product of a power of two of \(O(n)\) bits and \((J+1)!\). Schoolbook arithmetic is sufficient for polynomial charged time, with \(O(n^2)\) live bits and no preloaded tables. The smaller precision bound on each synthesized rotation ensures its workspace is also \(O(n^2)\) when compiled separately.
+
+The coherent filter uses \(O(2^{n/2}b^2)\) walks, and all other operations outside the walk repetitions take at most polynomial in \(n\) or a fixed polynomial in \(\log(n+2)\) per source, as accounted above. With the streamed arithmetic, total work is bounded by
+$$
+ O\!\left(2^{n/2}n^2(1+\log_2\log_2(n+2))b^2\right).
+$$
+Since \(b^2=O((\log_2 n)^{1/64})\) eventually, this is \(O(2^{n/2}n^2(\log_2 n)^{1/8})\). The classical label, mask tape, controller and compiler allocation together is \(O(n^2)\). The concurrent quantum registers are the \(k\) source phase rows, one source position with readout workspace, the coherent residue and phase-estimation registers, and the streamed predicate scratch. Their total allocation is \(O(n)\) qubits. The algorithm acquires exactly its public \(k\in\{n,n+1\}\) on every branch, hence \(O(n)\). The four displayed growth indices are \(1,0,0,0\), respectively. The independent ideal-copy assumption gives malformed fraction zero jointly with these guarantees. The asymptotic acquisition optimality theorem is additional to these every-branch and finite-input guarantees.
+
+## Sources
+
+The ideal fiber measurement is the square-root measurement of Bacon, Childs and van Dam, [Optimal measurements for the dihedral hidden subgroup problem](https://arxiv.org/abs/quant-ph/0501044). Yukon submission 061119d1-c8b3-4e03-9b9a-e7cf06f4fc4e supplies the coherent Grover rotation and phase-filter implementation, with the tighter variable error budget proved here. The Poisson-window submission 3d54bb3c-7c51-4c00-8def-4d16eeb10dac supplies the bounded factorial-moment argument, and e0839a54-d42a-41c0-9286-dcb626f53c65 supplies the block mask arithmetic and positive-even estimate. The guarded translation phase readout and determinant-one independence method are also credited to 6f49290a-4e30-41fd-933e-9916667f3cc4. For synthesis see Dawson and Nielsen, [The Solovay–Kitaev algorithm](https://arxiv.org/abs/quant-ph/0505030).
