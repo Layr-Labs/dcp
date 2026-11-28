@@ -1,104 +1,117 @@
-# Exhaustive shift testing
+# Integer-window difference sieve for cyclic DCP
 
-This is a simple exponential-time baseline for every N ≥ 2 and every s in Z/NZ.
-It makes no claim of novelty. Set n = ceil(log₂ N) and k = n+2.
-Use the single algorithm below for all four resource claims.
+## 1. Theorem and source promise
 
-For t = 0, …, N−1, perform k independent tests using fresh source copies.
-In a test, apply controlled subtraction of t modulo N to the second register,
-conditioned on the first qubit being 1. Then measure the first qubit in the
-X basis. If any result is −, reject t and move to the next value. If all k
-results are +, output t and halt. Discard each used sample before the next test.
-If no t passes, output 0 (the proof shows this branch has probability zero).
+Let `N >= 2`, `n = ceil(log2 N)`, and `s in Z/NZ`. The algorithm below recovers the entire `s` with probability greater than `15/16`. All four resource bounds hold on every branch in the pinned challenge's uniform Clifford+T bit-operation model. In the envelopes below put `a = 4` and `c = 2`.
 
-## Correctness
+| Resource | Uniform upper bound | Growth index |
+| --- | --- | --- |
+| Total work | `O(2^(a sqrt(n)) n^4)` | `1/2` |
+| Peak classical bits | `O(2^(c sqrt(n)) n^(3/2))` | `1/2` |
+| Peak qubits | `O(2^(c sqrt(n)) n^(1/2))` | `1/2` |
+| All acquired source copies | `O(2^(a sqrt(n)) n)` | `1/2` |
 
-On a component with offset x, controlled subtraction produces
+The guaranteed malformed fraction is `1` in the following model. Before the run, the source may designate any fixed set of acquisition positions as malformed. Conditional on a jointly drawn vector of offsets in Z/NZ, all copies are a tensor product of pure coset states with the same shift s and the respective offsets. At honest positions the offsets are mutually independent uniform draws. At malformed positions the offsets may have any joint classical distribution, including dependence on s and on honest offsets. The joint draw is independent of the algorithm's private measurement outcomes. Each copy has the usual plus relative phase and the prescribed register dimensions.
 
-$$
-\frac{|0,x\rangle+|1,(x+s-t)\bmod N\rangle}{\sqrt2}.
-$$
+Here a pure coset state is exactly `( |0,x> + |1,(x+s) mod N> )/sqrt(2)`. For a finite cap on acquisitions the source can draw the whole vector in advance and supply its prefix on demand. The proof will hold conditional on **every** fixed offset vector, which establishes the guarantee for any designation of malformed positions, even when every position is designated. The challenge's independent mixed source is the special case in which all offsets are independent uniform draws.
 
-When t = s, this is |+⟩|x⟩, so the test always returns +. When t ≠ s,
-the two second-register basis states are distinct. Tracing them out gives
-I/2 on the first qubit, so the test returns + with probability exactly 1/2.
-This holds for each x, hence also for the mixed source.
+The integer difference operation is the phase-qubit pairing in Greg Kuperberg, *A subexponential-time quantum algorithm for the dihedral hidden subgroup problem*, [arXiv:quant-ph/0302112v2](https://arxiv.org/abs/quant-ph/0302112v2), Section 3 (the CNOT and parity measurement on two labelled phase qubits). Section 3 specializes its recovery to power-of-two order. We derive the gate action below and use it with integer labels at arbitrary order. Oded Regev, [arXiv:quant-ph/0406151v1](https://arxiv.org/abs/quant-ph/0406151v1), Section 3, uses a pipeline to limit storage. Chris Peikert, *He Gives C-Sieves on the CSIDH*, [IACR ePrint 2019/725, February 23, 2020 revision](https://eprint.iacr.org/2019/725.pdf), Sections 3.2 and 3.3.2, gives related collimation with phase vectors on integer and scaled intervals for known cyclic order. Those works supply context. The pair filter, quotas and charged resource analysis below are derived directly. The measurement, finite-window sieve, recovery, and charged costs are proved here from the source and computation hypotheses in the pinned `rules.md`, under “Problem and goal,” “Computation and resources,” and “Error-tolerance expression.” The candidate test is derived from the controlled-subtraction test in the pinned baseline `submission/proof.md` at commit `5f141ca57dc41fe431770ea153fc4c0af6a05aea`.
 
-Fresh independent copies make the probability of k consecutive + results for
-an incorrect t exactly 2^{-k}, conditional on reaching that t. The correct t
-never fails. The probability of outputting any incorrect earlier value is at
-most the union bound
+## 2. Concentration and dyadic phase recovery
 
-$$
-(N-1)2^{-k}<2^n2^{-(n+2)}=\frac14.
-$$
+For independent random variables `X_i in [u,v]`, the probability that their mean deviates from the mean of their expectations by at least `t` in either specified direction is at most `exp(-2 r t^2/(v-u)^2)`, where `r` is their count. To see this, the second derivative of each centered log moment-generating function is the variance under exponential tilting. It is at most `(v-u)^2/4`, because the squared distance from the midpoint is bounded by that amount. Integrate twice, using that the centered function and its first derivative vanish at zero, then use the exponential Markov inequality and optimize the tilt. The lower tail follows by negation. This also bounds a Bernoulli sum falling `D` below its expectation by `exp(-2 D^2/r)`.
 
-Thus full-secret recovery succeeds with probability greater than 3/4, in
-particular at least 2/3, for every N and s. This is unconditional: no
-postselection is assumed.
+Write `dist` for circular distance in turns, and define the phase state at angle `f in R/Z` to be `( |0> + exp(2 pi i f)|1> )/sqrt(2)`. The Pauli X and Y means are `cos(2 pi f)` and `sin(2 pi f)` respectively. The exact circuits are H then computational measurement for X, and S-adjoint then H then computational measurement for Y. Interpret outcome zero as `+1` and outcome one as `-1`.
 
-## Implementing the controlled subtraction
+Given both means to additive error at most `1/32`, choose a quarter turn `q in {0,1/4,1/2,3/4}` maximizing the corresponding signed estimated coordinate (smallest `q` on ties). The true signed coordinate at the maximizer is at least `1/sqrt(2) - 2/32 > 1/2`. Hence `dist(q,f) < 1/6`. With `r` independent shots per mean, the probability of an error exceeding `1/32` for a given basis is at most `2 exp(-r/2048)` by the preceding bound with `[u,v]=[-1,1]`.
 
-On n-bit strings define f_t(y) = (y−t) mod N for y < N, and f_t(y) = y
-for y ≥ N. This is a permutation; its inverse is conditional addition of t
-modulo N on the same valid range. The extension ensures a unitary on the entire
-register even when N is not a power of two.
+Suppose `q_h` approximates `2^h f mod 1` within `1/6` for each `h=0,...,H`. Start at `z_H=q_H`. In decreasing `h`, take the half of `z_(h+1)` or that half plus `1/2`, whichever is circularly closer to `q_h` (smaller representative on ties). Of the two lifts exactly one is within half the previous error of `2^h f`; the other is its antipode. The correct lift is at distance strictly less than `1/6+1/12=1/4` from `q_h`, so the choice is unique. Induction gives `dist(z_0,f) < 1/(6*2^H)`. This computation uses only dyadic rational comparisons, fixed integer arithmetic, and at most `H+2` bits of fractional precision. The controller uses this same procedure both for Fourier label readout and for recovery of `s/N`.
 
-Comparisons and subtraction/addition with carry are Boolean circuits of O(n)
-gates and wires: scan the bits once for each comparison or arithmetic
-operation, retaining the carry/borrow. Comparing with N and t and selecting
-between y−t and y+N−t requires a fixed number of such operations on n+1 bits.
-An n-bit result is selected; the valid modular result is below N.
+## 3. Exact gates for reading Fourier labels
 
-Reversible evaluation can retain each Boolean gate's value in a fresh bit,
-XOR the result into a target register, and reverse all gates to clear the
-intermediate bits. NOT, CNOT, and Toffoli implement these steps; Toffoli has
-an exact constant-size Clifford+T decomposition. For a permutation, compute
-f_t into a zero register, swap registers, and XOR f_t^{-1} of the new first
-register into the old input, clearing that old input. Choosing the identity
-on control 0 and f_t on control 1 makes this the required controlled
-permutation. Its inverse computation uses the same control.
+Define `W|y> = |y+1 mod N>` on `0 <= y < N`, and extend it by the identity on every unused basis vector of the `n`-bit residue register. Its orthonormal eigenvectors on the valid space are
 
-These constructions use O(n) gates and temporary wires per evaluation;
-the conservative bounds O(n²) gates and O(n²) qubits suffice here. A uniform
-classical generator emits their regular carry/comparison gates using binary
-counters and the at-most-(n+1)-bit constants N,t. It needs at most O(n²) working bits and
-O(n³) bit operations per test, including address handling and synthesis of
-the fixed-size gates. There is no stored exponential circuit or lookup table.
-The X-basis measurement is a Hadamard followed by a computational-basis
-measurement.
+```
+chi_k = (1/sqrt(N)) sum_y exp(-2 pi i k y/N) |y>,   k=0,...,N-1.
+```
 
-## Joint costs and indices
+The eigenvalue is `exp(2 pi i k/N)`. Put `theta=s/N` and write `phi_k` for the phase state at angle `k theta mod 1`, also allowing integer labels outside `0,...,N-1`. The source component at offset `x` expands as
 
-There are at most N(n+2) samples and tests on every execution branch.
-Each sample costs n+1; the preceding conservative O(n³) work bound per test
-also covers source acquisition, initialization, disposal, measurement, and
-loop bookkeeping. The peak workspace is reused between tests. Thus this
-same algorithm has uniform worst-case bounds
+```
+(1/sqrt(N)) sum_k exp(2 pi i k x/N) phi_k tensor chi_k.
+```
 
-$$
-T(N,s)=O(Nn^4)\subseteq O(2^n n^4),\qquad
-S_C(N,s)=O(n^2),\qquad S_Q(N,s)=O(n^2),\qquad
-Q(N,s)\le N(n+2)=O(2^n n).
-$$
+The controller applies `r_F` Hadamard tests in each basis X and Y at each `h=0,...,n`, using an independent `|+>` probe and `W^(2^h)` controlled by the probe. It discards the residue register after these tests. In eigenspace `chi_k` the probe is the phase state at angle `2^h k/N`, and the residue remains `chi_k`. The classical and surviving branch-qubit output has exactly the law obtained by first drawing a latent `k` uniformly, producing `phi_k`, and then generating the independent probes conditional on `k`. This follows by tracing out the orthogonal residue eigenvectors after a circuit diagonal in the `chi_k` basis. The formula holds for every fixed `x` and every copy, so it also holds jointly with independent latent labels, conditional on any offset vector, for the acquisitions of the adaptive controller. Conditional on `k`, the branch qubit is exactly `phi_k` for every probe transcript. Apply Section 2 with `H=n` and round `N z_0` to the nearest integer modulo `N` (smaller integer on a tie before reduction). If all probe means were accurate, then `dist(z_0,k/N) < 1/(6*2^n) < 1/(2N)` and the result is exactly `k`. No Fourier transform gate or arbitrary rotation is used.
 
-All hidden constants are absolute; enlarging them covers the finitely many
-small bit lengths. These are upper bounds, not tight space estimates.
+A controlled modular shift by a known `t` is an exact circuit on the whole input space. Compare `y` with `N`, compute the modular addition or subtraction on valid `y`, and return `y` on unused strings or when the control is zero. The arithmetic takes a constant number of ripple additions, subtractions, comparisons and bitwise selections on at most `n+2` bits, each a pass of fixed-size Boolean gates. Reversibly write all Boolean intermediates into fresh wires, XOR the result into a zero output register, and uncompute. Since the controlled map is a permutation and its inverse is the reverse shift with the same control, swap the input and output and then XOR the inverse into the old input using the same compute-copy-uncompute construction. This clears the old input. Each use takes `O(n)` gates and scratch qubits. For the exact basis, NOT and CNOT are Clifford, and Toffoli is H on the target, controlled-controlled Z, and H again. Controlled-controlled Z is implemented by T or T-adjoint on the three individual bits and their XORs using the integer identity `4abc = a+b+c-(a xor b)-(a xor c)-(b xor c)+(a xor b xor c)` for Boolean `a,b,c`. Each XOR can be computed into a scratch bit and uncomputed. This uses only a fixed number of Clifford+T gates and no approximation. For the probes, the shift constants are `2^h mod N`, precomputed by repeated modular doubling on classical bits.
 
-For B_T(n)=2^n n^4, log₂ B_T(n)=n+4 log₂ n, so the definition in the rules
-gives g(B_T)=1. For either space envelope n², log₂ B(n)=2 log₂ n gives
-g(B)=0. Fixed multiplicative constants do not change these limits.
-For the sample envelope B_samples(n)=2^n n, log₂ B_samples(n)=n+log₂ n,
-so g(B_samples)=1. The four resource indices are [1, 0, 0, 1]; only time
-is a numeric objective, so the published score vector is [1]. The stronger
-N-dependent time and sample bounds and polynomial space expressions remain
-in the claim statements. Sample count includes all unsuccessful tests and
-discarded copies, independently of how little quantum workspace is retained.
+## 4. A uniform finite-window sieve
 
-## Fractional error tolerance
+A stage has labelled qubits `phi_(2^p u)` with normalized labels `u` independent uniform on `[0,2^w)` at its input. Here and below all integer intervals are half-open unless endpoints are explicitly included. Choose nonnegative integers `ell,h` with `ell+h <= w-1`. Bucket by the low `ell` and high `h` bits of `u`; the intervening string is the middle integer in `[0,D)`, `D=2^(w-ell-h)`. In each bucket pair consecutive arrivals, in their original order, leaving at most one unpaired input. For a pair whose first and second middle values are `A,B`, keep it only when `A<D/2` and `0<=B-A<D/2`, or when `A>=D/2` and `0<=A-B<D/2`. For an accepted pair, subtract its original labels by CNOT and parity measurement: with the first qubit as control, apply CNOT to the second and measure the second in the computational basis. Odd parity, which has probability `1/2` for any input labels, leaves the first with phase proportional to `exp(2 pi i theta (k_first-k_second))` on its `|1>` component relative to `|0>`. When `B>A`, apply X to the first to negate the label, ignoring the global phase. Even parity is discarded. Thus success produces `phi_(2^(p+ell) abs(B-A))`.
 
-The preceding correctness and resource proof assumes that all acquired copies
-are independent ideal coset states. It therefore establishes the malformed-sample
-fractional guarantee epsilon(n)=0 jointly with all four bounds, for the same algorithm.
-No positive tolerance is claimed or scored. This describes the proved guarantee;
-it does not assert that the algorithm's maximum possible tolerance is zero.
+Condition on the vector of bucket keys only. The pairing is fixed and the middle values before pairing are still independent uniform. For each `z in [0,D/2)`, exactly `D` of the `D^2` possible pairs meet the classical condition and have `abs(B-A)=z`. Each choice of `A` forces exactly one valid `B`: `A+z` when `A` lies in the lower half and `A-z` when `A` lies in the upper half. In both cases `B` lies in `[0,D)`. Each pair therefore succeeds with probability exactly `1/4` including parity, and the successful normalized label is uniform on `[0,D/2)`. Pair results are independent conditional on bucket keys by disjointness and tensor-product inputs. In particular, conditional on the keys and success flags, successful labels are independent uniform and each retained state is the corresponding pure phase qubit. Keeping the first prescribed number of successes preserves this law given that the cap was reached. The next stage has `p'=p+ell` and `w'=w-ell-h-1`. Crucially the difference is taken in the integers. No wrap modulo a power of two is applied to a phase with denominator `N`.
+
+## 5. One parameter choice and full recovery
+
+For `N=2`, apply H to the residue and measure it on each of eight samples. Use the X measurement of the branch qubit from the first label 1 to output the hidden bit. If all labels are zero, output 0. The probability of no label 1 is `2^-8`, independently of the offsets, by the expansion in Section 3. This branch uses constant resources.
+
+For `n>=2`, set the parameters
+
+```
+b       = ceil(2 sqrt(n))
+m       = n-1
+d       = ceil((n-2)/(b+1))
+J       = n-2-d
+r_end   = 32768 (n+1)
+L       = 2^b + 8 r_end
+L_i     = 16^(d-i) L                        (0 <= i <= d)
+A_src   = 4 L_0
+r_F     = 2048 ceil(log2(256 (n+1) n A_src))
+```
+
+These are integer computations. The controller determines `b` by the least nonnegative integer `b` with `b^2 >= 4 n`, and the logarithm ceiling by the binary length and an exact power-of-two test. We have `0 <= d <= n-2` and `0 <= J <= n-2`. In each separate batch for `j=0,...,J`, acquire up to `A_src` fresh copies, use the Fourier-label procedure, and feed the first `L_0` with reported `k<2^m` to the first stage. The controller reads all `A_src` copies in a batch it starts, discarding copies over the input cap. Conditional on the ideal label being in this window it is uniform there, and the pass probability is `2^m/N >= 1/2`. Start at `p=0`, `w=m`.
+
+Use `d` stages. Divide the `n-2=m-1` total bits to be removed into `d` positive chunk sizes `v_i` of at most `b+1` by taking `b+1` until the final remainder. In the `i`th stage the sum of the low and high bucket counts must be `v_i-1`, with the extra one bit removed by the finite-window difference rule. Of the `v_i-1` removable bucket bits, designate as many low bits as possible up to the remaining quota `j`, and designate the others high bits. Since `sum_i(v_i-1) = n-2-d=J`, the final `p` is `j` and the final `w` is `1`. At a particular stage the current `w-1` is the total still to be removed, at least `v_i`, so the rule of Section 4 is applicable. When `d=0` (which occurs at `n=2`), there are no stages and `m=1,j=0` already. Stage `i` for `0 <= i < d` takes `L_i` inputs and pushes the first `L_(i+1)` successes onward, discarding extra outcomes including incomplete pairs. The terminal stage receives `L_d=L` outputs with label 0 or `2^j`. It measures the first `r_end` qubits of label `2^j` in X and the next `r_end` in Y, and discards extras. The batch fails if the input cap, any stage's output cap, or either terminal shot count is not reached. After any failed batch the algorithm returns 0. Section 6 bounds the probability of taking this path. When all batches succeed, compute `q_j` and use Section 2 with `H=J` to obtain a dyadic estimate `z_0` of `theta`.
+
+For the final verification, round `N z_0` to the nearest integer `c_0` modulo `N`, choosing the smaller integer before modular reduction on a tie. For every integer offset from `-2^(d+1)` through `2^(d+1)` inclusive, test the candidate `t` equal to `c_0` plus the offset modulo `N`. Each test acquires a fresh copy, subtracts `t` from the residue modulo `N` controlled by the branch qubit, then measures that qubit in X. If `t=s`, the two branches share their residue and the result is always `+1`. If `t!=s`, their residues differ, so the first qubit has state `I/2`, giving `+1` with probability `1/2`, for every offset `x` in the source. Run `d+9` such tests per candidate, outputting the first candidate with all `+1` outcomes. If none passes, return 0. Enumerating with repetition is allowed when the range wraps. If all the estimated phases were accurate then the circular distance of `N z_0` from `s` on the circumference `N` is less than `N/(6*2^J) <= (2/3) 2^d`. Rounding `N z_0` increases this distance by at most `1/2`, so one of the enumerated offsets gives `s`.
+
+## 6. Probability of success with all cutoffs
+
+In this section fix an arbitrary offset vector permitted by Section 1. Compare the actual algorithm with an ideal-label controller that uses the latent exact label of every Fourier acquisition. The latent-label description couples the two with identical conditional phase qubits and probe outcomes until the first erroneous reported label. The probability of any such discrepancy is at most
+
+```
+(n A_src) (n+1) 4 exp(-r_F/2048) <= 1/64.
+```
+
+Indeed, for each of at most `n A_src` attempted Fourier acquisitions the conditional error estimate holds uniformly given the past and its latent label. The factor 4 is the two bases and the two tails. For `U=256(n+1)n A_src`, `exp(-ceil(log2 U)) <= 1/U`. Verification copies use exact tests and require no Fourier label.
+
+For the ideal-label controller, the input cap failure probability per batch is at most `exp(-L_0/2)`. There are `4 L_0` independent trials of probability at least `1/2`, so the deviation required to miss the cap is at least `L_0`. Conditional on filling the cap, the first `L_0` normalized labels are independent uniform. At a sieve stage, conditional on the earlier caps and this stage's bucket keys, at most `2^b` inputs are left unpaired. Hence the number `P` of disjoint pairs is between `7 L_(i+1)` and `8 L_(i+1)` since `L_i=16 L_(i+1)` and `2^b<=L_(i+1)`. The conditional expected number of successes is `P/4`, at least `(7/4) L_(i+1)`, independently of the actual bucket keys. A cap miss has probability at most `exp(-9 L_(i+1)/64)` by the lower-tail bound of Section 2 with deviation `(3/4)L_(i+1)` and `P<=8 L_(i+1)`. Induction uses the independent uniform output law of Section 4 conditioned on reaching the cap. This conditioning concerns counts and keys, leaving the successful outputs uniform because the output labels are independent of the conditioned data. Finally, the terminal correct-label count is a binomial with parameters `L,1/2`; the required `2r_end <= L/4`. Failure has probability at most `exp(-L/8)` from deviation at least `L/4`. All these probabilities are at most `exp(-L/16)`. There are at most `n(d+2) <= (n+1)^2` cap or terminal count checks, so the union bound is less than `1/64`. For example, `L/16 >= 8(n+1)` and `(n+1)^2 exp(-8(n+1)) < 1/64` for `n>=2`.
+
+The controller can pipeline the stages instead of retaining complete lists. It stores one pending input per bucket per stage, forwards successes in arrival order, and tests quotas at batch end. Every stage function is applied to the same ordered list as it would see if run after its predecessor completes because downstream operations touch only forwarded qubits and send no information upstream. Those operations commute with future operations on the disjoint remaining qubits. Thus the preceding analysis can use the equivalent whole-stage order. No terminal basis or future bucket depends on a measured terminal outcome.
+
+Conditional on the ideal labels and the caps, terminal measurements are independent shots of exactly the indicated phase. The probability that any terminal estimate exceeds the error `1/32` is at most `4n exp(-16(n+1)) < 1/64`. Once the candidate set contains `s`, the correct candidate always passes, and for every false candidate the conditional probability of all `+1` outcomes is `2^(-(d+9))`. This holds conditional on reaching that candidate and on the fixed offset vector, because copies used for verification are fresh and the test law is offset-independent. There are at most `2^(d+2)+1 <= 5*2^d` candidates, including duplicates, so the chance of any false pass is bounded by `5/512 < 1/64`. Summing these four failure probabilities gives less than `1/16`. The same estimate holds on averaging over any joint distribution in Section 1. It is unconditional, including all discards, shortages, label-read errors, and early returns.
+
+## 7. Joint charged resources and growth indices
+
+All calculations use finite integers and exact gates. For `n>=2` the number of acquisitions on **every** branch is at most
+
+```
+(J+1) A_src + (2^(d+2)+1)(d+9).
+```
+
+The first term counts all the initial reads, including those with unsuitable labels and discarded extras. The second counts all verification reads, including failed candidates. The quantum operations inside every sieve stage use already-acquired qubits. From the chosen parameters,
+
+```
+J+1 <= n,   d <= 1+(1/2)sqrt(n),   b <= 1+2 sqrt(n),
+b + 4d <= 5 + 4 sqrt(n).
+```
+
+The polynomial term `8r_end` in `L` is `O(2^b)`, with an absolute multiplicative constant uniformly for `n>=2`. Thus `L_0=O(2^(b+4d))` and the displayed acquisition cap is `O(n 2^(4 sqrt(n)))`. The candidate term satisfies this bound separately since `d=O(sqrt(n))` with coefficient at most `1/2` up to an additive constant.
+
+The pipelined implementation stores at most one pending qubit and one `O(n)`-bit label record per bucket for each stage. Each stage uses at most `2^b` buckets. A direct array indexed by the classical bucket key suffices. Allocate `O(1)` extra incoming qubit slots and `O(n)` temporary classical bits per stage for the handoff of a qubit and its record. Use swaps between fixed slots and measure/reset freed wires before reuse. The terminal stream needs only a reusable input slot and two counters and sums. The Fourier readout and verification use one live source copy, `O(n)` arithmetic scratch qubits, and a reusable probe. Store the `O(n^2)` classical bits of precomputed shifts and, if needed, the exact dyadic transcript summaries. Stage size counters each have `O(log L_0)=O(sqrt(n))` bits. The schedule can be computed stage by stage from the integer parameters and the running count of low bits already deleted. The controller generates the regular arithmetic circuits online, storing only counters, constants and the current gate or fixed-size decomposition. No storage factor for a circuit of length proportional to the number of samples is needed. Include the input, output, registers, workspace and all intermediate memory. The resulting simultaneous peak bounds are `O((d+1)n 2^b+n^2)` classical bits and `O((d+1)2^b+n)` qubits. These imply the stated envelopes with coefficient `2`. In particular the total allocated bits and qubits admit addresses of length `O(sqrt(n))` for `n>=2`, including addresses for classical bits and quantum wires. Bucket lookup is classical; there is no quantum-addressed table.
+
+Here is a bit-work schedule accounting for those addresses. Ripple arithmetic, comparisons, epoch counters and copies are executed by traversing their binary representations. Each fixed-size gate or elementary bit update uses a bounded number of indexed accesses and wire addresses; constructing an indexed address from a fixed register base and a binary offset costs `O(sqrt(n))` by ripple addition on the address length, including incrementing the address-scan counters. A streamed `O(n)`-gate modular shift therefore costs `O(n sqrt(n))` work including its uniform gate generator, addressed gates and accesses, resets and probe measurement. Computing the shift constants once costs at most `O(n^2 sqrt(n))`. Each Fourier acquisition uses `2(n+1)r_F` probes with `r_F=O(sqrt(n))`, hence `O(n^3)` work. This cap also covers acquisition at cost `n+1`, discarding or moving the qubit, per-shot updates of `O(log r_F)`-bit sample sums and counters, and processing the measured means. Concretely the dyadic procedure can compare circular distances using scans of `O(n)` bits at each of `n+1` frequencies, and round its product with `N` by schoolbook multiplication on `O(n)` bits. These steps cost `O(n^2 sqrt(n))` work and fit within `O(n^3)`. All stored parameters and loop counters can be generated via integer arithmetic of at most `O(n)` bits, including computing the ceilings by scans or bounded binary searches. The one-time such arithmetic uses polynomial work bounded by the final envelope (schoolbook arithmetic and bounded scans suffice).
+
+In a stage, computing buckets, comparing middles, updating a pair, addressing the two qubits, and resetting discarded slots cost `O(n sqrt(n))` per input with direct arrays. Initializing and clearing each array costs `O(n 2^b sqrt(n))`, charged per stage and batch. The number of stage inputs per batch is at most `sum_(i=0)^d L_i < (16/15)L_0`, and `2^b <= L_i` for every stage, so the stage work is `O(L_0 n sqrt(n))` per batch. Terminal X/Y sampling and batch bookkeeping fit the same bound. The at most `(2^(d+2)+1)(d+9)` verification tests each cost `O(n sqrt(n))` and the same bound per candidate covers its generation and modular reduction. Finite-size setup, initialization and disposal of all the allocated memory, and the output arithmetic are covered by these bounds and the one-time polynomial setup. Overall the Fourier term is `O(n L_0 n^3)`, and the other terms are bounded by `O(2^(4 sqrt(n)) n^4)` as well. The elementary gate decomposition and dyadic arithmetic account for synthesis and precision without a real-arithmetic oracle. The same finite caps apply even when a sampled label estimate is wrong.
+
+For each envelope `B=2^(k sqrt(n)) n^r` in the theorem, `k>0` is its displayed exact rational and `r` is the displayed power. We have `log2(B)=k sqrt(n)+r log2 n` and `log2(log2(B))=(1/2) log2 n+O(1)`. The rule's maximum with 4 is eventually inactive. Consequently every exact growth index is `1/2`; the numeric objective uses only the time index. The fifth claim records the fraction `1` under the precise source promise in Section 1 and carries no growth index or score.

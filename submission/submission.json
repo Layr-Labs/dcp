@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "title": "Exhaustive shift testing with polynomial workspace",
+  "title": "Integer-window difference sieve for cyclic DCP",
   "claims": [
     {
-      "statement": "For every N >= 2 and every s in Z/NZ, exhaustive shift testing in proof.md, with n = ceil(log2 N) and k = n+2 tests per candidate, recovers the entire s with unconditional probability > 3/4. In the challenge model this same algorithm has worst-case total work T(N,s) = O(N n^4), hence the uniform bit-length envelope B_T(n) = 2^n n^4. All constants are absolute. The growth index of this envelope is exactly 1. This holds jointly with the two workspace bounds and sample bound below.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the integer-window difference sieve with the single parameter choice in Section 5 of proof.md uses total work T(N,s) = O(2^(4 sqrt(n)) n^4) in the uniform Clifford+T bit-operation model of the challenge. All constants are absolute. The exact growth index of the displayed envelope is 1/2. This holds on every execution branch jointly with the other three resource bounds and unconditional full-secret recovery probability greater than 15/16 under the fifth claim, including the independent ideal source.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -21,8 +21,8 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "4",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
@@ -32,56 +32,10 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak classical workspace is S_C(N,s) = O(n^2) bits, with n = ceil(log2 N) and an absolute constant. Its envelope B_C(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and quantum-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, worst-case peak quantum workspace is S_Q(N,s) = O(n^2) qubits, with n = ceil(log2 N) and an absolute constant. Its envelope B_Q(n) = n^2 has growth index exactly 0. This holds jointly with the stated time and classical-workspace bounds and full-secret success probability > 3/4.",
-      "score": {
-        "numerator": "0",
-        "denominator": "1"
-      },
-      "evidence": [
-        "proof.md"
-      ],
-      "structured": {
-        "version": "dcp-bounds-v4",
-        "comparator": "asymptotic-v1",
-        "scope": "dcp-cyclic-group-order",
-        "model": "dcp-uniform-clifford-t-bit-operations-v1",
-        "notation": "big-o",
-        "bound": {
-          "coefficient": "1",
-          "exponent": [],
-          "nPower": "2",
-          "logPower": "0"
-        }
-      }
-    },
-    {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, for every N >= 2 and every s in Z/NZ, with n = ceil(log2 N) and k = n+2 tests per candidate, the total number Q(N,s) of fresh DCP source copies acquired on every execution branch is at most N(n+2), hence O(2^n n). The uniform bit-length envelope B_samples(n) = 2^n n has growth index exactly 1. This bound includes every failed test and discarded sample and holds jointly with the stated total-work and workspace bounds and unconditional full-secret success probability > 3/4.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the integer-window difference sieve with the single parameter choice in Section 5 of proof.md uses peak classical memory S_C(N,s) = O(2^(2 sqrt(n)) n^(3/2)) bits. All constants are absolute. The exact growth index of the displayed envelope is 1/2. This holds on every execution branch jointly with the other three resource bounds and unconditional full-secret recovery probability greater than 15/16 under the fifth claim, including the independent ideal source.",
       "score": {
         "numerator": "1",
-        "denominator": "1"
+        "denominator": "2"
       },
       "evidence": [
         "proof.md"
@@ -96,8 +50,66 @@
           "coefficient": "1",
           "exponent": [
             {
-              "coefficient": "1",
-              "nPower": "1",
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "3/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the integer-window difference sieve with the single parameter choice in Section 5 of proof.md uses peak quantum memory S_Q(N,s) = O(2^(2 sqrt(n)) n^(1/2)) qubits. All constants are absolute. The exact growth index of the displayed envelope is 1/2. This holds on every execution branch jointly with the other three resource bounds and unconditional full-secret recovery probability greater than 15/16 under the fifth claim, including the independent ideal source.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "2",
+              "nPower": "1/2",
+              "logPower": "0"
+            }
+          ],
+          "nPower": "1/2",
+          "logPower": "0"
+        }
+      }
+    },
+    {
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the integer-window difference sieve with the single parameter choice in Section 5 of proof.md acquires at most eight copies for N=2 and at most (J+1) A_src + (2^(d+2)+1)(d+9) copies for n >= 2, counting every acquisition. Here b = ceil(2 sqrt(n)), d = ceil((n-2)/(b+1)), J = n-2-d, and A_src = 4*16^d*(2^b+262144(n+1)). Thus Q(N,s) = O(2^(4 sqrt(n)) n). All constants are absolute. The exact growth index of the displayed envelope is 1/2. This holds on every execution branch jointly with the other three resource bounds and unconditional full-secret recovery probability greater than 15/16 under the fifth claim, including the independent ideal source.",
+      "score": {
+        "numerator": "1",
+        "denominator": "2"
+      },
+      "evidence": [
+        "proof.md"
+      ],
+      "structured": {
+        "version": "dcp-bounds-v4",
+        "comparator": "asymptotic-v1",
+        "scope": "dcp-cyclic-group-order",
+        "model": "dcp-uniform-clifford-t-bit-operations-v1",
+        "notation": "big-o",
+        "bound": {
+          "coefficient": "1",
+          "exponent": [
+            {
+              "coefficient": "4",
+              "nPower": "1/2",
               "logPower": "0"
             }
           ],
@@ -107,14 +119,14 @@
       }
     },
     {
-      "statement": "For the same exhaustive shift-testing algorithm and configuration in proof.md, the proved fractional error tolerance is epsilon(n)=0: all Q source copies are independent ideal coset states. Under this promise, for every N and s, full-secret recovery succeeds with probability > 3/4 jointly with all four resource bounds. No positive corruption tolerance is asserted; this is not a proof that greater tolerance is impossible.",
+      "statement": "For every N >= 2 and every s in Z/NZ, with n = ceil(log2 N), the integer-window difference sieve with the single parameter choice in Section 5 of proof.md guarantees the malformed-sample fraction epsilon(n) = 1 in the following source model. Before the run, the source may designate any fixed set of acquisition positions as malformed. Conditional on a jointly drawn vector of offsets in Z/NZ, all copies are a tensor product of pure coset states with the same shift s and the respective offsets. At honest positions the offsets are mutually independent uniform draws. At malformed positions the offsets may have any joint classical distribution, including dependence on s and on honest offsets. The joint draw is independent of the algorithm's private measurement outcomes. Each copy has the usual plus relative phase and the prescribed register dimensions. For any such choices, including when all acquisitions are designated malformed or when all are ideal, full-secret recovery succeeds with unconditional probability greater than 15/16 jointly with the four resource bounds.",
       "evidence": [
         "proof.md"
       ],
       "structured": {
         "version": "dcp-fractional-error-tolerance-v1",
-        "expression": "0",
-        "error_model": "Malformed fraction among acquired copies. The proved guarantee requires every copy to be an independent ideal coset state; no behavior is promised for malformed copies."
+        "expression": "1",
+        "error_model": "Before the run, the source may designate any fixed set of acquisition positions as malformed. Conditional on a jointly drawn vector of offsets in Z/NZ, all copies are a tensor product of pure coset states with the same shift s and the respective offsets. At honest positions the offsets are mutually independent uniform draws. At malformed positions the offsets may have any joint classical distribution, including dependence on s and on honest offsets. The joint draw is independent of the algorithm's private measurement outcomes. Each copy has the usual plus relative phase and the prescribed register dimensions."
       }
     }
   ],
